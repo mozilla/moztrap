@@ -146,14 +146,14 @@ var MT = (function (MT, $) {
 
             var actionUrl = $(".action-ajax-replace").attr("action");
             var dataUrl = $(".action-ajax-replace").data("ajax-update-url");
-            var url = null;
-            if (actionUrl != undefined && actionUrl != null) {
-                url = $(location).attr("host") + actionUrl
+            var uri = null;
+            if (actionUrl != undefined && actionUrl != false) {
+                uri = actionUrl;
             } else {
-                url = $(location).attr("host") + dataUrl
+                uri = dataUrl;
             }
-
-                    text.val(url);
+            var url = $(location).attr("protocol") + "//" + $(location).attr("host") + uri;
+            text.val(url);
 
             shareList.toggleClass('open');
             if (shareList.hasClass('open')) {

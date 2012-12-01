@@ -44,6 +44,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   releasenotes
    installation
    upgrading
    development

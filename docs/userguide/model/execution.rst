@@ -103,6 +103,22 @@ Run Edit Fields
 
 .. _Markdown: http://daringfireball.net/projects/markdown/syntax
 
+.. _test-run-refresh:
+
+Refreshing a Run
+----------------
+When a test run is made active, it will take a snapshot of active
+suites and cases at that time. If cases and suites are added, removed or had
+their active status changed since the run was made active, the run won't
+appear changed to testers.  This is because once a test run is activated, it
+is considered a *unit of work* that you may not want to alter while testers
+are executing the run.
+
+If, however, you want to refresh the run with the new list of active cases
+and suites, then you can click the *refresh* button in the management area
+next to your run.  This won't affect existing results unless you have removed
+a case from one of the run's suites.
+
 .. _test-results:
 
 Test Results

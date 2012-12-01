@@ -7,17 +7,12 @@ Frequently Asked Questions
 
   - Your :ref:`test cases <test-cases>` or :ref:`test suites <test-suites>` may
     not have been active at the time the :ref:`test run <test-runs>` was made
-    active. When a test run is made active, it will take a snapshot of active
-    suites and cases at that time. If cases and suites are made active after
-    that time, they will not show in that test run: only in newly activated
-    test runs. This is because once a test run is activated, it is considered a
-    "unit of work" that won't be altered.
+    active.
 
   - When you have activated new test cases and/or suites and want a test run to
-    reflect that, you have two options:
-
-    1. clone the existing test run, and activate it.
-    2. mark your existing run draft, then active again.
+    reflect that, simply find the run in the management area and click the
+    *refresh* button next to it.  See :ref:`Refreshing a Run<test-run-refresh>`
+    for more info.
 
 2. **Why don't I see the results I expect when I type in a filter?**
 
