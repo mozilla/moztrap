@@ -1,6 +1,6 @@
 .add-run, .edit-run
 
-  .product-version-field, .description-field, .build-field
+  .product-version-field, .build-field
     +full(24)
     +suffix(6,24)
     .type
@@ -9,7 +9,7 @@
       +columns(12,18)
       +omega(18)
 
-  .name-field
+  .name-field, .description-field
     +columns(18,24)
     .type
       +columns(6,18)
@@ -17,9 +17,10 @@
       +columns(12,18)
       +omega(18)
 
-  .series-field
-    +columns(6,24)
+  .series-field, .markdown-link
+    +columns(5,24)
     +omega(24)
+    float: left
 
     &.optional
       +leader(.25)

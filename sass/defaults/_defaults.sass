@@ -20,3 +20,15 @@
     display: inline-block
   #{$focus}
     +opacity(1)
+
+
+.markdown-link
+  outline: none
+  #{$link}
+    +opacity(.5)
+    +transition(opacity 300ms)
+    +icon('ui/info_circle.png',$notext:false)
+    +padding-leader(.1)
+    display: inline-block
+  #{$focus}
+    +opacity(1)
