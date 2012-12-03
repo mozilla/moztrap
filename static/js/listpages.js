@@ -143,7 +143,8 @@ var MT = (function (MT, $) {
                 popup = shareList.find('.share-list-popup'),
                 text = popup.find('.url-text');
 
-
+            // the filter element can store the url in two places,
+            // depending on if it's a form or just an element.  so try both.
             var actionUrl = $(".action-ajax-replace").attr("action");
             var dataUrl = $(".action-ajax-replace").data("ajax-update-url");
             var uri = null;
@@ -152,26 +153,37 @@ var MT = (function (MT, $) {
             } else {
                 uri = dataUrl;
             }
+            // add the protocol and host to the uri stub.
             var url = $(location).attr("protocol") + "//" + $(location).attr("host") + uri;
             text.val(url);
 
-            shareList.toggleClass('open');
-            if (shareList.hasClass('open')) {
-                popup.slideDown('fast');
-                text.focus();
-                text.select();
-                $(document).on('click.shareDropdown', function (e) {
-                    if ($(e.target).parents().andSelf().index(shareList) === -1) {
-                        if (shareList.hasClass('open')) {
-                            shareList.removeClass('open');
-                            popup.slideUp('fast');
+            // if the user is clicking in the text box, then don't close it
+            if ($(e.target).index(text) ===-1) {
+                // otherwise, they've clicked elsewhere and we toggle the
+                // dialog open or closed.
+                shareList.toggleClass('open');
+                if (shareList.hasClass('open')) {
+                    // we want to open it.  slide it down and select the text
+                    // to copy.
+                    popup.slideDown('fast');
+                    text.focus();
+                    text.select();
+                    // add the handler that if they click anywhere else on the
+                    // page it will close the dropdown
+                    $(document).on('click.shareDropdown', function (e) {
+                        if ($(e.target).parents().andSelf().index(shareList) === -1) {
+                            if (shareList.hasClass('open')) {
+                                shareList.removeClass('open');
+                                popup.slideUp('fast');
+                            }
+                            $(document).off('click.shareDropdown');
                         }
-                        $(document).off('click.shareDropdown');
-                    }
-                });
-            } else {
-                popup.slideUp('fast');
-                $(document).off('click.shareDropdown');
+                    });
+                } else {
+                    // clicking the button again will also close the dropdown.
+                    popup.slideUp('fast');
+                    $(document).off('click.shareDropdown');
+                }
             }
         });
     };
