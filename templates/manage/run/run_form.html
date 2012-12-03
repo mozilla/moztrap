@@ -16,6 +16,7 @@
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.is_series label="Series" %}
     {% include "forms/_field.html" with field=form.description %}
+      {% include "_markdownlink.html" with fieldname="description field supports" %}
     {% include "forms/_field.html" with field=form.build %}
     {% include "forms/_field.html" with field=form.start %}
     {% include "forms/_field.html" with field=form.end %}
