@@ -124,3 +124,83 @@ class BulkParser(object):
         return self.expectedresult
     after_and.keys = ["when "]
     after_and.expect_end = False
+
+
+from markdown import treeprocessors
+from markdown.util import etree
+
+class MarkdownBulkParser(object):
+    """
+    This bulk input parser takes test cases in this format:
+
+        Test case 1 title here
+        ================
+        Description text here (optional)
+
+        * which can contain bullets
+        * **with formatting**
+           * indentation
+           * [and links](www.example.com)
+
+        Steps
+        -----
+        1. Step 1 action
+            * Step 1 Expected Result
+        2. Step 2 action
+            * Step 2 Expected Result
+
+        ***
+        ***
+
+        Test case 2 title here
+        ===============
+        ...
+
+    and create a list of case objects like this:
+
+        {
+            "name": "Test that bulk parsing works",
+            "description": (
+                "As a testcase administrator\n"
+                "Given that I've loaded the bulk-input screen"
+                ),
+            "steps": [
+                {
+                    "instruction": (
+                        "When I type a sonnet in the textarea\n"
+                        "And I sing my sonnet aloud"
+                        ),
+                    "expected": "Then my sonnet should be parsed",
+                    },
+                {
+                    "instruction": "And when I click the submit button",
+                    "expected": "Then testcases should be created",
+                    },
+                {
+                    "instruction": "When I am done",
+                    "expected": "Then I feel satisfied",
+                    },
+                ]
+            }
+
+    RULES:
+    ======
+    * Double separator line separates cases
+    * First <h1> after separator or at BOF is case name
+    * Everything between that <H1> and the first occurance of <h2>Steps</h2>
+      is the description
+    * each numbered line after <h2>Steps</h2> is a step instruction
+    * each non-numeric within a numbered step is a step expected
+
+
+    """
+
+    def parse(self, text):
+        ctp = CaseTreeprocessor()
+        data = "stuff?"
+        return data
+
+class CaseTreeprocessor(treeprocessors.Treeprocessor):
+
+    def run(self, root):
+        pass

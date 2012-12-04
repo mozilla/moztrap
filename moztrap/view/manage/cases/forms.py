@@ -224,6 +224,7 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
     """Form for adding test cases in bulk."""
     cases = forms.CharField(widget=mtforms.BareTextarea)
+    style = forms.ChoiceField()
 
 
     def clean_cases(self):

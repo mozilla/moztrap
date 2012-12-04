@@ -5177,6 +5177,13 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   display: table;
   clear: both;
 }
+.versioned .bulk-field .preserve-keywords-field {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  padding-top: 0.375em;
+}
 .versioned .bulk-field .fieldhelp {
   display: inline;
   float: left;
@@ -5222,7 +5229,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
 }
 .versioned .cases-field .value {
-  min-height: 18em;
+  min-height: 21em;
 }
 
 .step-form .steplist {
