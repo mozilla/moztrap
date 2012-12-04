@@ -70,6 +70,12 @@ class ApiTestCase(WebTest):
         return self.app.get(url, params=params, status=status)
 
 
+    def delete(self, resource_name, id, params={}, status=200):
+        url = self.get_detail_url(resource_name, id)
+        url = "{0}?{1}".format(url, urllib.urlencode(params))
+        return self.app.delete(url, params=params)
+
+
     def get_list(self, params={}, status=200):
         """GET the list URL for this testcase's resource, return response."""
         return self.get(

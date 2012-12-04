@@ -15,8 +15,7 @@ class SuiteResourceTest(case.api.ApiTestCase):
         return "suite"
 
     def test_create_delete_suite(self):
-        # user = self.F.UserFactory.create(permissions=["library.manage_suites"])
-        user = self.F.UserFactory.create(is_superuser=True)
+        user = self.F.UserFactory.create(permissions=["library.manage_suites"])
         apikey = self.F.ApiKeyFactory.create(owner=user)
         params = {"username": user.username, "api_key": apikey.key}
 
@@ -33,6 +32,7 @@ class SuiteResourceTest(case.api.ApiTestCase):
             params=params,
             payload=fields,
             )
+        suite_id = res.headers['location'].split('/')[-2]
 
         res = self.get_list()
 
@@ -52,11 +52,31 @@ class SuiteResourceTest(case.api.ApiTestCase):
         self.assertEquals(act_meta, exp_meta)
 
         act_objects = act["objects"]
-        exp_objects = [{}] #XXX finish this expected result!
+        exp_objects = [{
+            u'description': u'test_create_delete_suite',
+            u'id': unicode(suite_id),
+            u'name': u'test_create_delete_suite',
+            u'product': unicode(
+                        self.get_detail_url("product",product_fixture.id)),
+            u'resource_uri': unicode(
+                        self.get_detail_url("suite",suite_id)),
+            u'status': u'active'
+            }]
+
 
         self.maxDiff = None
         self.assertEqual(exp_objects, act_objects)
 
+        self.delete("suite", suite_id, params=params)
+
+        res = self.get_list()
+
+        self.assertEqual(res.status_int, 200)
+        
+        act_objects = res.json["objects"]
+
+        self.assertEqual(act_objects, [])
+        
 
 class SuiteCaseSelectionResourceTest(case.api.ApiTestCase):
 

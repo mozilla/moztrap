@@ -23,7 +23,7 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
 
     def is_authenticated(self, request, **kwargs):
         """
-        Finds the user and checks their API key.
+        Finds the user and checks their API key. GET requests are always allowed.
 
         This overrides Tastypie's default impl, because we use a User
         proxy class, which Tastypie doesn't find
@@ -31,6 +31,9 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         Should return either ``True`` if allowed, ``False`` if not or an
         ``HttpResponse`` if you need something custom.
         """
+        if request.method == 'GET':
+            return True
+
         from .auth import User
 
         username = request.GET.get('username') or request.POST.get('username')
@@ -53,7 +56,9 @@ class ReportResultsAuthorization(Authorization):
     """Authorization that only allows users with execute privileges."""
 
     def is_authorized(self, request, object=None):
-        if request.user.has_perm("execution.execute"):
+        if request.method == 'GET':
+            return True
+        elif request.user.has_perm("execution.execute"):
             return True
         else:
             return False
