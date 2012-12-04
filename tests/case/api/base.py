@@ -73,7 +73,7 @@ class ApiTestCase(WebTest):
     def delete(self, resource_name, id, params={}, status=200):
         url = self.get_detail_url(resource_name, id)
         url = "{0}?{1}".format(url, urllib.urlencode(params))
-        return self.app.delete(url, params=params)
+        return self.app.delete(url)
 
 
     def get_list(self, params={}, status=200):
