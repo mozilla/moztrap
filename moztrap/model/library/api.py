@@ -5,7 +5,7 @@ from tastypie.resources import ModelResource
 from django.http import HttpResponse
 
 from ..core.api import (ProductVersionResource, ProductResource,
-                        ReportResultsAuthorization, MTApiKeyAuthentication)
+                        MTAuthorization, MTApiKeyAuthentication)
 from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
@@ -24,7 +24,7 @@ class SuiteResource(ModelResource):
             "product": ALL_WITH_RELATIONS,
             }
         authentication = MTApiKeyAuthentication()
-        authorization = ReportResultsAuthorization()
+        authorization = MTAuthorization()
 
 
 

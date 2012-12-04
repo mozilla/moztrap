@@ -60,6 +60,22 @@ class ReportResultsAuthorization(Authorization):
 
 
 
+class MTAuthorization(Authorization):
+    """Authorization that allows any user to GET but only users with permissions to modify."""
+
+    def is_authorized(self, request, object=None):
+        klass = self.resource_meta.object_class
+        permission = '%s.manage_%ss' % (klass._meta.app_label, klass._meta.module_name)
+
+        if request.method == 'GET':
+            return True
+        elif request.user.has_perm(permission):
+                return True
+        else:
+            return False
+
+
+
 class ProductVersionResource(ModelResource):
     """
     Return a list of product versions.

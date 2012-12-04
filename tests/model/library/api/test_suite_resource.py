@@ -1,11 +1,61 @@
 """
-Tests for CaseVersionResource api.
+Tests for SuiteResource api.
 
 """
 import json
 
 from tests import case
 
+
+
+class SuiteResourceTest(case.api.ApiTestCase):
+
+    @property
+    def resource_name(self):
+        return "suite"
+
+    def test_create_delete_suite(self):
+        # user = self.F.UserFactory.create(permissions=["library.manage_suites"])
+        user = self.F.UserFactory.create(is_superuser=True)
+        apikey = self.F.ApiKeyFactory.create(owner=user)
+        params = {"username": user.username, "api_key": apikey.key}
+
+        product_fixture = self.F.ProductFactory.create()
+        fields = {
+            'name': 'test_create_delete_suite',
+            'description': 'test_create_delete_suite',
+            'product': unicode(self.get_detail_url("product",product_fixture.id)),
+            'status': 'active',
+        }
+
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=params,
+            payload=fields,
+            )
+
+        res = self.get_list()
+
+        self.assertEqual(res.status_int, 200)
+
+        act = res.json
+
+        act_meta = act["meta"]
+        exp_meta = {
+            "limit" : 20,
+            "next" : None,
+            "offset" : 0,
+            "previous" : None,
+            "total_count" : 1,
+            }
+
+        self.assertEquals(act_meta, exp_meta)
+
+        act_objects = act["objects"]
+        exp_objects = [{}] #XXX finish this expected result!
+
+        self.maxDiff = None
+        self.assertEqual(exp_objects, act_objects)
 
 
 class SuiteCaseSelectionResourceTest(case.api.ApiTestCase):
