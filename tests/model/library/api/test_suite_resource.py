@@ -5,77 +5,50 @@ Tests for SuiteResource api.
 import json
 
 from tests import case
+from tests.case.api.crud import ApiCrudCases
 
 
 
-class SuiteResourceTest(case.api.ApiTestCase):
+class SuiteResourceTest(ApiCrudCases):
+    """Please see the test cases in tests.case.api.ApiCrudCases."""
+
+    # implementations for abstract methods and properties
 
     @property
     def resource_name(self):
         return "suite"
 
-    def test_create_delete_suite(self):
-        user = self.F.UserFactory.create(permissions=["library.manage_suites"])
-        apikey = self.F.ApiKeyFactory.create(owner=user)
-        params = {"username": user.username, "api_key": apikey.key}
+    @property
+    def permission(self):
+        return "library.manage_suites"
 
-        product_fixture = self.F.ProductFactory.create()
+    @property
+    def object_data(self):
+        self.product_fixture = self.F.ProductFactory.create()
+        modifiers = (self.datetime, self.resource_name)
         fields = {
-            'name': 'test_create_delete_suite',
-            'description': 'test_create_delete_suite',
-            'product': unicode(self.get_detail_url("product",product_fixture.id)),
+            'name': 'test_%s_%s' % modifiers,
+            'description': 'test %s %s' % modifiers,
+            'product': unicode(self.get_detail_url("product",self.product_fixture.id)),
             'status': 'active',
         }
+        return fields
 
-        res = self.post(
-            self.get_list_url(self.resource_name),
-            params=params,
-            payload=fields,
-            )
-        suite_id = res.headers['location'].split('/')[-2]
-
-        res = self.get_list()
-
-        self.assertEqual(res.status_int, 200)
-
-        act = res.json
-
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
+    def expected_data(self, object_data, object_id):
+        return {
+            u'description': u'test_create_delete_suite',
+            u'id': unicode(object_id),
+            u'name': u'test_create_delete_suite',
+            u'product': unicode(object_data['product']),
+            u'resource_uri': unicode(
+                        self.get_detail_url(self.resource_name,object_id)),
+            u'status': u'active'
             }
 
-        self.assertEquals(act_meta, exp_meta)
+    def backend_get(self, **kwargs):
+        return self.model.Suite.objects.get(**kwargs)
 
-        act_objects = act["objects"]
-        exp_objects = [{
-            u'description': u'test_create_delete_suite',
-            u'id': unicode(suite_id),
-            u'name': u'test_create_delete_suite',
-            u'product': unicode(
-                        self.get_detail_url("product",product_fixture.id)),
-            u'resource_uri': unicode(
-                        self.get_detail_url("suite",suite_id)),
-            u'status': u'active'
-            }]
-
-
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
-
-        self.delete("suite", suite_id, params=params)
-
-        res = self.get_list()
-
-        self.assertEqual(res.status_int, 200)
-        
-        act_objects = res.json["objects"]
-
-        self.assertEqual(act_objects, [])
+    # additional test cases, if any
         
 
 class SuiteCaseSelectionResourceTest(case.api.ApiTestCase):
