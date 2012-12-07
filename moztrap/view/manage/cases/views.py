@@ -13,7 +13,7 @@ from django.contrib import messages
 
 from moztrap import model
 
-from moztrap.view.filters import CaseVersionFilterSet
+from moztrap.view.filters import CaseVersionFilterSet#, SessionFilterSet
 from moztrap.view.lists import decorators as lists
 from moztrap.view.users.decorators import permission_required
 from moztrap.view.utils.ajax import ajax
@@ -38,6 +38,7 @@ from . import forms
     permission="library.manage_cases")
 @lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
+#@lists.sessionfilter()
 @lists.sort("caseversions")
 @ajax("manage/case/list/_cases_list.html")
 def cases_list(request):
@@ -47,6 +48,8 @@ def cases_list(request):
         "manage/case/cases.html",
         {
             "caseversions": model.CaseVersion.objects.select_related("case"),
+            "products": model.Product.objects.all(),
+            "productversions": model.ProductVersion.objects.all(),
             }
         )
 

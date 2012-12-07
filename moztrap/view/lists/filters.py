@@ -8,6 +8,7 @@ from functools import wraps
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 
+#from moztrap.view.filters import SessionFilterSet
 
 
 def filter_url(path_or_view, obj):
@@ -77,6 +78,44 @@ def filter(ctx_name, filters=None, filterset_class=None):
         return _wrapped_view
 
     return decorator
+
+
+
+#def sessionfilter():
+#    """
+#    View decorator to add the global session filters.
+#
+#    This will provide:
+#        * the list of available values specified in
+#          the SessionFilterset object
+#        * the current values from the session, if set.
+#
+#
+#    """
+#    filterset = SessionFilterSet
+#    def decorator(view_func):
+#        @wraps(view_func)
+#        def _wrapped_view(request, *args, **kwargs):
+#            session = request.session
+#            response = view_func(request, *args, **kwargs)
+#            try:
+#                ctx = response.context_data
+#            except AttributeError:
+#                return response
+#            bfs = filterset.bind(request.GET)
+#            ctx["session_filter_set"] = bfs
+#
+#
+#            ctx["session_filters"]
+#            return response
+#
+#        # annotate wrapped view with filterset
+#        # for introspection by e.g. filter_url
+#        _wrapped_view.filterset = filterset
+#
+#        return _wrapped_view
+#
+#    return decorator
 
 
 

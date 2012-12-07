@@ -3099,6 +3099,13 @@ body > div {
   color: #999999;
 }
 
+.session-filters {
+  display: block;
+}
+.session-filters .session-filter-field {
+  display: inline;
+}
+
 .category-title {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;

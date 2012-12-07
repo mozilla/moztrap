@@ -2,6 +2,15 @@
 
 <nav id="{% block filterid %}filter{% endblock %}" class="magicfilter">
   <h3 class="navhead">List Filtering</h3>
+    <div class="session-filters">
+       <form method="POST" id="sessionfilterform" autocomplete="off">
+            {% for field in filters %}
+                {% if field.key = "product" or field.key = "productversion" %}
+                    {% include "lists/_session_filter_field.html" %}
+                {% endif %}
+            {% endfor %}
+       </form>
+    </div>
     <div class="share-list">
         <div class="share-list-button" title="get a share-able link to this list"></div>
         <div class="share-list-popup">
