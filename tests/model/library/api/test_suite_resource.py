@@ -10,7 +10,15 @@ from tests.case.api.crud import ApiCrudCases
 
 
 class SuiteResourceTest(ApiCrudCases):
-    """Please see the test cases in tests.case.api.ApiCrudCases."""
+    """Please see the test cases in tests.case.api.ApiCrudCases.
+    The following abstract methods must be implemented:
+    * resource_name (property)
+    * permission (property)
+    * new_object_data (property)
+    * backend_object (property)
+    * backend_data(backend_object)
+    * backend_meta_data(backend_object)
+    """
 
     # implementations for abstract methods and properties
 
@@ -23,30 +31,54 @@ class SuiteResourceTest(ApiCrudCases):
         return "library.manage_suites"
 
     @property
-    def object_data(self):
+    def new_object_data(self):
+        '''produces data dictionary for use in create'''
         self.product_fixture = self.F.ProductFactory.create()
         modifiers = (self.datetime, self.resource_name)
         fields = {
-            'name': 'test_%s_%s' % modifiers,
-            'description': 'test %s %s' % modifiers,
-            'product': unicode(self.get_detail_url("product",self.product_fixture.id)),
-            'status': 'active',
+            u'name': unicode('test_%s_%s' % modifiers),
+            u'description': unicode('test %s %s' % modifiers),
+            u'product': unicode(self.get_detail_url("product",self.product_fixture.id)),
+            u'status': unicode('active'),
         }
         return fields
 
-    def expected_data(self, object_data, object_id):
-        return {
-            u'description': u'test_create_delete_suite',
-            u'id': unicode(object_id),
-            u'name': u'test_create_delete_suite',
-            u'product': unicode(object_data['product']),
-            u'resource_uri': unicode(
-                        self.get_detail_url(self.resource_name,object_id)),
-            u'status': u'active'
-            }
+    def backend_object(self, id):
+        """get the object from the backend"""
+        return self.model.Suite.objects.get(id=id)
+ 
+    def backend_data(self, backend_obj):
+        """dictionary containing the data expected from get detail for an object,
+        using data pulled from the db. both keys and data should be in unicode"""
+        actual = {}
+        actual[u'id'] = unicode(str(backend_obj.id))
+        actual[u'name'] = unicode(backend_obj.name)
+        actual[u'description'] = unicode(backend_obj.description)
+        actual[u'product'] = unicode(
+                        self.get_detail_url("product", backend_obj.product.id))
+        actual[u'status'] = unicode(backend_obj.status)
+        actual[u'resource_uri'] = unicode(self.get_detail_url(self.resource_name, 
+                                                              str(backend_obj.id)))
 
-    def backend_get(self, **kwargs):
-        return self.model.Suite.objects.get(**kwargs)
+        return actual
+
+    def backend_meta_data(self, backend_obj):
+        '''retrieves object meta data from backend'''
+        actual = {}
+        actual['created_by'] = backend_obj.created_by.username
+        actual['created_on'] = backend_obj.created_on
+        try:
+            actual['modified_by'] = backend_obj.modified_by.username
+        except AttributeError:
+            actual['modified_by'] = None
+        try:
+            actual['deleted_by'] = backend_obj.deleted_by.username
+        except AttributeError:
+            actual['deleted_by'] = None
+        actual['modified_on'] = backend_obj.modified_on
+        actual['deleted_on'] = backend_obj.deleted_on
+
+        return actual
 
     # additional test cases, if any
         

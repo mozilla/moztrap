@@ -26,6 +26,14 @@ class SuiteResource(ModelResource):
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
 
+    def obj_create(self, bundle, request=None, **kwargs):
+        """Set the created_by and modified_by fields for the suite to the request's user"""
+
+        bundle = super(SuiteResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+        bundle.obj.created_by = request.user
+        bundle.obj.save()
+        return bundle
+
 
 
 class CaseResource(ModelResource):
