@@ -123,7 +123,12 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
     def delete(self, *args, **kwargs):
         """Delete CaseVersion, updating latest version."""
         super(CaseVersion, self).delete(*args, **kwargs)
-        self.case.set_latest_version()
+        if not self.case.versions.count():
+            # we just deleted the last version for this case, so delete
+            # the case as well
+            self.case.delete(*args, **kwargs)
+        else:
+            self.case.set_latest_version()
 
 
     def undelete(self, *args, **kwargs):

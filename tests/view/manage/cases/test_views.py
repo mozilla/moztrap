@@ -41,8 +41,8 @@ class CasesTest(case.view.manage.ListViewTestCase,
         self.assertElement(res.html, "a", "create", count=2)
 
 
-    def test_lists_latest_versions(self):
-        """Lists only latest version of each case."""
+    def test_lists_all_versions(self):
+        """Lists all versions of each case."""
         cv = self.F.CaseVersionFactory.create(
             name="Old Version", productversion__version="1.0")
         self.F.CaseVersionFactory.create(
@@ -53,7 +53,7 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
         res = self.get()
 
-        self.assertNotInList(res, "Old Version")
+        self.assertInList(res, "Old Version")
         self.assertInList(res, "Latest Version")
 
 

@@ -154,7 +154,8 @@ var MT = (function (MT, $) {
         MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
-            target_sel: '#id_productversion'
+            target_sel: '#id_productversion',
+            no_default: true
         });
         MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
