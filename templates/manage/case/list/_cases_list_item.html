@@ -14,7 +14,7 @@
           {% url 'manage_narrow_environments' object_type="caseversion" object_id=caseversion.id as manage_envs_url %}
           {% include "manage/_narrow_env_link.html" with manage_envs_url=manage_envs_url %}
           {% include "lists/controls/_clone.html" with clone_id=caseversion.id clone_name=caseversion.name %}
-          {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
+          {% include "lists/controls/_delete.html" with delete_id=caseversion.id delete_name=caseversion.name|add:" version "|add:caseversion.productversion.name %}
         {% endif %}
       </div>
 
