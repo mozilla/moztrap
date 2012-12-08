@@ -63,6 +63,17 @@ class ApiTestCase(WebTest):
             status=status,
             )
 
+    def put(self, url, data={}, params={}, status=202):
+        """Submit a PUT request and return the response."""
+        params.setdefault("format", "json")
+        url = "{0}?{1}".format(url, urllib.urlencode(params))
+        json_data = json.dumps(data)
+        return self.app.put(
+            url,
+            json_data,
+            headers = {"content-type": "application/json"},
+            status=status,
+            )
 
     def get(self, url, params={}, status=200):
         """Submit a GET request and return the response."""

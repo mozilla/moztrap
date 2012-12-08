@@ -4,6 +4,7 @@ from django.utils import unittest
 
 from tests.case.api import ApiTestCase
 
+
 class ApiCrudCases(ApiTestCase):
     """Re-usable test cases for Create, Read, Update, and Delete"""
 
@@ -105,7 +106,21 @@ class ApiCrudCases(ApiTestCase):
     def test_create_fails_with_wrong_perms(self):
         if self.is_abstract_class:
             return
-        pass
+
+        # get data for creation
+        fields = self.new_object_data
+
+        # get user with wrong permissions
+        self.user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
+        self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
+        self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=401,
+            )
 
     def test_create_does_not_disturb_others(self):
         if self.is_abstract_class:
@@ -123,9 +138,6 @@ class ApiCrudCases(ApiTestCase):
 
         # fetch list
         res = self.get_list() # no creds
-
-        # make sure response is correct
-        self.assertEqual(res.status_int, 200)
 
         act = res.json
 
@@ -154,12 +166,55 @@ class ApiCrudCases(ApiTestCase):
         '''credentials should not be required to get detail'''
         if self.is_abstract_class:
             return
-        pass
+
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+
+        # fetch list
+        res = self.get_detail(suite_fixture1.id) # no creds
+
+        actual = res.json
+
+        expected = self.backend_data(suite_fixture1)
+
+        self.maxDiff = None
+        self.assertEqual(expected, actual)
 
     def test_update_detail(self):
         if self.is_abstract_class:
             return
-        pass
+
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_backend_obj = self.backend_object(suite_fixture1.id)
+        suite_meta_before = self.backend_meta_data(suite_backend_obj)
+        suite_id = str(suite_fixture1.id)
+
+        fields = self.backend_data(suite_backend_obj)
+        fields.update(self.new_object_data)
+
+        res = self.put(
+            self.get_detail_url(self.resource_name, suite_id),
+            params=self.credentials,
+            data=fields
+            )
+
+        # make sure object has been updated in the database
+        fields[u'id'] = unicode(suite_id)
+        fields[u'resource_uri'] = unicode(
+            self.get_detail_url(self.resource_name, suite_id))
+        suite_backend_obj = self.backend_object(suite_fixture1.id)
+        suite_backend_data = self.backend_data(suite_backend_obj)
+
+        self.maxDiff = None
+        self.assertEqual(fields, suite_backend_data)
+
+        # make sure 'modified' meta data has been updated
+        suite_meta_after = self.backend_meta_data(suite_backend_obj)
+        self.assertEqual(suite_meta_after['modified_by'], self.user.username)
+        self.assertIsNotNone(suite_meta_after['modified_on'])
+        self.assertNotEqual(suite_meta_before['modified_on'], 
+                            suite_meta_after['modified_on'])
 
     def test_update_does_not_disturb_others(self):
         if self.is_abstract_class:

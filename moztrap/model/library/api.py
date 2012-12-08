@@ -18,22 +18,31 @@ class SuiteResource(ModelResource):
     class Meta:
         queryset = Suite.objects.all()
         fields = ["name", "product", "description", "status", "id"]
-        list_allowed_methods = ["get", "post", "delete"]
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "put", "delete"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
             }
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
+        always_return_data = True
 
     def obj_create(self, bundle, request=None, **kwargs):
-        """Set the created_by and modified_by fields for the suite to the request's user"""
+        """Set the created_by field for the suite to the request's user"""
 
         bundle = super(SuiteResource, self).obj_create(bundle=bundle, request=request, **kwargs)
         bundle.obj.created_by = request.user
         bundle.obj.save()
         return bundle
 
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Set the modified_by field for the suite to the request's user"""
+
+        bundle = super(SuiteResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+        bundle.obj.modified_by = request.user
+        bundle.obj.save()
+        return bundle
 
 
 class CaseResource(ModelResource):

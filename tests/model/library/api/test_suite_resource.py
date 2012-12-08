@@ -39,7 +39,7 @@ class SuiteResourceTest(ApiCrudCases):
             u'name': unicode('test_%s_%s' % modifiers),
             u'description': unicode('test %s %s' % modifiers),
             u'product': unicode(self.get_detail_url("product",self.product_fixture.id)),
-            u'status': unicode('active'),
+            u'status': unicode('draft'),
         }
         return fields
 
@@ -65,8 +65,10 @@ class SuiteResourceTest(ApiCrudCases):
     def backend_meta_data(self, backend_obj):
         '''retrieves object meta data from backend'''
         actual = {}
-        actual['created_by'] = backend_obj.created_by.username
-        actual['created_on'] = backend_obj.created_on
+        try:
+            actual['created_by'] = backend_obj.created_by.username
+        except AttributeError:
+            actual['created_by'] = None
         try:
             actual['modified_by'] = backend_obj.modified_by.username
         except AttributeError:
@@ -75,6 +77,8 @@ class SuiteResourceTest(ApiCrudCases):
             actual['deleted_by'] = backend_obj.deleted_by.username
         except AttributeError:
             actual['deleted_by'] = None
+
+        actual['created_on'] = backend_obj.created_on
         actual['modified_on'] = backend_obj.modified_on
         actual['deleted_on'] = backend_obj.deleted_on
 
