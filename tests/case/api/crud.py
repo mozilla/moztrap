@@ -1,3 +1,5 @@
+import time
+import urllib
 from datetime import datetime
 
 from django.utils import unittest
@@ -189,10 +191,11 @@ class ApiCrudCases(ApiTestCase):
         suite_backend_obj = self.backend_object(suite_fixture1.id)
         suite_meta_before = self.backend_meta_data(suite_backend_obj)
         suite_id = str(suite_fixture1.id)
-
+        time.sleep(2) # so that the modify time will actually change
         fields = self.backend_data(suite_backend_obj)
         fields.update(self.new_object_data)
 
+        # do put
         res = self.put(
             self.get_detail_url(self.resource_name, suite_id),
             params=self.credentials,
@@ -219,29 +222,124 @@ class ApiCrudCases(ApiTestCase):
     def test_update_does_not_disturb_others(self):
         if self.is_abstract_class:
             return
-        pass
+
 
     def test_update_list_forbidden(self):
         if self.is_abstract_class:
             return
-        pass
+
+        # create fixturs
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_fixture2 = self.F.SuiteFactory()
+
+        suite_backend_obj1 = self.backend_object(suite_fixture1.id)
+        suite_backend_obj2 = self.backend_object(suite_fixture2.id)
+        fields1 = self.backend_data(suite_backend_obj1)
+        fields2 = self.backend_data(suite_backend_obj2)
+        fields1.update(self.new_object_data)
+        fields2.update(self.new_object_data)
+        data = [fields1, fields2]
+
+        # do put
+        res = self.put(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            data=data,
+            status=405
+            )
 
     def test_update_fails_without_creds(self):
         if self.is_abstract_class:
             return
-        pass
 
-    def test_delete_detail(self):
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_backend_obj = self.backend_object(suite_fixture1.id)
+        suite_id = str(suite_fixture1.id)
+        fields = self.backend_data(suite_backend_obj)
+        fields.update(self.new_object_data)
+
+        # do put
+        res = self.put(
+            self.get_detail_url(self.resource_name, suite_id),
+            data=fields,
+            status=401,
+            )
+
+    def test_delete_detail_perminant(self):
         if self.is_abstract_class:
             return
-        pass
+
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_id = str(suite_fixture1.id)
+        time.sleep(2) # so that delete time will not equal create time
+
+        # check meta data before
+        suite_meta_before_delete = self.backend_meta_data(
+            self.backend_object(suite_id))
+        self.assertIsNone(suite_meta_before_delete['deleted_on'])
+        self.assertIsNone(suite_meta_before_delete['deleted_by'])
+
+        # do delete
+        params = self.credentials
+        # XXX at some point, soft delete will be an option, when that happens
+        # uncomment this stuff
+        # params.update({ 'perminant': True })
+        self.delete(self.resource_name, suite_id, params=params, status=204)
+
+        from django.core.exceptions import ObjectDoesNotExist
+
+        with self.assertRaises(ObjectDoesNotExist):
+            suite_meta_after_delete = self.backend_meta_data(
+                self.backend_object(suite_id))
+
+    @unittest.expectedFailure  # soft delete has not been implemented
+    def test_delete_detail_soft(self):
+        if self.is_abstract_class:
+            return
+
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_id = str(suite_fixture1.id)
+        time.sleep(2) # so that delete time will not equal create time
+
+        # check meta data before
+        suite_meta_before_delete = self.backend_meta_data(
+            self.backend_object(suite_id))
+        self.assertIsNone(suite_meta_before_delete['deleted_on'])
+        self.assertIsNone(suite_meta_before_delete['deleted_by'])
+
+        # do delete
+        self.delete(self.resource_name, suite_id, params=self.credentials)
+
+        # check meta data after
+        suite_meta_after_delete = self.backend_meta_data(
+            self.backend_object(suite_id))
+        self.assertInNotNone(suite_meta_after_delete['deleted_on'])
+        self.assertNotEqual(suite_meta_after_delete['deleted_on'], suite_meta_after_delete['created_on'])
+        self.assertEqual(suite_meta_after_delete['deleted_by'], self.user.username)
 
     def test_delete_list_forbidden(self):
         if self.is_abstract_class:
             return
-        pass
+        
+        url = self.get_list_url(self.resource_name)
+        url = "{0}?{1}".format(url, urllib.urlencode(self.credentials))
+        self.app.delete(url, status=405)
 
     def test_delete_fails_with_wrong_perms(self):
         if self.is_abstract_class:
             return
-        pass
+
+        # create fixture
+        suite_fixture1 = self.F.SuiteFactory()
+        suite_id = str(suite_fixture1.id)
+
+        # get user with wrong permissions
+        self.user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
+        self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
+        self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+
+        # do delete
+        self.delete(self.resource_name, suite_id, params=self.credentials, status=401)

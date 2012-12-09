@@ -1,3 +1,5 @@
+import datetime
+
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.resources import ModelResource
@@ -40,10 +42,23 @@ class SuiteResource(ModelResource):
         """Set the modified_by field for the suite to the request's user"""
 
         bundle = super(SuiteResource, self).obj_update(bundle=bundle, request=request, **kwargs)
-        bundle.obj.modified_by = request.user
-        bundle.obj.save()
+        bundle.obj.modified_on = datetime.datetime.utcnow()
+        bundle.obj.save(user=request.user)
         return bundle
 
+    def obj_delete(self, request=None, **kwargs):
+        # what we need here is a way to explicitly choose whether a
+        # delete is perminent, and call the right one.
+        # as things are. a delete is perminant
+        #
+        super(SuiteResource, self).obj_delete(request=request, **kwargs)
+        # try:
+        #     self.obj_delete(request=request, **self.remove_api_resource_names(kwargs))
+        #     return http.HttpNoContent()
+        # except NotFound:
+        #     return http.HttpNotFound()
+
+        # MTModel._collector.delete(user)
 
 class CaseResource(ModelResource):
     suites = fields.ToManyField(SuiteResource, "suites", full=True)
