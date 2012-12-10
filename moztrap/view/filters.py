@@ -57,7 +57,8 @@ class RunFilterSet(filters.FilterSet):
             lookup="productversion__product",
             queryset=model.Product.objects.all()),
         filters.ModelFilter(
-            "productversion", queryset=model.ProductVersion.objects.all()),
+            "productversion",
+            queryset=model.ProductVersion.objects.all().select_related()),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
         filters.ModelFilter(
@@ -199,22 +200,8 @@ class SuiteFilterSet(filters.FilterSet):
 
 
 
-class CaseVersionBoundFilterSet(filters.BoundFilterSet):
-    """Filters on ``latest`` if not filtered by ``productversion``."""
-    def filter(self, queryset):
-        """Add a filter on latest=True if not filtered on productversion."""
-        queryset = super(CaseVersionBoundFilterSet, self).filter(queryset)
-        pv = [bf for bf in self if bf.key == "productversion"][0]
-        if not pv.values:
-            queryset = queryset.filter(latest=True)
-        return queryset
-
-
-
 class CaseVersionFilterSet(filters.FilterSet):
     """FilterSet for CaseVersions."""
-    bound_class = CaseVersionBoundFilterSet
-
 
     filters = [
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),

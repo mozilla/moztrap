@@ -55,7 +55,7 @@ def set_environment(request, run_id):
 
     form_kwargs = {
         "current": current,
-        "environments": run.environments.all()
+        "environments": run.environments.all().select_related()
         }
 
     # the run could be an individual, or a series.
@@ -226,7 +226,10 @@ def run(request, run_id, env_id):
             "run": run,
             "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
-                "caseversion").filter(environments=environment),
+                "caseversion").prefetch_related(
+                    "caseversion__tags",
+                    "caseversion__case__suites",
+                    ).filter(environments=environment),
             "finder": {
                 # finder decorator populates top column (products), we
                 # prepopulate the other two columns
