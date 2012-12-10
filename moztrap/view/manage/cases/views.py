@@ -51,9 +51,6 @@ def cases_list(request):
                 "productversion",
                 "productversion__product",
                 ).prefetch_related(
-                    "case__suites",
-                    "environments",
-                    "environments__elements",
                     "tags",
                     ),
             }
