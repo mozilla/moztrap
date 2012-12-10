@@ -1574,8 +1574,10 @@ body > div {
 }
 
 .chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content, #add-environment-form .element-item .content {
+  border-left: 1px solid #a9b2bf;
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
+  padding-left: 0.375em;
 }
 
 .chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
@@ -1606,6 +1608,34 @@ body > div {
   text-indent: 200%;
   background-position: center;
   width: 1.5em;
+}
+
+.chickpintoggle {
+  display: inline;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  left: 0;
+  background-image: url('../images/ui/pin.png?1355159556');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
+}
+.chickpintoggle:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 
 .chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item, #add-environment-form .element-item {
@@ -3137,7 +3167,7 @@ body > div {
   -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   border-color: rgba(72, 78, 85, 0.667);
-  background-image: url('../images/ui/link.png?1354319417');
+  background-image: url('../images/ui/link.png?1354905356');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;

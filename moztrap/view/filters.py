@@ -230,7 +230,7 @@ class CaseVersionFilterSet(filters.FilterSet):
             "product version",
             lookup="productversion",
             key="productversion",
-            queryset=model.ProductVersion.objects.all()),
+            queryset=model.ProductVersion.objects.all().select_related()),
         filters.KeywordFilter("instruction", lookup="steps__instruction"),
         filters.KeywordFilter(
             "expected result",

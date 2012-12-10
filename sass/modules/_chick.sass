@@ -23,8 +23,10 @@
   padding-right: rhythm()
 
 .chickcontent
+  border-left: 1px solid $blue-lighter
   border-right: 1px solid $blue-lighter
   padding-right: rhythm(.25)
+  padding-left: rhythm(.25)
 
 .chickaction
   +stretch-y
@@ -36,6 +38,15 @@
 .chicktoggle
   @extend .chickaction
   +icon('ui/x_sm.png')
+
+.chickpintoggle
+  display: inline
+  +stretch-y
+  +opacity(.5)
+  left: 0
+  &:hover
+    +opacity(1)
+  +icon('ui/pin.png')
 
 .chickcheck
   display: inline
@@ -52,6 +63,9 @@
 
   .onoffswitch
     @extend .chicktoggle
+
+  .pinswitch
+    @extend .chickpin
 
 .reversecheck
   @extend .chickcheck

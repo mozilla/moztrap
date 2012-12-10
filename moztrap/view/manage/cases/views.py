@@ -47,9 +47,12 @@ def cases_list(request):
         request,
         "manage/case/cases.html",
         {
-            "caseversions": model.CaseVersion.objects.select_related("case"),
-            "products": model.Product.objects.all(),
-            "productversions": model.ProductVersion.objects.all(),
+            "caseversions": model.CaseVersion.objects.select_related(
+                "case",
+                "productversion",
+                "productversion__product"
+                ).prefetch_related(
+                    "tags")
             }
         )
 
