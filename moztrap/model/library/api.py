@@ -80,8 +80,9 @@ class SuiteCaseSelectionResource(ModelResource):
         queryset = CaseVersion.objects.filter(latest=True).select_related(
             "case",
             "productversion",
-            )
-        # @@@ Django 1.4 - use prefetch_related on the tag field
+            ).prefetch_related(
+                "tags",
+                )
         list_allowed_methods = ['get']
         fields = ["id", "name"]
         filtering = {
