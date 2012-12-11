@@ -1560,7 +1560,7 @@ body > div {
   display: inline-block;
   padding: 0 0.375em;
   border: 1px solid #8695a8;
-  background-color: #cbcfd6;
+  background-color: #f5d1d2;
 }
 .chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, #add-environment-form .element-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, #runtests .name .bugurl a:link, .stepfail .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, #add-environment-form .element-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, #runtests .name .bugurl a:visited, .stepfail .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
@@ -1578,22 +1578,23 @@ body > div {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
   padding-left: 0.375em;
+  margin-left: 1.125em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch, .pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
   position: absolute;
   top: 0;
   bottom: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover, .pintoggle:hover, .chickcheck .pinswitch:hover, .reversecheck .pinswitch:hover, .versioned .attachment-item .pinswitch:hover, .tag-item .pinswitch:hover, .magicfilter .compact .filter-item .pinswitch:hover, .selectsearch .compact .filter-item .pinswitch:hover, #add-environment-form .element-item .pinswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
 .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
+  right: 0;
   background-image: url('../images/ui/x_sm.png?1328730630');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1610,13 +1611,7 @@ body > div {
   width: 1.5em;
 }
 
-.chickpintoggle {
-  display: inline;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
+.pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
   left: 0;
   background-image: url('../images/ui/pin.png?1355159556');
   background-repeat: no-repeat;
@@ -1632,10 +1627,6 @@ body > div {
   text-indent: 200%;
   background-position: center;
   width: 1.5em;
-}
-.chickpintoggle:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
 }
 
 .chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item, #add-environment-form .element-item {
@@ -3127,13 +3118,6 @@ body > div {
 }
 .finder .start, .finder .end {
   color: #999999;
-}
-
-.session-filters {
-  display: block;
-}
-.session-filters .session-filter-field {
-  display: inline;
 }
 
 .category-title {

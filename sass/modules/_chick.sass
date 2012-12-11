@@ -11,7 +11,7 @@
   display: inline-block
   padding: 0 rhythm(.25)
   border: 1px solid $blue-light
-  background-color: $blue-lightest
+  background-color: $red-lightest
   a
     #{$link}
       color: $blue-dark
@@ -27,25 +27,22 @@
   border-right: 1px solid $blue-lighter
   padding-right: rhythm(.25)
   padding-left: rhythm(.25)
+  margin-left: rhythm(.75)
 
 .chickaction
   +stretch-y
   +opacity(.5)
-  right: 0
   &:hover
     +opacity(1)
 
 .chicktoggle
   @extend .chickaction
+  right: 0
   +icon('ui/x_sm.png')
 
-.chickpintoggle
-  display: inline
-  +stretch-y
-  +opacity(.5)
+.pintoggle
+  @extend .chickaction
   left: 0
-  &:hover
-    +opacity(1)
   +icon('ui/pin.png')
 
 .chickcheck
@@ -65,7 +62,7 @@
     @extend .chicktoggle
 
   .pinswitch
-    @extend .chickpin
+    @extend .pintoggle
 
 .reversecheck
   @extend .chickcheck
