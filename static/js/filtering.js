@@ -100,18 +100,19 @@ var MT = (function (MT, $) {
                 filterValue = thisPin.data('session-value'),
                 filterKey =  filterPrefix + thisPin.data('session-key');
 
-                onoff.toggleClass("pinned");
+            onoff.toggleClass("pinned");
 
-                pinFilterValue(filterKey, filterValue, onoff.hasClass("pinned"));
+            pinFilterValue(filterKey, filterValue, onoff.hasClass("pinned"));
 
         });
 
         $('.filter-group').on('click', '.onoffswitch', function (e) {
             var thisPin = $(this),
                 filterItem = thisPin.closest(".filter-item"),
+                fiInput = filterItem.find('input'),
                 onoff = filterItem.find(".onoff"),
-                filterValue = thisPin.data('session-value'),
-                filterKey =  filterPrefix + thisPin.data('session-key');
+                filterValue = fiInput.val(),
+                filterKey =  filterPrefix + fiInput.data('name');
 
             onoff.removeClass("pinned");
 
@@ -122,6 +123,9 @@ var MT = (function (MT, $) {
 
 
     // A pinned filter should have the "pinned" class on the onoff span.
+    // Just used for first display of the screen, if filters are in the
+    // session already.
+    //
     // Check the filters against the cookies to see which ones should
     // show as pinned.
     // This is also called in a timer to update filters that were pinned
