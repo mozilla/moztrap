@@ -63,6 +63,27 @@ All :ref:`Tester<tester-role>`, :ref:`Test Creator<test-creator-role>` and
 * :ref:`manage_products`
 * :ref:`manage_users`
 
+When setting up MozTrap, running the command ``python manage.py
+create_default_roles`` will ask to create an admin user.  This special first
+admin has all these privileges:
+
+* **Admin role in the MozTrap UI**:  This gives the user the ability to visit
+  the ``Manage | Users`` area of the product.  This user can edit other users
+  to:
+
+  * assign roles
+  * create api keys
+  * delete or deactivate
+* **Staff Status**:  This gives the user access to the ``/admin/`` url.  This
+  is a special *behind the scenes* access to the data in MozTrap.  It is also
+  where items that were deleted can be *undeleted*.
+* **Superuser Status**:  A user that has this status will always have
+  admin privileges in the MozTrap UI, even if their role is changed to
+  something other than ``Admin``.
+
+So you can see that this first admin user is special, and also the gateway to
+providing access for all other users to be admins.
+
 
 Permissions
 -----------
