@@ -4,6 +4,7 @@ Utilities for filtering querysets in a view.
 """
 from collections import namedtuple
 from functools import wraps
+import json
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
@@ -66,7 +67,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            bfs = filterset.bind(request.GET)
+            bfs = filterset.bind(request.GET, request.COOKIES)
             ctx[ctx_name] = bfs.filter(ctx[ctx_name])
             ctx["filters"] = bfs
             return response
@@ -78,44 +79,6 @@ def filter(ctx_name, filters=None, filterset_class=None):
         return _wrapped_view
 
     return decorator
-
-
-
-#def sessionfilter():
-#    """
-#    View decorator to add the global session filters.
-#
-#    This will provide:
-#        * the list of available values specified in
-#          the SessionFilterset object
-#        * the current values from the session, if set.
-#
-#
-#    """
-#    filterset = SessionFilterSet
-#    def decorator(view_func):
-#        @wraps(view_func)
-#        def _wrapped_view(request, *args, **kwargs):
-#            session = request.session
-#            response = view_func(request, *args, **kwargs)
-#            try:
-#                ctx = response.context_data
-#            except AttributeError:
-#                return response
-#            bfs = filterset.bind(request.GET)
-#            ctx["session_filter_set"] = bfs
-#
-#
-#            ctx["session_filters"]
-#            return response
-#
-#        # annotate wrapped view with filterset
-#        # for introspection by e.g. filter_url
-#        _wrapped_view.filterset = filterset
-#
-#        return _wrapped_view
-#
-#    return decorator
 
 
 
@@ -175,7 +138,7 @@ class FilterSet(object):
         self.prefix = prefix
 
 
-    def bind(self, GET=None):
+    def bind(self, GET=None, COOKIES=None):
         """
         Return BoundFilterSet (or subclass) for given filter data.
 
@@ -185,12 +148,27 @@ class FilterSet(object):
 
         """
         GET = GET or MultiValueDict()
+
+        query_filters = dict(
+            (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
+                if k.startswith(self.prefix)
+        )
+
+        if COOKIES:
+            session_prefix = "moztrap-{0}".format(self.prefix)
+            for k in COOKIES.keys():
+                if k.startswith(session_prefix):
+                    filter_key = k[len(session_prefix):]
+                    filters = query_filters.get(filter_key, [])
+
+                    import urlparse
+                    pinned_filters = urlparse.unquote(COOKIES.get(k))
+                    filters.extend(json.loads(pinned_filters))
+                    query_filters[filter_key] = filters
+
         return self.bound_class(
             self,
-            dict(
-                (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(self.prefix)
-                )
+            query_filters,
             )
 
 

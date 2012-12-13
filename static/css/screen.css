@@ -1560,7 +1560,7 @@ body > div {
   display: inline-block;
   padding: 0 0.375em;
   border: 1px solid #8695a8;
-  background-color: #f5d1d2;
+  background-color: #cbcfd6;
 }
 .chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, #add-environment-form .element-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, #runtests .name .bugurl a:link, .stepfail .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, #add-environment-form .element-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, #runtests .name .bugurl a:visited, .stepfail .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
@@ -1591,6 +1591,7 @@ body > div {
 .chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover, .pintoggle:hover, .chickcheck .pinswitch:hover, .reversecheck .pinswitch:hover, .versioned .attachment-item .pinswitch:hover, .tag-item .pinswitch:hover, .magicfilter .compact .filter-item .pinswitch:hover, .selectsearch .compact .filter-item .pinswitch:hover, #add-environment-form .element-item .pinswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+  cursor: hand;
 }
 
 .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
@@ -1644,6 +1645,9 @@ body > div {
 }
 .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   display: none;
+}
+.chickcheck .pinned, .reversecheck .pinned, .versioned .attachment-item .pinned, .tag-item .pinned, .magicfilter .compact .filter-item .pinned, .selectsearch .compact .filter-item .pinned, #add-environment-form .element-item .pinned {
+  background-color: #dfb081;
 }
 .chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;

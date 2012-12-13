@@ -11,7 +11,7 @@
   display: inline-block
   padding: 0 rhythm(.25)
   border: 1px solid $blue-light
-  background-color: $red-lightest
+  background-color: $blue-lightest
   a
     #{$link}
       color: $blue-dark
@@ -34,6 +34,7 @@
   +opacity(.5)
   &:hover
     +opacity(1)
+    cursor: hand
 
 .chicktoggle
   @extend .chickaction
@@ -52,6 +53,9 @@
   .onoff
     @extend .actionchick
     display: none
+  .pinned
+    background-color: $orange-light
+
   .check:checked + .onoff
     display: inline-block
 
