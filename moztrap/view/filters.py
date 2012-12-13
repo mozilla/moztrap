@@ -9,6 +9,18 @@ from .lists import cases
 
 
 
+#class SessionFilterSet(filters.FilterSet):
+#    """Session-level filter to set global product and version setting"""
+#    filters = [
+#        filters.ModelFilter("product", queryset=model.Product.objects.all()),
+#        filters.ModelFilter(
+#            "productversion",
+#            queryset=model.ProductVersion.objects.all(),
+#            ),
+#        ]
+
+
+
 class ProductFilterSet(filters.FilterSet):
     """FilterSet for Products."""
     filters = [
@@ -45,7 +57,8 @@ class RunFilterSet(filters.FilterSet):
             lookup="productversion__product",
             queryset=model.Product.objects.all()),
         filters.ModelFilter(
-            "productversion", queryset=model.ProductVersion.objects.all()),
+            "productversion",
+            queryset=model.ProductVersion.objects.all().select_related()),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
         filters.ModelFilter(
@@ -204,7 +217,7 @@ class CaseVersionFilterSet(filters.FilterSet):
             "product version",
             lookup="productversion",
             key="productversion",
-            queryset=model.ProductVersion.objects.all()),
+            queryset=model.ProductVersion.objects.all().select_related()),
         filters.KeywordFilter("instruction", lookup="steps__instruction"),
         filters.KeywordFilter(
             "expected result",

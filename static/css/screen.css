@@ -1574,25 +1574,47 @@ body > div {
 }
 
 .chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content, #add-environment-form .element-item .content {
+  border-left: 1px solid #a9b2bf;
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
+  padding-left: 0.375em;
+  margin-left: 1.125em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch, .pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
   position: absolute;
   top: 0;
   bottom: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover, .pintoggle:hover, .chickcheck .pinswitch:hover, .reversecheck .pinswitch:hover, .versioned .attachment-item .pinswitch:hover, .tag-item .pinswitch:hover, .magicfilter .compact .filter-item .pinswitch:hover, .selectsearch .compact .filter-item .pinswitch:hover, #add-environment-form .element-item .pinswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+  cursor: hand;
 }
 
 .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
+  right: 0;
   background-image: url('../images/ui/x_sm.png?1328730630');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
+}
+
+.pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
+  left: 0;
+  background-image: url('../images/ui/pin.png?1355159556');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1623,6 +1645,9 @@ body > div {
 }
 .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   display: none;
+}
+.chickcheck .pinned, .reversecheck .pinned, .versioned .attachment-item .pinned, .tag-item .pinned, .magicfilter .compact .filter-item .pinned, .selectsearch .compact .filter-item .pinned, #add-environment-form .element-item .pinned {
+  background-color: #dfb081;
 }
 .chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;
@@ -3130,7 +3155,7 @@ body > div {
   -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   border-color: rgba(72, 78, 85, 0.667);
-  background-image: url('../images/ui/link.png?1354319417');
+  background-image: url('../images/ui/link.png?1354905356');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;

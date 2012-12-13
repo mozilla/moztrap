@@ -4,10 +4,12 @@ Utilities for filtering querysets in a view.
 """
 from collections import namedtuple
 from functools import wraps
+import json
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 
+#from moztrap.view.filters import SessionFilterSet
 
 
 def filter_url(path_or_view, obj):
@@ -65,7 +67,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            bfs = filterset.bind(request.GET)
+            bfs = filterset.bind(request.GET, request.COOKIES)
             ctx[ctx_name] = bfs.filter(ctx[ctx_name])
             ctx["filters"] = bfs
             return response
@@ -136,7 +138,7 @@ class FilterSet(object):
         self.prefix = prefix
 
 
-    def bind(self, GET=None):
+    def bind(self, GET=None, COOKIES=None):
         """
         Return BoundFilterSet (or subclass) for given filter data.
 
@@ -146,12 +148,27 @@ class FilterSet(object):
 
         """
         GET = GET or MultiValueDict()
+
+        query_filters = dict(
+            (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
+                if k.startswith(self.prefix)
+        )
+
+        if COOKIES:
+            session_prefix = "moztrap-{0}".format(self.prefix)
+            for k in COOKIES.keys():
+                if k.startswith(session_prefix):
+                    filter_key = k[len(session_prefix):]
+                    filters = query_filters.get(filter_key, [])
+
+                    import urlparse
+                    pinned_filters = urlparse.unquote(COOKIES.get(k))
+                    filters.extend(json.loads(pinned_filters))
+                    query_filters[filter_key] = filters
+
         return self.bound_class(
             self,
-            dict(
-                (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(self.prefix)
-                )
+            query_filters,
             )
 
 
