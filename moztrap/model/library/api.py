@@ -47,18 +47,12 @@ class SuiteResource(ModelResource):
         return bundle
 
     def obj_delete(self, request=None, **kwargs):
-        # what we need here is a way to explicitly choose whether a
-        # delete is perminent, and call the right one.
-        # as things are. a delete is perminant
-        #
-        super(SuiteResource, self).obj_delete(request=request, **kwargs)
-        # try:
-        #     self.obj_delete(request=request, **self.remove_api_resource_names(kwargs))
-        #     return http.HttpNoContent()
-        # except NotFound:
-        #     return http.HttpNotFound()
+        """Delete the object. kwargs may include permanent=True/False."""
+        permanent = request._request.dicts[1].get('permanent', False)
+        suite_id = request.path.split('/')[-2]
+        suite = Suite.objects.filter(id=suite_id)
+        suite.delete(user=request.user, permanent=permanent)
 
-        # MTModel._collector.delete(user)
 
 class CaseResource(ModelResource):
     suites = fields.ToManyField(SuiteResource, "suites", full=True)

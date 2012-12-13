@@ -124,11 +124,6 @@ class ApiCrudCases(ApiTestCase):
             status=401,
             )
 
-    def test_create_does_not_disturb_others(self):
-        if self.is_abstract_class:
-            return
-        pass
-
     def test_read_list(self):
         '''credentials should not be required to get list'''
         if self.is_abstract_class:
@@ -219,11 +214,6 @@ class ApiCrudCases(ApiTestCase):
         self.assertNotEqual(suite_meta_before['modified_on'], 
                             suite_meta_after['modified_on'])
 
-    def test_update_does_not_disturb_others(self):
-        if self.is_abstract_class:
-            return
-
-
     def test_update_list_forbidden(self):
         if self.is_abstract_class:
             return
@@ -270,6 +260,9 @@ class ApiCrudCases(ApiTestCase):
         if self.is_abstract_class:
             return
 
+        # this test is throwing /usr/local/lib/python2.7/dist-packages/webtest/lint.py:443: 
+        # WSGIWarning: Content-Type header found in a 204 response, which not return content.
+
         # create fixture
         suite_fixture1 = self.F.SuiteFactory()
         suite_id = str(suite_fixture1.id)
@@ -283,9 +276,7 @@ class ApiCrudCases(ApiTestCase):
 
         # do delete
         params = self.credentials
-        # XXX at some point, soft delete will be an option, when that happens
-        # uncomment this stuff
-        # params.update({ 'perminant': True })
+        params.update({ 'permanent': True })
         self.delete(self.resource_name, suite_id, params=params, status=204)
 
         from django.core.exceptions import ObjectDoesNotExist
@@ -294,7 +285,6 @@ class ApiCrudCases(ApiTestCase):
             suite_meta_after_delete = self.backend_meta_data(
                 self.backend_object(suite_id))
 
-    @unittest.expectedFailure  # soft delete has not been implemented
     def test_delete_detail_soft(self):
         if self.is_abstract_class:
             return
@@ -311,13 +301,19 @@ class ApiCrudCases(ApiTestCase):
         self.assertIsNone(suite_meta_before_delete['deleted_by'])
 
         # do delete
-        self.delete(self.resource_name, suite_id, params=self.credentials)
+        self.delete(
+            self.resource_name, 
+            suite_id, 
+            params=self.credentials,
+            status=204)
 
         # check meta data after
         suite_meta_after_delete = self.backend_meta_data(
-            self.backend_object(suite_id))
-        self.assertInNotNone(suite_meta_after_delete['deleted_on'])
-        self.assertNotEqual(suite_meta_after_delete['deleted_on'], suite_meta_after_delete['created_on'])
+            self.backend_object(suite_id)) # this is where the error will be if it fails
+        self.assertIsNotNone(suite_meta_after_delete['deleted_on'])
+        self.assertNotEqual(
+            suite_meta_after_delete['deleted_on'], 
+            suite_meta_after_delete['created_on'])
         self.assertEqual(suite_meta_after_delete['deleted_by'], self.user.username)
 
     def test_delete_list_forbidden(self):

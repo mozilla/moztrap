@@ -45,7 +45,7 @@ class SuiteResourceTest(ApiCrudCases):
 
     def backend_object(self, id):
         """get the object from the backend"""
-        return self.model.Suite.objects.get(id=id)
+        return self.model.Suite.everything.get(id=id)
  
     def backend_data(self, backend_obj):
         """dictionary containing the data expected from get detail for an object,
