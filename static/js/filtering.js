@@ -90,15 +90,15 @@ var MT = (function (MT, $) {
             // filter cookies apply anywhere they're relevant
             $.cookie(filterKey, cookieVal, path);
 
-
         }
 
         $('.filter-group').on('click', '.pinswitch', function (e) {
             var thisPin = $(this),
                 filterItem = thisPin.closest(".filter-item"),
                 onoff = filterItem.find(".onoff"),
-                filterValue = thisPin.data('session-value'),
-                filterKey =  filterPrefix + thisPin.data('session-key');
+                fiInput = filterItem.find('input'),
+                filterValue = fiInput.val(),
+                filterKey =  filterPrefix + fiInput.data('name');
 
             onoff.toggleClass("pinned");
 
@@ -109,8 +109,8 @@ var MT = (function (MT, $) {
         $('.filter-group').on('click', '.onoffswitch', function (e) {
             var thisPin = $(this),
                 filterItem = thisPin.closest(".filter-item"),
-                fiInput = filterItem.find('input'),
                 onoff = filterItem.find(".onoff"),
+                fiInput = filterItem.find('input'),
                 filterValue = fiInput.val(),
                 filterKey =  filterPrefix + fiInput.data('name');
 

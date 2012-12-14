@@ -30,7 +30,9 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         )
     productversion = mtforms.MTModelChoiceField(
         queryset=model.ProductVersion.objects.all(),
-        choice_attrs=mtforms.product_id_attrs)
+        choice_attrs=mtforms.product_id_attrs,
+#        initial=model.ProductVersion.objects.get(pk=5),
+        )
     build = forms.CharField(max_length=200, required=False)
     is_series = forms.BooleanField(required=False)
 
@@ -115,6 +117,11 @@ class AddRunForm(RunForm):
 
         isf = self.fields["is_series"]
         isf.initial = True
+        pv = self.fields["productversion"]
+        try:
+            pv.initial = int(kwargs["initial"].get("productversion"))
+        except:
+            pass # oh, that's ok...
 
 
 

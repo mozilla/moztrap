@@ -13,6 +13,7 @@ from moztrap.model.mtmodel import NotDeletedCount
 
 from moztrap.view.filters import RunFilterSet
 from moztrap.view.lists import decorators as lists
+from moztrap.view.lists.filters import PinnedFilters
 from moztrap.view.users.decorators import permission_required
 from moztrap.view.utils.ajax import ajax
 from moztrap.view.utils.auth import login_maybe_required
@@ -76,7 +77,8 @@ def run_add(request):
                 )
             return redirect("manage_runs")
     else:
-        form = forms.AddRunForm(user=request.user)
+        pf = PinnedFilters(request.COOKIES)
+        form = forms.AddRunForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
     return TemplateResponse(
         request,
         "manage/run/add_run.html",

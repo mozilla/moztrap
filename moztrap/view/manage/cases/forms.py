@@ -125,7 +125,7 @@ class BaseAddCaseForm(forms.Form):
         choice_attrs=lambda p: {"data-product-id": p.id},
         )
     productversion = mtforms.MTModelChoiceField(
-        model.ProductVersion.objects.all(),
+        queryset=model.ProductVersion.objects.all(),
         choice_attrs=mtforms.product_id_attrs,
         label_from_instance=lambda pv: pv.version,
         )
@@ -133,11 +133,11 @@ class BaseAddCaseForm(forms.Form):
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize form; possibly add initial_suite field."""
+        """Initialize form; possibly add suite field."""
         super(BaseAddCaseForm, self).__init__(*args, **kwargs)
 
         if self.user and self.user.has_perm("library.manage_suite_cases"):
-            self.fields["initial_suite"] = mtforms.MTModelChoiceField(
+            self.fields["suite"] = mtforms.MTModelChoiceField(
                 model.Suite.objects.all(),
                 choice_attrs=mtforms.product_id_attrs,
                 required=False)
@@ -146,12 +146,12 @@ class BaseAddCaseForm(forms.Form):
     def clean(self):
         """Verify that products all match up."""
         productversion = self.cleaned_data.get("productversion")
-        initial_suite = self.cleaned_data.get("initial_suite")
+        suite = self.cleaned_data.get("suite")
         product = self.cleaned_data.get("product")
         if product and productversion and productversion.product != product:
             raise forms.ValidationError(
                 "Must select a version of the correct product.")
-        if product and initial_suite and initial_suite.product != product:
+        if product and suite and suite.product != product:
             raise forms.ValidationError(
                 "Must select a suite for the correct product.")
         return self.cleaned_data
@@ -196,10 +196,10 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
         del version_kwargs["add_tags"]
         del version_kwargs["add_attachment"]
 
-        initial_suite = version_kwargs.pop("initial_suite", None)
-        if initial_suite:
+        suite = version_kwargs.pop("suite", None)
+        if suite:
             model.SuiteCase.objects.create(
-                case=case, suite=initial_suite, user=self.user)
+                case=case, suite=suite, user=self.user)
 
         productversions = [version_kwargs.pop("productversion")]
         if version_kwargs.pop("and_later_versions"):
@@ -267,7 +267,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
             productversions.extend(product.versions.filter(
                     order__gt=productversions[0].order))
 
-        initial_suite = self.cleaned_data.get("initial_suite")
+        suite = self.cleaned_data.get("suite")
 
         cases = []
 
@@ -285,9 +285,9 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
             version_kwargs["status"] = self.cleaned_data["status"]
             version_kwargs["user"] = self.user
 
-            if initial_suite:
+            if suite:
                 model.SuiteCase.objects.create(
-                    case=case, suite=initial_suite, user=self.user)
+                    case=case, suite=suite, user=self.user)
 
             for productversion in productversions:
                 this_version_kwargs = version_kwargs.copy()

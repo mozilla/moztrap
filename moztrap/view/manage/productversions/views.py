@@ -12,6 +12,7 @@ from moztrap import model
 
 from moztrap.view.filters import ProductVersionFilterSet
 from moztrap.view.lists import decorators as lists
+from moztrap.view.lists.filters import PinnedFilters
 from moztrap.view.users.decorators import permission_required
 from moztrap.view.utils.ajax import ajax
 from moztrap.view.utils.auth import login_maybe_required
@@ -75,7 +76,8 @@ def productversion_add(request):
                 )
             return redirect("manage_productversions")
     else:
-        form = forms.AddProductVersionForm(user=request.user)
+        pf = PinnedFilters(request.COOKIES)
+        form = forms.AddProductVersionForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
     return TemplateResponse(
         request,
         "manage/productversion/add_productversion.html",
