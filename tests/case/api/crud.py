@@ -210,13 +210,13 @@ class ApiCrudCases(ApiTestCase):
         fields = self.new_object_data
 
         # get user with wrong permissions
-        self.user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
-        self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
-        self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+        user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
+        apikey = self.F.ApiKeyFactory.create(owner=self.user)
+        credentials = {"username": user.username, "api_key": apikey.key}
 
         res = self.post(
             self.get_list_url(self.resource_name),
-            params=self.credentials,
+            params=credentials,
             payload=fields,
             status=401,
             )
@@ -231,8 +231,8 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_fixture2 = self.F.SuiteFactory()
+        fixture1 = self.factory
+        fixture2 = self.factory
 
         # fetch list
         res = self.get_list() # no creds
@@ -252,8 +252,8 @@ class ApiCrudCases(ApiTestCase):
 
         act_objects = act["objects"]
         exp_objects = [
-            self.backend_data(suite_fixture1), 
-            self.backend_data(suite_fixture2)
+            self.backend_data(fixture1), 
+            self.backend_data(fixture2)
             ]
 
 
@@ -269,14 +269,14 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
+        fixture1 = self.factory
 
         # fetch list
-        res = self.get_detail(suite_fixture1.id) # no creds
+        res = self.get_detail(fixture1.id) # no creds
 
         actual = res.json
 
-        expected = self.backend_data(suite_fixture1)
+        expected = self.backend_data(fixture1)
 
         self.maxDiff = None
         self.assertEqual(expected, actual)
@@ -291,37 +291,37 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_backend_obj = self.backend_object(suite_fixture1.id)
-        suite_meta_before = self.backend_meta_data(suite_backend_obj)
-        suite_id = str(suite_fixture1.id)
+        fixture1 = self.factory
+        backend_obj = self.backend_object(fixture1.id)
+        meta_before = self.backend_meta_data(backend_obj)
+        obj_id = str(fixture1.id)
         time.sleep(2) # so that the modify time will actually change
-        fields = self.backend_data(suite_backend_obj)
+        fields = self.backend_data(backend_obj)
         fields.update(self.new_object_data)
 
         # do put
         res = self.put(
-            self.get_detail_url(self.resource_name, suite_id),
+            self.get_detail_url(self.resource_name, obj_id),
             params=self.credentials,
             data=fields
             )
 
         # make sure object has been updated in the database
-        fields[u"id"] = unicode(suite_id)
+        fields[u"id"] = unicode(obj_id)
         fields[u"resource_uri"] = unicode(
-            self.get_detail_url(self.resource_name, suite_id))
-        suite_backend_obj = self.backend_object(suite_fixture1.id)
-        suite_backend_data = self.backend_data(suite_backend_obj)
+            self.get_detail_url(self.resource_name, obj_id))
+        backend_obj = self.backend_object(fixture1.id)
+        backend_data = self.backend_data(backend_obj)
 
         self.maxDiff = None
-        self.assertEqual(fields, suite_backend_data)
+        self.assertEqual(fields, backend_data)
 
         # make sure 'modified' meta data has been updated
-        suite_meta_after = self.backend_meta_data(suite_backend_obj)
-        self.assertEqual(suite_meta_after["modified_by"], self.user.username)
-        self.assertIsNotNone(suite_meta_after["modified_on"])
-        self.assertNotEqual(suite_meta_before["modified_on"], 
-                            suite_meta_after["modified_on"])
+        meta_after = self.backend_meta_data(backend_obj)
+        self.assertEqual(meta_after["modified_by"], self.user.username)
+        self.assertIsNotNone(meta_after["modified_on"])
+        self.assertNotEqual(meta_before["modified_on"], 
+                            meta_after["modified_on"])
 
 
     def test_update_list_forbidden(self):
@@ -332,13 +332,13 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixturs
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_fixture2 = self.F.SuiteFactory()
+        fixture1 = self.factory
+        fixture2 = self.factory
 
-        suite_backend_obj1 = self.backend_object(suite_fixture1.id)
-        suite_backend_obj2 = self.backend_object(suite_fixture2.id)
-        fields1 = self.backend_data(suite_backend_obj1)
-        fields2 = self.backend_data(suite_backend_obj2)
+        backend_obj1 = self.backend_object(fixture1.id)
+        backend_obj2 = self.backend_object(fixture2.id)
+        fields1 = self.backend_data(backend_obj1)
+        fields2 = self.backend_data(backend_obj2)
         fields1.update(self.new_object_data)
         fields2.update(self.new_object_data)
         data = [fields1, fields2]
@@ -360,15 +360,15 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_backend_obj = self.backend_object(suite_fixture1.id)
-        suite_id = str(suite_fixture1.id)
-        fields = self.backend_data(suite_backend_obj)
+        fixture1 = self.factory
+        backend_obj = self.backend_object(fixture1.id)
+        obj_id = str(fixture1.id)
+        fields = self.backend_data(backend_obj)
         fields.update(self.new_object_data)
 
         # do put
         res = self.put(
-            self.get_detail_url(self.resource_name, suite_id),
+            self.get_detail_url(self.resource_name, obj_id),
             data=fields,
             status=401,
             )
@@ -385,26 +385,26 @@ class ApiCrudCases(ApiTestCase):
         # WSGIWarning: Content-Type header found in a 204 response, which not return content.
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_id = str(suite_fixture1.id)
+        fixture1 = self.factory
+        obj_id = str(fixture1.id)
         time.sleep(2) # so that delete time will not equal create time
 
         # check meta data before
-        suite_meta_before_delete = self.backend_meta_data(
-            self.backend_object(suite_id))
-        self.assertIsNone(suite_meta_before_delete["deleted_on"])
-        self.assertIsNone(suite_meta_before_delete["deleted_by"])
+        meta_before_delete = self.backend_meta_data(
+            self.backend_object(obj_id))
+        self.assertIsNone(meta_before_delete["deleted_on"])
+        self.assertIsNone(meta_before_delete["deleted_by"])
 
         # do delete
         params = self.credentials
         params.update({ "permanent": True })
-        self.delete(self.resource_name, suite_id, params=params, status=204)
+        self.delete(self.resource_name, obj_id, params=params, status=204)
 
         from django.core.exceptions import ObjectDoesNotExist
 
         with self.assertRaises(ObjectDoesNotExist):
-            suite_meta_after_delete = self.backend_meta_data(
-                self.backend_object(suite_id))
+            meta_after_delete = self.backend_meta_data(
+                self.backend_object(obj_id))
 
 
     def test_delete_detail_soft(self):
@@ -416,31 +416,31 @@ class ApiCrudCases(ApiTestCase):
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_id = str(suite_fixture1.id)
+        fixture1 = self.factory
+        obj_id = str(fixture1.id)
         time.sleep(2) # so that delete time will not equal create time
 
         # check meta data before
-        suite_meta_before_delete = self.backend_meta_data(
-            self.backend_object(suite_id))
-        self.assertIsNone(suite_meta_before_delete["deleted_on"])
-        self.assertIsNone(suite_meta_before_delete["deleted_by"])
+        meta_before_delete = self.backend_meta_data(
+            self.backend_object(obj_id))
+        self.assertIsNone(meta_before_delete["deleted_on"])
+        self.assertIsNone(meta_before_delete["deleted_by"])
 
         # do delete
         self.delete(
             self.resource_name, 
-            suite_id, 
+            obj_id, 
             params=self.credentials,
             status=204)
 
         # check meta data after
-        suite_meta_after_delete = self.backend_meta_data(
-            self.backend_object(suite_id)) # this is where the error will be if it fails
-        self.assertIsNotNone(suite_meta_after_delete["deleted_on"])
+        meta_after_delete = self.backend_meta_data(
+            self.backend_object(obj_id)) # this is where the error will be if it fails
+        self.assertIsNotNone(meta_after_delete["deleted_on"])
         self.assertNotEqual(
-            suite_meta_after_delete["deleted_on"], 
-            suite_meta_after_delete["created_on"])
-        self.assertEqual(suite_meta_after_delete["deleted_by"], self.user.username)
+            meta_after_delete["deleted_on"], 
+            meta_after_delete["created_on"])
+        self.assertEqual(meta_after_delete["deleted_by"], self.user.username)
 
 
     def test_delete_list_forbidden(self):
@@ -458,18 +458,29 @@ class ApiCrudCases(ApiTestCase):
     def test_delete_fails_with_wrong_perms(self):
         """Attempts to send a DELETE message with the wrong credentials.
         Verifies that the message recieves a 401 error.
+        Verifies that object still exists.
+        Verifies that delete meta data has not been set on object.
         """
         if self.is_abstract_class:
             return
 
         # create fixture
-        suite_fixture1 = self.F.SuiteFactory()
-        suite_id = str(suite_fixture1.id)
+        fixture1 = self.factory
+        obj_id = str(fixture1.id)
 
         # get user with wrong permissions
-        self.user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
-        self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
-        self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+        user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
+        apikey = self.F.ApiKeyFactory.create(owner=user)
+        credentials = {"username": user.username, "api_key": apikey.key}
 
         # do delete
-        self.delete(self.resource_name, suite_id, params=self.credentials, status=401)
+        self.delete(self.resource_name, obj_id, params=credentials, status=401)
+
+        # make sure object is still found
+        backend_obj = self.backend_object(obj_id)
+
+        # and delete meta data has not been set
+        meta_after_delete = self.backend_meta_data(backend_obj)
+        self.assertIsNone(meta_after_delete["deleted_on"])
+        self.assertIsNone(meta_after_delete["deleted_by"])
+
