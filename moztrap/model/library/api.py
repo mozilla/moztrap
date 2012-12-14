@@ -15,7 +15,7 @@ from ..tags.api import TagResource
 
 class SuiteResource(ModelResource):
 
-    product = fields.ToOneField(ProductResource, 'product')
+    product = fields.ToOneField(ProductResource, "product")
 
     class Meta:
         queryset = Suite.objects.all()
@@ -47,10 +47,14 @@ class SuiteResource(ModelResource):
         return bundle
 
     def obj_delete(self, request=None, **kwargs):
-        """Delete the object. kwargs may include permanent=True/False."""
-        permanent = request._request.dicts[1].get('permanent', False)
+        """Delete the object. 
+        The DELETE request may include permanent=True/False in its params parameter
+        (ie, along with the user's credentials). Default is False.
+        """
+        permanent = request._request.dicts[1].get("permanent", False)
+        # pull the id out of the request's path
         suite_id = request.path.split('/')[-2]
-        suite = Suite.objects.filter(id=suite_id)
+        suite = Suite.objects.get(id=suite_id)
         suite.delete(user=request.user, permanent=permanent)
 
 

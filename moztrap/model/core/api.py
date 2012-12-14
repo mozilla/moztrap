@@ -31,13 +31,13 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         Should return either ``True`` if allowed, ``False`` if not or an
         ``HttpResponse`` if you need something custom.
         """
-        if request.method == 'GET':
+        if request.method == "GET":
             return True
 
         from .auth import User
 
-        username = request.GET.get('username') or request.POST.get('username')
-        api_key = request.GET.get('api_key') or request.POST.get('api_key')
+        username = request.GET.get("username") or request.POST.get("username")
+        api_key = request.GET.get("api_key") or request.POST.get("api_key")
 
         if not username or not api_key:
             return self._unauthorized()
@@ -56,7 +56,7 @@ class ReportResultsAuthorization(Authorization):
     """Authorization that only allows users with execute privileges."""
 
     def is_authorized(self, request, object=None):
-        if request.method == 'GET':
+        if request.method == "GET":
             return True
         elif request.user.has_perm("execution.execute"):
             return True
@@ -70,9 +70,9 @@ class MTAuthorization(Authorization):
 
     def is_authorized(self, request, object=None):
         klass = self.resource_meta.object_class
-        permission = '%s.manage_%ss' % (klass._meta.app_label, klass._meta.module_name)
+        permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
 
-        if request.method == 'GET':
+        if request.method == "GET":
             return True
         elif request.user.has_perm(permission):
                 return True
