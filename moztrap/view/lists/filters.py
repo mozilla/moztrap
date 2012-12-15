@@ -5,11 +5,12 @@ Utilities for filtering querysets in a view.
 from collections import namedtuple
 from functools import wraps
 import json
+import urlparse
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 
-#from moztrap.view.filters import SessionFilterSet
+from moztrap.model.core.models import ProductVersion
 
 
 def filter_url(path_or_view, obj):
@@ -117,6 +118,41 @@ class BoundFilterSet(object):
 
 
 
+class PinnedFilters(object):
+    """An object to manage pinned filters saved as cookies in the session."""
+
+    def __init__(self, COOKIES):
+        self.cookie_prefix = "moztrap-filter-"
+        self.cookies = {}
+        if COOKIES:
+            for k in COOKIES.keys():
+                if k.startswith(self.cookie_prefix):
+                    filter_key = k[len(self.cookie_prefix):]
+                    pinned_filters = json.loads(
+                        urlparse.unquote(COOKIES.get(k)))
+                    self.cookies[filter_key] = pinned_filters
+
+
+    def extend_filters(self, filters):
+        # pinned filters are stored in session cookies.  Add them to the list
+        # of other filters in the querystring.
+        for k, v in self.cookies.items():
+            filters.setdefault(k, []).extend(v)
+        return filters
+
+
+    def fill_form_querystring(self, GET):
+        # pinned filters are stored in session cookies.  Fill in, if not
+        # already set.  Don't want to overwrite or add to existing values
+        # and only if there's a single matching cookie value
+        new_filters = GET.copy()
+        for k, v in self.cookies.items():
+            if not k in new_filters and len(v) == 1:
+                new_filters[k] = v[0]
+        return new_filters
+
+
+
 class FilterSet(object):
     """A set of possible filters on a queryset."""
     # subclasses can have preset filters
@@ -151,20 +187,14 @@ class FilterSet(object):
 
         query_filters = dict(
             (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(self.prefix)
-        )
+            if k.startswith(self.prefix)
+            )
 
+
+        # pinned filters are stored in session cookies.  Add them to the list
+        # of other filters in the querystring.
         if COOKIES:
-            session_prefix = "moztrap-{0}".format(self.prefix)
-            for k in COOKIES.keys():
-                if k.startswith(session_prefix):
-                    filter_key = k[len(session_prefix):]
-                    filters = query_filters.get(filter_key, [])
-
-                    import urlparse
-                    pinned_filters = urlparse.unquote(COOKIES.get(k))
-                    filters.extend(json.loads(pinned_filters))
-                    query_filters[filter_key] = filters
+            PinnedFilters(COOKIES).extend_filters(query_filters)
 
         return self.bound_class(
             self,

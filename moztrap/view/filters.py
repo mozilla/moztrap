@@ -9,18 +9,6 @@ from .lists import cases
 
 
 
-#class SessionFilterSet(filters.FilterSet):
-#    """Session-level filter to set global product and version setting"""
-#    filters = [
-#        filters.ModelFilter("product", queryset=model.Product.objects.all()),
-#        filters.ModelFilter(
-#            "productversion",
-#            queryset=model.ProductVersion.objects.all(),
-#            ),
-#        ]
-
-
-
 class ProductFilterSet(filters.FilterSet):
     """FilterSet for Products."""
     filters = [
