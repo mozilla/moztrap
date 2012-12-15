@@ -29,7 +29,7 @@ from . import forms
 @never_cache
 @login_maybe_required
 @lists.actions(
-    model.Case,
+    model.CaseVersion,
     ["delete"],
     permission="library.manage_cases",
     fall_through=True)

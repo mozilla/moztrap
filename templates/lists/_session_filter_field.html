@@ -1,9 +1,0 @@
-<div class="session-filter-field">
-    <span class="filter-label">{{ field.name }}</span>
-    <select class="filter-select {{ field.cls }}" data-name="{{ field.key }}">
-        <option class="filter-item" value="all">--all--</option>
-        {% for option in field %}
-            <option class="filter-item" value="{{ option.value }}">{{ option.label }}</option>
-        {% endfor %}
-    </select>
-</div>
