@@ -140,6 +140,7 @@ class PinnedFilters(object):
             filters.setdefault(k, []).extend(v)
         return filters
 
+
     def fill_form_querystring(self, GET):
         # pinned filters are stored in session cookies.  Fill in, if not
         # already set.  Don't want to overwrite or add to existing values
@@ -149,6 +150,7 @@ class PinnedFilters(object):
             if not k in new_filters and len(v) == 1:
                 new_filters[k] = v[0]
         return new_filters
+
 
 
 class FilterSet(object):
@@ -185,8 +187,8 @@ class FilterSet(object):
 
         query_filters = dict(
             (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(self.prefix)
-        )
+            if k.startswith(self.prefix)
+            )
 
 
         # pinned filters are stored in session cookies.  Add them to the list
