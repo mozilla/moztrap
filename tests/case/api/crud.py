@@ -1,6 +1,7 @@
 import time
 import urllib
 from datetime import datetime
+from mock import patch
 
 from django.utils import unittest
 
@@ -148,12 +149,23 @@ class ApiCrudCases(ApiTestCase):
 
         self.credentials can be sent in the params parameter of POST, PUT, and 
         DELETE messages, but should not be required for GET messages.
+
+        Also mocks datetime.utcnow() with datetime in self.utcnow.
         """
         if self.is_abstract_class:
             return
+
+        # credentials
         self.user = self.F.UserFactory.create(permissions=[self.permission])
         self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
         self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+
+        # mocking
+        self.utcnow = datetime(2011, 12, 13, 22, 39)
+        patcher = patch("moztrap.model.mtmodel.datetime")
+        self.mock_utcnow = patcher.start().datetime.utcnow
+        self.mock_utcnow.return_value = self.utcnow
+        self.addCleanup(patcher.stop)
 
 
     # test cases 
@@ -194,9 +206,7 @@ class ApiCrudCases(ApiTestCase):
         # make sure meta data is correct
         created_obj_meta_data = self.backend_meta_data(backend_obj)
         self.assertEqual(created_obj_meta_data["created_by"], self.user.username)
-        self.assertIsNotNone(created_obj_meta_data["created_on"])
-        self.assertIsNone(created_obj_meta_data["deleted_by"])
-        self.assertIsNone(created_obj_meta_data["deleted_on"])
+        self.assertEqual(created_obj_meta_data["created_on"], self.utcnow)
 
 
     def test_create_fails_with_wrong_perms(self):
@@ -271,7 +281,7 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
 
-        # fetch list
+        # fetch detail
         res = self.get_detail(fixture1.id) # no creds
 
         actual = res.json
@@ -295,7 +305,6 @@ class ApiCrudCases(ApiTestCase):
         backend_obj = self.backend_object(fixture1.id)
         meta_before = self.backend_meta_data(backend_obj)
         obj_id = str(fixture1.id)
-        time.sleep(2) # so that the modify time will actually change
         fields = self.backend_data(backend_obj)
         fields.update(self.new_object_data)
 
@@ -319,9 +328,7 @@ class ApiCrudCases(ApiTestCase):
         # make sure 'modified' meta data has been updated
         meta_after = self.backend_meta_data(backend_obj)
         self.assertEqual(meta_after["modified_by"], self.user.username)
-        self.assertIsNotNone(meta_after["modified_on"])
-        self.assertNotEqual(meta_before["modified_on"], 
-                            meta_after["modified_on"])
+        self.assertEqual(meta_after["modified_on"], self.utcnow)
 
 
     def test_update_list_forbidden(self):
@@ -374,8 +381,8 @@ class ApiCrudCases(ApiTestCase):
             )
 
 
-    def test_delete_detail_perminant(self):
-        """Tests that an object can be deleted perminantly.
+    def test_delete_detail_permanent(self):
+        """Tests that an object can be deleted permanently.
         Verifies that the object no longer appears in the database after the delete.
         """
         if self.is_abstract_class:
@@ -387,7 +394,6 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
         obj_id = str(fixture1.id)
-        time.sleep(2) # so that delete time will not equal create time
 
         # check meta data before
         meta_before_delete = self.backend_meta_data(
@@ -418,7 +424,6 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
         obj_id = str(fixture1.id)
-        time.sleep(2) # so that delete time will not equal create time
 
         # check meta data before
         meta_before_delete = self.backend_meta_data(
@@ -436,10 +441,7 @@ class ApiCrudCases(ApiTestCase):
         # check meta data after
         meta_after_delete = self.backend_meta_data(
             self.backend_object(obj_id)) # this is where the error will be if it fails
-        self.assertIsNotNone(meta_after_delete["deleted_on"])
-        self.assertNotEqual(
-            meta_after_delete["deleted_on"], 
-            meta_after_delete["created_on"])
+        self.assertEqual(meta_after_delete["deleted_on"], self.utcnow)
         self.assertEqual(meta_after_delete["deleted_by"], self.user.username)
 
 
