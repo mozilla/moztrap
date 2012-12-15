@@ -38,7 +38,9 @@ def runs_list(request):
 def run_details(request, run_id):
     """Get details snippet for a run."""
     run = get_object_or_404(
-        model.Run, pk=run_id)
+        model.Run.objects.prefetch_related(
+            "environments",
+            "environments__elements"), pk=run_id)
     return TemplateResponse(
         request,
         "results/run/list/_run_details.html",
