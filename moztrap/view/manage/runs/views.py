@@ -78,7 +78,10 @@ def run_add(request):
             return redirect("manage_runs")
     else:
         pf = PinnedFilters(request.COOKIES)
-        form = forms.AddRunForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
+        form = forms.AddRunForm(
+            user=request.user,
+            initial=pf.fill_form_querystring(request.GET).dict(),
+            )
     return TemplateResponse(
         request,
         "manage/run/add_run.html",

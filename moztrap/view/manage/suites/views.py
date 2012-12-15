@@ -77,7 +77,7 @@ def suite_add(request):
             return redirect("manage_suites")
     else:
         pf = PinnedFilters(request.COOKIES)
-        form = forms.AddSuiteForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
+        form = forms.AddSuiteForm(user=request.user, initial=pf.fill_form_querystring(request.GET).dict())
     return TemplateResponse(
         request,
         "manage/suite/add_suite.html",

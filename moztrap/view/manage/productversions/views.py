@@ -77,7 +77,10 @@ def productversion_add(request):
             return redirect("manage_productversions")
     else:
         pf = PinnedFilters(request.COOKIES)
-        form = forms.AddProductVersionForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
+        form = forms.AddProductVersionForm(
+            user=request.user,
+            initial=pf.fill_form_querystring(request.GET).dict(),
+            )
     return TemplateResponse(
         request,
         "manage/productversion/add_productversion.html",
