@@ -409,51 +409,6 @@ class ModelFilter(BaseChoicesFilter):
 
 
 
-class ValueWithParent(object):
-    def __init__(self, obj):
-        self.obj = obj
-
-
-    def __unicode__(self):
-        return unicode(self.obj.pk)
-
-
-
-class ModelParentFilter(ModelFilter):
-    """
-    A Filter whose choices are from a model with parent objects.
-
-    By default, assumes the model has a numeric primary key; if not an
-    alternative ``coerce`` function should be provided at instantiation.
-
-    """
-    cls = "model_parent"
-
-    def __init__(self, *args, **kwargs):
-        """
-        Looks for ``queryset`` and ``label`` keyword arguments.
-
-        ``queryset`` should contain the model instances that are the options
-        available for this filter; ``label`` is an optional one-argument
-        callable that returns the display label for each object, given the
-        object.
-
-        """
-        self.parent_key = kwargs.pop("parent_key")
-        super(ModelParentFilter, self).__init__(*args, **kwargs)
-
-
-    def get_choices(self):
-        """Get the options for this filter."""
-        # always clone to get new data; filter instances are persistent
-
-
-        return [(ValueWithParent(obj),
-            self.label_func(obj),
-            ) for obj in self.queryset.all()]
-
-
-
 class KeywordExactFilter(Filter):
     """Allows user to input arbitrary filter values; no pre-set options list."""
     cls = "keyword"
