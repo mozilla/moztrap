@@ -77,7 +77,15 @@ def suite_add(request):
             return redirect("manage_suites")
     else:
         pf = PinnedFilters(request.COOKIES)
-        form = forms.AddSuiteForm(user=request.user, initial=pf.fill_form_querystring(request.GET).dict())
+        # @@@ I wonder if there's a bug here.  Passing in a QueryDict to
+        # a BaseModelForm doesn't work.  It only works for BaseForm.  For
+        # BaseModelForm, you must pass in a dict so that the values are
+        # not lists.  BaseModelForm doesn't convert them from lists to single
+        # values properly.
+        form = forms.AddSuiteForm(
+            user=request.user,
+            initial=pf.fill_form_querystring(request.GET).dict(),
+            )
     return TemplateResponse(
         request,
         "manage/suite/add_suite.html",

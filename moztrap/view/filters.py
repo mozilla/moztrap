@@ -44,9 +44,10 @@ class RunFilterSet(filters.FilterSet):
             "product",
             lookup="productversion__product",
             queryset=model.Product.objects.all()),
-        filters.ModelFilter(
+        filters.ModelParentFilter(
             "productversion",
-            queryset=model.ProductVersion.objects.all().select_related()),
+            queryset=model.ProductVersion.objects.all().select_related(),
+            parent_key="product"),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
         filters.ModelFilter(
