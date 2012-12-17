@@ -58,7 +58,7 @@ var MT = (function (MT, $) {
             // store the filter values as an array, because it's possible
             // to filter in the same field on multiple values
             // Must store it as JSON because cookies are just strings
-            var cookieVal = eval($.cookie(filterKey)) || [];
+            var cookieVal = JSON.parse($.cookie(filterKey)) || [];
 
             if (add) {
                 // we just pinned this filter, add the value to the cookie
@@ -141,7 +141,7 @@ var MT = (function (MT, $) {
                 // this is one of our filters
                 var parts = chunk.split("="),
                     k = parts[0],
-                    v = eval($.cookie(k)),
+                    v = JSON.parse($.cookie(k)),
                     fieldVal = k.replace("moztrap-filter-", "");
 
                 // find the filter-item that this pinned filter applies to and

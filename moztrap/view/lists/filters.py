@@ -190,7 +190,6 @@ class FilterSet(object):
             if k.startswith(self.prefix)
             )
 
-
         # pinned filters are stored in session cookies.  Add them to the list
         # of other filters in the querystring.
         if COOKIES:

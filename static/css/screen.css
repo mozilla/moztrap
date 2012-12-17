@@ -1614,7 +1614,7 @@ body > div {
 
 .pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
   left: 0;
-  background-image: url('../images/ui/pin.png?1355159556');
+  background-image: url('../images/ui/pin.png?1355529863');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
