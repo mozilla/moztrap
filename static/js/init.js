@@ -181,6 +181,13 @@ var MT = (function (MT, $) {
             ich_template: ich.case_select_item
         });
         MT.populateMultiselectItems({
+            container: '#tag-form',
+            trigger_field: '#id_product',
+            ajax_url_root: "/api/v1/tagcaseselection/?format=json&limit=0",
+            for_type: "tag",
+            ich_template: ich.case_select_item
+        });
+        MT.populateMultiselectItems({
             container: '#run-add-form',
             trigger_field: '#id_productversion',
             ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
