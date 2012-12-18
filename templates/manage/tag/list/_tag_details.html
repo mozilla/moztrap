@@ -1,0 +1,9 @@
+{% load markup %}
+
+<div class="iteminfo">
+    {% if tag.description %}
+    <p class="details">
+        {{ tag.description|markdown }}
+    </p>
+    {% endif %}
+</div>
