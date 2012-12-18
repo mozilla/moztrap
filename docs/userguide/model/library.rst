@@ -1,5 +1,5 @@
-Test Cases and Suites
-=====================
+Test Cases, Suites and Tags
+===========================
 
 .. _test-cases:
 
@@ -37,9 +37,11 @@ Case Edit Fields
 * **Name** - The summary name for the case.
 * **Description** - Any description, pre-conditions, links or notes to
   associate with the case.  This field is displayed while running the test.
-  Markdown syntax is supported.
+  Markdown_ syntax is supported.
 * **Add Tags** - Enter tags to apply to this case.  Hit enter after each tag to
-  see the tag chicklet displayed.  Auto-completes for existing tags.
+  see the tag chicklet displayed.  Auto-completes for existing tags.  During
+  test execution, cases that have tags will show the tag descriptions with
+  with each case.
 * **Add Attachment** - You can attach files to cases that may help running the
   test.  (e.g: images, audio, video, etc.)
 * **Instruction / Expected** - The test instruction and corresponding expected
@@ -91,6 +93,10 @@ Tag Edit Fields
 * **Product** - (optional) Tags can be specific to a Product, or they can be
   global.  If a tag is Product specific, then cases for other products can't
   use it.  This is useful if you want to separate tags for different products.
+* **Description** - (optional) This description will be displayed during test
+  execution before the test case description and steps.  This is useful to
+  provide some *setup* or *precondition* code that doesn't have to be
+  repeated for a group of cases.  Supports Markdown_ syntax.
 
 
 .. _attachments:
@@ -100,3 +106,6 @@ Attachments
 
 A :ref:`test case<test-cases>` can have any number of file attachments: these
 will be made available for download by testers when the test case is executed.
+
+
+.. _Markdown: http://daringfireball.net/projects/markdown/syntax
