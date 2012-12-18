@@ -3130,7 +3130,7 @@ body > div {
   -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   border-color: rgba(72, 78, 85, 0.667);
-  background-image: url('../images/ui/link.png?1354319417');
+  background-image: url('../images/ui/link.png?1354905356');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -5414,8 +5414,8 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   display: inline;
 }
 
-#managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary {
-  padding-left: 0.75em;
+#managetags .listordering, #managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary, #managetags .itembody .content {
+  padding-left: 1.5em;
 }
 #managetags .name, #managetags .byname, #managetags .byline, #managetags .bybyline {
   display: inline;
@@ -6203,12 +6203,19 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
   padding-top: 0.375em;
   margin-bottom: 0em;
-  font-style: italic;
 }
 #runtests .description .id {
   display: inline;
   float: left;
   margin-right: 0.75em;
+}
+#runtests .tag-description {
+  margin-bottom: 0.375em;
+  position: relative;
+  display: block;
+}
+#runtests .tag-description .tag-desc-text {
+  padding-left: 4.124%;
 }
 #runtests .steps {
   clear: both;
