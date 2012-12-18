@@ -76,6 +76,36 @@ class TagsTest(case.view.manage.ListViewTestCase,
 
 
 
+class TagDetailTest(case.view.AuthenticatedViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
+    """Test for tag-detail ajax view."""
+    def setUp(self):
+        """Setup for case details tests; create a suite."""
+        super(TagDetailTest, self).setUp()
+        self.tag = self.F.TagFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for suite detail url."""
+        return reverse(
+            "manage_tag_details",
+            kwargs=dict(tag_id=self.tag.id)
+        )
+
+
+    def test_details_description(self):
+        """Details includes description, markdownified safely."""
+        self.tag.description = "_foodesc_ <script>"
+        self.tag.save()
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("<em>foodesc</em> &lt;script&gt;")
+
+
+
 class AddTagTest(case.view.FormViewTestCase,
                  case.view.NoCacheTest,
                  ):

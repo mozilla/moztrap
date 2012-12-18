@@ -1914,7 +1914,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .refresh-link, .create-child-link, .controls .select-env-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .action-refresh, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1925,7 +1925,7 @@ body > div {
   vertical-align: text-bottom;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .refresh-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .refresh-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .refresh-link:active, .create-child-link:active, .controls .select-env-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .action-refresh:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .action-refresh:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .action-refresh:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1953,7 +1953,7 @@ body > div {
   opacity: 1;
 }
 
-.refresh-link {
+.action-refresh {
   background-image: url('../images/ui/refresh.png?1328730630');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1971,7 +1971,7 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-.refresh-link:focus, .refresh-link:hover, .refresh-link:active {
+.action-refresh:focus, .action-refresh:hover, .action-refresh:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
