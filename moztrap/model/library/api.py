@@ -35,7 +35,7 @@ class SuiteResource(ModelResource):
 
         bundle = super(SuiteResource, self).obj_create(bundle=bundle, request=request, **kwargs)
         bundle.obj.created_by = request.user
-        bundle.obj.save()
+        bundle.obj.save(user=request.user)
         return bundle
 
     def obj_update(self, bundle, request=None, **kwargs):

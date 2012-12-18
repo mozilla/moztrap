@@ -207,6 +207,8 @@ class ApiCrudCases(ApiTestCase):
         created_obj_meta_data = self.backend_meta_data(backend_obj)
         self.assertEqual(created_obj_meta_data["created_by"], self.user.username)
         self.assertEqual(created_obj_meta_data["created_on"], self.utcnow)
+        self.assertEqual(created_obj_meta_data["modified_by"], self.user.username)
+        self.assertEqual(created_obj_meta_data["modified_on"], self.utcnow)
 
 
     def test_create_fails_with_wrong_perms(self):
@@ -303,6 +305,7 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
         backend_obj = self.backend_object(fixture1.id)
+        backend_obj.modified_on = datetime(2011, 12, 13, 20, 39) # 2 hours earlier than utcnow
         meta_before = self.backend_meta_data(backend_obj)
         obj_id = str(fixture1.id)
         fields = self.backend_data(backend_obj)
@@ -329,6 +332,7 @@ class ApiCrudCases(ApiTestCase):
         meta_after = self.backend_meta_data(backend_obj)
         self.assertEqual(meta_after["modified_by"], self.user.username)
         self.assertEqual(meta_after["modified_on"], self.utcnow)
+        self.assertNotEqual(meta_before['modified_on'], meta_after['modified_on'])
 
 
     def test_update_list_forbidden(self):
@@ -424,10 +428,11 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
         obj_id = str(fixture1.id)
+        backend_obj = self.backend_object(obj_id)
+        backend_obj.created_on = datetime(2011, 12, 13, 20, 39) # 2 hours earlier than utcnow
 
         # check meta data before
-        meta_before_delete = self.backend_meta_data(
-            self.backend_object(obj_id))
+        meta_before_delete = self.backend_meta_data(backend_obj)
         self.assertIsNone(meta_before_delete["deleted_on"])
         self.assertIsNone(meta_before_delete["deleted_by"])
 
@@ -443,6 +448,7 @@ class ApiCrudCases(ApiTestCase):
             self.backend_object(obj_id)) # this is where the error will be if it fails
         self.assertEqual(meta_after_delete["deleted_on"], self.utcnow)
         self.assertEqual(meta_after_delete["deleted_by"], self.user.username)
+        self.assertNotEqual(meta_before_delete["deleted_on"], meta_after_delete["deleted_on"])
 
 
     def test_delete_list_forbidden(self):
