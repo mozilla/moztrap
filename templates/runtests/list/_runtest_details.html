@@ -1,6 +1,6 @@
 {% extends 'lists/_itembody.html' %}
 
-{% load execution urls markup %}
+{% load execution urls markup permissions %}
 
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
@@ -8,8 +8,15 @@
 
 <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
   {% csrf_token %}
-  <div><span class="detailstitle">Submit your test result for case </span>
-  {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}
+  <div>
+    <span class="detailstitle">Submit your test result for case </span>
+
+      {% if user|has_perm:"library.manage_cases" %}
+        {% url 'manage_caseversion_edit' caseversion_id=caseversion.id as caseversion_edit_url %}
+        <a href="{{ caseversion_edit_url }}" target="_blank" class="run-case-edit">Edit Case Details</a>
+      {% endif %}
+
+    {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}
   </div>
   {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
     <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-result_pass">pass test</button>
@@ -27,12 +34,12 @@
                 </div>
           {% endif %}
         {% endfor %}
+    <hr />
     {% endif %}
     {% endwith %}
 
     {% if caseversion.description %}
       <div class="case-description">
-        <hr />
         {{ caseversion.description|markdown }}
       </div>
     {% endif %}
