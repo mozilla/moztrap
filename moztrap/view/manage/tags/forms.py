@@ -15,10 +15,11 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for tags."""
     class Meta:
         model = model.Tag
-        fields = ["name", "product"]
+        fields = ["name", "product", "description"]
         widgets = {
             "name": forms.TextInput,
             "product": forms.Select,
+            "description": mtforms.BareTextarea,
             }
 
 

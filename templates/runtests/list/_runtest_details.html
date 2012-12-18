@@ -16,11 +16,27 @@
   {% endif %}
 </form>
 
-{% if caseversion.description %}
-  <div class="description">
-    {{ caseversion.description|markdown }}
-  </div>
-{% endif %}
+<div class="description">
+    {% with caseversion.tags.all as tags %}
+    {% if tags %}
+        {% for tag in tags %}
+          {% if tag.description %}
+                <div class="tag-description">
+                    <div class="tag">{{ tag }}</div>
+                    <div class="tag-desc-text">{{ tag.description|markdown }}</div>
+                </div>
+          {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if caseversion.description %}
+      <div class="case-description">
+        <hr />
+        {{ caseversion.description|markdown }}
+      </div>
+    {% endif %}
+</div>
 
 {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
   <div class="testinvalid details">

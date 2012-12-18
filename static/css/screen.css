@@ -5439,8 +5439,8 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   display: inline;
 }
 
-#managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary {
-  padding-left: 0.75em;
+#managetags .listordering, #managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary, #managetags .itembody .content {
+  padding-left: 1.5em;
 }
 #managetags .name, #managetags .byname, #managetags .byline, #managetags .bybyline {
   display: inline;
@@ -6228,12 +6228,19 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
   padding-top: 0.375em;
   margin-bottom: 0em;
-  font-style: italic;
 }
 #runtests .description .id {
   display: inline;
   float: left;
   margin-right: 0.75em;
+}
+#runtests .tag-description {
+  margin-bottom: 0.375em;
+  position: relative;
+  display: block;
+}
+#runtests .tag-description .tag-desc-text {
+  padding-left: 4.124%;
 }
 #runtests .steps {
   clear: both;
