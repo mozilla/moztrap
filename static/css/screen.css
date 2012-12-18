@@ -928,6 +928,35 @@ form > .errorlist {
   opacity: 1;
 }
 
+.markdown-link {
+  outline: none;
+}
+.markdown-link:link, .markdown-link:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  transition: opacity 300ms;
+  background-image: url('../images/ui/info_circle.png?1349294801');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  padding-left: 24px;
+  background-position: 6px;
+  padding-top: 0.15em;
+  display: inline-block;
+}
+.markdown-link:focus, .markdown-link:hover, .markdown-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
 body > div {
   overflow: hidden;
   *zoom: 1;
@@ -1885,7 +1914,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .refresh-link, .create-child-link, .controls .select-env-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .action-refresh, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1896,7 +1925,7 @@ body > div {
   vertical-align: text-bottom;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .refresh-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .refresh-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .refresh-link:active, .create-child-link:active, .controls .select-env-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .action-refresh:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .action-refresh:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .action-refresh:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1924,7 +1953,7 @@ body > div {
   opacity: 1;
 }
 
-.refresh-link {
+.action-refresh {
   background-image: url('../images/ui/refresh.png?1328730630');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1942,7 +1971,7 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-.refresh-link:focus, .refresh-link:hover, .refresh-link:active {
+.action-refresh:focus, .action-refresh:hover, .action-refresh:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -3101,7 +3130,7 @@ body > div {
   -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   border-color: rgba(72, 78, 85, 0.667);
-  background-image: url('../images/ui/link.png?1354249636');
+  background-image: url('../images/ui/link.png?1354905356');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -4476,17 +4505,17 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
 }
 
-.add-run .product-version-field, .add-run .description-field, .add-run .build-field, .edit-run .product-version-field, .edit-run .description-field, .edit-run .build-field {
+.add-run .product-version-field, .add-run .build-field, .edit-run .product-version-field, .edit-run .build-field {
   clear: both;
   padding-right: 25.263%;
 }
-.add-run .product-version-field .type, .add-run .description-field .type, .add-run .build-field .type, .edit-run .product-version-field .type, .edit-run .description-field .type, .edit-run .build-field .type {
+.add-run .product-version-field .type, .add-run .build-field .type, .edit-run .product-version-field .type, .edit-run .build-field .type {
   display: inline;
   float: left;
   width: 32.394%;
   margin-right: 1.408%;
 }
-.add-run .product-version-field .value, .add-run .product-version-field .errorlist, .add-run .description-field .value, .add-run .description-field .errorlist, .add-run .build-field .value, .add-run .build-field .errorlist, .edit-run .product-version-field .value, .edit-run .product-version-field .errorlist, .edit-run .description-field .value, .edit-run .description-field .errorlist, .edit-run .build-field .value, .edit-run .build-field .errorlist {
+.add-run .product-version-field .value, .add-run .product-version-field .errorlist, .add-run .build-field .value, .add-run .build-field .errorlist, .edit-run .product-version-field .value, .edit-run .product-version-field .errorlist, .edit-run .build-field .value, .edit-run .build-field .errorlist {
   display: inline;
   float: left;
   width: 66.197%;
@@ -4496,19 +4525,19 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-run .name-field, .edit-run .name-field {
+.add-run .name-field, .add-run .description-field, .edit-run .name-field, .edit-run .description-field {
   display: inline;
   float: left;
   width: 74.737%;
   margin-right: 1.053%;
 }
-.add-run .name-field .type, .edit-run .name-field .type {
+.add-run .name-field .type, .add-run .description-field .type, .edit-run .name-field .type, .edit-run .description-field .type {
   display: inline;
   float: left;
   width: 32.394%;
   margin-right: 1.408%;
 }
-.add-run .name-field .value, .add-run .name-field .errorlist, .edit-run .name-field .value, .edit-run .name-field .errorlist {
+.add-run .name-field .value, .add-run .name-field .errorlist, .add-run .description-field .value, .add-run .description-field .errorlist, .edit-run .name-field .value, .edit-run .name-field .errorlist, .edit-run .description-field .value, .edit-run .description-field .errorlist {
   display: inline;
   float: left;
   width: 66.197%;
@@ -4518,26 +4547,27 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-run .series-field, .edit-run .series-field {
+.add-run .series-field, .add-run .markdown-link, .edit-run .series-field, .edit-run .markdown-link {
   display: inline;
   float: left;
-  width: 24.211%;
+  width: 20%;
   margin-right: 1.053%;
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+  float: left;
 }
-.add-run .series-field.optional, .edit-run .series-field.optional {
+.add-run .series-field.optional, .add-run .markdown-link.optional, .edit-run .series-field.optional, .edit-run .markdown-link.optional {
   margin-top: 0.375em;
 }
-.add-run .series-field.optional + .add-run .series-field.readonly .type, .edit-run .series-field.optional + .edit-run .series-field.readonly .type {
+.add-run .series-field.optional + .add-run .series-field.readonly .type, .add-run .markdown-link.optional + .add-run .markdown-link.readonly .type, .edit-run .series-field.optional + .edit-run .series-field.readonly .type, .edit-run .markdown-link.optional + .edit-run .markdown-link.readonly .type {
   display: inline;
   float: left;
   width: 13.043%;
   margin-right: 4.348%;
 }
-.add-run .series-field.optional + .add-run .series-field.readonly .value, .add-run .series-field.optional + .add-run .series-field.readonly .errorlist, .edit-run .series-field.optional + .edit-run .series-field.readonly .value, .edit-run .series-field.optional + .edit-run .series-field.readonly .errorlist {
+.add-run .series-field.optional + .add-run .series-field.readonly .value, .add-run .series-field.optional + .add-run .series-field.readonly .errorlist, .add-run .markdown-link.optional + .add-run .markdown-link.readonly .value, .add-run .markdown-link.optional + .add-run .markdown-link.readonly .errorlist, .edit-run .series-field.optional + .edit-run .series-field.readonly .value, .edit-run .series-field.optional + .edit-run .series-field.readonly .errorlist, .edit-run .markdown-link.optional + .edit-run .markdown-link.readonly .value, .edit-run .markdown-link.optional + .edit-run .markdown-link.readonly .errorlist {
   display: inline;
   float: left;
   width: 82.609%;
@@ -4727,6 +4757,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 
 .edit-case .select-env-link {
   margin-right: 8.421%;
+}
+.edit-case .markdown-link {
+  clear: both;
 }
 
 .case-version-nav {
@@ -5381,8 +5414,8 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   display: inline;
 }
 
-#managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary {
-  padding-left: 0.75em;
+#managetags .listordering, #managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary, #managetags .itembody .content {
+  padding-left: 1.5em;
 }
 #managetags .name, #managetags .byname, #managetags .byline, #managetags .bybyline {
   display: inline;
@@ -6158,6 +6191,51 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #runtests .order {
   padding-top: 0.375em;
 }
+#runtests .run-case-edit {
+  float: right;
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #666666;
+  background-color: #cbcfd6;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-repeat: no-repeat;
+  padding-left: 26px;
+  background-position: 9px, left;
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+}
+#runtests .run-case-edit:hover, #runtests .run-case-edit:focus {
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+#runtests .run-case-edit:active {
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
 #runtests .description {
   display: inline;
   float: left;
@@ -6170,12 +6248,19 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
   padding-top: 0.375em;
   margin-bottom: 0em;
-  font-style: italic;
 }
 #runtests .description .id {
   display: inline;
   float: left;
   margin-right: 0.75em;
+}
+#runtests .tag-description {
+  margin-bottom: 0.375em;
+  position: relative;
+  display: block;
+}
+#runtests .tag-description .tag-desc-text {
+  padding-left: 4.124%;
 }
 #runtests .steps {
   clear: both;

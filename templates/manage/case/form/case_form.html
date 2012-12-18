@@ -16,6 +16,7 @@
 
   {% block caseversions %}
   {% endblock caseversions %}
+  {% include "_markdownlink.html" with field_support="description, instruction and expected fields support" %}
 
   <form method="POST" enctype="multipart/form-data" id="{% block form-id %}{% endblock form-id %}" class="manage-form case-form">
     {% csrf_token %}

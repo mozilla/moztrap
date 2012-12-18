@@ -16,9 +16,9 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     cases = mtforms.MTMultipleChoiceField(
         required=False,
         widget=mtforms.FilteredSelectMultiple(
-            choice_template="manage/suite/case_select/_case_select_item.html",
+            choice_template="manage/multi_select/case_select/_case_select_item.html",
             listordering_template=(
-                "manage/suite/case_select/_case_select_listordering.html"),
+                "manage/multi_select/case_select/_case_select_listordering.html"),
             filters=[
                 filters.KeywordFilter("name"),
                 filters.ModelFilter(

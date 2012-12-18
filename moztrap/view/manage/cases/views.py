@@ -28,7 +28,7 @@ from . import forms
 @never_cache
 @login_maybe_required
 @lists.actions(
-    model.Case,
+    model.CaseVersion,
     ["delete"],
     permission="library.manage_cases",
     fall_through=True)
@@ -46,7 +46,13 @@ def cases_list(request):
         request,
         "manage/case/cases.html",
         {
-            "caseversions": model.CaseVersion.objects.select_related("case"),
+            "caseversions": model.CaseVersion.objects.select_related(
+                "case",
+                "productversion",
+                "productversion__product",
+                ).prefetch_related(
+                    "tags",
+                    ),
             }
         )
 

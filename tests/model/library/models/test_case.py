@@ -145,6 +145,21 @@ class CaseVersionTest(case.DBTestCase):
         self.assertFalse(cv.envs_narrowed)
 
 
+    def test_deleting_last_version_deletes_case(self):
+        """Deleting the last case version deletes its case as well."""
+        c = self.F.CaseFactory.create()
+        p = c.product
+        cv = self.F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        cv.delete()
+
+        self.assertEqual(
+            self.model.Case.objects.count(),
+            0
+        )
+
+
     def test_inherits_env_removal(self):
         """Removing an env from a productversion cascades to caseversion."""
         envs = self.F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})

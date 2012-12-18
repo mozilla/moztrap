@@ -11,9 +11,9 @@
         {% if user|has_perm:"execution.manage_runs" %}
           {% url 'manage_run_edit' run_id=run.id as run_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=run_edit_url edit_name=run.name %}
-          {% include "manage/run/list/_refresh.html" with refresh_url=run_refresh_url refresh_name=run.name %}
           {% url 'manage_narrow_environments' object_type="run" object_id=run.id as manage_envs_url %}
           {% include "manage/_narrow_env_link.html" with manage_envs_url=manage_envs_url %}
+          {% include "manage/run/list/_refresh.html" with refresh_id=run.id refresh_name=run.name %}
           {% include "lists/controls/_clone.html" with clone_id=run.id clone_name=run.name %}
           {% include "lists/controls/_delete.html" with delete_id=run.id delete_name=run.name %}
         {% endif %}

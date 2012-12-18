@@ -62,16 +62,27 @@
   .order
     +padding-leader(.25)
 
+  .run-case-edit
+    float: right
+    +button-style($blue-lightest,'ui/edit.png')
+
+
   .description
     +columns(16,24)
     +suffix(4,24)
     +omega(24)
     +padding-leader(.25)
     +trailer(0)
-    +italic
     .id
       +float(left)
       margin-right: rhythm(.5)
+
+  .tag-description
+    +trailer(.25)
+    position: relative
+    display: block
+    .tag-desc-text
+      +prefix(1)
 
   .steps
     +full(24)

@@ -22,4 +22,7 @@
     {% include "lists/_byline.html" with item=tag %}
 
   </div>
+    {% url 'manage_tag_details' tag.id as details_url %}
+    {# _tag_details.html loaded via ajax #}
+    {% include "lists/_itembody.html" %}
 </article>

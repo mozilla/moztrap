@@ -12,6 +12,7 @@ from ..core.models import Product
 class Tag(MTModel):
     """A tag."""
     name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
 
     # tags may be product-specific or global (in which case this FK is null)
     product = models.ForeignKey(Product, blank=True, null=True)
