@@ -27,7 +27,8 @@
 
       <div class="other-result">
           {% if other_result and other_result.status != result.STATUS.assigned and other_result.status != result.STATUS.started %}
-            <span class="other-{{ other_result.status }}" title="marked {{ other_result.status }} by {{ other_result.tester }}"></span>
+            {% url "results_results" rcv_id=runcaseversion.id as detail_url %}
+            <a href="{{ detail_url }}" target="_blank" class="other-{{ other_result.status }}" data-id="{{ other_result.id }}" title="marked {{ other_result.status }} by {{ other_result.tester }} {% if other_result.comment %} - {{ other_result.comment }}{% endif %}"></a>
           {% else %}
             <span class="other-empty"></span>
           {% endif %}
