@@ -112,7 +112,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         if not self.is_series:
             self._lock_case_versions()
 
-
+    @transaction.commit_on_success
     def _lock_case_versions(self):
         """
         Select caseversions from suites, create runcaseversions.
@@ -150,7 +150,6 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 ORDER BY rs.order, sc.order
                 """.format(self.id, ",".join(map(str, run_env_ids)))
             cursor.execute(sql)
-            transaction.commit_unless_managed()
 
             cv_list = [x[0] for x in cursor.fetchall()]
         else:
