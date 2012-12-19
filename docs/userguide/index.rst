@@ -16,5 +16,6 @@ design decisions.
    api/index
    ui/filtering
    ui/lists
+   ui/runtests
    ui/import
    faq
