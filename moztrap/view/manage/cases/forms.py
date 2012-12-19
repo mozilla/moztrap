@@ -4,7 +4,7 @@ Management forms for cases.
 """
 from django.core.urlresolvers import reverse
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
-
+from django.db.models import Max
 import floppyforms as forms
 
 from .... import model
@@ -198,8 +198,15 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 
         suite = version_kwargs.pop("suite", None)
         if suite:
+            order = model.SuiteCase.objects.filter(
+                suite=suite,
+                ).aggregate(Max("order"))["order__max"] or 0
             model.SuiteCase.objects.create(
-                case=case, suite=suite, user=self.user)
+                case=case,
+                suite=suite,
+                user=self.user,
+                order=order+1,
+                )
 
         productversions = [version_kwargs.pop("productversion")]
         if version_kwargs.pop("and_later_versions"):
@@ -271,6 +278,12 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
 
         cases = []
 
+        order = 0
+        if suite:
+            order = model.SuiteCase.objects.filter(
+                suite=suite,
+                ).aggregate(Max("order"))["order__max"] or 0
+
         for case_data in self.cleaned_data["cases"]:
             case = model.Case.objects.create(
                 product=product,
@@ -286,8 +299,13 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
             version_kwargs["user"] = self.user
 
             if suite:
+                order += 1
                 model.SuiteCase.objects.create(
-                    case=case, suite=suite, user=self.user)
+                    case=case,
+                    suite=suite,
+                    user=self.user,
+                    order=order,
+                    )
 
             for productversion in productversions:
                 this_version_kwargs = version_kwargs.copy()

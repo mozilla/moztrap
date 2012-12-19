@@ -6,7 +6,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import connection, transaction, models
-from django.db.models import Count, Q
+from django.db.models import Q
 
 from model_utils import Choices
 
@@ -14,7 +14,7 @@ from ..mtmodel import MTModel, TeamModel, DraftStatusModel
 from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
-from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
+from ..library.models import CaseVersion, Suite, CaseStep
 
 
 
@@ -84,6 +84,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         overrides.setdefault("is_series", False)
         overrides.setdefault("build", build)
         overrides.setdefault("series", self)
+        overrides.setdefault("start", datetime.date.today().strftime("%Y-%m-%d"))
         return super(Run, self).clone(*args, **kwargs)
 
 
