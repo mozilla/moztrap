@@ -105,19 +105,19 @@ class AddCaseFormTest(case.DBTestCase):
             )
 
 
-    def test_no_initial_suite(self):
-        """If no manage-suite-cases perm, no initial_suite field."""
-        self.assertNotIn("initial_suite", self.form().fields)
+    def test_no_suite(self):
+        """If no manage-suite-cases perm, no suite field."""
+        self.assertNotIn("initial", self.form().fields)
 
 
-    def test_initial_suite(self):
+    def test_suite(self):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
             model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         case = self.form(data=data, user=self.user).save()
 
@@ -159,7 +159,7 @@ class AddCaseFormTest(case.DBTestCase):
         suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         form = self.form(data=data, user=self.user)
 
@@ -364,19 +364,19 @@ class AddBulkCasesFormTest(case.DBTestCase):
             )
 
 
-    def test_no_initial_suite(self):
-        """If no manage-suite-cases perm, no initial_suite field."""
-        self.assertNotIn("initial_suite", self.form().fields)
+    def test_no_suite(self):
+        """If no manage-suite-cases perm, no suite field."""
+        self.assertNotIn("suite", self.form().fields)
 
 
-    def test_initial_suite(self):
+    def test_suite(self):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
             model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         case = self.form(data=data, user=self.user).save()[0]
 
@@ -418,7 +418,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
         suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         form = self.form(data=data, user=self.user)
 
