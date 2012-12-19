@@ -141,7 +141,7 @@ class AddCaseFormTest(case.DBTestCase):
             order=1)
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         newcase = self.form(data=data, user=self.user).save()
 
@@ -400,7 +400,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
             order=1)
 
         data = self.get_form_data()
-        data["initial_suite"] = suite.id
+        data["suite"] = suite.id
 
         newcase = self.form(data=data, user=self.user).save()[0]
 
