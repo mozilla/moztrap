@@ -637,14 +637,47 @@ class PinnedFilterTest(FiltersTestCase):
         self.assertEqual(pf.cookies, {})
 
     def test_fill_form_querystring(self):
+        """Fill querystring with pinned filter values."""
         COOKIES = {
             'csrftoken': 'd792db7bb8d4e073dbb3131bf7e9acc4',
             'moztrap-filter-foo': '%5B%222%22%5D',
             'djdt': 'hide',
             'sessionid': '93bb6b0b87594a3b6387692724d67043',
             }
-        GET = MultiValueDict({"filter-one": ["bub"]})
+        GET = MultiValueDict({
+            "one": ["bub"],
+            })
 
         pf = self.filters.PinnedFilters(COOKIES=COOKIES)
         newfilters=pf.fill_form_querystring(GET=GET)
-        self.assertEqual(newfilters, {"foo": [u"2"], "one": ["bub"]})
+        self.assertEqual(
+            newfilters,
+            {"foo": [u"2"], "one": ["bub"]},
+            )
+
+
+    def test_fill_form_querystring_pinned_filter_loses(self):
+        """
+        querystring filters take priority over pinned filters.
+
+        If a filter is pinned, but the user also passes the filter
+        in on the querystring, use the querystring.  Because that's
+        more explicit, and pinned filters are more implicit.
+        """
+        COOKIES = {
+            'csrftoken': 'd792db7bb8d4e073dbb3131bf7e9acc4',
+            'moztrap-filter-foo': '%5B%222%22%5D',
+            'djdt': 'hide',
+            'sessionid': '93bb6b0b87594a3b6387692724d67043',
+            }
+        GET = MultiValueDict({
+            "one": ["bub"],
+            "foo": ["5"],
+            })
+
+        pf = self.filters.PinnedFilters(COOKIES=COOKIES)
+        newfilters=pf.fill_form_querystring(GET=GET)
+        self.assertEqual(
+            newfilters,
+            {"foo": ["5"], "one": ["bub"]},
+            )
