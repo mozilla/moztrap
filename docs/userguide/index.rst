@@ -14,6 +14,7 @@ design decisions.
    model/teams
    model/roles
    api/index
+   ui/filtering
    ui/lists
    ui/import
    faq
