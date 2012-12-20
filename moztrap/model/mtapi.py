@@ -134,6 +134,6 @@ class MTResource(ModelResource):
         """Avoid the following error:
         WSGIWarning: Content-Type header found in a 204 response, which not return content.
         """
-        res = super(SuiteResource, self).delete_detail(request, **kwargs)
+        res = super(MTResource, self).delete_detail(request, **kwargs)
         del(res._headers["content-type"])
         return res

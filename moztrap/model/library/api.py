@@ -12,12 +12,7 @@ from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 
 
-<<<<<<< HEAD
 class SuiteResource(MTResource):
-=======
-
-class SuiteResource(ModelResource):
->>>>>>> upstream/master
 
     product = fields.ToOneField(ProductResource, "product")
 
