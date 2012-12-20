@@ -13,6 +13,7 @@ from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 
 
+
 class SuiteResource(ModelResource):
 
     product = fields.ToOneField(ProductResource, "product")
@@ -30,6 +31,7 @@ class SuiteResource(ModelResource):
         authorization = MTAuthorization()
         always_return_data = True
 
+
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the suite to the request's user"""
 
@@ -38,6 +40,7 @@ class SuiteResource(ModelResource):
         bundle.obj.save(user=request.user)
         return bundle
 
+
     def obj_update(self, bundle, request=None, **kwargs):
         """Set the modified_by field for the suite to the request's user"""
 
@@ -45,6 +48,7 @@ class SuiteResource(ModelResource):
         bundle.obj.modified_on = datetime.datetime.utcnow()
         bundle.obj.save(user=request.user)
         return bundle
+
 
     def obj_delete(self, request=None, **kwargs):
         """Delete the object. 
@@ -56,6 +60,16 @@ class SuiteResource(ModelResource):
         suite_id = request.path.split('/')[-2]
         suite = Suite.objects.get(id=suite_id)
         suite.delete(user=request.user, permanent=permanent)
+
+
+    def delete_detail(self, request, **kwargs):
+        """Avoid the following error:
+        WSGIWarning: Content-Type header found in a 204 response, which not return content.
+        """
+        res = super(SuiteResource, self).delete_detail(request, **kwargs)
+        del(res._headers["content-type"])
+        return res
+
 
 
 class CaseResource(ModelResource):
