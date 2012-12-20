@@ -3,16 +3,16 @@ Tests for ProductResource api.
 
 """
 
-from tests import case
+from tests.case.api.crud import ApiCrudCases
 
 
 
-class ProductResourceTest(case.api.ApiTestCase):
+class ProductResourceTest(ApiCrudCases):
 
     @property
     def factory(self):
         """The model factory for this object."""
-        return self.F.ProductFactory
+        return self.F.ProductFactory()
 
 
     @property
@@ -20,45 +20,69 @@ class ProductResourceTest(case.api.ApiTestCase):
         return "product"
 
 
-    def test_product_list(self):
-        """Get a list of existing products and their versions"""
-        p = self.factory.create(name="ProductA", description="descrumptious")
+    @property
+    def permission(self):
+        """String defining the permission required for Create, Update, and Delete."""
+        return "core.manage_products"
 
-        pv = self.F.ProductVersionFactory.create(
-            product=p,
-            version="3.2",
-            codename="enigma"
-            )
 
-        res = self.get_list()
+    @property
+    def wrong_permissions(self):
+        """String defining permissions that will NOT work for this object."""
+        return "library.manage_suites"
 
-        act_meta = res.json["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
+
+    @property
+    def new_object_data(self):
+        """Generates a dictionary containing the field names and auto-generated
+        values needed to create a unique object.
+
+        The output of this method can be sent in the payload parameter of a POST message.
+        """
+        self.product_fixture = self.F.ProductFactory.create()
+        fields = {
+            u"name": unicode("test_%s_%s" % (self.datetime, self.resource_name)),
+            u"description": unicode("test %s %s" % (self.datetime, self.resource_name)),
+            u"productversions": {
+                u"version": unicode(self.datetime),
+                u"codename": unicode("test version %s" % self.datetime),
+                u"description": unicode("test version %s" % self.datetime)
             }
+        }
+        return fields
 
-        self.assertEquals(act_meta, exp_meta)
 
-        act_objects = res.json["objects"]
-        exp_objects = []
+    def backend_object(self, id):
+        """Returns the object from the backend, so you can query it's values in
+        the database for validation.
+        """
+        return self.model.Product.everything.get(id=id)
 
-        exp_objects.append({
-            u"name": unicode(p.name),
-            u"description": unicode(p.description),
-            u"productversions": [{
-                u"codename": unicode(pv.codename),
-                u"id": unicode(pv.id),
-                u"product": unicode(self.get_detail_url("product",pv.product.id)),
-                u"resource_uri": unicode(self.get_detail_url("productversion",pv.id)),
-                u"version": u"3.2",
-                }],
-            u"id": unicode(p.id),
-            u"resource_uri": unicode(self.get_detail_url("product",p.id)),
-            })
+ 
+    def backend_data(self, backend_obj):
+        """Query's the database for the object's current values. Output is a 
+        dictionary that should match the result of getting the object's detail 
+        via the API, and can be used to verify API output.
 
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
+        Note: both keys and data should be in unicode
+        """
+        product_uri = self.get_detail_url(self.resource_name, str(backend_obj.id))
+        actual = {}
+        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"name"] = unicode(backend_obj.name)
+        actual[u"description"] = unicode(backend_obj.description)
+        actual[u"resource_uri"] = unicode(product_uri)
+        actual[u"productversions"] = []
+        # actual[u"productversions"] = [{
+        #         u"id": unicode(pv.id),
+        #         u"product": unicode(product_uri),
+        #         u"version": unicode(pv.version),
+        #         u"codename": unicode(pv.codename),
+        #         u"resource_uri": unicode(self.get_detail_url('productversion', str(pv.id))),
+        #     } for pv in backend_obj.versions.all()]
+
+        return actual
+
+
+
+    # additional test cases, if any

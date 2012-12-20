@@ -1,56 +1,13 @@
-from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import  Authorization
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Product, ProductVersion, ApiKey
 from ..environments.api import EnvironmentResource
+from ..mtapi import MTResource, MTAuthorization, MTApiKeyAuthentication
 
-
-
-class MTApiKeyAuthentication(ApiKeyAuthentication):
-    """Authentication that requires our custom api key implementation."""
-
-    def get_key(self, user, api_key):
-        try:
-            ApiKey.objects.get(owner=user, key=api_key, active=True)
-
-        except:
-            return self._unauthorized()
-
-        return True
-
-
-    def is_authenticated(self, request, **kwargs):
-        """
-        Finds the user and checks their API key. GET requests are always allowed.
-
-        This overrides Tastypie's default impl, because we use a User
-        proxy class, which Tastypie doesn't find
-
-        Should return either ``True`` if allowed, ``False`` if not or an
-        ``HttpResponse`` if you need something custom.
-        """
-        if request.method == "GET":
-            return True
-
-        from .auth import User
-
-        username = request.GET.get("username") or request.POST.get("username")
-        api_key = request.GET.get("api_key") or request.POST.get("api_key")
-
-        if not username or not api_key:
-            return self._unauthorized()
-
-        try:
-            user = User.objects.get(username=username)
-        except (User.DoesNotExist, User.MultipleObjectsReturned):
-            return self._unauthorized()
-
-        request.user = user
-        return self.get_key(user, api_key)
-
-
+import logging
+logger = logging.getLogger(__name__)
 
 class ReportResultsAuthorization(Authorization):
     """Authorization that only allows users with execute privileges."""
@@ -60,22 +17,6 @@ class ReportResultsAuthorization(Authorization):
             return True
         elif request.user.has_perm("execution.execute"):
             return True
-        else:
-            return False
-
-
-
-class MTAuthorization(Authorization):
-    """Authorization that allows any user to GET but only users with permissions to modify."""
-
-    def is_authorized(self, request, object=None):
-        klass = self.resource_meta.object_class
-        permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
-
-        if request.method == "GET":
-            return True
-        elif request.user.has_perm(permission):
-                return True
         else:
             return False
 
@@ -100,7 +41,7 @@ class ProductVersionResource(ModelResource):
 
 
 
-class ProductResource(ModelResource):
+class ProductResource(MTResource):
     """
     Return a list of products.
 
@@ -115,10 +56,30 @@ class ProductResource(ModelResource):
 
     class Meta:
         queryset = Product.objects.all()
-        list_allowed_methods = ['get']
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "name", "description"]
         filtering = {"name": ALL}
+        authentication = MTApiKeyAuthentication()
+        authorization = MTAuthorization()
+        always_return_data = True
 
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Product
+
+
+    # def obj_create(self, bundle, request=None, **kwargs):
+    #     """Set the created_by field for the object to the request's user"""
+    #     try:
+    #         bundle = super(MTResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+    #         bundle.obj.created_by = request.user
+    #         bundle.obj.save(user=request.user)
+    #         return bundle
+    #     except Exception as e:
+    #         logger.debug("error creating %s" % e)
 
 
 class ProductVersionEnvironmentsResource(ModelResource):

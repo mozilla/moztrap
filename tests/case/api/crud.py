@@ -7,7 +7,8 @@ from django.utils import unittest
 
 from tests.case.api import ApiTestCase
 
-
+import logging
+mozlogger = logging.getLogger('moztrap.test')
 
 class ApiCrudCases(ApiTestCase):
     """Re-usable test cases for Create, Read, Update, and Delete.
@@ -19,7 +20,6 @@ class ApiCrudCases(ApiTestCase):
       - new_object_data(self)                   (property)
       - backend_object(self, id)                (method)
       - backend_data(self, backend_object)      (method)
-      - backend_meta_data(self, backend_object) (method)
 
     If any of these properties / methods are called on a child class without 
     having implemented them, a NotImplementedError will be thrown.
@@ -131,7 +131,25 @@ class ApiCrudCases(ApiTestCase):
         Used to verify that the CRUD methods are updating these
         values.
         """
-        raise NotImplementedError
+        actual = {}
+        try:
+            actual["created_by"] = backend_obj.created_by.username
+        except AttributeError:
+            actual["created_by"] = None
+        try:
+            actual["modified_by"] = backend_obj.modified_by.username
+        except AttributeError:
+            actual["modified_by"] = None
+        try:
+            actual["deleted_by"] = backend_obj.deleted_by.username
+        except AttributeError:
+            actual["deleted_by"] = None
+
+        actual["created_on"] = backend_obj.created_on
+        actual["modified_on"] = backend_obj.modified_on
+        actual["deleted_on"] = backend_obj.deleted_on
+
+        return actual
 
 
     @property
@@ -177,6 +195,8 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_create')
+
         # get data for creation
         fields = self.new_object_data
 
@@ -217,6 +237,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_create_fails_with_wrong_perms')
 
         # get data for creation
         fields = self.new_object_data
@@ -241,6 +262,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_read_list')
 
         # create fixture
         fixture1 = self.factory
@@ -279,6 +301,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_read_detail')
 
         # create fixture
         fixture1 = self.factory
@@ -301,6 +324,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_update_detail')
 
         # create fixture
         fixture1 = self.factory
@@ -341,6 +365,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_update_list_forbidden')
 
         # create fixturs
         fixture1 = self.factory
@@ -369,6 +394,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_update_fails_without_creds')
 
         # create fixture
         fixture1 = self.factory
@@ -391,6 +417,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_delete_detail_permanent')
 
         # this test is throwing /usr/local/lib/python2.7/dist-packages/webtest/lint.py:443: 
         # WSGIWarning: Content-Type header found in a 204 response, which not return content.
@@ -424,6 +451,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_delete_detail_soft')
 
         # create fixture
         fixture1 = self.factory
@@ -457,6 +485,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_delete_list_forbidden')
         
         url = self.get_list_url(self.resource_name)
         url = "{0}?{1}".format(url, urllib.urlencode(self.credentials))
@@ -471,6 +500,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
+        mozlogger.debug('test_delete_fails_with_wrong_perms')
 
         # create fixture
         fixture1 = self.factory

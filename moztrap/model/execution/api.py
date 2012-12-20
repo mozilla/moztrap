@@ -8,8 +8,9 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
 from .models import Run, RunCaseVersion, RunSuite, Result
+from ..mtapi import MTResource, MTApiKeyAuthentication
 from ..core.api import (ProductVersionResource, ProductResource,
-                        ReportResultsAuthorization, MTApiKeyAuthentication)
+                        ReportResultsAuthorization)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
