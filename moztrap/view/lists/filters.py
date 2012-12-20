@@ -4,10 +4,13 @@ Utilities for filtering querysets in a view.
 """
 from collections import namedtuple
 from functools import wraps
+import json
+import urlparse
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 
+from moztrap.model.core.models import ProductVersion
 
 
 def filter_url(path_or_view, obj):
@@ -65,7 +68,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            bfs = filterset.bind(request.GET)
+            bfs = filterset.bind(request.GET, request.COOKIES)
             ctx[ctx_name] = bfs.filter(ctx[ctx_name])
             ctx["filters"] = bfs
             return response
@@ -115,6 +118,41 @@ class BoundFilterSet(object):
 
 
 
+class PinnedFilters(object):
+    """An object to manage pinned filters saved as cookies in the session."""
+
+    def __init__(self, COOKIES):
+        self.cookie_prefix = "moztrap-filter-"
+        self.cookies = {}
+        if COOKIES:
+            for k in COOKIES.keys():
+                if k.startswith(self.cookie_prefix):
+                    filter_key = k[len(self.cookie_prefix):]
+                    pinned_filters = json.loads(
+                        urlparse.unquote(COOKIES.get(k)))
+                    self.cookies[filter_key] = pinned_filters
+
+
+    def extend_filters(self, filters):
+        # pinned filters are stored in session cookies.  Add them to the list
+        # of other filters in the querystring.
+        for k, v in self.cookies.items():
+            filters.setdefault(k, []).extend(v)
+        return filters
+
+
+    def fill_form_querystring(self, GET):
+        # pinned filters are stored in session cookies.  Fill in, if not
+        # already set.  Don't want to overwrite or add to existing values
+        # and only if there's a single matching cookie value
+        new_filters = GET.copy()
+        for k, v in self.cookies.items():
+            if not k in new_filters and len(v) == 1:
+                new_filters[k] = v[0]
+        return new_filters
+
+
+
 class FilterSet(object):
     """A set of possible filters on a queryset."""
     # subclasses can have preset filters
@@ -136,7 +174,7 @@ class FilterSet(object):
         self.prefix = prefix
 
 
-    def bind(self, GET=None):
+    def bind(self, GET=None, COOKIES=None):
         """
         Return BoundFilterSet (or subclass) for given filter data.
 
@@ -146,12 +184,20 @@ class FilterSet(object):
 
         """
         GET = GET or MultiValueDict()
+
+        query_filters = dict(
+            (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
+            if k.startswith(self.prefix)
+            )
+
+        # pinned filters are stored in session cookies.  Add them to the list
+        # of other filters in the querystring.
+        if COOKIES:
+            PinnedFilters(COOKIES).extend_filters(query_filters)
+
         return self.bound_class(
             self,
-            dict(
-                (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(self.prefix)
-                )
+            query_filters,
             )
 
 

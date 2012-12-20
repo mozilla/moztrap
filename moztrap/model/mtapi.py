@@ -92,6 +92,7 @@ class MTResource(ModelResource):
         """Model class related to this resource."""
         raise NotImplementedError
 
+
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
         try:
@@ -102,6 +103,7 @@ class MTResource(ModelResource):
         except Exception as e:
             logger.debug("error creating %s" % e)
 
+
     def obj_update(self, bundle, request=None, **kwargs):
         """Set the modified_by field for the object to the request's user"""
         try:
@@ -111,6 +113,7 @@ class MTResource(ModelResource):
             return bundle
         except Exception as e:
             logger.debug("error updating %s" % e)
+
 
     def obj_delete(self, request=None, **kwargs):
         """Delete the object. 
@@ -125,3 +128,12 @@ class MTResource(ModelResource):
             obj.delete(user=request.user, permanent=permanent)
         except Exception as e:
             logger.debug("error deleting %s" % e)
+
+
+    def delete_detail(self, request, **kwargs):
+        """Avoid the following error:
+        WSGIWarning: Content-Type header found in a 204 response, which not return content.
+        """
+        res = super(SuiteResource, self).delete_detail(request, **kwargs)
+        del(res._headers["content-type"])
+        return res

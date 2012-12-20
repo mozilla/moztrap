@@ -419,9 +419,6 @@ class ApiCrudCases(ApiTestCase):
             return
         mozlogger.debug('test_delete_detail_permanent')
 
-        # this test is throwing /usr/local/lib/python2.7/dist-packages/webtest/lint.py:443: 
-        # WSGIWarning: Content-Type header found in a 204 response, which not return content.
-
         # create fixture
         fixture1 = self.factory
         obj_id = str(fixture1.id)

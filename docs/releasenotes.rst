@@ -1,14 +1,70 @@
 Release Notes
 =============
 
+Version 1.3.5
+-------------
+*release date - 12/19/2012*
+
+* **Pinned Filters** - This feature allows you to **pin** a filter so that it
+  remains constant for the session.  This way, if you want to only see data
+  for a particular :ref:`product<products>` then you can pin the filter for it
+  and everywhere you go, you only see data for that product.  For more info,
+  see :ref:`pinned filters<pinned-filters>`.
+* **See test results from other users** - There has been an icon while running
+  tests that indicates that another user has run it, and what that result is.
+  And with this release, we added the comment from failed or invalid tests to
+  the rollover text.  In addition, this is now a button that will take you to
+  the results details for that test case.  See
+  :ref:`Results of others<other-results>` for more info.
+* **Edit cases while running** - If you notice that a case needs updating while
+  you are running it, there is now an *Edit this case* link in the upper right
+  that will open a new tab to edit the contents of the case.  See
+  :ref:`running tests<runtests>` for more info.
+* **minor bug fixes** - New run series member sets start date to today, rather
+  than that of the series itself.  Creating a case, setting suite adds the case
+  to the end of the suite order.
+
+
+Version 1.3.2
+-------------
+*release date - 12/18/2012*
+
+* **Tag Descriptions** - You can now add descriptions to tags.  The result is
+  that when you execute tests, the description is displayed for each case
+  that has that tag.  This is a handy way to make notes that apply to a group
+  of cases, like preconditions, links, etc.  As always, Markdown_ syntax is
+  suported.  See :ref:`Tags<tags>` for more info.
+* **Fixed refresh run bug** - The :ref:`test run refresh<test-run-refresh>`
+  to get newly added cases was broken.  Now fixed.
+
+
+Version 1.3.1
+-------------
+*release date - 12/10/2012*
+
+* **Display all case versions** - Formerly, when you looked at the
+  ``manage | cases`` area, you would only see the latest version of each test
+  case, unless you were filtering for a different version.  This was confusing
+  to many users, so now you see each distinct case version.
+* **Delete distinct case versions** - Fixed where deleting one case version
+  deleted all of them.
+* **Create case no version default** - Many users were accidentally creating
+  new cases for the latest version, when they meant to create it for an earlier
+  version.  Since the default for new cases is the latest version, this went
+  un-noticed a lot.  Removing the default makes it more deliberate.
+
+
 Version 1.3
 -----------
+*release date - 12/03/2012*
+
 * **Sharable list links** - When you have filtered a list somewhere in the
   system, you can click the *link* icon next to the filter field to
   bring up the url that you can share to show that list.  This link honors
   pagination and all filters.  And it can be used in the management area
   as well as results and in test runs.  This can be especially nice if you
   want to tell a tester to run a specific set of test cases in a run.
+  See :ref:`Sharing Filters<share-filters>` for more info.
 * **Test Run description while running tests** - We added the test run
   description field to the top of the page while running tests.  This
   field supports markdown, so you can put links and other instructions to
@@ -59,3 +115,5 @@ Version 1.2
 * **Run Series:** See :ref:`Test Run Series <test-run-series>` for more info on
   this new feature.
 * **Better i18n support** - Added more support for non-ascii characters.
+
+.. _Markdown: http://daringfireball.net/projects/markdown/syntax

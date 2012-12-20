@@ -382,9 +382,9 @@ class AddCaseTest(case.view.FormViewTestCase,
         self.add_perm("manage_suite_cases")
 
         s = self.F.SuiteFactory.create()
-        form = self.get_form(params={"initial_suite": str(s.id)})
+        form = self.get_form(params={"suite": str(s.id)})
 
-        self.assertEqual(form.fields["initial_suite"][0].value, str(s.id))
+        self.assertEqual(form.fields["suite"][0].value, str(s.id))
 
 
     def test_error(self):
