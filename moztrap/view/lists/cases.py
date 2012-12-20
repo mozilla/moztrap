@@ -25,13 +25,18 @@ class PrefixIDFilter(KeywordFilter):
         for value in values:
 
             # split the prefix from the id
-            prefix, sep, caseid = value.rpartition(self.delimiter)
+            try:
+                prefix, sep, caseid = value.rpartition(self.delimiter)
+            except AttributeError:
+                prefix = None
+                caseid = value
+
 
             # if there is a prefix of abc-xyz, then we don't want to
             # try searching in the int field for xyz, presume it's all
             # the prefix, as the suffix MUST always be numeric.
             # also, if the user put the delimiter at the end, strip it off
-            if not caseid.isdecimal():
+            if not isinstance(caseid, int) and not caseid.isdecimal():
                 prefix = value.rstrip(self.delimiter)
                 caseid = None
 

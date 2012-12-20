@@ -15,6 +15,7 @@ from moztrap import model
 
 from moztrap.view.filters import CaseVersionFilterSet
 from moztrap.view.lists import decorators as lists
+from moztrap.view.lists.filters import PinnedFilters
 from moztrap.view.users.decorators import permission_required
 from moztrap.view.utils.ajax import ajax
 from moztrap.view.utils.auth import login_maybe_required
@@ -98,7 +99,8 @@ def case_add(request):
                 )
             return redirect("manage_cases")
     else:
-        form = forms.AddCaseForm(user=request.user, initial=request.GET)
+        pf = PinnedFilters(request.COOKIES)
+        form = forms.AddCaseForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
     return TemplateResponse(
         request,
         "manage/case/add_case.html",
@@ -124,7 +126,8 @@ def case_add_bulk(request):
                 )
             return redirect("manage_cases")
     else:
-        form = forms.AddBulkCaseForm(user=request.user)
+        pf = PinnedFilters(request.COOKIES)
+        form = forms.AddBulkCaseForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
     return TemplateResponse(
         request,
         "manage/case/add_case_bulk.html",

@@ -157,7 +157,7 @@ class SuitesTest(case.view.manage.ListViewTestCase,
         self.assertElement(
             res.html,
             "a",
-            href="{0}?product={1}&initial_suite={2}".format(
+            href="{0}?product={1}&suite={2}".format(
                 reverse("manage_case_add"), str(suite.product.id), str(suite.id)
                 ),
             count=count

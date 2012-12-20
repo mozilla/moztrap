@@ -30,7 +30,8 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         )
     productversion = mtforms.MTModelChoiceField(
         queryset=model.ProductVersion.objects.all(),
-        choice_attrs=mtforms.product_id_attrs)
+        choice_attrs=mtforms.product_id_attrs,
+        )
     build = forms.CharField(max_length=200, required=False)
     is_series = forms.BooleanField(required=False)
 

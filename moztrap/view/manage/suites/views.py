@@ -12,6 +12,7 @@ from moztrap import model
 from moztrap.model.mtmodel import NotDeletedCount
 from moztrap.view.filters import SuiteFilterSet
 from moztrap.view.lists import decorators as lists
+from moztrap.view.lists.filters import PinnedFilters
 from moztrap.view.users.decorators import permission_required
 from moztrap.view.utils.ajax import ajax
 from moztrap.view.utils.auth import login_maybe_required
@@ -75,7 +76,16 @@ def suite_add(request):
                 )
             return redirect("manage_suites")
     else:
-        form = forms.AddSuiteForm(user=request.user)
+        pf = PinnedFilters(request.COOKIES)
+        # @@@ I wonder if there's a bug here.  Passing in a QueryDict to
+        # a BaseModelForm doesn't work.  It only works for BaseForm.  For
+        # BaseModelForm, you must pass in a dict so that the values are
+        # not lists.  BaseModelForm doesn't convert them from lists to single
+        # values properly.
+        form = forms.AddSuiteForm(
+            user=request.user,
+            initial=pf.fill_form_querystring(request.GET).dict(),
+            )
     return TemplateResponse(
         request,
         "manage/suite/add_suite.html",
