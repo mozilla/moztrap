@@ -1,24 +1,74 @@
+import datetime
+
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.resources import ModelResource
 
 from django.http import HttpResponse
 
+from ..core.api import (ProductVersionResource, ProductResource,
+                        MTAuthorization, MTApiKeyAuthentication)
 from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
 from ..environments.api import EnvironmentResource
-from ..core.api import ProductVersionResource
 from ..tags.api import TagResource
+
 
 
 class SuiteResource(ModelResource):
 
+    product = fields.ToOneField(ProductResource, "product")
 
     class Meta:
         queryset = Suite.objects.all()
-        fields = ["name"]
+        fields = ["name", "product", "description", "status", "id"]
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "put", "delete"]
         filtering = {
             "name": ALL,
+            "product": ALL_WITH_RELATIONS,
             }
+        authentication = MTApiKeyAuthentication()
+        authorization = MTAuthorization()
+        always_return_data = True
+
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """Set the created_by field for the suite to the request's user"""
+
+        bundle = super(SuiteResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+        bundle.obj.created_by = request.user
+        bundle.obj.save(user=request.user)
+        return bundle
+
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Set the modified_by field for the suite to the request's user"""
+
+        bundle = super(SuiteResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+        bundle.obj.modified_on = datetime.datetime.utcnow()
+        bundle.obj.save(user=request.user)
+        return bundle
+
+
+    def obj_delete(self, request=None, **kwargs):
+        """Delete the object. 
+        The DELETE request may include permanent=True/False in its params parameter
+        (ie, along with the user's credentials). Default is False.
+        """
+        permanent = request._request.dicts[1].get("permanent", False)
+        # pull the id out of the request's path
+        suite_id = request.path.split('/')[-2]
+        suite = Suite.objects.get(id=suite_id)
+        suite.delete(user=request.user, permanent=permanent)
+
+
+    def delete_detail(self, request, **kwargs):
+        """Avoid the following error:
+        WSGIWarning: Content-Type header found in a 204 response, which not return content.
+        """
+        res = super(SuiteResource, self).delete_detail(request, **kwargs)
+        del(res._headers["content-type"])
+        return res
 
 
 
