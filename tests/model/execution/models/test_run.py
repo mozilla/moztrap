@@ -3,8 +3,11 @@ Tests for Run model.
 
 """
 import datetime
+from mock import patch
 
 from django.core.exceptions import ValidationError
+
+from moztrap.model.execution.models import Run
 
 from tests import case
 
@@ -271,8 +274,11 @@ class RunTest(case.DBTestCase):
 
 
 
+
+
 class RunActivationTest(case.DBTestCase):
     """Tests for activating runs and locking-in runcaseversions."""
+
     def setUp(self):
         """Set up envs, product and product versions used by all tests."""
         self.envs = self.F.EnvironmentFactory.create_full_set(
@@ -282,7 +288,6 @@ class RunActivationTest(case.DBTestCase):
             product=self.p, version="8.0", environments=self.envs)
         self.pv9 = self.F.ProductVersionFactory.create(
             product=self.p, version="9.0", environments=self.envs)
-
 
 
     def assertCaseVersions(self, run, caseversions):
@@ -996,3 +1001,159 @@ class RunActivationTest(case.DBTestCase):
             self.model.Result.objects.filter(runcaseversion__run=r).count(), 1)
         self.assertEqual(
             self.model.Result.objects.count(), 1)
+
+
+
+class RefreshTransactionTest(case.TransactionTestCase):
+    """Tests for ``Importer`` transactional behavior."""
+
+    def setUp(self):
+        """Set up envs, product and product versions used by all tests."""
+        self.envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"], "Browser": ["Firefox", "Chrome"]})
+        self.p = self.F.ProductFactory.create()
+        self.pv8 = self.F.ProductVersionFactory.create(
+            product=self.p, version="8.0", environments=self.envs)
+        self.pv9 = self.F.ProductVersionFactory.create(
+            product=self.p, version="9.0", environments=self.envs)
+
+
+    def create_run_needing_refresh(self):
+        """
+        Refresh the runcaseversions while the run remains active
+
+        Very similar to previous test case, but this all happens while the
+        run is in active state.  Ensuring that it has the same end-result.
+
+        """
+        r = self.F.RunFactory.create(
+            productversion=self.pv8)
+
+        r.activate()
+
+        # one that should get deleted because it's no longer in the suite
+        deleteme_cv = self.F.CaseVersionFactory.create(
+            name="I shouldn't be here",
+            productversion=self.pv8,
+            status="active",
+            )
+        # adds runcaseversion.environments (4 of them), too
+        self.F.RunCaseVersionFactory(run=r, caseversion=deleteme_cv)
+
+        # add suite to run
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        # add 6 cases to suite, needed by the run
+        cv_needed = []
+        for num in range(6):
+            cv = self.F.CaseVersionFactory.create(
+                name="casey"+str(num),
+                productversion=self.pv8,
+                status="active",
+                )
+            self.F.SuiteCaseFactory.create(suite=ts, case=cv.case)
+            cv_needed.append(cv)
+
+        # existing rcv that we should keep, because it's in the suite
+        # also adds runcaseversion.environments here (4 more)
+        keepme_rcv = self.F.RunCaseVersionFactory(
+            run=r,
+            caseversion=cv_needed[3],
+            order=0,
+            )
+        # existing env that should be removed in removal phase
+        deleteme_env = self.F.EnvironmentFactory.create_set(
+            ["OS", "Browser"],
+            ["Atari", "RS-232"],
+            )[0]
+        self.F.model.RunCaseVersion.environments.through(
+            runcaseversion=keepme_rcv,
+            environment=deleteme_env,
+            ).save()
+
+        return {
+            "r": r,
+            "deleteme_cv": deleteme_cv,
+            "ts": ts,
+            "cv_needed": cv_needed,
+            "existing_rcv": keepme_rcv,
+            "old_env": deleteme_env,
+            }
+
+
+    def assert_rolled_back(self, test_data):
+        # refetch the run from the db after changes.
+        r = test_data["r"]
+        self.refresh(r)
+
+        # should still contain the ``deleteme_cv`` and the
+        self.assertEqual(r.runcaseversions.count(), 2)
+        # 4 for each rcv that remains, plus 1 rogue env we added manually
+        self.assertEqual(
+            self.F.model.RunCaseVersion.environments.through.objects.count(),
+            9,
+            )
+        self.assertEqual(self.F.model.RunCaseVersion.objects.filter(
+            run=r,
+            caseversion=test_data["deleteme_cv"],
+            ).count(), 1)
+
+
+    def do_rollback_test(self, new_func):
+        """Perform the rollback test with an exception in a new function."""
+        test_data = self.create_run_needing_refresh()
+
+        class SurpriseException(RuntimeError):
+            pass
+        def raise_exception(*args, **kwargs):
+            raise SurpriseException("Surprise!")
+        new_func.side_effect = raise_exception
+
+        with self.assertRaises(SurpriseException):
+            test_data["r"].refresh()
+
+        self.assert_rolled_back(test_data)
+
+
+    @patch.object(Run, '_delete_runcaseversions')
+    def test_exception_in_delete_runcaseversions(self, new_func):
+        """
+        An unknown exception is thrown:
+            * after creating unfresh test data
+            * before deleting rcvs
+        so the entire transaction is rolled back.
+        """
+        self.do_rollback_test(new_func)
+
+
+    @patch.object(Run, '_bulk_insert_new_runcaseversions')
+    def test_exception_in_bulk_insert_new_rcv(self, new_func):
+        """
+        An unknown exception is thrown:
+            * after deleting rcvs
+            * before bulk insert
+        so the entire transaction is rolled back.
+        """
+        self.do_rollback_test(new_func)
+
+
+    @patch.object(Run, '_bulk_update_runcaseversion_environments_for_lock')
+    def test_exception_in_bulk_update_rcv_envs(self, new_func):
+        """
+        An unknown exception is thrown:
+            * after bulk insert of rcvs
+            * before bulk update of envs
+        so the entire transaction is rolled back.
+        """
+        self.do_rollback_test(new_func)
+
+
+    @patch.object(Run, '_lock_caseversions_complete')
+    def test_exception_after_complete(self, new_func):
+        """
+        An unknown exception is thrown:
+            * after bulk update of envs, and everything should be done.
+        so the entire transaction is rolled back.
+        """
+        self.do_rollback_test(new_func)

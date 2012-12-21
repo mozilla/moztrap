@@ -157,7 +157,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             cv_list = []
 
         # delete rcvs that we won't be needing anymore
-        self.runcaseversions.exclude(caseversion__in=cv_list).delete(permanent=True)
+        self._delete_runcaseversions(cv_list)
 
         # remaining rcvs should be ones we want to keep, and we need to inject
         # those ids into the insert/update list for bulk_insert.  So create
@@ -168,7 +168,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             existing_rcv_map[map_item["caseversion_id"]] = map_item["id"]
 
         # build the list of rcvs that we DO need.  Be sure to include the ids
-        # for rcvs that alredy exist so that we will just be updating the order
+        # for rcvs that already exist so that we will just be updating the order
         # and not replacing it.  We will use a special manager that does an
         # update on insert error.
 
@@ -187,9 +187,22 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             order += 1
 
         # insert these rcvs in bulk
-        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
+        self._bulk_insert_new_runcaseversions(rcv_proxies)
 
         self._bulk_update_runcaseversion_environments_for_lock()
+
+        self._lock_caseversions_complete()
+
+
+    def _delete_runcaseversions(self, cv_list):
+        """Hook to delete runcaseversions we know we don't need anymore."""
+        self.runcaseversions.exclude(caseversion__in=cv_list).delete(
+            permanent=True)
+
+
+    def _bulk_insert_new_runcaseversions(self, rcv_proxies):
+        """Hook to bulk-insert runcaseversions we know we DO need."""
+        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
 
 
     def _bulk_update_runcaseversion_environments_for_lock(self):
@@ -247,6 +260,11 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             environment_id=needed[1]) for needed in needed_rcv_envs_set]
 
         RunCaseVersion.environments.through.objects.bulk_create(needed_rcv_envs)
+
+
+    def _lock_caseversions_complete(self):
+        """Hook for doing any post-processing after doing the rcv lock."""
+        pass
 
 
     def result_summary(self):
