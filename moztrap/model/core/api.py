@@ -22,7 +22,7 @@ class ReportResultsAuthorization(Authorization):
 
 
 
-class ProductVersionResource(ModelResource):
+class ProductVersionResource(MTResource):
     """
     Return a list of product versions.
 
@@ -32,12 +32,15 @@ class ProductVersionResource(ModelResource):
 
     class Meta:
         queryset = ProductVersion.objects.all()
-        list_allowed_methods = ['get']
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "version", "codename", "product"]
         filtering = {
             "version": ALL,
             "product": ALL_WITH_RELATIONS,
             }
+        authentication = MTApiKeyAuthentication()
+        authorization = MTAuthorization()
 
 
 
@@ -71,15 +74,43 @@ class ProductResource(MTResource):
         return Product
 
 
-    # def obj_create(self, bundle, request=None, **kwargs):
-    #     """Set the created_by field for the object to the request's user"""
-    #     try:
-    #         bundle = super(MTResource, self).obj_create(bundle=bundle, request=request, **kwargs)
-    #         bundle.obj.created_by = request.user
-    #         bundle.obj.save(user=request.user)
-    #         return bundle
-    #     except Exception as e:
-    #         logger.debug("error creating %s" % e)
+    def obj_create(self, bundle, request=None, **kwargs):
+        """Oversee the creation of product and its required productversion.
+        Probably not strictly RESTful.
+        """
+
+        # pull the productversions off, they don't exist yet
+        productversions = bundle.data.pop('productversions', [])
+        bundle.data["productversions"] = []
+
+        # create the product
+        updated_bundle = super(ProductResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+        product = self.model.objects.get(name=bundle.data["name"])
+
+        # create the productversions
+        for pv in productversions:
+            ProductVersion.objects.get_or_create(product=product, **pv)
+
+        return updated_bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Oversee updating of product.
+        If this were RESTful, it remove all existing versions and add the requested versions.
+        But this isn't restful, it just adds the version if it doesn't exist already.
+        """
+
+        # pull the productversions off, you can't edit them from here
+        productversions = bundle.data.pop("productversions")
+        bundle.data["productversions"] = []
+
+        updated_bundle =  super(ProductResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+
+        # create the productversions
+        for pv in productversions:
+            ProductVersion.objects.get_or_create(product=updated_bundle.obj, **pv)
+
+        return updated_bundle
+
 
 
 class ProductVersionEnvironmentsResource(ModelResource):

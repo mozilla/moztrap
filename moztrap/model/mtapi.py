@@ -5,7 +5,7 @@ from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import  Authorization
 from .core.models import ApiKey
 
-import logging
+import logging, sys, traceback
 logger = logging.getLogger("moztrap.model.mtapi")
 
 class MTApiKeyAuthentication(ApiKeyAuthentication):
@@ -95,24 +95,29 @@ class MTResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
+        # this try/except logging is more helpful than 500 / 404 errors on the client side
         try:
             bundle = super(MTResource, self).obj_create(bundle=bundle, request=request, **kwargs)
             bundle.obj.created_by = request.user
             bundle.obj.save(user=request.user)
             return bundle
-        except Exception as e:
-            logger.debug("error creating %s" % e)
+        except Exception:
+            logger.debug("error creating")
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
+            raise
 
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Set the modified_by field for the object to the request's user"""
+        # this try/except logging is more helpful than 500 / 404 errors on the client side
         try:
             bundle = super(MTResource, self).obj_update(bundle=bundle, request=request, **kwargs)
-            # bundle.obj.modified_on = datetime.datetime.utcnow() # can i get rid of this?
             bundle.obj.save(user=request.user)
             return bundle
-        except Exception as e:
-            logger.debug("error updating %s" % e)
+        except Exception:
+            logger.debug("error updating")
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
+            raise
 
 
     def obj_delete(self, request=None, **kwargs):
@@ -120,14 +125,17 @@ class MTResource(ModelResource):
         The DELETE request may include permanent=True/False in its params parameter
         (ie, along with the user's credentials). Default is False.
         """
+        # this try/except logging is more helpful than 500 / 404 errors on the client side
         try:
             permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
             obj_id = request.path.split('/')[-2]
             obj = self.model.objects.get(id=obj_id)
             obj.delete(user=request.user, permanent=permanent)
-        except Exception as e:
-            logger.debug("error deleting %s" % e)
+        except Exception:
+            logger.debug("error deleting")
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
+            raise
 
 
     def delete_detail(self, request, **kwargs):

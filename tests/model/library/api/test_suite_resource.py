@@ -91,39 +91,6 @@ class SuiteResourceTest(ApiCrudCases):
         return actual
 
 
-    # def backend_meta_data(self, backend_obj):
-    #     """Query's the database for the object's current values for:
-    #       - created_on
-    #       - created_by
-    #       - modified_on
-    #       - modified_by
-    #       - deleted_on
-    #       - deleted_by
-
-    #     Returns a dictionary of these keys and their values.
-    #     Used to verify that the CRUD methods are updating these
-    #     values.
-    #     """
-    #     actual = {}
-    #     try:
-    #         actual["created_by"] = backend_obj.created_by.username
-    #     except AttributeError:
-    #         actual["created_by"] = None
-    #     try:
-    #         actual["modified_by"] = backend_obj.modified_by.username
-    #     except AttributeError:
-    #         actual["modified_by"] = None
-    #     try:
-    #         actual["deleted_by"] = backend_obj.deleted_by.username
-    #     except AttributeError:
-    #         actual["deleted_by"] = None
-
-    #     actual["created_on"] = backend_obj.created_on
-    #     actual["modified_on"] = backend_obj.modified_on
-    #     actual["deleted_on"] = backend_obj.deleted_on
-
-    #     return actual
-
     # additional test cases, if any
   
 
