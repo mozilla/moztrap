@@ -64,7 +64,7 @@ class MTAuthorization(Authorization):
     def is_authorized(self, request, object=None):
         klass = self.resource_meta.object_class
         permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
-        logger.debug("permission %s" % permission)
+        logger.debug("desired permission %s" % permission)
 
         if request.method == "GET":
             logger.debug("GET always allowed")

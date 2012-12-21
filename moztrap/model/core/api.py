@@ -20,6 +20,23 @@ class ReportResultsAuthorization(Authorization):
         else:
             return False
 
+class ProductVersionAuthorization(Authorization):
+    """A permission of 'core.manage_productversions does not exist,
+    use core.manage_products instead."""
+
+    def is_authorized(self, request, object=None):
+        permission = "core.manage_products"
+        logger.debug("desired permission %s" % permission)
+
+        if request.method == "GET":
+            logger.debug("GET always allowed")
+            return True
+        elif request.user.has_perm(permission):
+            logger.debug("user has permissions")
+            return True
+        else:
+            logger.debug("user does not have permissions")
+            return False
 
 
 class ProductVersionResource(MTResource):
@@ -40,8 +57,12 @@ class ProductVersionResource(MTResource):
             "product": ALL_WITH_RELATIONS,
             }
         authentication = MTApiKeyAuthentication()
-        authorization = MTAuthorization()
+        authorization = ProductVersionAuthorization()
 
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return ProductVersion
 
 
 class ProductResource(MTResource):
