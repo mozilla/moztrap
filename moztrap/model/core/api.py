@@ -121,7 +121,7 @@ class ProductResource(MTResource):
         """
 
         # pull the productversions off, you can't edit them from here
-        productversions = bundle.data.pop("productversions")
+        productversions = bundle.data.pop("productversions", [])
         bundle.data["productversions"] = []
 
         updated_bundle =  super(ProductResource, self).obj_update(bundle=bundle, request=request, **kwargs)
