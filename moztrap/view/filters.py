@@ -23,13 +23,7 @@ class ProductVersionFilterSet(filters.FilterSet):
     """FilterSet for Product versions."""
     filters = [
         filters.ModelFilter("product", queryset=model.Product.objects.all()),
-        filters.ModelFilter(
-            "product version",
-            lookup="product__versions",
-            key="productversion",
-            queryset=model.ProductVersion.objects.all(),
-        ),
-        filters.KeywordFilter("version name"),
+        filters.KeywordFilter("version"),
         filters.KeywordFilter("codename"),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),

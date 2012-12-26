@@ -66,13 +66,13 @@ var MT = (function (MT, $) {
             }
             else {
                 // remove the filter value.
-                cookieVal = cookieVal.filter(function(e, i, a){
-                    return e != filterValue;
+                cookieVal = cookieVal.filter(function (e, i, a) {
+                    return e !== filterValue;
                 });
             }
 
             // if no more pinned values for this field, remove the cookie
-            if (cookieVal.length == 0) {
+            if (cookieVal.length === 0) {
                 cookieVal = null;
             }
             else {
@@ -83,9 +83,16 @@ var MT = (function (MT, $) {
             // certain fields have the same field name, but values don't
             // cross over.
             var path = {path: '/'};
-            if (filterKey.toLowerCase() == filterPrefix + "name" ||
-                filterKey.toLowerCase() == filterPrefix + "id") {
+            if (filterKey.toLowerCase() === filterPrefix + "name" ||
+                filterKey.toLowerCase() === filterPrefix + "id") {
                 path = {};
+                if (cookieVal) {
+                    $(ich.message({
+                        message: "Note: This pinned filter value is constrained to this page only.",
+                        tags: "warning"
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
+                }
             }
             // filter cookies apply anywhere they're relevant
             $.cookie(filterKey, cookieVal, path);
@@ -146,10 +153,10 @@ var MT = (function (MT, $) {
 
                 // find the filter-item that this pinned filter applies to and
                 // add the "pinned" class to the "onoff" span
-                $('.filter-item').filter(function(index) {
+                $('.filter-item').filter(function (index) {
                     var input = $(this).find('input');
                     for (var j = 0; j < v.length; j++) {
-                        if (input.data("name") == fieldVal && input.val() == String(v[j])) {
+                        if (input.data("name") === fieldVal && input.val() === String(v[j])) {
                             return true;
                         }
                     }

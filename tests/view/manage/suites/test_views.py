@@ -55,6 +55,20 @@ class SuitesTest(case.view.manage.ListViewTestCase,
         self.assertNotInList(res, "Foo 2")
 
 
+    def test_filter_by_productversion(self):
+        """Can filter by product of productversion."""
+        pv1 = self.F.ProductVersionFactory()
+        pv2 = self.F.ProductVersionFactory()
+        one = self.factory.create(name="Foo 1", product=pv1.product)
+        self.factory.create(name="Foo 2", product=pv2.product)
+
+        res = self.get(
+            params={"filter-productversion": str(pv1.id)})
+
+        self.assertInList(res, "Foo 1")
+        self.assertNotInList(res, "Foo 2")
+
+
     def test_filter_by_run(self):
         """Can filter by run."""
         one = self.factory.create(name="Foo 1")
