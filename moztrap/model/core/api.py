@@ -58,6 +58,7 @@ class ProductVersionResource(MTResource):
             }
         authentication = MTApiKeyAuthentication()
         authorization = ProductVersionAuthorization()
+        always_return_data = True
 
     @property
     def model(self):
