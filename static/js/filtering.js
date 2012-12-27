@@ -1,6 +1,6 @@
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery */
+/*global    ich, jQuery, URI */
 
 var MT = (function (MT, $) {
 
@@ -133,23 +133,28 @@ var MT = (function (MT, $) {
     // Just used for first display of the screen, if filters are in the
     // session already.
     //
-    // Check the filters against the cookies to see which ones should
-    // show as pinned.
-    // This is also called in a timer to update filters that were pinned
-    // in another tab or window
-    MT.markFiltersWithPinClass = function () {
+    // 1. Check the filters against the cookies to see which ones should
+    //    show as pinned.
+    // 2. Update the ajax replace url to reflect the pinned filters
+    MT.updatePageForExistingPinnedFilters = function () {
 
 
         // get all the pinned filter cookies
-        var cookieChunks = document.cookie.split("; ");
+        var cookieChunks = document.cookie.split("; "),
+            prefix = "moztrap-filter-",
+            uri = new URI(MT.getActionAjaxReplaceUri());
+
         for (var i = 0; i < cookieChunks.length; i++) {
             var chunk = cookieChunks[i];
-            if (chunk.indexOf("moztrap-filter-") === 0) {
+            if (chunk.indexOf(prefix) === 0) {
                 // this is one of our filters
                 var parts = chunk.split("="),
                     k = parts[0],
                     v = JSON.parse($.cookie(k)),
-                    fieldVal = k.replace("moztrap-filter-", "");
+                    fieldVal = k.replace(prefix, "");
+
+                // update the uri to have the pinned value
+                uri.addSearch("filter-" + fieldVal, v);
 
                 // find the filter-item that this pinned filter applies to and
                 // add the "pinned" class to the "onoff" span
@@ -164,6 +169,7 @@ var MT = (function (MT, $) {
                 }).find('.onoff').addClass('pinned');
             }
         }
+        MT.setActionAjaxReplaceUri(uri.toString());
     };
 
 

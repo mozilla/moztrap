@@ -150,7 +150,7 @@ var MT = (function (MT, $) {
         MT.filterFormAjax('.manage, .results, .run');
         MT.clientSideFilter({container: '#envnarrowing'});
         MT.pinFilter();
-        MT.markFiltersWithPinClass();
+        MT.updatePageForExistingPinnedFilters();
 
         // manage-products.js
         MT.formOptionsFilter({
