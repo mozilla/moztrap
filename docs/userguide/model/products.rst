@@ -59,6 +59,39 @@ string "dev" orders before "alpha" and "beta" (so *2.1dev* is prior to *2.1a*).
 Product versions can also optionally have a *code name* that does not impact
 their ordering.
 
+
+Fill Case Versions
+^^^^^^^^^^^^^^^^^^
+
+.. _product-version-fill-cases:
+
+Test cases have a version for each Product Version.
+If you have multiple product versions, it is possible to have a version of a
+case for one product version and not for another.  For example, given:
+
+* Product Foo
+
+  * Version 1.0
+  * Version 2.0
+
+* Case A
+
+  * Case A, Version 1.0
+
+You can see here that you have a version of the *Case A* for
+*Product Foo Version 1.0*, but not for *Version 2.0*.  With a large
+project, you may find yourself with hundreds of cases where you created them
+for Version 1.0 and not for 2.0.
+
+If you want to create those versions, you have 2 options:
+
+1. If you only have a few, you can edit the case in question, and in the upper
+   right of the dialog, click the version field and select
+   *+2.0 (add this version)*
+2. Use the ``fill`` icon for the Product Version.
+
+
+
 .. _product-version-edit-fields:
 
 Product Version Edit Fields

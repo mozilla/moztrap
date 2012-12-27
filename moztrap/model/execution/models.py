@@ -84,15 +84,15 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         overrides.setdefault("is_series", False)
         overrides.setdefault("build", build)
         overrides.setdefault("series", self)
-        overrides.setdefault("start", datetime.date.today().strftime("%Y-%m-%d"))
+        overrides.setdefault(
+            "start",
+            datetime.date.today().strftime("%Y-%m-%d"),
+            )
         return super(Run, self).clone(*args, **kwargs)
 
 
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
-
-        # we don't need all the runcaseversions for a series.  It is the
-        # series member runs that will use them.
         if self.status == self.STATUS.draft:
             self.update_case_versions()
         super(Run, self).activate(*args, **kwargs)
@@ -110,24 +110,29 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
         This can happen while the run is still active.
         """
+        # we don't need all the runcaseversions for a series.  It is the
+        # series member runs that will use them.  So only lock the caseversions
+        # if this is NOT a series.
         if not self.is_series:
             self._lock_case_versions()
+
 
     @transaction.commit_on_success
     def _lock_case_versions(self):
         """
         Select caseversions from suites, create runcaseversions.
 
-        WARNING: Testing this code in the PyCharm debugger will give an incorrect
-        number of queries, because for the debugger to show all the information
-        it wants, it must do queries itself.  When testing with
+        WARNING: Testing this code in the PyCharm debugger will give an
+        incorrect number of queries, because for the debugger to show all the
+        information it wants, it must do queries itself.  When testing with
         assertNumQueries, don't use the PyCharm debugger.
 
         """
 
-        # make a list of cvs in order
+        # get the list of environments for this run
         run_env_ids = self.environments.values_list("id", flat=True)
 
+        # make a list of cvs in order by RunSuite, then SuiteCase.
         if len(run_env_ids):
             cursor = connection.cursor()
             sql = """SELECT DISTINCT cv.id as id
@@ -162,15 +167,15 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         # remaining rcvs should be ones we want to keep, and we need to inject
         # those ids into the insert/update list for bulk_insert.  So create
         # a dict mapping cv_id: rcv_id.  If one exists, its order field will
-        # be updated in the buld_update cmd.
+        # be updated in the build_update cmd.
         existing_rcv_map = {}
         for map_item in self.runcaseversions.values("id", "caseversion_id"):
             existing_rcv_map[map_item["caseversion_id"]] = map_item["id"]
 
         # build the list of rcvs that we DO need.  Be sure to include the ids
-        # for rcvs that already exist so that we will just be updating the order
-        # and not replacing it.  We will use a special manager that does an
-        # update on insert error.
+        # for rcvs that already exist so that we will just be updating the
+        # order and not replacing it.  We will use a special manager that does
+        # an update on insert error.
 
         # runcaseversion objects we will use to bulk create
         rcv_proxies = []
