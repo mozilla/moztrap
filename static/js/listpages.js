@@ -85,6 +85,7 @@ var MT = (function (MT, $) {
                     replaceList.replaceWith(newList);
                     newList.find('.details').html5accordion();
                     newList.trigger('after-replace', [newList]);
+                    MT.updatePageForExistingPinnedFilters();
                 }
             });
 
@@ -132,6 +133,34 @@ var MT = (function (MT, $) {
         });
     };
 
+    // find the uri of the current list page.  could be one of 2 places.
+    MT.getActionAjaxReplaceUri = function () {
+        // the filter element can store the url in two places,
+        // depending on if it's a form or just an element.  so try both.
+        var actionUrl = $(".action-ajax-replace").attr("action"),
+            dataUrl = $(".action-ajax-replace").data("ajax-update-url"),
+            uri = null;
+
+        if (actionUrl !== undefined && actionUrl !== false) {
+            uri = actionUrl;
+        } else {
+            uri = dataUrl;
+        }
+        return uri;
+    };
+
+    MT.setActionAjaxReplaceUri = function (uri) {
+        var aar = $(".action-ajax-replace"),
+            actionUrl = aar.attr("action"),
+            dataUrl = aar.data("ajax-update-url");
+
+        if (actionUrl !== undefined && actionUrl !== false) {
+            aar.attr("action", uri);
+        } else {
+            aar.data("ajax-update-url", uri);
+        }
+    };
+
     // Show/hide "share this list" dropdown to display url with filtering
     // so the user can copy and share it.
     MT.shareListUrlDropdown = function (container) {
@@ -141,24 +170,15 @@ var MT = (function (MT, $) {
         context.on('click', '.share-list', function (e) {
             var shareList = $(this),
                 popup = shareList.find('.share-list-popup'),
-                text = popup.find('.url-text');
+                text = popup.find('.url-text'),
+                uri = MT.getActionAjaxReplaceUri(),
+                // add the protocol and host to the uri stub.
+                url = $(location).attr("protocol") + "//" + $(location).attr("host") + uri;
 
-            // the filter element can store the url in two places,
-            // depending on if it's a form or just an element.  so try both.
-            var actionUrl = $(".action-ajax-replace").attr("action");
-            var dataUrl = $(".action-ajax-replace").data("ajax-update-url");
-            var uri = null;
-            if (actionUrl != undefined && actionUrl != false) {
-                uri = actionUrl;
-            } else {
-                uri = dataUrl;
-            }
-            // add the protocol and host to the uri stub.
-            var url = $(location).attr("protocol") + "//" + $(location).attr("host") + uri;
             text.val(url);
 
             // if the user is clicking in the text box, then don't close it
-            if ($(e.target).index(text) ===-1) {
+            if ($(e.target).index(text) === -1) {
                 // otherwise, they've clicked elsewhere and we toggle the
                 // dialog open or closed.
                 shareList.toggleClass('open');

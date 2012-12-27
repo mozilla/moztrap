@@ -174,6 +174,12 @@ class SuiteFilterSet(filters.FilterSet):
         filters.ChoicesFilter("status", choices=model.Suite.STATUS),
         filters.ModelFilter("product", queryset=model.Product.objects.all()),
         filters.ModelFilter(
+            "product version",
+            lookup="product__versions",
+            key="productversion",
+            queryset=model.ProductVersion.objects.all(),
+            ),
+        filters.ModelFilter(
             "run",
             lookup="runs",
             queryset=model.Run.objects.all()
@@ -229,6 +235,12 @@ class TagFilterSet(filters.FilterSet):
     filters = [
         filters.KeywordFilter("name"),
         filters.ModelFilter("product", queryset=model.Product.objects.all()),
+        filters.ModelFilter(
+            "product version",
+            lookup="product__versions",
+            key="productversion",
+            queryset=model.ProductVersion.objects.all(),
+            ),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
         ]
