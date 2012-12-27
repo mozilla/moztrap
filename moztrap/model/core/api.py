@@ -41,9 +41,9 @@ class ProductVersionAuthorization(Authorization):
 
 class ProductVersionResource(MTResource):
     """
-    Return a list of product versions.
+    Create, Read, Update and Delete capabilities for Product Version.
 
-    Filterable by version field.
+    Filterable by version and product fields.
     """
     product = fields.ToOneField("moztrap.model.core.api.ProductResource", "product")
 
@@ -68,7 +68,7 @@ class ProductVersionResource(MTResource):
 
 class ProductResource(MTResource):
     """
-    Return a list of products.
+    Create, Read, Update and Delete capabilities for Product.
 
     Filterable by name field.
     """
@@ -101,9 +101,18 @@ class ProductResource(MTResource):
         Probably not strictly RESTful.
         """
 
+        pv_required_msg = "The 'productversions' key must exist, must be a list, and the list must contain at least one entry."
         # pull the productversions off, they don't exist yet
-        productversions = bundle.data.pop('productversions', [])
-        bundle.data["productversions"] = []
+        try:
+            productversions = bundle.data.pop('productversions')
+            if not type(productversions) == list:
+                raise KeyError(pv_required_msg)
+            if not len(productversions):
+                raise KeyError(pv_required_msg)
+
+            bundle.data["productversions"] = []
+        except KeyError:
+            raise KeyError(pv_required_msg)
 
         # create the product
         updated_bundle = super(ProductResource, self).obj_create(bundle=bundle, request=request, **kwargs)

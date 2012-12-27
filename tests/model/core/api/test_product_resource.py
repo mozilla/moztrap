@@ -101,5 +101,58 @@ class ProductResourceTest(ApiCrudCases):
         return actual
 
 
-
     # additional test cases, if any
+
+    def test_create_must_contain_productversion(self):
+        """If productversions does not exist, there will be a 500 error."""
+
+        # get data for creation
+        fields = self.new_object_data
+
+        # mangle the data
+        pvs = fields.pop("productversions")
+
+        # do the create
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=500,
+            )
+
+
+    def test_productversion_for_create_must_be_list(self):
+        """If productversions is not a list, there will be a 500 error."""
+
+        # get data for creation
+        fields = self.new_object_data
+
+        # mangle the data
+        pvs = fields.pop("productversions")
+        fields["productversions"] = pvs[0]
+
+        # do the create
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=500,
+            )
+
+
+    def test_productversion_list_for_create_must_not_be_empty(self):
+        """If the productversions list does not contain an item, there will be a 500 error."""
+        
+        # get data for creation
+        fields = self.new_object_data
+
+        # mangle the data
+        fields["productversions"] = []
+
+        # do the create
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=500,
+            )

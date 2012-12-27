@@ -13,6 +13,11 @@ from ..tags.api import TagResource
 
 
 class SuiteResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for Suite.
+
+    Filterable by name and product fields.
+    """
 
     product = fields.ToOneField(ProductResource, "product")
 
