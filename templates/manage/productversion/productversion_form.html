@@ -17,6 +17,7 @@
     {% block topfields %}{% endblock %}
     {% include "forms/_field.html" with field=form.version %}
     {% include "forms/_field.html" with field=form.codename %}
+    {% block bottomfields %}{% endblock %}
 
     {% comment %}
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
