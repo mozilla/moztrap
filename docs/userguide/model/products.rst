@@ -95,22 +95,31 @@ If you want to create those versions, you have 2 options:
 
 .. _product-version-edit-fields:
 
-Product Version Edit / Create Fields
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Product Version Create Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * **Product** - The Product that this is a version of.
-* **Copy Environments and Cases From** - (create only)(optional) Environments
+* **Copy Environments and Cases From** - (optional) Environments
   apply to each product version.  Each version can have a unique set of
   environments.  But commonly, they are very close, and the set of environments
   evolves over time.  This field allows you to choose which existing product
   version to copy the environments from.  You can then add or remove from the
   list of environments for this version.
-* **Fill Cases From** - (edit only)(optional) The product version to copy cases
-  from if they don't exist for this product version yet.  See
-  :ref:`Fill Case Versions<product-version-fill-cases>`.
+
+Fields in both Create and Edit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 * **Version** - The name of the new version.  See
   :ref:`product versions <product-versions>` for more info on how order of
   versions works.
 * **Codename** - (optional) This can be any text and is only used as a
   reference in the summary list of versions when there is another name for a
   version.  For instance, for Mac OS 10.7, the Codename is *Lion*.
+
+
+Product Version Edit Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Fill Cases From** - (optional) The product version to copy cases
+  from if they don't exist for this product version yet.  See
+  :ref:`Fill Case Versions<product-version-fill-cases>`.

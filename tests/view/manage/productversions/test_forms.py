@@ -37,6 +37,132 @@ class EditProductVersionFormTest(case.DBTestCase):
         self.assertEqual(productversion.modified_by, u)
 
 
+    def test_edit_fill_from_2_missing(self):
+        """Fill from a pv that has 2 cases missing from this one."""
+        pv1 = self.F.ProductVersionFactory(version="1.0", codename="Foo")
+        pv_fill_from = self.F.ProductVersionFactory(product=pv1.product, version="2.0")
+        pv1 = self.refresh(pv1)
+
+        # cv existing in both
+        cv_exist = self.F.CaseVersionFactory(productversion=pv1)
+        self.F.CaseVersionFactory(
+            case=cv_exist.case,
+            productversion=pv_fill_from,
+            )
+
+        # cvs we will end up with
+        cv_new1 = self.F.CaseVersionFactory(
+            productversion=pv_fill_from,
+            name="noclone")
+        exp_cvs = [
+            cv_new1.case.id,
+            self.F.CaseVersionFactory(productversion=pv_fill_from).case.id,
+            cv_exist.case.id,
+            ]
+
+        f = self.form(
+            {
+                "version": "1.0",
+                "fill_from": str(pv_fill_from.id),
+                "cc_version": str(pv1.cc_version)
+            },
+            instance=pv1,
+            )
+
+        productversion = f.save()
+
+        self.assertEqual(
+            set(productversion.caseversions.all().values_list(
+                "case_id", flat=True)),
+            set(exp_cvs),
+            )
+        self.assertEqual(
+            cv_new1.name,
+            productversion.caseversions.get(case=cv_new1.case).name,
+            )
+
+
+    def test_edit_fill_from_2_missing_1_extra(self):
+        """Fill from a pv get 2, this has 1 extra."""
+        pv1 = self.F.ProductVersionFactory(version="1.0", codename="Foo")
+        pv_fill_from = self.F.ProductVersionFactory(product=pv1.product, version="2.0")
+        pv1 = self.refresh(pv1)
+
+        cv1 = self.F.CaseVersionFactory(productversion=pv1)
+
+        # cv existing in both
+        cv_shared = self.F.CaseVersionFactory(productversion=pv1)
+        self.F.CaseVersionFactory(
+            case=cv_shared.case,
+            productversion=pv_fill_from,
+            )
+
+        # cvs we will end up with
+        exp_cvs = [
+            self.F.CaseVersionFactory(productversion=pv_fill_from).case.id,
+            self.F.CaseVersionFactory(productversion=pv_fill_from).case.id,
+            cv_shared.case.id,
+            cv1.case.id
+            ]
+
+        f = self.form(
+            {
+                "version": "1.0",
+                "fill_from": str(pv_fill_from.id),
+                "cc_version": str(pv1.cc_version)
+            },
+            instance=pv1,
+            )
+
+        productversion = f.save()
+
+        self.assertEqual(
+            set(productversion.caseversions.all().values_list(
+                "case_id", flat=True)),
+            set(exp_cvs),
+            )
+
+
+    def test_edit_fill_from_0_missing(self):
+        """Fill from a pv that has 2 cases missing from this one."""
+        pv1 = self.F.ProductVersionFactory(version="1.0", codename="Foo")
+        pv_fill_from = self.F.ProductVersionFactory(product=pv1.product, version="2.0")
+        pv1 = self.refresh(pv1)
+
+        cv1 = self.F.CaseVersionFactory(productversion=pv1)
+
+        # cv existing in both
+        cv_shared = self.F.CaseVersionFactory(productversion=pv1)
+        self.F.CaseVersionFactory(
+            case=cv_shared.case,
+            productversion=pv_fill_from,
+            )
+
+        # cvs we will end up with
+        exp_cvs = [
+            cv_shared.case.id,
+            cv1.case.id
+        ]
+
+        f = self.form(
+            {
+                "version": "1.0",
+                "fill_from": str(pv_fill_from.id),
+                "cc_version": str(pv1.cc_version)
+            },
+            instance=pv1,
+            )
+
+        productversion = f.save()
+
+        self.assertEqual(
+            set(productversion.caseversions.all().values_list(
+                "case_id", flat=True)),
+            set(exp_cvs),
+            )
+
+
+
 
 class AddProductVersionFormTest(case.DBTestCase):
     """Tests for AddProductVersionForm."""
