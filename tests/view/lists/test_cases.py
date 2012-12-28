@@ -58,6 +58,14 @@ class PrefixIDFilterTest(case.DBTestCase):
         self.assertEqual(res.get().name, "CV 1")
 
 
+    def test_id_only_int(self):
+        """ID as an int"""
+        td = self.create_testdata()
+        res = self.filter([int(td["cv1"].case.id)])
+
+        self.assertEqual(res.get().name, "CV 1")
+
+
     def test_id_and_prefix_from_different_cases_gets_both(self):
         """ID from one case and prefix from a different case gets both"""
         td = self.create_testdata()

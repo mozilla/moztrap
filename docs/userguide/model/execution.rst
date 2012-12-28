@@ -103,10 +103,12 @@ Run Edit Fields
 
 .. _Markdown: http://daringfireball.net/projects/markdown/syntax
 
-.. _test-run-refresh:
 
 Refreshing a Run
 ----------------
+
+.. _test-run-refresh:
+
 When a test run is made active, it will take a snapshot of active
 suites and cases at that time. If cases and suites are added, removed or had
 their active status changed since the run was made active, the run won't

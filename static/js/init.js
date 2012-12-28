@@ -149,6 +149,8 @@ var MT = (function (MT, $) {
         MT.directFilterLinks();
         MT.filterFormAjax('.manage, .results, .run');
         MT.clientSideFilter({container: '#envnarrowing'});
+        MT.pinFilter();
+        MT.updatePageForExistingPinnedFilters();
 
         // manage-products.js
         MT.formOptionsFilter({
@@ -160,7 +162,7 @@ var MT = (function (MT, $) {
         MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
-            target_sel: '#id_initial_suite',
+            target_sel: '#id_suite',
             optional: true
         });
         MT.formOptionsFilter({

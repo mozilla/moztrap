@@ -6,7 +6,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import connection, transaction, models
-from django.db.models import Count, Q
+from django.db.models import Q
 
 from model_utils import Choices
 
@@ -14,7 +14,7 @@ from ..mtmodel import MTModel, TeamModel, DraftStatusModel
 from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
-from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
+from ..library.models import CaseVersion, Suite, CaseStep
 
 
 
@@ -84,14 +84,15 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         overrides.setdefault("is_series", False)
         overrides.setdefault("build", build)
         overrides.setdefault("series", self)
+        overrides.setdefault(
+            "start",
+            datetime.date.today().strftime("%Y-%m-%d"),
+            )
         return super(Run, self).clone(*args, **kwargs)
 
 
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
-
-        # we don't need all the runcaseversions for a series.  It is the
-        # series member runs that will use them.
         if self.status == self.STATUS.draft:
             self.update_case_versions()
         super(Run, self).activate(*args, **kwargs)
@@ -109,24 +110,29 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
         This can happen while the run is still active.
         """
+        # we don't need all the runcaseversions for a series.  It is the
+        # series member runs that will use them.  So only lock the caseversions
+        # if this is NOT a series.
         if not self.is_series:
             self._lock_case_versions()
 
 
+    @transaction.commit_on_success
     def _lock_case_versions(self):
         """
         Select caseversions from suites, create runcaseversions.
 
-        WARNING: Testing this code in the PyCharm debugger will give an incorrect
-        number of queries, because for the debugger to show all the information
-        it wants, it must do queries itself.  When testing with
+        WARNING: Testing this code in the PyCharm debugger will give an
+        incorrect number of queries, because for the debugger to show all the
+        information it wants, it must do queries itself.  When testing with
         assertNumQueries, don't use the PyCharm debugger.
 
         """
 
-        # make a list of cvs in order
+        # get the list of environments for this run
         run_env_ids = self.environments.values_list("id", flat=True)
 
+        # make a list of cvs in order by RunSuite, then SuiteCase.
         if len(run_env_ids):
             cursor = connection.cursor()
             sql = """SELECT DISTINCT cv.id as id
@@ -150,27 +156,26 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 ORDER BY rs.order, sc.order
                 """.format(self.id, ",".join(map(str, run_env_ids)))
             cursor.execute(sql)
-            transaction.commit_unless_managed()
 
             cv_list = [x[0] for x in cursor.fetchall()]
         else:
             cv_list = []
 
         # delete rcvs that we won't be needing anymore
-        self.runcaseversions.exclude(caseversion__in=cv_list).delete(permanent=True)
+        self._delete_runcaseversions(cv_list)
 
         # remaining rcvs should be ones we want to keep, and we need to inject
         # those ids into the insert/update list for bulk_insert.  So create
         # a dict mapping cv_id: rcv_id.  If one exists, its order field will
-        # be updated in the buld_update cmd.
+        # be updated in the build_update cmd.
         existing_rcv_map = {}
         for map_item in self.runcaseversions.values("id", "caseversion_id"):
             existing_rcv_map[map_item["caseversion_id"]] = map_item["id"]
 
         # build the list of rcvs that we DO need.  Be sure to include the ids
-        # for rcvs that alredy exist so that we will just be updating the order
-        # and not replacing it.  We will use a special manager that does an
-        # update on insert error.
+        # for rcvs that already exist so that we will just be updating the
+        # order and not replacing it.  We will use a special manager that does
+        # an update on insert error.
 
         # runcaseversion objects we will use to bulk create
         rcv_proxies = []
@@ -187,9 +192,22 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             order += 1
 
         # insert these rcvs in bulk
-        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
+        self._bulk_insert_new_runcaseversions(rcv_proxies)
 
         self._bulk_update_runcaseversion_environments_for_lock()
+
+        self._lock_caseversions_complete()
+
+
+    def _delete_runcaseversions(self, cv_list):
+        """Hook to delete runcaseversions we know we don't need anymore."""
+        self.runcaseversions.exclude(caseversion__in=cv_list).delete(
+            permanent=True)
+
+
+    def _bulk_insert_new_runcaseversions(self, rcv_proxies):
+        """Hook to bulk-insert runcaseversions we know we DO need."""
+        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
 
 
     def _bulk_update_runcaseversion_environments_for_lock(self):
@@ -247,6 +265,11 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             environment_id=needed[1]) for needed in needed_rcv_envs_set]
 
         RunCaseVersion.environments.through.objects.bulk_create(needed_rcv_envs)
+
+
+    def _lock_caseversions_complete(self):
+        """Hook for doing any post-processing after doing the rcv lock."""
+        pass
 
 
     def result_summary(self):

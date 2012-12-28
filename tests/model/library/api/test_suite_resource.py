@@ -1,11 +1,131 @@
 """
-Tests for CaseVersionResource api.
+Tests for SuiteResource api.
 
 """
 import json
 
 from tests import case
+from tests.case.api.crud import ApiCrudCases
 
+
+
+class SuiteResourceTest(ApiCrudCases):
+    """Please see the test cases implemented in tests.case.api.ApiCrudCases.
+
+    The following abstract methods must be implemented:
+      - factory(self)                           (property)
+      - resource_name(self)                     (property)
+      - permission(self)                        (property)
+      - new_object_data(self)                   (property)
+      - backend_object(self, id)                (method)
+      - backend_data(self, backend_object)      (method)
+      - backend_meta_data(self, backend_object) (method)
+
+    """
+
+    # implementations for abstract methods and properties
+
+    @property
+    def factory(self):
+        """The factory to use to create fixtures of the object under test.
+        """
+        return self.F.SuiteFactory()
+
+
+    @property
+    def resource_name(self):
+        """String defining the resource name.
+        """
+        return "suite"
+
+
+    @property
+    def permission(self):
+        """String defining the permission required for Create, Update, and Delete.
+        """
+        return "library.manage_suites"
+
+
+    @property
+    def new_object_data(self):
+        """Generates a dictionary containing the field names and auto-generated
+        values needed to create a unique object.
+
+        The output of this method can be sent in the payload parameter of a POST message.
+        """
+        self.product_fixture = self.F.ProductFactory.create()
+        modifiers = (self.datetime, self.resource_name)
+        fields = {
+            u"name": unicode("test_%s_%s" % modifiers),
+            u"description": unicode("test %s %s" % modifiers),
+            u"product": unicode(self.get_detail_url("product",self.product_fixture.id)),
+            u"status": unicode("draft"),
+        }
+        return fields
+
+
+    def backend_object(self, id):
+        """Returns the object from the backend, so you can query it's values in
+        the database for validation.
+        """
+        return self.model.Suite.everything.get(id=id)
+
+ 
+    def backend_data(self, backend_obj):
+        """Query's the database for the object's current values. Output is a 
+        dictionary that should match the result of getting the object's detail 
+        via the API, and can be used to verify API output.
+
+        Note: both keys and data should be in unicode
+        """
+        actual = {}
+        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"name"] = unicode(backend_obj.name)
+        actual[u"description"] = unicode(backend_obj.description)
+        actual[u"product"] = unicode(
+                        self.get_detail_url("product", backend_obj.product.id))
+        actual[u"status"] = unicode(backend_obj.status)
+        actual[u"resource_uri"] = unicode(self.get_detail_url(self.resource_name, 
+                                                              str(backend_obj.id)))
+
+        return actual
+
+
+    def backend_meta_data(self, backend_obj):
+        """Query's the database for the object's current values for:
+          - created_on
+          - created_by
+          - modified_on
+          - modified_by
+          - deleted_on
+          - deleted_by
+
+        Returns a dictionary of these keys and their values.
+        Used to verify that the CRUD methods are updating these
+        values.
+        """
+        actual = {}
+        try:
+            actual["created_by"] = backend_obj.created_by.username
+        except AttributeError:
+            actual["created_by"] = None
+        try:
+            actual["modified_by"] = backend_obj.modified_by.username
+        except AttributeError:
+            actual["modified_by"] = None
+        try:
+            actual["deleted_by"] = backend_obj.deleted_by.username
+        except AttributeError:
+            actual["deleted_by"] = None
+
+        actual["created_on"] = backend_obj.created_on
+        actual["modified_on"] = backend_obj.modified_on
+        actual["deleted_on"] = backend_obj.deleted_on
+
+        return actual
+
+    # additional test cases, if any
+  
 
 
 class SuiteCaseSelectionResourceTest(case.api.ApiTestCase):
