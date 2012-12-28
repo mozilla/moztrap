@@ -8,8 +8,6 @@
         {% if user|has_perm:"core.manage_products" %}
           {% url 'manage_productversion_edit' productversion_id=productversion.id as productversion_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=productversion_edit_url edit_name=productversion.name %}
-          {% url 'manage_productversion_fill' productversion_id=productversion.id as productversion_fill_url %}
-          {% include "manage/productversion/list/_fill.html" with fill_url=productversion_fill_url fill_name=productversion.name %}
           {% url 'manage_productversion_environments' productversion_id=productversion.id as manage_envs_url %}
           {% include "manage/_narrow_env_link.html" with manage_envs_url=manage_envs_url %}
           {% include "lists/controls/_clone.html" with clone_id=productversion.id clone_name=productversion.name %}

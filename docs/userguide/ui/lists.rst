@@ -112,21 +112,6 @@ something and change your mind, an administrator can un-delete the item in
 the ``/admin`` panel.
 
 
-Product Version Controls
-------------------------
-
-.. _fill:
-
-Fill Cases
-~~~~~~~~~~
-
-.. image:: img/productversion_controls_fill.png
-
-Navigates to a screen to fill in any missing :ref:`case versions<test-cases>`
-in this :ref:`Product Version<product-versions>` that exist in another.
-
-See :ref:`Fill Case Versions<product-version-fill-cases>` for details.
-
 
 Test Run Controls
 -----------------

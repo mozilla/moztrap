@@ -6,4 +6,5 @@
 
 {% block formtop %}
 <a href="{% url 'manage_productversion_environments' productversion_id=productversion.id %}" class="select-env-link">select environments</a>
+    {% include "forms/_field.html" with field=form.fill_from label="Fill cases from" %}
 {% endblock %}

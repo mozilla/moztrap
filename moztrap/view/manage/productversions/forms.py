@@ -13,6 +13,12 @@ from ...utils import mtforms
 
 class EditProductVersionForm(mtforms.NonFieldErrorsClassFormMixin,
                              mtforms.MTModelForm):
+    fill_from = mtforms.MTModelChoiceField(  # pragma: no cover
+        required=True,
+        queryset=model.ProductVersion.objects.all(),
+        choice_attrs=mtforms.product_id_attrs,
+        label_from_instance=lambda pv: pv.version,
+        )
     """Form for editing productversions."""
     class Meta:
         model = model.ProductVersion

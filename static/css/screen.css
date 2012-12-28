@@ -1939,7 +1939,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-refresh, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .fill-link, .create-child-link, .controls .select-env-link {
+.action, .actionbutton, .action-refresh, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1950,7 +1950,7 @@ body > div {
   vertical-align: text-bottom;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-refresh:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .fill-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-refresh:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .fill-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-refresh:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .fill-link:active, .create-child-link:active, .controls .select-env-link:active {
+.action:focus, .actionbutton:focus, .action-refresh:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-refresh:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-refresh:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1974,29 +1974,6 @@ body > div {
   opacity: 0.296;
 }
 .edit-link:focus, .edit-link:hover, .edit-link:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-
-.fill-link {
-  background-image: url('../images/ui/fill.png?1356122671');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-indent: 200%;
-  background-position: center;
-  width: 16px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-  opacity: 0.296;
-}
-.fill-link:focus, .fill-link:hover, .fill-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }

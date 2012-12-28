@@ -88,22 +88,26 @@ If you want to create those versions, you have 2 options:
 1. If you only have a few, you can edit the case in question, and in the upper
    right of the dialog, click the version field and select
    *+2.0 (add this version)*
-2. Use the ``fill`` icon for the Product Version.
+2. Edit the product version and specify the other version in the
+   ``Fill Cases From`` field.
 
 
 
 .. _product-version-edit-fields:
 
-Product Version Edit Fields
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Product Version Edit / Create Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * **Product** - The Product that this is a version of.
-* **Copy Environments From** - (optional) Environments apply to each product
-  version.  Each version can have a unique set of environments.  But commonly,
-  they are very close, and the set of environments evolves over time.  This
-  field allows you to choose which existing product version to copy the
-  environments from.  You can then add or remove from the list of environments
-  for this version.
+* **Copy Environments and Cases From** - (create only)(optional) Environments
+  apply to each product version.  Each version can have a unique set of
+  environments.  But commonly, they are very close, and the set of environments
+  evolves over time.  This field allows you to choose which existing product
+  version to copy the environments from.  You can then add or remove from the
+  list of environments for this version.
+* **Fill Cases From** - (edit only)(optional) The product version to copy cases
+  from if they don't exist for this product version yet.  See
+  :ref:`Fill Case Versions<product-version-fill-cases>`.
 * **Version** - The name of the new version.  See
   :ref:`product versions <product-versions>` for more info on how order of
   versions works.
