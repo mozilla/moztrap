@@ -1,14 +1,13 @@
 import datetime
+from tastypie.exceptions import BadRequest
 
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.resources import ModelResource
 
-from django.http import HttpResponse
-
 from ..core.api import (ProductVersionResource, ProductResource,
                         MTAuthorization, MTApiKeyAuthentication)
-from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
+from .models import CaseVersion, Case, Suite, CaseStep
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 
@@ -51,7 +50,7 @@ class SuiteResource(ModelResource):
 
 
     def obj_delete(self, request=None, **kwargs):
-        """Delete the object. 
+        """Delete the object.
         The DELETE request may include permanent=True/False in its params parameter
         (ie, along with the user's credentials). Default is False.
         """
@@ -115,8 +114,49 @@ class CaseVersionResource(ModelResource):
 
 
 
+class BaseSelectionResource(ModelResource):
+    """Adds filtering by negation for use with multi-select widget"""
 
-class SuiteCaseSelectionResource(ModelResource):
+    def apply_filters(self, request, applicable_filters, applicable_excludes={}):
+        return self.get_object_list(request).filter(**applicable_filters).exclude(**applicable_excludes)
+
+
+    def obj_get_list(self, request=None, **kwargs):
+        filters = {}
+
+        if hasattr(request, 'GET'):
+            # Grab a mutable copy.
+            filters = request.GET.copy()
+
+        # Update with the provided kwargs.
+        filters.update(kwargs)
+
+        # Splitting out filtering and excluding items
+        new_filters = {}
+        excludes = {}
+        for key, value in filters.items():
+            # If the given key is filtered by ``not equal`` token, exclude it
+            if key.endswith('__ne'):
+                key = key[:-4] # Striping out trailing ``__ne``
+                excludes[key] = value
+            else:
+                new_filters[key] = value
+
+        filters = new_filters
+
+        # Building filters
+        applicable_filters = self.build_filters(filters=filters)
+        applicable_excludes = self.build_filters(filters=excludes)
+
+        try:
+            base_object_list = self.apply_filters(request, applicable_filters, applicable_excludes)
+            return self.apply_authorization_limits(request, base_object_list)
+        except ValueError:
+            raise BadRequest("Invalid resource lookup data provided (mismatched type).")
+
+
+
+class CaseSelectionResource(BaseSelectionResource):
     """
     Specialty end-point for an AJAX call in the Suite form multi-select widget
     for selecting cases.
@@ -127,109 +167,21 @@ class SuiteCaseSelectionResource(ModelResource):
     tags = fields.ToManyField(TagResource, "tags", full=True)
 
     class Meta:
-        queryset = CaseVersion.objects.filter(latest=True).select_related(
-            "case",
-            "productversion",
-            ).prefetch_related(
-                "tags",
-                )
-        list_allowed_methods = ['get']
-        fields = ["id", "name"]
-        filtering = {
-            "productversion": ALL_WITH_RELATIONS,
-            }
-
-    def get_list(self, request, **kwargs):
-        """
-        Save the suitecases orders so we don't have to query for each case.
-
-        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
-        in Django 1.4
-        """
-        if "for_suite" in request.GET.keys():
-             sc = SuiteCase.objects.filter(suite__id=request.GET["for_suite"])
-             self.suitecases_cache = dict((x.case_id, x.order) for x in sc)
-        return super(SuiteCaseSelectionResource, self).get_list(
-            request, **kwargs)
-
-
-    def dehydrate(self, bundle):
-        """Add some convenience fields to the return JSON."""
-
-        case = bundle.obj.case
-        bundle.data["case_id"] = unicode(case.id)
-        bundle.data["product_id"] = unicode(case.product_id)
-        bundle.data["product"] = {"id": unicode(case.product_id)}
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(case.created_by.id),
-                "username": case.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
-
-        try:
-            bundle.data["order"] = self.suitecases_cache[case.id]
-        except (KeyError, TypeError, AttributeError):
-            # suitecases_cache may not be defined, or may be none
-            # or may just not contain the id we're looking for.
-            # either way, set it to None
-            bundle.data["order"] = None
-
-        return bundle
-
-
-    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        """
-        Remove the "cached" runsuites because we're done with it.
-
-        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
-        in Django 1.4
-        """
-        self.suitecases_cache = None
-        return super(SuiteCaseSelectionResource, self).create_response(
-            request, data, response_class=HttpResponse, **response_kwargs)
-
-
-    def alter_list_data_to_serialize(self, request, data):
-        """Split list of cases between included and excluded from the suite"""
-        included = [x for x in data["objects"] if x.data["order"] is not None]
-        included = sorted(included, key=lambda k: k.data["order"])
-        excluded =  [x for x in data["objects"] if x.data["order"] is None]
-        data["objects"] = {"selected": included, "unselected": excluded}
-        return data
-
-
-
-class TagCaseNotSelectedResource(ModelResource):
-    """All the caseversions that do not have this tag applied"""
-    pass
-
-class TagCaseSelectedResource(ModelResource):
-    """
-    Specialty end-point for an AJAX call in the Tag form multi-select widget
-    for selecting cases.
-
-    All the caseversions that DO have this tag applied
-
-    """
-
-    caseversion = fields.ForeignKey(CaseVersionResource, "case")
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion")
-    tags = fields.ToManyField(TagResource, "tags", full=True)
-
-    class Meta:
         queryset = CaseVersion.objects.all().select_related(
             "case",
             "productversion",
+            "created_by",
             ).prefetch_related(
-            "tags",
-            )
+                "tags",
+                "case__suitecases",
+                ).order_by("case__suitecases__order")
         list_allowed_methods = ['get']
-        fields = ["id", "name"]
+        fields = ["id", "name", "latest"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS,
+            "latest": ALL,
             }
 
 
@@ -243,18 +195,18 @@ class TagCaseSelectedResource(ModelResource):
 
         try:
             bundle.data["created_by"] = {
-                "id": unicode(case.created_by.id),
-                "username": case.created_by.username,
+                "id": unicode(bundle.obj.created_by.id),
+                "username": bundle.obj.created_by.username,
                 }
         except AttributeError:
             bundle.data["created_by"] = None
 
+        if "case__suites" in bundle.request.GET.keys():
+            suite_id=int(bundle.request.GET["case__suites"])
+            order = [x.order for x in case.suitecases.all()
+                if x.suite_id == suite_id][0]
+            bundle.data["order"] = order
+        else:
+            bundle.data["order"] = None
+
         return bundle
-
-
-    def alter_list_data_to_serialize(self, request, data):
-        """Split list of cases between included and excluded from the tag"""
-        included = [x for x in data["objects"] if x.data["order"] is not None]
-        included = sorted(included, key=lambda k: k.data["order"])
-        excluded =  [x for x in data["objects"] if x.data["order"] is None]
-        data["objects"] = {"selected": included, "unselected": excluded}

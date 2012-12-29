@@ -178,28 +178,37 @@ var MT = (function (MT, $) {
         MT.populateMultiselectItems({
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/suitecaseselection/?format=json&limit=0&productversion__product=",
+            ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            ajax_trigger_filter: "productversion__product",
+            ajax_for_field: "case__suites",
             for_type: "suite",
-            ich_template: ich.case_select_item
+            ich_template: ich.case_select_item,
+            use_latest: true
         });
         MT.populateMultiselectItems({
             container: '#tag-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/tagcaseselection/?format=json&limit=0",
+            ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "tags",
             for_type: "tag",
             ich_template: ich.case_select_item
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',
             trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "runs",
             for_type: "run",
             ich_template: ich.suite_select_item
         });
         MT.populateMultiselectItems({
             container: '#run-edit-form',
             trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "runs",
             for_type: "run",
             ich_template: ich.suite_select_item,
             refetch_on_trigger: false
