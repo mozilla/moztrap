@@ -105,7 +105,7 @@ class ProductResource(MTResource):
         # pull the productversions off, they don't exist yet
         try:
             productversions = bundle.data.pop('productversions')
-            if not type(productversions) == list:
+            if not isinstance(productversions, list):
                 raise KeyError(pv_required_msg)
             if not len(productversions):
                 raise KeyError(pv_required_msg)
@@ -126,7 +126,7 @@ class ProductResource(MTResource):
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Oversee updating of product.
-        If this were RESTful, it remove all existing versions and add the requested versions.
+        If this were RESTful, it would remove all existing versions and add the requested versions.
         But this isn't restful, it just adds the version if it doesn't exist already.
         """
 

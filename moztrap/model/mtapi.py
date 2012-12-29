@@ -41,11 +41,11 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         api_key = request.GET.get("api_key") or request.POST.get("api_key")
 
         if not username or not api_key:
-            if not username:
-                logger.debug("no username")
-            elif not api_key:
-                logger.debug("no api key")
-            return self._unauthorized()
+            if not username:  # pragma: no cover
+                logger.debug("no username")  # pragma: no cover
+            elif not api_key:  # pragma: no cover
+                logger.debug("no api key")  # pragma: no cover
+            return self._unauthorized() 
 
         try:
             user = User.objects.get(username=username)
@@ -90,7 +90,7 @@ class MTResource(ModelResource):
     @property
     def model(self):
         """Model class related to this resource."""
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -101,10 +101,10 @@ class MTResource(ModelResource):
             bundle.obj.created_by = request.user
             bundle.obj.save(user=request.user)
             return bundle
-        except Exception:
-            logger.debug("error creating")
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
-            raise
+        except Exception:  # pragma: no cover
+            logger.debug("error creating")  # pragma: no cover
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            raise  # pragma: no cover
 
 
     def obj_update(self, bundle, request=None, **kwargs):
@@ -114,10 +114,10 @@ class MTResource(ModelResource):
             bundle = super(MTResource, self).obj_update(bundle=bundle, request=request, **kwargs)
             bundle.obj.save(user=request.user)
             return bundle
-        except Exception:
-            logger.debug("error updating")
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
-            raise
+        except Exception:  # pragma: no cover
+            logger.debug("error updating")  # pragma: no cover
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            raise  # pragma: no cover
 
 
     def obj_delete(self, request=None, **kwargs):
@@ -132,10 +132,10 @@ class MTResource(ModelResource):
             obj_id = request.path.split('/')[-2]
             obj = self.model.objects.get(id=obj_id)
             obj.delete(user=request.user, permanent=permanent)
-        except Exception:
-            logger.debug("error deleting")
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))
-            raise
+        except Exception:  # pragma: no cover
+            logger.debug("error deleting")  # pragma: no cover
+            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            raise  # pragma: no cover
 
 
     def delete_detail(self, request, **kwargs):
