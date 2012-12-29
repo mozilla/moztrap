@@ -16,7 +16,7 @@ from ...lists import filters
 class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for tags."""
 
-    cases = mtforms.MTMultipleChoiceField(
+    caseversions = mtforms.MTMultipleChoiceField(
         required=False,
         widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/multi_select/case_select/_case_select_item.html",
@@ -34,6 +34,10 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                 ],
             )
     )
+    product = mtforms.MTModelChoiceField(
+        queryset=model.Product.objects.all(),
+        choice_attrs=lambda p: {"data-product-id": p.id},
+        required=False)
 
     class Meta:
         model = model.Tag
@@ -45,30 +49,31 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             }
 
 
-    def clean_cases(self):
+    def clean_caseversions(self):
         """
         Make sure all the ids for the cases are valid and populate
         self.cleaned_data with the real objects.
         """
-        cases = dict((unicode(x.id), x) for x in
-            model.Case.objects.filter(pk__in=self.cleaned_data["cases"]))
+        caseversions = dict((unicode(x.id), x) for x in
+            model.CaseVersion.objects.filter(
+                pk__in=self.cleaned_data["caseversions"]))
         try:
-            return [cases[x] for x in self.cleaned_data["cases"]]
+            return [caseversions[x] for x in self.cleaned_data["caseversions"]]
         except KeyError as e:
-            raise ValidationError("Not a valid case for this suite.")
+            raise ValidationError("Not a valid caseversion for this tag.")
 
 
     def save(self, user=None):
-        """Save the suite and case associations."""
+        """Save the tag and case associations."""
         user = user or self.user
-        suite = super(TagForm, self).save(user=user)
+        tag = super(TagForm, self).save(user=user)
 
-        suite.suitecases.all().delete(permanent=True)
-        for i, case in enumerate(self.cleaned_data["cases"]):
-            model.SuiteCase.objects.create(
-                suite=suite, case=case, order=i, user=user)
+        tag.caseversions.all().delete(permanent=True)
+        tag.caseversions.through.objects.bulk_create(
+            self.cleaned_data["caseversions"],
+            )
 
-        return suite
+        return tag
 
 
 

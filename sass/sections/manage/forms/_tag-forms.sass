@@ -1,8 +1,29 @@
 .tag-form
-  +suffix(6,24)
+  .product-field, .name-field, .description-field
+    +full(24)
+    +suffix(6,24)
+    .type
+      +columns(6,18)
+    .value, .errorlist
+      +columns(12,18)
+      +omega(18)
 
-  .type
-    +columns(6,18)
-  .value, .errorlist
-    +columns(12,18)
-    +omega(18)
+  .cases-field
+    +trailer(0)
+
+    .itemhead, .listordering
+      padding-left: rhythm(2.75)
+
+    .name-tags, .byname-tags
+      margin-left: rhythm(-1.25)
+      +columns(8,11)
+
+    .author, .byauthor
+      +columns(3,11)
+      +omega(11)
+
+    .title
+      +demi
+      display: inline
+      margin-right: rhythm(.25)
+      font-style: normal

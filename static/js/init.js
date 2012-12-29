@@ -189,7 +189,7 @@ var MT = (function (MT, $) {
             container: '#tag-add-form',
             trigger_field: '#id_product',
             ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
-            ajax_trigger_filter: "product",
+            ajax_trigger_filter: "productversion__product",
             ajax_for_field: "tags",
             for_type: "tag",
             ich_template: ich.case_select_item

@@ -100,7 +100,10 @@ def case_add(request):
             return redirect("manage_cases")
     else:
         pf = PinnedFilters(request.COOKIES)
-        form = forms.AddCaseForm(user=request.user, initial=pf.fill_form_querystring(request.GET))
+        form = forms.AddCaseForm(
+            user=request.user,
+            initial=pf.fill_form_querystring(request.GET).dict(),
+            )
     return TemplateResponse(
         request,
         "manage/case/add_case.html",
