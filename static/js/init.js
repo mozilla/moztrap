@@ -186,7 +186,7 @@ var MT = (function (MT, $) {
             use_latest: true
         });
         MT.populateMultiselectItems({
-            container: '#tag-form',
+            container: '#tag-add-form',
             trigger_field: '#id_product',
             ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
             ajax_trigger_filter: "product",

@@ -227,8 +227,10 @@ var MT = (function (MT, $) {
         }
         var sel_url = new URI(unsel_url.toString());
 
-        unsel_url.addSearch(ajax_for_field + "__ne", included_id);
-        sel_url.addSearch(ajax_for_field, included_id);
+        if (included_id) {
+            unsel_url.addSearch(ajax_for_field + "__ne", included_id);
+            sel_url.addSearch(ajax_for_field, included_id);
+        }
 
         if (unselect.length) {
 
