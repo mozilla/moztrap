@@ -4249,7 +4249,13 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-left: -1.875em;
   display: inline;
   float: left;
-  width: 72.093%;
+  width: 62.791%;
+  margin-right: 2.326%;
+}
+.tag-form .cases-field .productversion, .tag-form .cases-field .byversion {
+  display: inline;
+  float: left;
+  width: 6.977%;
   margin-right: 2.326%;
 }
 .tag-form .cases-field .author, .tag-form .cases-field .byauthor {
@@ -4261,6 +4267,12 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.tag-form .cases-field .productversion {
+  margin-left: 0.75em;
+}
+.tag-form .cases-field .byauthor {
+  margin-right: 0.75em;
 }
 .tag-form .cases-field .title {
   font-weight: 500;
@@ -4698,18 +4710,21 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .add-run .suites-field .name, .add-run .suites-field .byname, .edit-run .suites-field .name, .edit-run .suites-field .byname {
   display: inline;
   float: left;
-  width: 53.488%;
+  width: 62.791%;
   margin-right: 2.326%;
 }
 .add-run .suites-field .author, .add-run .suites-field .byauthor, .edit-run .suites-field .author, .edit-run .suites-field .byauthor {
   display: inline;
   float: left;
-  width: 44.186%;
+  width: 25.581%;
   margin-right: 2.326%;
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.add-run .suites-field .byauthor, .edit-run .suites-field .byauthor {
+  margin-right: 0.75em;
 }
 .add-run .suites-field .title, .edit-run .suites-field .title {
   font-weight: 500;
@@ -4778,6 +4793,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.add-suite .cases-field .byauthor, .edit-suite .cases-field .byauthor {
+  margin-right: 0.75em;
 }
 .add-suite .cases-field .title, .edit-suite .cases-field .title {
   font-weight: 500;

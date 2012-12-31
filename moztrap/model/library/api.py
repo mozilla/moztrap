@@ -174,7 +174,7 @@ class CaseSelectionResource(BaseSelectionResource):
             ).prefetch_related(
                 "tags",
                 "case__suitecases",
-                ).order_by("case__suitecases__order")
+                ).distinct().order_by("case__suitecases__order")
         list_allowed_methods = ['get']
         fields = ["id", "name", "latest"]
         filtering = {
@@ -208,5 +208,51 @@ class CaseSelectionResource(BaseSelectionResource):
             bundle.data["order"] = order
         else:
             bundle.data["order"] = None
+
+        return bundle
+
+
+class CaseversionSelectionResource(BaseSelectionResource):
+    """
+    Specialty end-point for an AJAX call in the Tag form multi-select widget
+    for selecting caseversions.
+    """
+
+    case = fields.ForeignKey(CaseResource, "case")
+    productversion = fields.ForeignKey(ProductVersionResource, "productversion", full=True)
+    tags = fields.ToManyField(TagResource, "tags", full=True)
+
+    class Meta:
+        queryset = CaseVersion.objects.all().select_related(
+            "case",
+            "productversion",
+            "created_by",
+            ).prefetch_related(
+            "tags",
+            )
+        list_allowed_methods = ['get']
+        fields = ["id", "name", "latest"]
+        filtering = {
+            "productversion": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS,
+            }
+
+
+    def dehydrate(self, bundle):
+        """Add some convenience fields to the return JSON."""
+
+        case = bundle.obj.case
+        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["product_id"] = unicode(case.product_id)
+        bundle.data["product"] = {"id": unicode(case.product_id)}
+
+        try:
+            bundle.data["created_by"] = {
+                "id": unicode(bundle.obj.created_by.id),
+                "username": bundle.obj.created_by.username,
+                }
+        except AttributeError:
+            bundle.data["created_by"] = None
 
         return bundle

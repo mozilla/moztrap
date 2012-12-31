@@ -1,7 +1,7 @@
 {% extends 'manage/tag/base.html' %}
 
 {% block content %}
-<section class="{% block sectionid %}{% endblock %}">
+<section class="{% block sectionid %}{% endblock %}" data-tag-id="{% block tagid %}{% endblock %}">
   <h2>{% block formtitle %}{% endblock %} {% include "_helplink.html" with helpURL="library.html#tag-edit-fields" %}</h2>
   {% block formtop %}{% endblock %}
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form tag-form">

@@ -16,12 +16,11 @@ from ...lists import filters
 class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for tags."""
 
-    caseversions = mtforms.MTMultipleChoiceField(
+    cases = mtforms.MTMultipleChoiceField(
         required=False,
         widget=mtforms.FilteredSelectMultiple(
-            choice_template="manage/multi_select/case_select/_case_select_item.html",
             listordering_template=(
-                "manage/multi_select/case_select/_case_select_listordering.html"),
+                "manage/tag/caseversion_select/_caseversion_select_listordering.html"),
             filters=[
                 filters.KeywordFilter("name"),
                 filters.ModelFilter(
@@ -41,24 +40,24 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
     class Meta:
         model = model.Tag
-        fields = ["name", "description", "product"]
+        fields = ["name", "product", "description"]
         widgets = {
             "name": forms.TextInput,
-            "description": mtforms.BareTextarea,
             "product": forms.Select,
+            "description": mtforms.BareTextarea,
             }
 
 
-    def clean_caseversions(self):
+    def clean_cases(self):
         """
         Make sure all the ids for the cases are valid and populate
         self.cleaned_data with the real objects.
         """
         caseversions = dict((unicode(x.id), x) for x in
             model.CaseVersion.objects.filter(
-                pk__in=self.cleaned_data["caseversions"]))
+                pk__in=self.cleaned_data["cases"]))
         try:
-            return [caseversions[x] for x in self.cleaned_data["caseversions"]]
+            return [caseversions[x] for x in self.cleaned_data["cases"]]
         except KeyError as e:
             raise ValidationError("Not a valid caseversion for this tag.")
 
@@ -68,10 +67,16 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         user = user or self.user
         tag = super(TagForm, self).save(user=user)
 
-        tag.caseversions.all().delete(permanent=True)
-        tag.caseversions.through.objects.bulk_create(
-            self.cleaned_data["caseversions"],
-            )
+        TagCV = tag.caseversions.through
+
+        # used to be delete() instead of clear.  May be remove?
+        # why is delete() ok for cases of suites?  must be some special checking
+        # for that.
+        tag.caseversions.clear()
+        tcv_list = [TagCV(tag=tag, caseversion=cv)
+            for cv in self.cleaned_data["cases"]]
+
+        TagCV.objects.bulk_create(tcv_list)
 
         return tag
 
