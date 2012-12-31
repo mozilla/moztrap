@@ -16,7 +16,7 @@ from ...lists import filters
 class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for tags."""
 
-    cases = mtforms.MTMultipleChoiceField(
+    caseversions = mtforms.MTMultipleChoiceField(
         required=False,
         widget=mtforms.FilteredSelectMultiple(
             listordering_template=(
@@ -48,16 +48,16 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             }
 
 
-    def clean_cases(self):
+    def clean_caseversions(self):
         """
         Make sure all the ids for the cases are valid and populate
         self.cleaned_data with the real objects.
         """
         caseversions = dict((unicode(x.id), x) for x in
             model.CaseVersion.objects.filter(
-                pk__in=self.cleaned_data["cases"]))
+                pk__in=self.cleaned_data["caseversions"]))
         try:
-            return [caseversions[x] for x in self.cleaned_data["cases"]]
+            return [caseversions[x] for x in self.cleaned_data["caseversions"]]
         except KeyError as e:
             raise ValidationError("Not a valid caseversion for this tag.")
 
@@ -74,7 +74,7 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         # for that.
         tag.caseversions.clear()
         tcv_list = [TagCV(tag=tag, caseversion=cv)
-            for cv in self.cleaned_data["cases"]]
+            for cv in self.cleaned_data["caseversions"]]
 
         TagCV.objects.bulk_create(tcv_list)
 

@@ -116,15 +116,19 @@ class CaseVersionResource(ModelResource):
 
 class BaseSelectionResource(ModelResource):
     """Adds filtering by negation for use with multi-select widget"""
+    #@@@ move this to mtapi.py when that code is merged in.
 
     def apply_filters(self, request, applicable_filters, applicable_excludes={}):
-        return self.get_object_list(request).filter(**applicable_filters).exclude(**applicable_excludes)
+        """Apply included and excluded filters to query."""
+        return self.get_object_list(request).filter(
+            **applicable_filters).exclude(**applicable_excludes)
 
 
     def obj_get_list(self, request=None, **kwargs):
+        """Return the list with included and excluded filters, if they exist."""
         filters = {}
 
-        if hasattr(request, 'GET'):
+        if hasattr(request, 'GET'): # pragma: no cover
             # Grab a mutable copy.
             filters = request.GET.copy()
 
@@ -137,7 +141,7 @@ class BaseSelectionResource(ModelResource):
         for key, value in filters.items():
             # If the given key is filtered by ``not equal`` token, exclude it
             if key.endswith('__ne'):
-                key = key[:-4] # Striping out trailing ``__ne``
+                key = key[:-4] # Stripping out trailing ``__ne``
                 excludes[key] = value
             else:
                 new_filters[key] = value
@@ -148,11 +152,9 @@ class BaseSelectionResource(ModelResource):
         applicable_filters = self.build_filters(filters=filters)
         applicable_excludes = self.build_filters(filters=excludes)
 
-        try:
-            base_object_list = self.apply_filters(request, applicable_filters, applicable_excludes)
-            return self.apply_authorization_limits(request, base_object_list)
-        except ValueError:
-            raise BadRequest("Invalid resource lookup data provided (mismatched type).")
+        base_object_list = self.apply_filters(
+            request, applicable_filters, applicable_excludes)
+        return self.apply_authorization_limits(request, base_object_list)
 
 
 
@@ -212,7 +214,8 @@ class CaseSelectionResource(BaseSelectionResource):
         return bundle
 
 
-class CaseversionSelectionResource(BaseSelectionResource):
+
+class CaseVersionSelectionResource(BaseSelectionResource):
     """
     Specialty end-point for an AJAX call in the Tag form multi-select widget
     for selecting caseversions.
