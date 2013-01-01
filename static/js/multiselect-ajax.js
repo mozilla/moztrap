@@ -134,8 +134,22 @@ var MT = (function (MT, $) {
             else {
                 // ajax fetch selected first, then unselected
 
-                // shows when each is complete.  when both are, then we can
-                // re-enable the controls to move.
+                /*
+                  Had wanted to show when each list was complete.  This could
+                  be useful because the included list may often be shorter
+                  and the user could see it while waiting for the available
+                  list to load.
+
+                  However, I was not able to find a reliable way to disable
+                  drag and drop.  And if you drag from one list to another
+                  before the destination list is done loading, it will blow
+                  away the item you tracked to it.
+
+                  Disable attr didn't seem to work on article items.  There
+                  is a "draggable" property, but I couldn't find what would
+                  actually prevent the dragging.
+
+                 */
                 var unsel_complete = false,
                     sel_complete = false;
 
