@@ -175,6 +175,9 @@ var MT = (function (MT, $) {
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');
+        MT.testcaseAttachments('.case-form .attach');
+
+        // multiselect-ajax.js
         MT.populateMultiselectItems({
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
@@ -213,7 +216,6 @@ var MT = (function (MT, $) {
             ich_template: ich.suite_select_item,
             refetch_on_trigger: false
         });
-        MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
         MT.createEnvProfile('#profile-add-form');
