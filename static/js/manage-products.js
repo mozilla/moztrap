@@ -2,7 +2,7 @@
             indent:     4,
             confusion:  true,
             regexp:     true */
-/*global    ich, jQuery, confirm */
+/*global    ich, jQuery, confirm, URI */
 
 var MT = (function (MT, $) {
 
@@ -69,7 +69,7 @@ var MT = (function (MT, $) {
                 if ((options.optional || options.no_default) && key) {
                     target.find(options.option_sel).filter(function () { return $(this).val(); }).remove();
                     target.append(newopts);
-                    if (options.no_default && newopts.length == 1) {
+                    if (options.no_default && newopts.length === 1) {
                         newopts.attr("selected", true);
                     }
                 } else {
@@ -116,133 +116,6 @@ var MT = (function (MT, $) {
             };
 
         trigger.change(filterTags);
-    };
-
-    // Populate the list of available and selected items on page load
-    // and when the ``trigger_field`` value is changed.
-    MT.populateMultiselectItems = function (opts) {
-        var defaults = {
-                container: 'body',
-                data_attr: 'product-id',
-                refetch_on_trigger: true
-            },
-            options = $.extend({}, defaults, opts);
-        var cache = {};
-
-
-        if ($(options.container).length) {
-            var product = $(options.container).find(options.trigger_field);
-
-            // if the product field is a select, then we know it's
-            // editable and so we add the change handler.
-            if (product.is("select") && options.refetch_on_trigger) {
-                // update the item list if this field changes
-                product.change(function () {
-                    var trigger_id = $(this).find('option:selected').data(options.data_attr);
-                    if (trigger_id) {
-                        var url = options.ajax_url_root + trigger_id;
-                        var included_id = $(".edit-" + options.for_type).data(options.for_type + "-id");
-                        if (included_id) {
-                            url += "&for_" + options.for_type + "=" + included_id;
-                        }
-                        MT.doPopulateMultiselect(url, options.ich_template);
-                    }
-                });
-            }
-
-            // we should load the items on page load whether it's a
-            // <select> or not.  But if no item is selected, it will have
-            // no effect.  but ONLY do this call on page load if we have
-            // a multi-select widget.  if not, it's pointless, because the
-            // view has already given us the values we need to display
-            // in a bulleted list.
-            //
-            if ($(options.container).find(".multiselect").length) {
-                $(function() {
-                    // the field items are filtered on (usu. product or productversion)
-                    var trigger = $(options.trigger_field);
-                    var trigger_id;
-                    // the id to check for included items (usu. suite_id or run_id)
-                    var included_id = $(".edit-" + options.for_type).data(options.for_type + "-id");
-
-                    // Get the correct product_id, depending on the type of the
-                    // id_product field.
-                    if (trigger.is("select")) {
-                        trigger_id = trigger.find("option:selected").data(options.data_attr);
-                    }
-                    else if (trigger.is("input")) {
-                        trigger_id = product.val();
-                    }
-                    if (trigger_id) {
-                        var url = options.ajax_url_root + trigger_id;
-                        // This will be present when editing a suite, not creating a new one.
-                        if (included_id) {
-                            url += "&for_" + options.for_type + "=" + included_id;
-                        }
-
-                        MT.doPopulateMultiselect(url, options.ich_template);
-                    }
-
-                });
-            }
-        }
-    };
-
-    // cache for the ajax calls for cases of suites or suites of runs.
-    var cache = {};
-
-    // Use AJAX to get a set of items filtered by product_id
-    MT.doPopulateMultiselect = function (url, ich_template) {
-        var unselect = $(".multiunselected").find(".select");
-        var select = $(".multiselected").find(".select");
-
-        if (unselect.length) {
-            var setHtmlInMultiselect = function (sel_html, unsel_html) {
-                unselect.html(unsel_html);
-                select.html(sel_html);
-            };
-
-            if (cache[url]) {
-                setHtmlInMultiselect(cache[url].sel_html, cache[url].unsel_html);
-            }
-            else {
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    context: document.body,
-                    beforeSend: function() {
-                        unselect.loadingOverlay();
-                        select.loadingOverlay();
-                    },
-                    success: function(response) {
-                        /*
-                            This ajax call will fetch 2 lists of items.  It will look
-                            like this:
-                                objects: { selected: [item1, item2, ...],
-                                           unselected: [item1, item2, ...]
-                                           }
-                            The selected section comes in sorted by order they fall.
-                            remove the "Loading..." overlay once they're loaded up.
-                         */
-                        var unsel_html = ich_template({items: response.objects.unselected});
-                        unselect.html(unsel_html);
-                        unselect.loadingOverlay("remove");
-
-                        var sel_html = ich_template({items: response.objects.selected});
-                        select.html(sel_html);
-                        select.loadingOverlay("remove");
-
-                        cache[url] = {sel_html: sel_html, unsel_html: unsel_html};
-                        setHtmlInMultiselect(sel_html, unsel_html)
-                    },
-                    error: function(response) {
-                        $(".multiselected").loadingOverlay("remove");
-                        $(".multiunselected").loadingOverlay("remove");
-                        console.error(response);
-                    }
-                });
-            }
-        }
     };
 
     // Adding/removing attachments on cases

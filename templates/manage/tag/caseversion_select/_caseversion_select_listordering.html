@@ -1,0 +1,7 @@
+{% extends 'forms/widgets/filtered_select_multiple/_filtered_select_multiple_listordering.html' %}
+
+{% block extra-sortitems %}
+{% include "lists/_sortitem.html" with sortname="name [tags]" sortURL="#" %}
+{% include "lists/_sortitem.html" with sortname="version" %}
+{% include "lists/_sortitem.html" with sortname="author" sortURL="#" %}
+{% endblock extra-sortitems %}

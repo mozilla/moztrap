@@ -7,12 +7,12 @@ import json
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
-from .models import Run, RunCaseVersion, RunSuite, Result
+from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, ProductResource,
                         ReportResultsAuthorization, MTApiKeyAuthentication)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
-from ..library.api import CaseVersionResource
+from ..library.api import CaseVersionResource, BaseSelectionResource
 from ..library.models import CaseVersion, Suite
 
 from ...view.lists.filters import filter_url
@@ -199,8 +199,6 @@ class RunResource(ModelResource):
 
 
 
-
-
 class ResultResource(ModelResource):
     """
     Endpoint for submitting results for a set of runcaseversions.
@@ -293,36 +291,27 @@ class ResultResource(ModelResource):
 
 
 
-class RunSuiteSelectionResource(ModelResource):
+class SuiteSelectionResource(BaseSelectionResource):
     """
-    Specialty end-point for an AJAX call in the Run form multi-select widget
+    Specialty end-point for an AJAX call from the multi-select widget
     for selecting suites.
     """
 
     product = fields.ForeignKey(ProductResource, "product")
+    runs = fields.ToManyField(RunResource, "runs")
 
     class Meta:
-        queryset = Suite.objects.all()
-        # @@@ Django 1.4 - use prefetch_related on "runsuites" for order field
+        queryset = Suite.objects.all().select_related(
+            "created_by",
+            ).prefetch_related(
+            "runsuites",
+            )
         list_allowed_methods = ['get']
         fields = ["id", "name"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
+            "runs": ALL_WITH_RELATIONS,
             }
-
-
-    def get_list(self, request, **kwargs):
-        """
-        Save the runsuites orders so we don't have to query for each suite item.
-
-        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
-        in Django 1.4
-        """
-        if "for_run" in request.GET.keys():
-            rs = RunSuite.objects.filter(run__id=request.GET["for_run"])
-            self.runsuites_cache = dict((x.suite_id, x.order) for x in rs)
-        return super(RunSuiteSelectionResource, self).get_list(
-            request, **kwargs)
 
 
     def dehydrate(self, bundle):
@@ -339,34 +328,16 @@ class RunSuiteSelectionResource(ModelResource):
         except AttributeError:
             bundle.data["created_by"] = None
 
-        try:
-            bundle.data["order"] = self.runsuites_cache[suite.id]
-        except (KeyError, TypeError, AttributeError):
-            # runsuites_cache may not be defined, or may be none
-            # or may just not contain the id we're looking for.
-            # either way, set it to None
+        if "runs" in bundle.request.GET.keys():
+            run_id=int(bundle.request.GET["runs"])
+            s = suite.runsuites.all()
+            order = [x.order for x in suite.runsuites.all()
+                     if x.run_id == run_id][0]
+            bundle.data["order"] = order
+        else:
             bundle.data["order"] = None
 
         return bundle
 
 
-    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        """
-        Remove the "cached" runsuites because we're done with it.
 
-        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
-        in Django 1.4
-        """
-        self.runsuites_cache = None
-        return super(RunSuiteSelectionResource, self).create_response(
-            request, data, response_class=HttpResponse, **response_kwargs)
-
-
-
-    def alter_list_data_to_serialize(self, request, data):
-        """Split list of cases between included and excluded from the suite"""
-        included = [x for x in data["objects"] if x.data["order"] is not None]
-        included = sorted(included, key=lambda k: k.data["order"])
-        excluded =  [x for x in data["objects"] if x.data["order"] is None]
-        data["objects"] = {"selected": included, "unselected": excluded}
-        return data

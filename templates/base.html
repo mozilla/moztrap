@@ -2,7 +2,7 @@
 <!--[if lte IE 8 ]><html class="no-js ie" lang="en" dir="ltr"><![endif]-->
 <!--[if IE 9 ]><html class="no-js ie9" lang="en" dir="ltr"><![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--><html class="no-js" lang="en" dir="ltr"><!--<![endif]-->
-{% load compress %}
+{% load compress site %}
 {% load url from future %}
 <head>
   <meta charset="utf-8" />
@@ -16,7 +16,7 @@
   <meta name="author" content="Mozilla" />
   <meta name="keywords" content="keywords" />
   <meta name="language" content="en-us" />
-  <title>{% block title %}MozTrap{% endblock %}</title>
+  <title>{% block title %}MozTrap{% settings_value "MOZTRAP_NAME_SUFFIX" %}{% endblock %} | {% block location %}{% endblock %}</title>
 
   <!-- Microformat Profiles -->
   <!-- hCard, hCalendar, rel-license, rel-tag, XOXO, XFN, VoteLinks -->
@@ -118,6 +118,7 @@
 <script src="{{ STATIC_URL }}js/manage.js"></script>
 <script src="{{ STATIC_URL }}js/manage-products.js"></script>
 <script src="{{ STATIC_URL }}js/manage-env.js"></script>
+<script src="{{ STATIC_URL }}js/multiselect-ajax.js"></script>
 <script src="{{ STATIC_URL }}js/runtests.js"></script>
 <script src="{{ STATIC_URL }}js/owa.js"></script>
 <script src="{{ STATIC_URL }}js/init.js"></script>

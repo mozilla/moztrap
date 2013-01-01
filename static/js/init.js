@@ -175,29 +175,47 @@ var MT = (function (MT, $) {
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');
+        MT.testcaseAttachments('.case-form .attach');
+
+        // multiselect-ajax.js
         MT.populateMultiselectItems({
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/suitecaseselection/?format=json&limit=0&productversion__product=",
+            ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            ajax_trigger_filter: "productversion__product",
+            ajax_for_field: "case__suites",
             for_type: "suite",
-            ich_template: ich.case_select_item
+            ich_template: ich.case_select_item,
+            use_latest: true
+        });
+        MT.populateMultiselectItems({
+            container: '#tag-add-form, #tag-edit-form',
+            trigger_field: '#id_product',
+            ajax_url_root: "/api/v1/caseversionselection/?format=json&limit=0",
+            ajax_trigger_filter: "productversion__product",
+            ajax_for_field: "tags",
+            for_type: "tag",
+            ich_template: ich.caseversion_select_item
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',
             trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "runs",
             for_type: "run",
             ich_template: ich.suite_select_item
         });
         MT.populateMultiselectItems({
             container: '#run-edit-form',
             trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "runs",
             for_type: "run",
             ich_template: ich.suite_select_item,
             refetch_on_trigger: false
         });
-        MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
         MT.createEnvProfile('#profile-add-form');

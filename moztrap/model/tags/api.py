@@ -4,6 +4,7 @@ from tastypie.resources import ModelResource
 from .models import Tag
 
 
+
 class TagResource(ModelResource):
 
 
@@ -13,3 +14,6 @@ class TagResource(ModelResource):
         filtering = {
             "name": ALL
             }
+
+
+

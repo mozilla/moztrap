@@ -81,6 +81,53 @@ class EditTagFormTest(case.DBTestCase):
             )
 
 
+    def test_add_cases(self):
+        """Can add cases to a suite."""
+        cv = self.F.CaseVersionFactory()
+        t = self.F.TagFactory(product=cv.productversion.product)
+
+        f = self.form(
+            {
+                "product": str(t.product.id),
+                "name": t.name,
+                "description": t.description,
+                "caseversions": [str(cv.id)],
+                "cc_version": str(t.cc_version),
+                },
+            instance=t,
+            )
+
+        self.assertTrue(f.is_valid())
+        tag = f.save()
+
+        self.assertEqual(set(tag.caseversions.all()), set([cv]))
+
+
+    def test_add_bad_case(self):
+        """Try to add a non-existent case to a suite, get exception."""
+        cv = self.F.CaseVersionFactory()
+        t = self.F.TagFactory(product=cv.productversion.product)
+
+        f = self.form(
+            {
+                "product": str(t.product.id),
+                "name": t.name,
+                "description": t.description,
+                "caseversions": [str(cv.id+1)],
+                "cc_version": str(t.cc_version),
+                },
+            instance=t,
+            )
+
+        self.assertFalse(f.is_valid())
+        self.assertEqual(
+            f.errors["caseversions"],
+            [u"Not a valid caseversion for this tag."]
+        )
+
+
+
+
 
 class AddTagFormTest(case.DBTestCase):
     """Tests for AddTagForm."""
