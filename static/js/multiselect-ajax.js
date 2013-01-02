@@ -186,8 +186,10 @@ var MT = (function (MT, $) {
                 }
                 else {
                     select.html("");
+                    sel_complete = true;
                 }
 
+                // fetch unselected / available cases
                 $.ajax({
                     type: "GET",
                     url: unsel_url.toString(),

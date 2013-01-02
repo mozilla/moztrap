@@ -24,8 +24,12 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             filters=[
                 filters.KeywordFilter("name"),
                 filters.ModelFilter(
-                    "product version", lookup="productversion",
-                    queryset=model.ProductVersion.objects.all()),
+                    "product version",
+                    key="productversion",
+                    lookup="productversion",
+                    label=lambda obj: getattr(obj, "version"),
+                    queryset=model.ProductVersion.objects.all(),
+                    ),
                 filters.ModelFilter(
                     "tag", lookup="tags", queryset=model.Tag.objects.all()),
                 filters.ModelFilter(
