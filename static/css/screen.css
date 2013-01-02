@@ -1574,11 +1574,8 @@ body > div {
 }
 
 .chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content, #add-environment-form .element-item .content {
-  border-left: 1px solid #a9b2bf;
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
-  padding-left: 0.375em;
-  margin-left: 1.125em;
 }
 
 .chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch, .pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
@@ -1651,6 +1648,11 @@ body > div {
 }
 .chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;
+}
+.chickcheck .pinswitch + .content, .reversecheck .pinswitch + .content, .versioned .attachment-item .pinswitch + .content, .tag-item .pinswitch + .content, .magicfilter .compact .filter-item .pinswitch + .content, .selectsearch .compact .filter-item .pinswitch + .content, #add-environment-form .element-item .pinswitch + .content {
+  border-left: 1px solid #a9b2bf;
+  padding-left: 0.375em;
+  margin-left: 1.125em;
 }
 
 .reversecheck .onoff, .versioned .attachment-item .onoff {
