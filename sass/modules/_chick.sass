@@ -23,11 +23,8 @@
   padding-right: rhythm()
 
 .chickcontent
-  border-left: 1px solid $blue-lighter
   border-right: 1px solid $blue-lighter
   padding-right: rhythm(.25)
-  padding-left: rhythm(.25)
-  margin-left: rhythm(.75)
 
 .chickaction
   +stretch-y
@@ -61,6 +58,10 @@
 
   .content
     @extend .chickcontent
+  .pinswitch + .content
+    border-left: 1px solid $blue-lighter
+    padding-left: rhythm(.25)
+    margin-left: rhythm(.75)
 
   .onoffswitch
     @extend .chicktoggle

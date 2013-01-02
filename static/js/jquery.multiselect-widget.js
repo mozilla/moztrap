@@ -63,6 +63,10 @@
                             if (thisItem.find('.' + type).children('span').text().toLowerCase() !== filter) {
                                 excludeThisItem = true;
                             }
+                        } else if (type === 'productversion') {
+                            if (thisItem.find('.' + type).children('span').text().toLowerCase() !== filter) {
+                                excludeThisItem = true;
+                            }
                         } else {
                             if (thisItem.find('.' + type).text().toLowerCase() !== filter) {
                                 excludeThisItem = true;
