@@ -284,7 +284,8 @@ class Filter(object):
     cls = ""
 
 
-    def __init__(self, name, lookup=None, key=None, coerce=None):
+    def __init__(self, name, lookup=None, key=None, coerce=None,
+        extra_filters=None):
         """
         Instantiate the Filter.
 
@@ -294,19 +295,25 @@ class Filter(object):
         ``key`` default to ``name`` if not provided. ``coerce`` is a
         one-argument function to coerce values to the correct type for this
         filter; it may raise ValueError or TypeError.
+        ``extra_filters`` is a dict containing any extra filters that should be
+        attached to this filter.  For example, you might want to add
+        ``is_latest`` to a ``result status`` filter.
 
         """
         self.name = name
         self.lookup = name if lookup is None else lookup
         self.key = name if key is None else key
+        self.extra_filters = {} if extra_filters is None else extra_filters
         self._coerce_func = coerce
 
 
     def filter(self, queryset, values):
         """Given queryset and selected values, return filtered queryset."""
         if values:
+            filters = {"{0}__in".format(self.lookup): values}
+            filters.update(self.extra_filters)
             return queryset.filter(
-                **{"{0}__in".format(self.lookup): values}).distinct()
+                **filters).distinct()
         return queryset
 
 
@@ -375,6 +382,25 @@ class ChoicesFilter(BaseChoicesFilter):
     def get_choices(self):
         """Return the passed-in choices."""
         return self._choices
+
+
+
+class BooleanChoicesFilter(ChoicesFilter):
+    """A filter for including or excluding based on given values"""
+
+    def __init__(self, *args, **kwargs):
+        self.values_in = kwargs.pop("values_in")
+        super(BooleanChoicesFilter, self).__init__(*args, **kwargs)
+
+
+    def filter(self, queryset, values):
+        """Given queryset and selected values, return filtered queryset."""
+        if values:
+            filters = {"{0}__in".format(self.lookup): values}
+            filters.update(self.extra_filters)
+            return queryset.filter(
+                **filters).distinct()
+        return queryset
 
 
 

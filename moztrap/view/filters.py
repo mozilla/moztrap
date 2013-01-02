@@ -85,6 +85,17 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "status",
             lookup="caseversion__status",
             choices=model.CaseVersion.STATUS),
+        filters.ChoicesFilter(
+            "result status",
+            lookup="results__status",
+            extra_filters={"results__is_latest": True},
+            choices=model.Result.COMPLETED_STATES),
+        filters.BooleanChoicesFilter(
+            "completed",
+            lookup="results__status",
+            values_in=model.Result.COMPLETED_STATES,
+            choices=[(1, "run"), (0, "not run")]
+            ),
         filters.KeywordExactFilter(
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
