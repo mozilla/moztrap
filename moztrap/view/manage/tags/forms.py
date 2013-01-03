@@ -27,7 +27,7 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     "product version",
                     key="productversion",
                     lookup="productversion",
-                    label=lambda obj: getattr(obj, "version"),
+                    label=lambda obj: getattr(obj, "version"), #pragma: no cover
                     queryset=model.ProductVersion.objects.all(),
                     ),
                 filters.ModelFilter(
