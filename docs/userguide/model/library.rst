@@ -84,6 +84,21 @@ way to organize and filter them on any number of axes.
 By default, tags are :ref:`product<products>`-specific; global tags can also be
 created and managed via the tag management UI.
 
+Merging Tags
+^^^^^^^^^^^^
+
+.. _tag-merge:
+
+The edit screen for tags is a great way to merge two tags into one.  For
+example, if you wanted to merge TagA and TagB all into TagB, then simply:
+
+* Edit TagB
+* In the list of available cases, filter on TagA
+* Select all the available cases and click the green add button
+* Save TagB
+* Delete TagA
+
+
 .. _tag-edit-fields:
 
 Tag Edit Fields
@@ -97,6 +112,10 @@ Tag Edit Fields
   execution before the test case description and steps.  This is useful to
   provide some *setup* or *precondition* code that doesn't have to be
   repeated for a group of cases.  Supports Markdown_ syntax.
+* **Available Cases** - Test Cases that have the same Product you selected for
+  this tag.  This list is filterable.
+* **Included Cases** - Test Cases that have this tag applied.  This list is not
+  filtered.
 
 
 .. _attachments:

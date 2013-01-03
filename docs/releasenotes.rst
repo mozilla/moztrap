@@ -1,6 +1,29 @@
 Release Notes
 =============
 
+Version 1.3.7
+-------------
+*release date - 1/3/2013*
+
+* **Fill Product Version Cases** - Added the ability to fill in case versions
+  when they exist in one product version and not in another.  This can be handy
+  if you have created version 1.0 and 2.0 of your product in MozTrap, and have
+  been adding new cases to 1.0 as you go.  When it's time for 2.0, you want
+  all those new cases to get moved forward.  In this case, edit the 2.0
+  Product Version to fill cases from 1.0.
+  See :ref:`Fill Case Versions<product-version-fill-cases>` for more info.
+* **Mass Tag / Untag Cases** - If you want to add a new tag to lots of cases,
+  you previously had to edit each case and add it.  Now, if you edit the tag
+  in question, and select the product for the cases, you will see a list of
+  available and included cases for that tag.  This makes it possible to
+  :ref:`merge tags<tag-merge>`.  See :ref:`Tags<tags>` for info.
+* **Filter results by status** - You can now filter results cases by passed,
+  failed or invalidated.
+* **Page title shows location** - You can no see where in the product you are
+  by the page / tab title.
+* **other tweaks and bug fixes**
+
+
 Version 1.3.5
 -------------
 *release date - 12/19/2012*
