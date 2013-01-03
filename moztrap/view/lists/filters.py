@@ -385,25 +385,6 @@ class ChoicesFilter(BaseChoicesFilter):
 
 
 
-class BooleanChoicesFilter(ChoicesFilter):
-    """A filter for including or excluding based on given values"""
-
-    def __init__(self, *args, **kwargs):
-        self.values_in = kwargs.pop("values_in")
-        super(BooleanChoicesFilter, self).__init__(*args, **kwargs)
-
-
-    def filter(self, queryset, values):
-        """Given queryset and selected values, return filtered queryset."""
-        if values:
-            filters = {"{0}__in".format(self.lookup): values}
-            filters.update(self.extra_filters)
-            return queryset.filter(
-                **filters).distinct()
-        return queryset
-
-
-
 class ModelFilter(BaseChoicesFilter):
     """
     A Filter whose choices are from a provided iterable of model instances.

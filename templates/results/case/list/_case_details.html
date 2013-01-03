@@ -1,9 +1,13 @@
-{% load markup %}
+{% load markup permissions %}
 
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
 
   <a href="{% url 'results_results' rcv_id=runcaseversion.id %}" class="drill-link" title="test results related to {{ runcaseversion.caseversion.name }}">See related test results.</a>
+  {% if user|has_perm:"library.manage_cases" %}
+    {% url 'manage_caseversion_edit' caseversion_id=runcaseversion.caseversion.id as caseversion_edit_url %}
+    <a href="{{ caseversion_edit_url }}" target="_blank" class="detail-case-edit">Edit Case Details</a>
+  {% endif %}
 
   {% if runcaseversion.caseversion.description %}
     <p class="description">

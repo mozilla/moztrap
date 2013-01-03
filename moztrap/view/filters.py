@@ -2,6 +2,7 @@
 List filtering options.
 
 """
+from model_utils import Choices
 from moztrap import model
 
 from .lists import filters
@@ -89,12 +90,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "result status",
             lookup="results__status",
             extra_filters={"results__is_latest": True},
-            choices=model.Result.COMPLETED_STATES),
-        filters.BooleanChoicesFilter(
-            "completed",
-            lookup="results__status",
-            values_in=model.Result.COMPLETED_STATES,
-            choices=[(1, "run"), (0, "not run")]
+            choices=Choices(*model.Result.COMPLETED_STATES),
             ),
         filters.KeywordExactFilter(
             "id", lookup="caseversion__case__id", coerce=int),

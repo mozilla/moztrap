@@ -6022,6 +6022,51 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
+#caseresults .detail-case-edit {
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #666666;
+  background-color: #cbcfd6;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-repeat: no-repeat;
+  padding-left: 26px;
+  background-position: 9px, left;
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+  display: inline-block;
+}
+#caseresults .detail-case-edit:hover, #caseresults .detail-case-edit:focus {
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+#caseresults .detail-case-edit:active {
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
 
 #results .listordering, #results .itemhead, #results .case-details .summary, #results .item-content {
   padding-left: 1.5em;
@@ -6267,7 +6312,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #runtests .order {
   padding-top: 0.375em;
 }
-#runtests .run-case-edit {
+#runtests .detail-case-edit {
   float: right;
   font-weight: 500;
   -webkit-border-radius: 0.296em;
@@ -6296,7 +6341,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
-#runtests .run-case-edit:hover, #runtests .run-case-edit:focus {
+#runtests .detail-case-edit:hover, #runtests .detail-case-edit:focus {
   background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
   background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
@@ -6304,7 +6349,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/edit.png?1328730630'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: url('../images/ui/edit.png?1328730630'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
-#runtests .run-case-edit:active {
+#runtests .detail-case-edit:active {
   background-image: url('../images/ui/edit.png?1328730630'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: url('../images/ui/edit.png?1328730630'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: url('../images/ui/edit.png?1328730630'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
