@@ -128,6 +128,25 @@ var MT = (function (MT, $) {
         });
     };
 
+    MT.getPinnedFilters = function () {
+        var cookieChunks = document.cookie.split("; "),
+            prefix = "moztrap-filter-",
+            uri = new URI(MT.getActionAjaxReplaceUri()),
+            filters = {};
+
+        for (var i = 0; i < cookieChunks.length; i++) {
+            var chunk = cookieChunks[i];
+            if (chunk.indexOf(prefix) === 0) {
+                // this is one of our filters
+                var parts = chunk.split("="),
+                    k = parts[0],
+                    v = JSON.parse($.cookie(k));
+                filters[k.replace(prefix, "")] = v;
+            }
+        }
+
+        return filters;
+    };
 
     // A pinned filter should have the "pinned" class on the onoff span.
     // Just used for first display of the screen, if filters are in the
@@ -140,42 +159,23 @@ var MT = (function (MT, $) {
 
 
         // get all the pinned filter cookies
-        var cookieChunks = document.cookie.split("; "),
-            prefix = "moztrap-filter-",
+        var filters = MT.getPinnedFilters(),
             uri = new URI(MT.getActionAjaxReplaceUri());
 
-        for (var i = 0; i < cookieChunks.length; i++) {
-            var chunk = cookieChunks[i];
-            if (chunk.indexOf(prefix) === 0) {
-                // this is one of our filters
-                var parts = chunk.split("="),
-                    k = parts[0],
-                    v = JSON.parse($.cookie(k)),
-                    fieldVal = k.replace(prefix, "");
+        for (var key in filters) {
+            var values = filters[key];
 
-                // update the uri to have the pinned value
-                uri.addSearch("filter-" + fieldVal, v);
+            // update the uri to have the pinned value
+            uri.addSearch("filter-" + key, values);
 
-                // find the filter-item that this pinned filter applies to and
-                // add the "pinned" class to the "onoff" span
-                var terst = $('.filter-group[data-name="' + fieldVal + '"');
-//                var terst = $(".filter-group[data-name=fieldVal]");
-//                .filter(
-//                    $("input").data("name") === fieldVal
-////                    &&
-////                        v.indexOf($("input").val()) > -1
-//                ).val();
-
-                var x = terst.val();
-//                $(".filter-group").filter(
-//                    $("input").data("name") === fieldVal &&
-//                        v.indexOf($("input").val()) > -1
-//                ).find('.onoff').addClass('pinned');
-            }
+            // find the filter-item that this pinned filter applies to and
+            // add the "pinned" class to the "onoff" span
+            var inputs = "input[value='" + values.join("',[value='") +  "']";
+            var terst = $(".filter-group[data-name='" + key + "'] " + inputs);
+            terst.parent().find('.onoff').addClass('pinned');
         }
         MT.setActionAjaxReplaceUri(uri.toString());
     };
-
 
     // Prepare filter-form for ajax-submit
     MT.filterFormAjax = function (container) {
