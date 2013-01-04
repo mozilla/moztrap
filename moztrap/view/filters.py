@@ -88,6 +88,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             choices=model.CaseVersion.STATUS),
         filters.ChoicesFilter(
             "result status",
+            key="resultstatus",
             lookup="results__status",
             extra_filters={"results__is_latest": True},
             choices=Choices(*model.Result.COMPLETED_STATES),

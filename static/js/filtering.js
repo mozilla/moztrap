@@ -158,15 +158,19 @@ var MT = (function (MT, $) {
 
                 // find the filter-item that this pinned filter applies to and
                 // add the "pinned" class to the "onoff" span
-                $('.filter-item').filter(function (index) {
-                    var input = $(this).find('input');
-                    for (var j = 0; j < v.length; j++) {
-                        if (input.data("name") === fieldVal && input.val() === String(v[j])) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).find('.onoff').addClass('pinned');
+                var terst = $('.filter-group[data-name="' + fieldVal + '"');
+//                var terst = $(".filter-group[data-name=fieldVal]");
+//                .filter(
+//                    $("input").data("name") === fieldVal
+////                    &&
+////                        v.indexOf($("input").val()) > -1
+//                ).val();
+
+                var x = terst.val();
+//                $(".filter-group").filter(
+//                    $("input").data("name") === fieldVal &&
+//                        v.indexOf($("input").val()) > -1
+//                ).find('.onoff').addClass('pinned');
             }
         }
         MT.setActionAjaxReplaceUri(uri.toString());
