@@ -1,6 +1,5 @@
 from tastypie import fields
 from tastypie import http
-from tastypie.authorization import  Authorization
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import ImmediateHttpResponse
 
@@ -11,34 +10,25 @@ from ..mtapi import MTResource, MTAuthorization, MTApiKeyAuthentication
 import logging
 logger = logging.getLogger(__name__)
 
-class ReportResultsAuthorization(Authorization):
+class ReportResultsAuthorization(MTAuthorization):
     """Authorization that only allows users with execute privileges."""
 
-    def is_authorized(self, request, object=None):
-        if request.method == "GET":
-            return True
-        elif request.user.has_perm("execution.execute"):
-            return True
-        else:
-            return False
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "execution.execute"
 
-class ProductVersionAuthorization(Authorization):
+
+
+class ProductVersionAuthorization(MTAuthorization):
     """A permission of 'core.manage_productversions does not exist,
     use core.manage_products instead."""
 
-    def is_authorized(self, request, object=None):
-        permission = "core.manage_products"
-        logger.debug("desired permission %s" % permission)
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "core.manage_products"
 
-        if request.method == "GET":
-            logger.debug("GET always allowed")
-            return True
-        elif request.user.has_perm(permission):
-            logger.debug("user has permissions")
-            return True
-        else:
-            logger.debug("user does not have permissions")
-            return False
 
 
 class ProductVersionResource(MTResource):

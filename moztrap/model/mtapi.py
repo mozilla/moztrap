@@ -61,15 +61,20 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
 class MTAuthorization(Authorization):
     """Authorization that allows any user to GET but only users with permissions to modify."""
 
-    def is_authorized(self, request, object=None):
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
         klass = self.resource_meta.object_class
         permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
         logger.debug("desired permission %s" % permission)
+        return permission
+
+    def is_authorized(self, request, object=None):
 
         if request.method == "GET":
             logger.debug("GET always allowed")
             return True
-        elif request.user.has_perm(permission):
+        elif request.user.has_perm(self.permission):
             logger.debug("user has permissions")
             return True
         else:
