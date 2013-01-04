@@ -103,6 +103,10 @@ class ProductResourceTest(ApiCrudCases):
 
     # additional test cases, if any
 
+    @property
+    def _pv_required_msg(self):
+        return "The 'productversions' key must exist, must be a list, and the list must contain at least one entry."
+
     def test_create_must_contain_productversion(self):
         """If productversions does not exist, there will be a 500 error."""
 
@@ -117,8 +121,9 @@ class ProductResourceTest(ApiCrudCases):
             self.get_list_url(self.resource_name),
             params=self.credentials,
             payload=fields,
-            status=500,
+            status=400,
             )
+        assert res.text == self._pv_required_msg
 
 
     def test_productversion_for_create_must_be_list(self):
@@ -136,8 +141,9 @@ class ProductResourceTest(ApiCrudCases):
             self.get_list_url(self.resource_name),
             params=self.credentials,
             payload=fields,
-            status=500,
+            status=400,
             )
+        assert res.text == self._pv_required_msg
 
 
     def test_productversion_list_for_create_must_not_be_empty(self):
@@ -154,5 +160,6 @@ class ProductResourceTest(ApiCrudCases):
             self.get_list_url(self.resource_name),
             params=self.credentials,
             payload=fields,
-            status=500,
+            status=400,
             )
+        assert res.text == self._pv_required_msg

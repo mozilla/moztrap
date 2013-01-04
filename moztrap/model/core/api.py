@@ -1,6 +1,8 @@
+from tastypie import fields
+from tastypie import http
 from tastypie.authorization import  Authorization
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie import fields
+from tastypie.exceptions import ImmediateHttpResponse
 
 from .models import Product, ProductVersion, ApiKey
 from ..environments.api import EnvironmentResource
@@ -106,13 +108,13 @@ class ProductResource(MTResource):
         try:
             productversions = bundle.data.pop('productversions')
             if not isinstance(productversions, list):
-                raise KeyError(pv_required_msg)
+                raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
             if not len(productversions):
-                raise KeyError(pv_required_msg)
+                raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
 
             bundle.data["productversions"] = []
         except KeyError:
-            raise KeyError(pv_required_msg)
+            raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
 
         # create the product
         updated_bundle = super(ProductResource, self).obj_create(bundle=bundle, request=request, **kwargs)
