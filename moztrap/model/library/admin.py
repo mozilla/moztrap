@@ -70,7 +70,13 @@ class CaseVersionAdmin(MTModelAdmin):
 
 
 
+class CaseAdmin(MTModelAdmin):
+    list_display = ["__unicode__", "product", "deleted_on"]
+    list_filter = ["product", "deleted_on"]
+
+
+
 admin.site.register(models.Suite, MTModelAdmin)
 admin.site.register(
-    models.Case, MTModelAdmin, inlines=[CaseVersionInline, SuiteCaseInline])
+    models.Case, CaseAdmin, inlines=[CaseVersionInline, SuiteCaseInline])
 admin.site.register(models.CaseVersion, CaseVersionAdmin)

@@ -9,30 +9,37 @@ var MT = (function (MT, $) {
     'use strict';
 
 
-    // Populate the list of available and selected items on page load
+    // Populate the list of available and included items on page load
     // and when the ``trigger_field`` value is changed.
     MT.populateMultiselectItems = function (opts) {
         var defaults = {
                 container: 'body',
                 data_attr: 'product-id',
-                refetch_on_trigger: true
+                refetch_on_trigger: true,
+                fetch_without_trigger_value: false
             },
             options = $.extend({}, defaults, opts);
-        var cache = {};
-
 
         if ($(options.container).length) {
-            var product = $(options.container).find(options.trigger_field);
+            var trigger = $(options.container).find(options.trigger_field);
 
-            // if the product field is a select, then we know it's
+            ////////
+            //
+            // ON CHANGE: when user changes the trigger field (product,
+            // productversion, etc)
+            //
+            ////////
+
+            // if the trigger field is a select, then we know it's
             // editable and so we add the change handler.
-            if (product.is("select") && options.refetch_on_trigger) {
+            if (trigger.is("select") && options.refetch_on_trigger) {
                 // update the item list if this field changes
-                product.change(function () {
-                    var trigger_id = $(this).find('option:selected').data(options.data_attr),
+                trigger.change(function () {
+                    var trigger_id = $(this).find('option:selected').data(
+                            options.data_attr),
                         included_id = $(".edit-" + options.for_type).data(
                             options.for_type + "-id");
-                    if (trigger_id) {
+                    if (trigger_id || options.fetch_without_trigger_value) {
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -43,8 +50,19 @@ var MT = (function (MT, $) {
                             options.use_latest
                         );
                     }
+                    else {
+                        // the user selected the "----" option, so clear
+                        // multiselect
+                        $(".multiselect").find(".select").html("");
+                    }
                 });
             }
+
+            ////////
+            //
+            // ON PAGE LOAD
+            //
+            ////////
 
             // we should load the items on page load whether it's a
             // <select> or not.  But if no item is selected, it will have
@@ -55,23 +73,31 @@ var MT = (function (MT, $) {
             //
             if ($(options.container).find(".multiselect").length) {
                 $(function () {
-                    // the field items are filtered on (usu. product or productversion)
-                    var trigger = $(options.trigger_field);
-                    var trigger_id;
-                    // the id to check for included items (usu. suite_id or run_id)
-                    var included_id = $(".edit-" + options.for_type).data(options.for_type + "-id");
+                    // the field items are filtered on (usu. product or
+                    // productversion)
+                    var trigger = $(options.trigger_field),
+                        trigger_id,
+                        // the id to check for included items (usu. suite_id,
+                        // tag_id or run_id)
+                        included_id = $(".edit-" + options.for_type).data(
+                            options.for_type + "-id");
 
-                    // Get the correct product_id, depending on the type of the
-                    // id_product field.
+                    // Get the correct id, depending on whether it's readonly
+                    // or rw.
                     if (trigger.is("select")) {
-                        trigger_id = trigger.find("option:selected").data(options.data_attr);
+                        trigger_id = trigger.find("option:selected").data(
+                            options.data_attr);
                     }
                     else if (trigger.is("input")) {
-                        trigger_id = product.val();
+                        trigger_id = trigger.val();
                     }
-                    if (trigger_id) {
-                        var url = options.ajax_url_root + trigger_id;
-                        // This will be present when editing a suite, not creating a new one.
+
+                    // for some screens, you don't want to fetch if no product
+                    // is set,
+                    // but for some screens you do (like tags that can be
+                    // global to all products).
+                    // usually this is set when editing, not set when creating
+                    if (trigger_id || options.fetch_without_trigger_value) {
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -88,8 +114,12 @@ var MT = (function (MT, $) {
         }
     };
 
-    // cache for the ajax calls for cases of suites or suites of runs.
+    // cache for the ajax calls for multiselect items.
     var cache = {};
+
+    // any ajax requests currently in progress so we can abort them if
+    // we want to start a new one.
+    var current_xhrs = {};
 
     // Use AJAX to get a set of items filtered by product_id
     MT.doPopulateMultiselect = function (
@@ -101,38 +131,61 @@ var MT = (function (MT, $) {
         included_id,
         use_latest) {
 
-        var unselect = $(".multiunselected").find(".select"),
-            select = $(".multiselected").find(".select"),
-            unsel_url = new URI(ajax_url_root);
+        var available = $(".multiunselected").find(".select"),
+            included = $(".multiselected").find(".select"),
+            avail_url = new URI(ajax_url_root);
 
+        // if there are currently doing any ajax fetches for items, abort them
+        // so we can do this new one.
+        if (current_xhrs.include) {
+            current_xhrs.include.abort();
+        }
+        if (current_xhrs.available) {
+            current_xhrs.available.abort();
+        }
 
+        if (trigger_id) {
+            // we may not have a trigger_id if the form supports fetching
+            // without it.  (like tags)
+            avail_url.addSearch(ajax_trigger_filter, trigger_id);
+        }
 
-        unsel_url.addSearch(ajax_trigger_filter, trigger_id);
         if (use_latest) {
-            // @@@ check cookies here.  If productversion is set, then use
-            // that instead.  But, garsh.. what if they have more than one
-            // productversion filter pinned?  Have to check if the
+            // get the ``latest`` case versions to display here
+
+            // @@@ maybe we could check cookies here.  If productversion is
+            // set, then use that instead.  But, garsh.. what if they have more
+            // than one productversion filter pinned?  Have to check if the
             // productversion matched the product set in this form, but I
             // don't have that info.  Need it server side, or via ajax.
-            // I could make the caseselection url smart enough to figure that
-            // out.
-            unsel_url.addSearch("latest", 1);
+            // I COULD make the caseselection url smart enough to figure that
+            // out, perhaps.
+            avail_url.addSearch("latest", 1);
         }
-        var sel_url = new URI(unsel_url.toString());
+        var incl_url = new URI(avail_url.toString());
 
         if (included_id) {
-            unsel_url.addSearch(ajax_for_field + "__ne", included_id);
-            sel_url.addSearch(ajax_for_field, included_id);
+            avail_url.addSearch(ajax_for_field + "__ne", included_id);
+            incl_url.addSearch(ajax_for_field, included_id);
         }
 
-        if (unselect.length) {
+        if (available.length) {
 
-            if (cache[unsel_url.toString()]) {
-                unselect.html(cache[unsel_url.toString()].unsel_html);
-                select.html(cache[sel_url.toString()].sel_html);
+            if (cache[avail_url.toString()]) {
+                available.html(cache[avail_url.toString()]);
+                if (included_id) {
+                    // included_id means we're editing existing, not a new tag
+                    included.html(cache[incl_url.toString()]);
+                }
+                else {
+                    // if we switch products for a new case, we want to be sure
+                    // we empty the included section, so you don't include
+                    // cases from two different products
+                    included.html("");
+                }
             }
             else {
-                // ajax fetch selected first, then unselected
+                // ajax fetch included first, then available
 
                 /*
                   Had wanted to show when each list was complete.  This could
@@ -150,72 +203,83 @@ var MT = (function (MT, $) {
                   actually prevent the dragging.
 
                  */
-                var unsel_complete = false,
-                    sel_complete = false;
+                var avail_complete = false,
+                    incl_complete = false;
 
-                // fetch selected
+                // set the items of the available and included lists
+                var setItems = function () {
+                    if (incl_complete && avail_complete) {
+                        included.loadingOverlay("remove");
+                        included.html(cache[incl_url.toString()]);
+                        available.loadingOverlay("remove");
+                        available.html(cache[avail_url.toString()]);
+                    }
+                };
+
+                // fetch included
                 if (included_id) {
-                    $.ajax({
+                    current_xhrs.include = $.ajax({
                         type: "GET",
-                        url: sel_url.toString(),
+                        url: incl_url.toString(),
                         context: document.body,
                         beforeSend: function () {
-                            select.loadingOverlay();
+                            included.html("");
+                            included.loadingOverlay();
                         },
                         success: function (response) {
                             /*
-                             The selected section comes in sorted by order they fall.
-                             remove the "Loading..." overlay once they're loaded up.
+                             The included section comes in sorted by order they
+                             fall.
+                             remove the "Loading..." overlay once they're
+                             loaded up.
                              */
-                            var sel_html = ich_template({items: response.objects});
-                            cache[sel_url.toString()] = sel_html;
-
-                            sel_complete = true;
-                            if (unsel_complete) {
-                                select.loadingOverlay("remove");
-                                select.html(sel_html);
-                                unselect.loadingOverlay("remove");
-                                unselect.html(cache[unsel_url.toString()]);
-                            }
+                            cache[incl_url.toString()] = ich_template(
+                                {items: response.objects});
+                            incl_complete = true;
+                            setItems();
                         },
                         error: function (response) {
                             $(".multiselected").loadingOverlay("remove");
                             console.error(response);
+                        },
+                        always: function () {
+                            delete current_xhrs.include;
                         }
                     });
                 }
                 else {
-                    select.html("");
-                    sel_complete = true;
+                    // if there's no included_id, this in a new item, and
+                    // we just want it to be blank
+                    included.html("");
+                    incl_complete = true;
                 }
 
-                // fetch unselected / available cases
-                $.ajax({
+                // fetch available items
+                current_xhrs.available = $.ajax({
                     type: "GET",
-                    url: unsel_url.toString(),
+                    url: avail_url.toString(),
                     context: document.body,
                     beforeSend: function () {
-                        unselect.loadingOverlay();
+                        available.html("");
+                        available.loadingOverlay();
                     },
                     success: function (response) {
                         /*
-                         remove the "Loading..." overlay once they're loaded up.
+                         remove the "Loading..." overlay once they're loaded
+                         up.
                          */
-                        var unsel_html = ich_template({items: response.objects});
-                        cache[unsel_url.toString()] = unsel_html;
-
-                        unsel_complete = true;
-                        if (sel_complete) {
-                            select.loadingOverlay("remove");
-                            select.html(cache[sel_url.toString()]);
-                            unselect.loadingOverlay("remove");
-                            unselect.html(unsel_html);
-                        }
+                        cache[avail_url.toString()] = ich_template(
+                            {items: response.objects});
+                        avail_complete = true;
+                        setItems();
 
                     },
                     error: function (response) {
                         $(".multiunselected").loadingOverlay("remove");
                         console.error(response);
+                    },
+                    always: function () {
+                        delete current_xhrs.include;
                     }
                 });
 

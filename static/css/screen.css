@@ -4257,13 +4257,13 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .tag-form .caseversions-field .productversion, .tag-form .caseversions-field .byversion {
   display: inline;
   float: left;
-  width: 6.977%;
+  width: 16.279%;
   margin-right: 2.326%;
 }
 .tag-form .caseversions-field .author, .tag-form .caseversions-field .byauthor {
   display: inline;
   float: left;
-  width: 25.581%;
+  width: 16.279%;
   margin-right: 2.326%;
   display: inline;
   float: right;

@@ -27,7 +27,6 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     "product version",
                     key="productversion",
                     lookup="productversion",
-                    label=lambda obj: getattr(obj, "version"), #pragma: no cover
                     queryset=model.ProductVersion.objects.all(),
                     ),
                 filters.ModelFilter(
@@ -92,6 +91,10 @@ class EditTagForm(TagForm):
         """Initialize form; restrict tag product choices."""
         super(EditTagForm, self).__init__(*args, **kwargs)
 
+        # get all the cases this tag is applied to, if the cases belong to
+        # a single product, this tag can be set to global or to that product.
+        # if it's applied to cases from multiple products, then it must
+        # remain global.
         products_tagged = model.Product.objects.filter(
             cases__versions__tags=self.instance).distinct()
         count = products_tagged.count()
@@ -99,10 +102,20 @@ class EditTagForm(TagForm):
         pf = self.fields["product"]
 
         if count > 1:
+            # ro - no options
+            # - no product set, cases applied from multiple products
             pf.queryset = model.Product.objects.none()
+            pf.readonly = True
         elif count == 1:
+            # rw - that product or none
+            # - no product set, cases applied from single product
+            # - product set, cases applied
             pf.queryset = products_tagged
 
+        # else:
+        # rw - all product options
+        # - no product set, no cases applied
+        # - product set, no cases applied
 
 
 class AddTagForm(TagForm):
