@@ -70,16 +70,21 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         user = user or self.user
         tag = super(TagForm, self).save(user=user)
 
-        TagCV = tag.caseversions.through
+        # it's possible the user submitted the form before the ajax loaded
+        # the included and available cases.  So ``caseversions`` would not
+        # show in the changed_data.  If that's the case, we prevent updating
+        # the list of cases.
+        if "caseversions" in self.changed_data:
+            TagCV = tag.caseversions.through
 
-        # used to be delete() instead of clear.  May be remove?
-        # why is delete() ok for cases of suites?  must be some special checking
-        # for that.
-        tag.caseversions.clear()
-        tcv_list = [TagCV(tag=tag, caseversion=cv)
-            for cv in self.cleaned_data["caseversions"]]
+            # used to be delete() instead of clear.  May be remove?
+            # why is delete() ok for cases of suites?  must be some special checking
+            # for that.
+            tag.caseversions.clear()
+            tcv_list = [TagCV(tag=tag, caseversion=cv)
+                for cv in self.cleaned_data["caseversions"]]
 
-        TagCV.objects.bulk_create(tcv_list)
+            TagCV.objects.bulk_create(tcv_list)
 
         return tag
 

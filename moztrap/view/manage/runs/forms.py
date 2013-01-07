@@ -145,4 +145,8 @@ class EditRunForm(RunForm):
             pvf.queryset = pvf.queryset.filter(
                 product=self.instance.productversion.product_id)
 
+            # if there is only 1, no sense in having any other options.
+            if pvf.queryset.count() == 1:
+                pvf.readonly = True
+
             # ajax populates available and included suites on page load

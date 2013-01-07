@@ -1,5 +1,5 @@
 {% load mtforms %}
-<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field|is_readonly %} readonly{% endif %}{% if field.errors %} errors{% endif %}" data-title="{{ field|label_text }}">
+<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field|is_readonly %} readonly{% endif %}{% if field.errors %} errors{% endif %}{% if hidden %} hiddenfield{% endif %}" data-title="{{ field|label_text }}">
 
   {% if errorsfirst %}
     {{ field.errors }}

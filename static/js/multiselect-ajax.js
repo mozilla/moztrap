@@ -40,6 +40,8 @@ var MT = (function (MT, $) {
                         included_id = $(".edit-" + options.for_type).data(
                             options.for_type + "-id");
                     if (trigger_id || options.fetch_without_trigger_value) {
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -50,10 +52,16 @@ var MT = (function (MT, $) {
                             options.use_latest
                         );
                     }
+                    else if (options.hide_without_trigger_value) {
+                        $(".multiselect").closest(
+                            ".formfield").addClass("hiddenfield");
+                    }
                     else {
                         // the user selected the "----" option, so clear
                         // multiselect
                         $(".multiselect").find(".select").html("");
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                     }
                 });
             }
@@ -94,10 +102,11 @@ var MT = (function (MT, $) {
 
                     // for some screens, you don't want to fetch if no product
                     // is set,
-                    // but for some screens you do (like tags that can be
-                    // global to all products).
+                    // but for some screens you may.
                     // usually this is set when editing, not set when creating
                     if (trigger_id || options.fetch_without_trigger_value) {
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -108,7 +117,10 @@ var MT = (function (MT, $) {
                             options.use_latest
                         );
                     }
-
+                    else if (options.hide_without_trigger_value) {
+                        $(".multiselect").closest(
+                            ".formfield").addClass("hiddenfield");
+                    }
                 });
             }
         }
@@ -237,9 +249,16 @@ var MT = (function (MT, $) {
                                 {items: response.objects});
                             incl_complete = true;
                             setItems();
+                            included.find(".select").attr("disabled", false);
                         },
                         error: function (response) {
                             $(".multiselected").loadingOverlay("remove");
+
+                            // so that if the form is submitted when the ajax
+                            // has failed, we don't try to update the items
+                            // list, only update the other fields in the form.
+                            included.find(".select").attr("disabled", true);
+
                             console.error(response);
                         },
                         always: function () {

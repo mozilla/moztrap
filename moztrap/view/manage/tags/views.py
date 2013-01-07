@@ -88,7 +88,8 @@ def tag_add(request):
         request,
         "manage/tag/add_tag.html",
         {
-            "form": form
+            "form": form,
+            "hide_multiselect": 1,
             }
         )
 
@@ -114,6 +115,7 @@ def tag_edit(request, tag_id):
         {
             "form": form,
             "tag": tag,
+            "hide_multiselect": (tag.product==None),
             }
         )
 

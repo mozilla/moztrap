@@ -732,6 +732,10 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   font-weight: 500;
 }
 
+.hiddenfield {
+  display: none;
+}
+
 .errorlist {
   margin: 0;
   padding: 0;
