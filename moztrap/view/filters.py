@@ -66,6 +66,7 @@ class RunFilterSet(filters.FilterSet):
         filters.ChoicesFilter(
             "is Series",
             lookup="is_series",
+            key="is_series",
             choices=[(1, "series"), (0, "individual")],
             coerce=int,
             ),
@@ -88,6 +89,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             choices=model.CaseVersion.STATUS),
         filters.ChoicesFilter(
             "result status",
+            key="resultstatus",
             lookup="results__status",
             extra_filters={"results__is_latest": True},
             choices=Choices(*model.Result.COMPLETED_STATES),

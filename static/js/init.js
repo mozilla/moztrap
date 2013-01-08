@@ -195,7 +195,8 @@ var MT = (function (MT, $) {
             ajax_trigger_filter: "productversion__product",
             ajax_for_field: "tags",
             for_type: "tag",
-            ich_template: ich.caseversion_select_item
+            ich_template: ich.caseversion_select_item,
+            hide_without_trigger_value: true
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',

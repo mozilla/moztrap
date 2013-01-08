@@ -220,6 +220,7 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
+        bundle.data["productversion_name"] = bundle.obj.productversion.name
 
         try:
             bundle.data["created_by"] = {

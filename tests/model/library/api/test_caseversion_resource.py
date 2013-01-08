@@ -136,6 +136,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
                     "productversion",
                     cv.productversion.id)),
                 u'version': u'1.0'},
+            u'productversion_name': unicode(cv.productversion.name),
             u'resource_uri': unicode(
                 self.get_detail_url("caseversionselection",cv.id)),
             u'tags': exp_tags,

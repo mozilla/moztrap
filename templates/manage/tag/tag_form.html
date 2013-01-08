@@ -12,8 +12,7 @@
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.product %}
     {% include "forms/_field.html" with field=form.description %}
-
-    {% include "forms/_field.html" with field=form.caseversions name="case versions" nolabel=1 %}
+    {% include "forms/_field.html" with field=form.caseversions name="case versions" nolabel=1 hidden=hide_multiselect%}
 
     <div class="form-actions">
       <button type="submit">save tag</button>
