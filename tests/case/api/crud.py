@@ -10,6 +10,7 @@ from tests.case.api import ApiTestCase
 import logging
 mozlogger = logging.getLogger('moztrap.test')
 
+
 class ApiCrudCases(ApiTestCase):
     """Re-usable test cases for Create, Read, Update, and Delete.
 
@@ -207,7 +208,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_create')
+        mozlogger.info('test_create')
 
         # get data for creation
         fields = self.new_object_data
@@ -245,7 +246,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_create_fails_with_wrong_perms')
+        mozlogger.info('test_create_fails_with_wrong_perms')
 
         # get data for creation
         fields = self.new_object_data
@@ -270,7 +271,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_read_list')
+        mozlogger.info('test_read_list')
 
         # create fixture
         fixture1 = self.factory
@@ -298,7 +299,11 @@ class ApiCrudCases(ApiTestCase):
             self.backend_data(fixture2)
             ]
 
-
+        # the order of the list coming out of the API seems to be flakey
+        # particularly for productversions
+        # leave this here until we figure out why
+        mozlogger.debug("expected: %s" % exp_objects)
+        mozlogger.debug("actual: %s" % act_objects)
         self.maxDiff = None
         self.assertEqual(exp_objects, act_objects)
 
@@ -309,7 +314,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_read_detail')
+        mozlogger.info('test_read_detail')
 
         # create fixture
         fixture1 = self.factory
@@ -332,7 +337,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_update_detail')
+        mozlogger.info('test_update_detail')
 
         # create fixture
         fixture1 = self.factory
@@ -350,14 +355,14 @@ class ApiCrudCases(ApiTestCase):
             )
 
         # make sure object has been updated in the database
-        backend_obj = self.backend_object(fixture1.id)
-        backend_data = self.clean_backend_data(backend_obj)
+        fixture1 = self.refresh(fixture1)
+        backend_data = self.clean_backend_data(fixture1)
 
         self.maxDiff = None
         self.assertEqual(fields, backend_data)
 
         # make sure 'modified' meta data has been updated
-        meta_after = self.backend_meta_data(backend_obj)
+        meta_after = self.backend_meta_data(fixture1)
         self.assertEqual(meta_after["modified_by"], self.user.username)
         self.assertEqual(meta_after["modified_on"], self.utcnow)
         self.assertNotEqual(meta_before['modified_on'], meta_after['modified_on'])
@@ -369,7 +374,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_update_list_forbidden')
+        mozlogger.info('test_update_list_forbidden')
 
         # create fixturs
         fixture1 = self.factory
@@ -398,7 +403,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_update_fails_without_creds')
+        mozlogger.info('test_update_fails_without_creds')
 
         # create fixture
         fixture1 = self.factory
@@ -421,7 +426,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_delete_detail_permanent')
+        mozlogger.info('test_delete_detail_permanent')
 
         # create fixture
         fixture1 = self.factory
@@ -452,7 +457,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_delete_detail_soft')
+        mozlogger.info('test_delete_detail_soft')
 
         # create fixture
         fixture1 = self.factory
@@ -486,7 +491,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_delete_list_forbidden')
+        mozlogger.info('test_delete_list_forbidden')
         
         url = self.get_list_url(self.resource_name)
         url = "{0}?{1}".format(url, urllib.urlencode(self.credentials))
@@ -501,7 +506,7 @@ class ApiCrudCases(ApiTestCase):
         """
         if self.is_abstract_class:
             return
-        mozlogger.debug('test_delete_fails_with_wrong_perms')
+        mozlogger.info('test_delete_fails_with_wrong_perms')
 
         # create fixture
         fixture1 = self.factory

@@ -110,10 +110,19 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_obj(self, cv, tags=[]):
         """Return an expected caseselection object with fields filled."""
 
-        exp_tags = [{
-            u'name': unicode(t.name),
-            u'resource_uri': unicode(self.get_detail_url("tag",t.id)),
-            } for t in tags]
+        exp_tags = []
+        for t in tags:
+            exp_tag = {
+                u'id': unicode(t.id),
+                u'name': unicode(t.name),
+                u'description': unicode(t.description),
+                u'resource_uri': unicode(self.get_detail_url("tag",t.id)),
+                u'product': None,
+                }
+            if t.product:
+                exp_tag[u'product'] = unicode(self.get_detail_url("product", str(t.product.id)))
+            exp_tags.append(exp_tag)
+
         return {
             u'case': unicode(
                 self.get_detail_url("case",cv.case.id)),
