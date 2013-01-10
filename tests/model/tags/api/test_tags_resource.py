@@ -338,3 +338,37 @@ class TagResourceTest(ApiCrudCases):
 
         # make sure caseversions are still tagged
         self.assertEqual(len(tag1.caseversions.all()), 1)
+
+    # filtering
+
+    def test_filter_by_name(self):
+        """Filter tags by name."""
+        mozlogger.info("test_filter_by_name")
+
+        # create fixtures
+        tag1 = self.factory
+        tag2 = self.factory
+        tag2.name = u'unique name'
+        tag2.save()
+
+        # do test
+        self._test_filter_list_by(u'name', u'unique name', 1)
+
+
+    def test_filter_by_product(self):
+        """Filter tags by product."""
+        mozlogger.info("test_filter_by_product")
+
+        # create fixtures
+        product1 = self.F.ProductFactory()
+        tag1 = self.factory
+        tag1.product = product1
+        tag1.save()
+        tag2 = self.factory
+        tag2.product = product1
+        tag2.save()
+        tag3 = self.factory
+
+        # do test
+        self._test_filter_list_by(u'product', str(product1.id), 2)
+        self._test_filter_list_by(u'product', None, 1)

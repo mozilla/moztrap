@@ -1,6 +1,6 @@
 from tastypie import fields
 from tastypie import http
-from tastypie.resources import ALL
+from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import ImmediateHttpResponse
 
 from .models import Tag
@@ -30,7 +30,8 @@ class TagResource(MTResource):
         detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "name", "description", "product"]  #XXX caseversions
         filtering = {
-            "name": ALL
+            "name": ALL,
+            "product": ALL_WITH_RELATIONS,
             }
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()

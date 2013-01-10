@@ -308,6 +308,32 @@ class ApiCrudCases(ApiTestCase):
         self.assertEqual(exp_objects, act_objects)
 
 
+    def _test_filter_list_by(self, key, value, expected_number_of_results):
+        """Performs a get on the list with the supplied filter.
+        Validates that the results meet the criteria.
+
+        ::example::
+
+        self._test_filter_list_by(u'name', u'foo', 1)
+        self._test_filter_list_by(u'product', u'', 3)
+        """
+
+        res = self.get_list(params={ key: value })
+        objects = res.json["objects"]
+
+        # validate
+        self.assertEqual(len(objects), expected_number_of_results)
+        for obj in objects:
+            if value:
+                # can't use assertEqual here because for foriegn keys, 
+                # the filter must be an id
+                # but the value in the response is an uri
+                self.assertTrue(value in obj[key])
+            else:
+                # case for value being None
+                self.assertEqual(value, obj[key])
+
+
     def test_read_detail(self):
         """Performs a GET on the object detail without credentials.
         Verifies that the object returned by the API has the correct data.
