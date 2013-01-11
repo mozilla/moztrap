@@ -46,30 +46,43 @@ class TagResource(MTResource):
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Lots of rules for modifying product for tags."""
-        tag_id = bundle.request.path.split('/')[-2] # pull id out of path
-        tag = self.model.objects.get(id=tag_id)
+        tag = self.get_via_uri(bundle.request.path, request)
         caseversions = tag.caseversions.all()
         err_msg = "Tag's Product may not be changed unless the tag is not in use, the product is being set to None, or the product matches the existing cases."
         
         # if we're even thinking about changing the product
         if 'product' in bundle.data.keys():
+            logger.debug('thinking about product')
             # if tag is in use
             if caseversions:
+                logger.debug('tag in use')
                 desired_product = bundle.data['product']
                 products = set([cv.productversion.product for cv in caseversions])
-                # if desired product != current product
+                # if it is *changing* the product
                 if desired_product != tag.product:
-                    # if desired product != None
-                    if desired_product != None:  # coverage thinks there's a problem here, but i've seen it reach both logging statements
-                        logger.debug('coverage 2')
+                    logger.debug('changing product')
+                    # if changing from global to product-specific
+                    if not desired_product == None:
+                        logger.debug('changing from global to product-specific')
                         # if existing caseversions represent more than one product
                         if len(products) > 1:
                             logger.exception(err_msg)
                             raise ImmediateHttpResponse(response=http.HttpBadRequest(err_msg))
+                        # or if cases' product is not requested product
                         elif str(list(products)[0].id) != desired_product.split('/')[-2]: # pull id out of uri
                             logger.exception(err_msg)
                             raise ImmediateHttpResponse(response=http.HttpBadRequest(err_msg))
-                else: 
-                    logger.debug('coverage 1')
+        # code from here through the last else is optional, but nice if tracking down coverage problems
+                        else: # requested product matches the single product used by all of the caseversions
+                            logger.debug("requested product matches caseversions' product")
+                    else: # changing from product-specific to global
+                        logger.debug("changing from product-specific to global")
+                else:
+                    logger.debug("not changing product")
+            else:
+                logger.debug("tag not in use")
+        else:
+            logger.debug("not thinking about product")
+
         return super(TagResource, self).obj_update(bundle=bundle, request=request, **kwargs)
 

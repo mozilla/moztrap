@@ -110,11 +110,10 @@ class ProductResource(MTResource):
 
         # create the product
         updated_bundle = super(ProductResource, self).obj_create(bundle=bundle, request=request, **kwargs)
-        product = self.model.objects.get(name=bundle.data["name"])
 
         # create the productversions
         for pv in productversions:
-            ProductVersion.objects.get_or_create(product=product, **pv)
+            ProductVersion.objects.get_or_create(product=updated_bundle.obj, **pv)
 
         return updated_bundle
 

@@ -314,6 +314,7 @@ class TagResourceTest(ApiCrudCases):
         tag1 = self.factory
         tc1 = self.F.CaseVersionFactory()
         tag1.product = tc1.productversion.product # make tag product-specific
+        tag1.save()
         tc1.tags = [tag1] # use the tag
 
         self.assertEqual(len(tag1.caseversions.all()), 1)
