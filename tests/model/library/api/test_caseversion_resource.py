@@ -48,7 +48,8 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
 
         act_objects = act["objects"]
         exp_objects = []
-        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1), (cv2, suitecase2, casestep2)]:
+        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1), 
+                                        (cv2, suitecase2, casestep2)]:
 
             exp_objects.append({
                 u"case": {
@@ -57,9 +58,12 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
                                  u"id": unicode(suitecase.suite.id),
                                  u"status": u"active",
                                  u"description": u"",
-                                 u"product": unicode(self.get_detail_url("product",suitecase.suite.product.id)),
+                                 u"product": unicode(
+                                    self.get_detail_url(
+                                        "product", suitecase.suite.product.id)),
                                  u"resource_uri": unicode(
-                                    self.get_detail_url("suite",suitecase.suite.id))
+                                    self.get_detail_url(
+                                        "suite", suitecase.suite.id))
                                  }],
                     u"resource_uri": unicode(
                         self.get_detail_url("case",cv.case.id)),
@@ -120,7 +124,8 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
                 u'product': None,
                 }
             if t.product:
-                exp_tag[u'product'] = unicode(self.get_detail_url("product", str(t.product.id)))
+                exp_tag[u'product'] = unicode(
+                    self.get_detail_url("product", str(t.product.id)))
             exp_tags.append(exp_tag)
 
         return {

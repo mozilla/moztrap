@@ -24,18 +24,13 @@ class TagResource(MTResource):
 
     #@@@ additional relationship caseversions needs to be handled
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Tag.objects.all()
-        list_allowed_methods = ["get", "post"]
-        detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "name", "description", "product"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
             }
-        authentication = MTApiKeyAuthentication()
-        authorization = MTAuthorization()
-        always_return_data = True
         ordering = ['name', 'product__id', 'id']
 
     @property
@@ -48,7 +43,9 @@ class TagResource(MTResource):
         """Lots of rules for modifying product for tags."""
         tag = self.get_via_uri(bundle.request.path, request)
         caseversions = tag.caseversions.all()
-        err_msg = "Tag's Product may not be changed unless the tag is not in use, the product is being set to None, or the product matches the existing cases."
+        err_msg = str("Tag's Product may not be changed unless " +
+                  "the tag is not in use, the product is being " +
+                  "set to None, or the product matches the existing cases.")
         
         # if we're even thinking about changing the product
         if 'product' in bundle.data.keys():
@@ -57,24 +54,34 @@ class TagResource(MTResource):
             if caseversions:
                 logger.debug('tag in use')
                 desired_product = bundle.data['product']
-                products = set([cv.productversion.product for cv in caseversions])
+                products = set(
+                    [cv.productversion.product for cv in caseversions]
+                    )
                 # if it is *changing* the product
                 if desired_product != tag.product:
                     logger.debug('changing product')
                     # if changing from global to product-specific
                     if not desired_product == None:
                         logger.debug('changing from global to product-specific')
-                        # if existing caseversions represent more than one product
+                        # if existing caseversions represent more than one 
+                        # product
+                        desired_product_id = desired_product.split('/')[-2]
                         if len(products) > 1:
                             logger.exception(err_msg)
-                            raise ImmediateHttpResponse(response=http.HttpBadRequest(err_msg))
+                            raise ImmediateHttpResponse(
+                                response=http.HttpBadRequest(err_msg))
                         # or if cases' product is not requested product
-                        elif str(list(products)[0].id) != desired_product.split('/')[-2]: # pull id out of uri
+                        elif str(list(products)[0].id) != desired_product_id:
                             logger.exception(err_msg)
-                            raise ImmediateHttpResponse(response=http.HttpBadRequest(err_msg))
-        # code from here through the last else is optional, but nice if tracking down coverage problems
-                        else: # requested product matches the single product used by all of the caseversions
-                            logger.debug("requested product matches caseversions' product")
+                            raise ImmediateHttpResponse(
+                                response=http.HttpBadRequest(err_msg))
+        # code from here through the last else is optional, 
+        # but nice if tracking down coverage problems
+                         # requested product matches the single product used by 
+                         # all of the caseversions
+                        else:
+                            logger.debug(
+                                "product matches caseversions' product")
                     else: # changing from product-specific to global
                         logger.debug("changing from product-specific to global")
                 else:
@@ -84,5 +91,6 @@ class TagResource(MTResource):
         else:
             logger.debug("not thinking about product")
 
-        return super(TagResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+        return super(TagResource, self).obj_update(
+            bundle=bundle, request=request, **kwargs)
 

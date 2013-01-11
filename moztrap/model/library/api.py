@@ -22,18 +22,13 @@ class SuiteResource(MTResource):
 
     product = fields.ToOneField(ProductResource, "product")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Suite.objects.all()
         fields = ["name", "product", "description", "status", "id"]
-        list_allowed_methods = ["get", "post"]
-        detail_allowed_methods = ["get", "put", "delete"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
             }
-        authentication = MTApiKeyAuthentication()
-        authorization = MTAuthorization()
-        always_return_data = True
         ordering = ['name', 'product__id', 'id']
 
     @property
@@ -68,8 +63,10 @@ class CaseVersionResource(ModelResource):
 
     case = fields.ForeignKey(CaseResource, "case", full=True)
     steps = fields.ToManyField(CaseStepResource, "steps", full=True)
-    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion")
+    environments = fields.ToManyField(
+        EnvironmentResource, "environments", full=True)
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
 
 
@@ -90,7 +87,8 @@ class BaseSelectionResource(ModelResource):
     """Adds filtering by negation for use with multi-select widget"""
     #@@@ move this to mtapi.py when that code is merged in.
 
-    def apply_filters(self, request, applicable_filters, applicable_excludes={}):
+    def apply_filters(self, 
+        request, applicable_filters, applicable_excludes={}):
         """Apply included and excluded filters to query."""
         return self.get_object_list(request).filter(
             **applicable_filters).exclude(**applicable_excludes)
@@ -194,7 +192,8 @@ class CaseVersionSelectionResource(BaseSelectionResource):
     """
 
     case = fields.ForeignKey(CaseResource, "case")
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion", full=True)
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
 
     class Meta:

@@ -37,20 +37,17 @@ class ProductVersionResource(MTResource):
 
     Filterable by version and product fields.
     """
-    product = fields.ToOneField("moztrap.model.core.api.ProductResource", "product")
+    product = fields.ToOneField(
+        "moztrap.model.core.api.ProductResource", "product")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = ProductVersion.objects.all()
-        list_allowed_methods = ["get", "post"]
-        detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "version", "codename", "product"]
         filtering = {
             "version": ALL,
             "product": ALL_WITH_RELATIONS,
             }
-        authentication = MTApiKeyAuthentication()
         authorization = ProductVersionAuthorization()
-        always_return_data = True
         ordering = ['product__id', 'version', 'id']
 
     @property
@@ -72,15 +69,10 @@ class ProductResource(MTResource):
         full=True,
         )
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Product.objects.all()
-        list_allowed_methods = ["get", "post"]
-        detail_allowed_methods = ["get", "put", "delete"]
         fields = ["id", "name", "description"]
         filtering = {"name": ALL}
-        authentication = MTApiKeyAuthentication()
-        authorization = MTAuthorization()
-        always_return_data = True
         ordering = ['name', 'id']
 
 
@@ -95,43 +87,53 @@ class ProductResource(MTResource):
         Probably not strictly RESTful.
         """
 
-        pv_required_msg = "The 'productversions' key must exist, must be a list, and the list must contain at least one entry."
+        pv_required_msg = str("The 'productversions' key must exist, " +
+                          "must be a list, and the list must contain " +
+                          "at least one entry.")
         # pull the productversions off, they don't exist yet
         try:
             productversions = bundle.data.pop('productversions')
             if not isinstance(productversions, list):
-                raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(pv_required_msg))
             if not len(productversions):
-                raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(pv_required_msg))
 
             bundle.data["productversions"] = []
         except KeyError:
-            raise ImmediateHttpResponse(response=http.HttpBadRequest(pv_required_msg))
+            raise ImmediateHttpResponse(
+                response=http.HttpBadRequest(pv_required_msg))
 
         # create the product
-        updated_bundle = super(ProductResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+        updated_bundle = super(ProductResource, self).obj_create(
+            bundle=bundle, request=request, **kwargs)
 
         # create the productversions
         for pv in productversions:
-            ProductVersion.objects.get_or_create(product=updated_bundle.obj, **pv)
+            ProductVersion.objects.get_or_create(
+                product=updated_bundle.obj, **pv)
 
         return updated_bundle
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Oversee updating of product.
-        If this were RESTful, it would remove all existing versions and add the requested versions.
-        But this isn't restful, it just adds the version if it doesn't exist already.
+        If this were RESTful, it would remove all existing versions and add
+        the requested versions. But this isn't restful, it just adds the
+        version if it doesn't exist already.
         """
 
         # pull the productversions off, you can't edit them from here
         productversions = bundle.data.pop("productversions", [])
         bundle.data["productversions"] = []
 
-        updated_bundle =  super(ProductResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+        updated_bundle =  super(ProductResource, self).obj_update(
+            bundle=bundle, request=request, **kwargs)
 
         # create the productversions
         for pv in productversions:
-            ProductVersion.objects.get_or_create(product=updated_bundle.obj, **pv)
+            ProductVersion.objects.get_or_create(
+                product=updated_bundle.obj, **pv)
 
         return updated_bundle
 

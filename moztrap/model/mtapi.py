@@ -24,7 +24,8 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
 
     def is_authenticated(self, request, **kwargs):
         """
-        Finds the user and checks their API key. GET requests are always allowed.
+        Finds the user and checks their API key. GET requests are always 
+        allowed.
 
         This overrides Tastypie's default impl, because we use a User
         proxy class, which Tastypie doesn't find
@@ -59,13 +60,15 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
 
 
 class MTAuthorization(Authorization):
-    """Authorization that allows any user to GET but only users with permissions to modify."""
+    """Authorization that allows any user to GET but only users with permissions
+    to modify."""
 
     @property
     def permission(self):
         """This permission should be checked by is_authorized."""
         klass = self.resource_meta.object_class
-        permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
+        permission = "%s.manage_%ss" % (klass._meta.app_label, 
+            klass._meta.module_name)
         logger.debug("desired permission %s" % permission)
         return permission
 
@@ -92,6 +95,14 @@ class MTResource(ModelResource):
 
     """
 
+    class Meta:
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "put", "delete"]
+        authentication = MTApiKeyAuthentication()
+        authorization = MTAuthorization()
+        always_return_data = True
+        ordering = ['id']
+
     @property
     def model(self):
         """Model class related to this resource."""
@@ -100,37 +111,40 @@ class MTResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
-        # this try/except logging is more helpful than 500 / 404 errors on the client side
+        # this try/except logging is more helpful than 500 / 404 errors on 
+        # the client side
         try:
-            bundle = super(MTResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+            bundle = super(MTResource, self).obj_create(
+                bundle=bundle, request=request, **kwargs)
             bundle.obj.created_by = request.user
             bundle.obj.save(user=request.user)
             return bundle
         except Exception:  # pragma: no cover
-            logger.debug("error creating")  # pragma: no cover
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            logger.exception("error creating")  # pragma: no cover
             raise  # pragma: no cover
 
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Set the modified_by field for the object to the request's user"""
-        # this try/except logging is more helpful than 500 / 404 errors on the client side
+        # this try/except logging is more helpful than 500 / 404 errors on the 
+        # client side
         try:
-            bundle = super(MTResource, self).obj_update(bundle=bundle, request=request, **kwargs)
+            bundle = super(MTResource, self).obj_update(
+                bundle=bundle, request=request, **kwargs)
             bundle.obj.save(user=request.user)
             return bundle
         except Exception:  # pragma: no cover
-            logger.debug("error updating")  # pragma: no cover
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            logger.exception("error updating")  # pragma: no cover
             raise  # pragma: no cover
 
 
     def obj_delete(self, request=None, **kwargs):
         """Delete the object. 
-        The DELETE request may include permanent=True/False in its params parameter
-        (ie, along with the user's credentials). Default is False.
+        The DELETE request may include permanent=True/False in its params
+        parameter (ie, along with the user's credentials). Default is False.
         """
-        # this try/except logging is more helpful than 500 / 404 errors on the client side
+        # this try/except logging is more helpful than 500 / 404 errors on 
+        # the client side
         try:
             permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
@@ -138,14 +152,14 @@ class MTResource(ModelResource):
             obj = self.model.objects.get(id=obj_id)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
-            logger.debug("error deleting")  # pragma: no cover
-            logger.debug("Stack Trace:\n%s" % "\n".join(traceback.format_tb(sys.exc_info()[2], limit=None)))  # pragma: no cover
+            logger.exception("error deleting")  # pragma: no cover
             raise  # pragma: no cover
 
 
     def delete_detail(self, request, **kwargs):
         """Avoid the following error:
-        WSGIWarning: Content-Type header found in a 204 response, which not return content.
+        WSGIWarning: Content-Type header found in a 204 response, which not 
+        return content.
         """
         res = super(MTResource, self).delete_detail(request, **kwargs)
         del(res._headers["content-type"])

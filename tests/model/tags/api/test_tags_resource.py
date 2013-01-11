@@ -24,7 +24,8 @@ class TagResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for Create, Update, and Delete."""
+        """String defining the permission required for 
+        Create, Update, and Delete."""
         return "tags.manage_tags"
 
 
@@ -33,12 +34,15 @@ class TagResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a POST message.
+        The output of this method can be sent in the payload parameter of a 
+        POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
         fields = {
-            u"name": unicode("test_%s_%s" % (self.datetime, self.resource_name)),
-            u"description": unicode("test %s %s" % (self.datetime, self.resource_name)),
+            u"name": unicode(
+                "test_%s_%s" % (self.datetime, self.resource_name)),
+            u"description": unicode(
+                "test %s %s" % (self.datetime, self.resource_name)),
             u"product": None,
         }
         return fields
@@ -62,9 +66,11 @@ class TagResourceTest(ApiCrudCases):
         actual[u"id"] = unicode(str(backend_obj.id))
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
-        actual[u"resource_uri"] = unicode(self.get_detail_url(self.resource_name, str(backend_obj.id)))
+        actual[u"resource_uri"] = unicode(
+            self.get_detail_url(self.resource_name, str(backend_obj.id)))
         if backend_obj.product:
-            actual[u"product"] = unicode(self.get_detail_url("product", str(backend_obj.product.id)))
+            actual[u"product"] = unicode(
+                self.get_detail_url("product", str(backend_obj.product.id)))
         else:
             actual[u"product"] = None
 
@@ -82,7 +88,8 @@ class TagResourceTest(ApiCrudCases):
 
         # get data for creation
         fields = self.new_object_data
-        fields['product'] = unicode(self.get_detail_url("product", str(self.product_fixture.id)))
+        fields['product'] = unicode(
+            self.get_detail_url("product", str(self.product_fixture.id)))
 
         # do the create
         res = self.post(
@@ -107,7 +114,9 @@ class TagResourceTest(ApiCrudCases):
 
     @property
     def _invalid_product_msg(self):
-        return "Tag's Product may not be changed unless the tag is not in use, the product is being set to None, or the product matches the existing cases."
+        return str("Tag's Product may not be changed unless the tag is not " +
+               "in use, the product is being set to None, or the product " +
+               "matches the existing cases.")
 
 
     def test_edit_no_product(self):
@@ -196,7 +205,8 @@ class TagResourceTest(ApiCrudCases):
         # generate new values
         fields = self.backend_data(tag1)
         product1 = self.F.ProductFactory()
-        fields[u'product'] = unicode(self.get_detail_url("product", str(product1.id)))
+        fields[u'product'] = unicode(
+            self.get_detail_url("product", str(product1.id)))
 
         # do put
         res = self.put(
@@ -211,7 +221,8 @@ class TagResourceTest(ApiCrudCases):
 
     def test_edit_global_tag_in_use_change_product_matches_caseversion(self):
         """If a global tag is in use by cases all having the same product, the product field may be changed to match."""
-        mozlogger.info('test_edit_global_tag_in_use_change_product_matches_caseversion')
+        mozlogger.info(
+            'test_edit_global_tag_in_use_change_product_matches_caseversion')
 
         # create fixtures
         tag1 = self.factory
@@ -228,7 +239,8 @@ class TagResourceTest(ApiCrudCases):
 
         # generate new values
         fields = self.backend_data(tag1)
-        fields[u'product'] = unicode(self.get_detail_url("product", str(tc1.productversion.product.id)))
+        fields[u'product'] = unicode(
+            self.get_detail_url("product", str(tc1.productversion.product.id)))
 
         # do put
         res = self.put(
@@ -261,7 +273,8 @@ class TagResourceTest(ApiCrudCases):
         # generate new values
         fields = self.backend_data(tag1)
         product1 = self.F.ProductFactory()
-        fields[u'product'] = unicode(self.get_detail_url("product", str(product1.id)))
+        fields[u'product'] = unicode(
+            self.get_detail_url("product", str(product1.id)))
 
         # do put
         res = self.put(
@@ -293,7 +306,8 @@ class TagResourceTest(ApiCrudCases):
         # generate new values
         fields = self.backend_data(tag1)
         product1 = self.F.ProductFactory()
-        fields[u'product'] = unicode(self.get_detail_url("product", str(product1.id)))
+        fields[u'product'] = unicode(
+            self.get_detail_url("product", str(product1.id)))
 
         # do put
         res = self.put(
