@@ -22,13 +22,13 @@ class TagResource(MTResource):
         null=True,
         )
 
-    #XXX caseversions
+    #@@@ additional relationship caseversions needs to be handled
 
     class Meta:
         queryset = Tag.objects.all()
         list_allowed_methods = ["get", "post"]
         detail_allowed_methods = ["get", "put", "delete"]
-        fields = ["id", "name", "description", "product"]  #XXX caseversions
+        fields = ["id", "name", "description", "product"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
@@ -36,6 +36,7 @@ class TagResource(MTResource):
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
         always_return_data = True
+        ordering = ['name', 'product__id', 'id']
 
     @property
     def model(self):

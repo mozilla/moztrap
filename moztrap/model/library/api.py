@@ -34,6 +34,7 @@ class SuiteResource(MTResource):
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
         always_return_data = True
+        ordering = ['name', 'product__id', 'id']
 
     @property
     def model(self):

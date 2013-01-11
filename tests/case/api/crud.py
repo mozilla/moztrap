@@ -277,8 +277,8 @@ class ApiCrudCases(ApiTestCase):
         fixture1 = self.factory
         fixture2 = self.factory
 
-        # fetch list
-        res = self.get_list() # no creds
+        # fetch list (ordered so assert won't flake)
+        res = self.get_list(params={'order_by': 'id'}) # no creds
 
         act = res.json
 
@@ -299,11 +299,6 @@ class ApiCrudCases(ApiTestCase):
             self.backend_data(fixture2)
             ]
 
-        # the order of the list coming out of the API seems to be flakey
-        # particularly for productversions
-        # leave this here until we figure out why
-        mozlogger.debug("expected: %s" % exp_objects)
-        mozlogger.debug("actual: %s" % act_objects)
         self.maxDiff = None
         self.assertEqual(exp_objects, act_objects)
 

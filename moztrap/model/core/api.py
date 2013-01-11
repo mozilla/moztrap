@@ -51,6 +51,7 @@ class ProductVersionResource(MTResource):
         authentication = MTApiKeyAuthentication()
         authorization = ProductVersionAuthorization()
         always_return_data = True
+        ordering = ['product__id', 'version', 'id']
 
     @property
     def model(self):
@@ -80,6 +81,7 @@ class ProductResource(MTResource):
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
         always_return_data = True
+        ordering = ['name', 'id']
 
 
     @property
