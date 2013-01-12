@@ -4,6 +4,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Product, ProductVersion, ApiKey
+from .auth import User
 from ..environments.api import EnvironmentResource
 
 
@@ -88,6 +89,7 @@ class ProductVersionResource(ModelResource):
     Filterable by version field.
     """
     product = fields.ToOneField("moztrap.model.core.api.ProductResource", "product")
+    name = fields.CharField(attribute="name")
 
     class Meta:
         queryset = ProductVersion.objects.all()
@@ -96,6 +98,7 @@ class ProductVersionResource(ModelResource):
         filtering = {
             "version": ALL,
             "product": ALL_WITH_RELATIONS,
+            "name": ALL,
             }
 
 
@@ -134,4 +137,15 @@ class ProductVersionEnvironmentsResource(ModelResource):
         queryset = ProductVersion.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "version", "codename"]
+
+
+
+
+class UserResource(ModelResource):
+    """Return a list of usernames"""
+
+    class Meta:
+        queryset = User.objects.all()
+        list_allowed_methods = ['get']
+        fields = ["id", "username"]
 

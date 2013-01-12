@@ -14,7 +14,6 @@ var MT = (function (MT, $) {
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('.multiselect').multiselect();
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -181,41 +180,61 @@ var MT = (function (MT, $) {
         MT.populateMultiselectItems({
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            ajax_url_root: "/api/v1/caseselection/?format=json",
             ajax_trigger_filter: "productversion__product",
             ajax_for_field: "case__suites",
             for_type: "suite",
             ich_template: ich.case_select_item,
+            filter_type_map: {
+                name: "caseversion__name__contains",
+                tag: "tags",
+                author: "created_by",
+                productversion: "productversion__name"
+            },
             use_latest: true
         });
         MT.populateMultiselectItems({
             container: '#tag-add-form, #tag-edit-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/caseversionselection/?format=json&limit=0",
+            ajax_url_root: "/api/v1/caseversionselection/?format=json",
             ajax_trigger_filter: "productversion__product",
             ajax_for_field: "tags",
             for_type: "tag",
             ich_template: ich.caseversion_select_item,
+            filter_type_map: {
+                name: "name__contains",
+                tag: "tags",
+                author: "created_by",
+                productversion: "productversion__name"
+            },
             hide_without_trigger_value: true
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',
             trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
-            ajax_trigger_filter: "product",
-            ajax_for_field: "runs",
-            for_type: "run",
-            ich_template: ich.suite_select_item
-        });
-        MT.populateMultiselectItems({
-            container: '#run-edit-form',
-            trigger_field: '#id_productversion',
-            ajax_url_root: "/api/v1/suiteselection/?format=json&limit=0",
+            ajax_url_root: "/api/v1/suiteselection/?format=json",
             ajax_trigger_filter: "product",
             ajax_for_field: "runs",
             for_type: "run",
             ich_template: ich.suite_select_item,
-            refetch_on_trigger: false
+            filter_type_map: {
+                name: "name__contains",
+                author: "created_by"
+            }
+        });
+        MT.populateMultiselectItems({
+            container: '#run-edit-form',
+            trigger_field: '#id_productversion',
+            ajax_url_root: "/api/v1/suiteselection/?format=json",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "runs",
+            for_type: "run",
+            ich_template: ich.suite_select_item,
+            refetch_on_trigger: false,
+            filter_type_map: {
+                name: "name__contains",
+                author: "created_by"
+            }
         });
 
         // manage-env.js

@@ -9,6 +9,7 @@
   {% icanhaz "suite_select_item" %}
 
   <section class="multiunselected">
+    <div class="multiselect-resizable">
     <h4 class="multi-header">available {{ name }}</h4>
 
     <div class="selectsearch">
@@ -55,4 +56,10 @@
     <button class="action-include" title="include selected">include selected</button></li>
     <button class="action-exclude" title="remove selected">remove selected</button>
   </div>
+  </div>
+  <div class="fetchmore hiddenfield">
+    <span class="itemcount" data-next="">There are more available items</span>
+    <button class="fetchmorebutton" type="button">Fetch More</button>
+  </div>
+
 </div>
