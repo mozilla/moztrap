@@ -7,7 +7,7 @@ from tastypie import fields
 from ..core.api import (ProductVersionResource, ProductResource,
                         UserResource)
 from .models import CaseVersion, Case, Suite, CaseStep
-from ..mtapi import MTResource
+from ..mtapi import MTResource, MTBaseSelectionResource
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 
@@ -82,52 +82,7 @@ class CaseVersionResource(ModelResource):
 
 
 
-class BaseSelectionResource(ModelResource):
-    """Adds filtering by negation for use with multi-select widget"""
-    #@@@ move this to mtapi.py when that code is merged in.
-
-    def apply_filters(self,
-        request, applicable_filters, applicable_excludes={}):
-        """Apply included and excluded filters to query."""
-        return self.get_object_list(request).filter(
-            **applicable_filters).exclude(**applicable_excludes)
-
-
-    def obj_get_list(self, request=None, **kwargs):
-        """Return the list with included and excluded filters, if they exist."""
-        filters = {}
-
-        if hasattr(request, 'GET'): # pragma: no cover
-            # Grab a mutable copy.
-            filters = request.GET.copy()
-
-        # Update with the provided kwargs.
-        filters.update(kwargs)
-
-        # Splitting out filtering and excluding items
-        new_filters = {}
-        excludes = {}
-        for key, value in filters.items():
-            # If the given key is filtered by ``not equal`` token, exclude it
-            if key.endswith('__ne'):
-                key = key[:-4] # Stripping out trailing ``__ne``
-                excludes[key] = value
-            else:
-                new_filters[key] = value
-
-        filters = new_filters
-
-        # Building filters
-        applicable_filters = self.build_filters(filters=filters)
-        applicable_excludes = self.build_filters(filters=excludes)
-
-        base_object_list = self.apply_filters(
-            request, applicable_filters, applicable_excludes)
-        return self.apply_authorization_limits(request, base_object_list)
-
-
-
-class CaseSelectionResource(BaseSelectionResource):
+class CaseSelectionResource(MTBaseSelectionResource):
     """
     Specialty end-point for an AJAX call in the Suite form multi-select widget
     for selecting cases.
@@ -178,7 +133,7 @@ class CaseSelectionResource(BaseSelectionResource):
 
 
 
-class CaseVersionSelectionResource(BaseSelectionResource):
+class CaseVersionSelectionResource(MTBaseSelectionResource):
     """
     Specialty end-point for an AJAX call in the Tag form multi-select widget
     for selecting caseversions.

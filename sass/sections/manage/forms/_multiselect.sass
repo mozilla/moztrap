@@ -25,12 +25,14 @@
 
 .showmore
   +columns(11,24)
-  background-color: rgba($red-light,$xxsmall)
+  +suffix(13,24)
   text-align: right
-  .itemcount
-    padding-right: rhythm(1.5)
-  .showmorebutton
-    +button-style($green,'ui/download.png')
+  .showmorefields
+    background-color: rgba($red-light,$xxsmall)
+    .itemcount
+      padding-right: rhythm(1.5)
+    .showmorebutton
+      +button-style($green,'ui/download.png')
 
 .hiddenfield
   display: none

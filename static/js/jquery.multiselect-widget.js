@@ -3,7 +3,7 @@
 /*global    jQuery, ich, URI */
 
 /**
- * jQuery Multiselect Widget 0.2
+ * jQuery Multiselect Widget 0.3
  *
  * Copyright (c) 2012, Jonny Gerig Meyer
  * Copyright (c) 2013 Cameron Dawson
@@ -59,8 +59,8 @@
                             new URI(url_str),
                             filter_type_map);
 
-                    // remove the offset, if there is one, initial filtering won't
-                    // use an offset
+                    // remove the offset, if there is one, initial filtering
+                    // won't use an offset
                     ajax_url.removeQuery("offset");
 
                     availableList.html("");
@@ -342,7 +342,7 @@
                 show_count = meta.limit + meta.offset,
                 more_count = meta.total_count - show_count,
                 status = "Showing " + show_count + " of " +
-                    more_count + " available items",
+                    meta.total_count + " available items",
                 itemcount = $(".itemcount"),
                 showmore = $(".showmore"),
                 showmorebutton = $(".showmorebutton");

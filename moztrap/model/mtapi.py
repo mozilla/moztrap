@@ -164,3 +164,47 @@ class MTResource(ModelResource):
         res = super(MTResource, self).delete_detail(request, **kwargs)
         del(res._headers["content-type"])
         return res
+
+
+
+class MTBaseSelectionResource(ModelResource):
+    """Adds filtering by negation for use with multi-select widget"""
+
+    def apply_filters(self,
+                      request, applicable_filters, applicable_excludes={}):
+        """Apply included and excluded filters to query."""
+        return self.get_object_list(request).filter(
+            **applicable_filters).exclude(**applicable_excludes)
+
+
+    def obj_get_list(self, request=None, **kwargs):
+        """Return the list with included and excluded filters, if they exist."""
+        filters = {}
+
+        if hasattr(request, 'GET'): # pragma: no cover
+            # Grab a mutable copy.
+            filters = request.GET.copy()
+
+        # Update with the provided kwargs.
+        filters.update(kwargs)
+
+        # Splitting out filtering and excluding items
+        new_filters = {}
+        excludes = {}
+        for key, value in filters.items():
+            # If the given key is filtered by ``not equal`` token, exclude it
+            if key.endswith('__ne'):
+                key = key[:-4] # Stripping out trailing ``__ne``
+                excludes[key] = value
+            else:
+                new_filters[key] = value
+
+        filters = new_filters
+
+        # Building filters
+        applicable_filters = self.build_filters(filters=filters)
+        applicable_excludes = self.build_filters(filters=excludes)
+
+        base_object_list = self.apply_filters(
+            request, applicable_filters, applicable_excludes)
+        return self.apply_authorization_limits(request, base_object_list)

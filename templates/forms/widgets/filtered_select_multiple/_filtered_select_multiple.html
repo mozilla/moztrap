@@ -8,8 +8,8 @@
   {% icanhaz "caseversion_select_item" %}
   {% icanhaz "suite_select_item" %}
 
+  <div class="multiselect-resizable">
   <section class="multiunselected">
-    <div class="multiselect-resizable">
     <h4 class="multi-header">available {{ name }}</h4>
 
     <div class="selectsearch">
@@ -58,8 +58,10 @@
   </div>
   </div>
   <div class="showmore hiddenfield">
-    <span class="itemcount" data-next="">There are more available items</span>
-    <button class="showmorebutton" type="button">Show More</button>
+    <div class="showmorefields">
+      <span class="itemcount" data-next="">There are more available items</span>
+      <button class="showmorebutton" type="button">Show More</button>
+    </div>
   </div>
 
 </div>

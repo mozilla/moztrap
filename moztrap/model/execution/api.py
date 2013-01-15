@@ -7,13 +7,13 @@ import json
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
-from .models import Run, RunCaseVersion, RunSuite, Result
-from ..mtapi import MTResource, MTApiKeyAuthentication
+from .models import Run, RunCaseVersion, Result
+from ..mtapi import MTApiKeyAuthentication, MTBaseSelectionResource
 from ..core.api import (ProductVersionResource, ProductResource,
                         ReportResultsAuthorization, UserResource)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
-from ..library.api import CaseVersionResource, BaseSelectionResource
+from ..library.api import CaseVersionResource
 from ..library.models import CaseVersion, Suite
 
 from ...view.lists.filters import filter_url
@@ -292,7 +292,7 @@ class ResultResource(ModelResource):
 
 
 
-class SuiteSelectionResource(BaseSelectionResource):
+class SuiteSelectionResource(MTBaseSelectionResource):
     """
     Specialty end-point for an AJAX call from the multi-select widget
     for selecting suites.
