@@ -48,7 +48,8 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
 
         act_objects = act["objects"]
         exp_objects = []
-        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1), (cv2, suitecase2, casestep2)]:
+        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1),
+                                        (cv2, suitecase2, casestep2)]:
 
             exp_objects.append({
                 u"case": {
@@ -57,9 +58,12 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
                                  u"id": unicode(suitecase.suite.id),
                                  u"status": u"active",
                                  u"description": u"",
-                                 u"product": unicode(self.get_detail_url("product",suitecase.suite.product.id)),
+                                 u"product": unicode(
+                                    self.get_detail_url(
+                                        "product", suitecase.suite.product.id)),
                                  u"resource_uri": unicode(
-                                    self.get_detail_url("suite",suitecase.suite.id))
+                                    self.get_detail_url(
+                                        "suite", suitecase.suite.id))
                                  }],
                     u"resource_uri": unicode(
                         self.get_detail_url("case",cv.case.id)),
@@ -110,36 +114,46 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_obj(self, cv, tags=[]):
         """Return an expected caseselection object with fields filled."""
 
-        exp_tags = [{
-            u'name': unicode(t.name),
-            u'resource_uri': unicode(self.get_detail_url("tag",t.id)),
-            } for t in tags]
+        exp_tags = []
+        for t in tags:
+            exp_tag = {
+                u"id": unicode(t.id),
+                u"name": unicode(t.name),
+                u"description": unicode(t.description),
+                u"resource_uri": unicode(self.get_detail_url("tag",t.id)),
+                u"product": None,
+                }
+            if t.product:
+                exp_tag[u"product"] = unicode(
+                    self.get_detail_url("product", str(t.product.id)))
+            exp_tags.append(exp_tag)
+
         return {
-            u'case': unicode(
+            u"case": unicode(
                 self.get_detail_url("case",cv.case.id)),
-            u'case_id': unicode(cv.case.id),
-            u'created_by': None,
-            u'id': unicode(cv.id),
-            u'latest': True,
-            u'name': unicode(cv.name),
-            u'product': {
-                u'id': unicode(cv.productversion.product_id)
+            u"case_id": unicode(cv.case.id),
+            u"created_by": None,
+            u"id": unicode(cv.id),
+            u"latest": True,
+            u"name": unicode(cv.name),
+            u"product": {
+                u"id": unicode(cv.productversion.product_id)
             },
-            u'product_id': unicode(cv.productversion.product_id),
-            u'productversion': {
-                u'codename': u'',
-                u'id': unicode(cv.productversion.id),
-                u'product': unicode(self.get_detail_url(
+            u"product_id": unicode(cv.productversion.product_id),
+            u"productversion": {
+                u"codename": u"",
+                u"id": unicode(cv.productversion.id),
+                u"product": unicode(self.get_detail_url(
                     "product",
                     cv.productversion.product_id)),
-                u'resource_uri': unicode(self.get_detail_url(
+                u"resource_uri": unicode(self.get_detail_url(
                     "productversion",
                     cv.productversion.id)),
-                u'version': u'1.0'},
-            u'productversion_name': unicode(cv.productversion.name),
-            u'resource_uri': unicode(
+                u"version": u"1.0"},
+            u"productversion_name": unicode(cv.productversion.name),
+            u"resource_uri": unicode(
                 self.get_detail_url("caseversionselection",cv.id)),
-            u'tags': exp_tags,
+            u"tags": exp_tags,
             }
 
 
