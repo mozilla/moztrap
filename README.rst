@@ -4,6 +4,8 @@ MozTrap
 This is the MozTrap test case management system.  It lives at
 https://github.com/mozilla/moztrap/.
 
+We use the following tracker to track all issues
+https://www.pivotaltracker.com/projects/280483#
 
 Documentation
 -------------
