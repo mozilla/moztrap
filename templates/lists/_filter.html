@@ -29,7 +29,7 @@
 
         {% icanhaz "autocomplete_input" %}
         {% for field in filters %}
-        {% include "lists/_filter_group.html" with advanced=1 prefix="filter" %}
+        {% include "lists/_filter_group.html" with advanced=1 prefix="filter" pinable=1 %}
         {% endfor %}
 
         <div class="form-actions">

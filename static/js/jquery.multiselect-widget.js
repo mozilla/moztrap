@@ -172,6 +172,7 @@
                 }
             });
 
+            // include button action
             bulkInclude.click(function (e) {
                 var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
                 selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(includedList);
@@ -180,6 +181,7 @@
                 e.preventDefault();
             });
 
+            // exclude button action
             bulkExclude.click(function (e) {
                 var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
                 selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(availableList);
@@ -256,7 +258,7 @@
             list,
             ajax_url,
             ich_template,
-            useFetchMoreCallback) {
+            useshowmoreCallback) {
 
             list.loadingOverlay();
             current_xhrs.include = $.ajax({
@@ -265,8 +267,8 @@
                     list.loadingOverlay("remove");
                     cache[ajax_url] = ich_template({items: response.objects});
                     list.append(cache[ajax_url]);
-                    if (useFetchMoreCallback) {
-                        $(".multiselect").multiselect("updateFetchMore",
+                    if (useshowmoreCallback) {
+                        $(".multiselect").multiselect("updateshowmore",
                             response.meta, ich_template);
                     }
                 },
@@ -332,23 +334,25 @@
 
         // if the set of fetched available items is not all that is truly available,
         // then let the user fetch more if they would like.
-        updateFetchMore: function (meta, ich_template) {
+        updateshowmore: function (meta, ich_template) {
             var options = $.extend({}, msDefaults),
                 context = $(this),
                 availableList = context.find(options.availableSel + ' ' +
                     options.itemListSel),
-                more_count = meta.total_count - meta.limit - meta.offset,
-                status = "There are " + more_count + " more available items",
+                show_count = meta.limit + meta.offset,
+                more_count = meta.total_count - show_count,
+                status = "Showing " + show_count + " of " +
+                    more_count + " available items",
                 itemcount = $(".itemcount"),
-                fetchmore = $(".fetchmore"),
-                fetchmorebutton = $(".fetchmorebutton");
+                showmore = $(".showmore"),
+                showmorebutton = $(".showmorebutton");
 
             if (more_count > 0) {
-                fetchmore.removeClass("hiddenfield");
+                showmore.removeClass("hiddenfield");
                 itemcount.html(status);
                 itemcount.data("next", meta.next);
-                fetchmorebutton.unbind("click");
-                fetchmorebutton.click(function () {
+                showmorebutton.unbind("click");
+                showmorebutton.click(function () {
                     $(".multiselect").multiselect("populateList",
                         availableList,
                         meta.next,
@@ -357,7 +361,7 @@
                 });
             }
             else {
-                fetchmore.addClass("hiddenfield");
+                showmore.addClass("hiddenfield");
             }
         },
 

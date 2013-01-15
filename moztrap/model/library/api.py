@@ -235,6 +235,7 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS
             }
 
 

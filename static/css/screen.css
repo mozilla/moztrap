@@ -3934,7 +3934,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   left: 54.737%;
 }
 
-.fetchmore {
+.showmore {
   display: inline;
   float: left;
   width: 45.263%;
@@ -3942,10 +3942,10 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-color: rgba(227, 125, 129, 0.296);
   text-align: right;
 }
-.fetchmore .itemcount {
+.showmore .itemcount {
   padding-right: 2.25em;
 }
-.fetchmore .fetchmorebutton {
+.showmore .showmorebutton {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -3973,7 +3973,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/download.png?1357695002'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
-.fetchmore .fetchmorebutton:hover, .fetchmore .fetchmorebutton:focus {
+.showmore .showmorebutton:hover, .showmore .showmorebutton:focus {
   background-image: url('../images/ui/download.png?1357695002'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
   background-image: url('../images/ui/download.png?1357695002'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: url('../images/ui/download.png?1357695002'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
@@ -3981,7 +3981,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/download.png?1357695002'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: url('../images/ui/download.png?1357695002'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
-.fetchmore .fetchmorebutton:active {
+.showmore .showmorebutton:active {
   background-image: url('../images/ui/download.png?1357695002'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: url('../images/ui/download.png?1357695002'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: url('../images/ui/download.png?1357695002'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));

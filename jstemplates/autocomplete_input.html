@@ -2,6 +2,9 @@
   <input type="checkbox" class="check{{# newInput }} new{{/ newInput }}" name="{{# prefix }}{{ prefix }}-{{/ prefix }}{{ typeName }}" data-name="{{ typeName }}" value="{{ id }}" id="id-{{ prefix }}-{{ typeName }}-{{ index }}"{{# responseDataName }}{{# responseDataVal }} data-{{ responseDataName }}="{{ responseDataVal }}"{{/ responseDataVal }}{{/ responseDataName }}>
   <span class="onoff">
     <label for="id-{{ prefix }}-{{ typeName }}-{{ index }}" class="onoffswitch">{{ inputName }}</label>
+    {{# pinable }}
+        <span class="pinswitch"></span>
+    {{/ pinable }}
     <span class="content">{{ inputName }}</span>
   </span>
 </li>

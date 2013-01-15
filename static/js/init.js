@@ -65,7 +65,8 @@ var MT = (function (MT, $) {
             restrictAllowNew: true,
             inputType: 'tag',
             noInputsNote: true,
-            prefix: 'tag'
+            prefix: 'tag',
+            pinable: false
         });
         $('#editprofile .add-item, #editproductversionenvs .add-item').customAutocomplete({
             textbox: '#env-elements-input',
@@ -86,7 +87,8 @@ var MT = (function (MT, $) {
             triggerSubmit: null,
             inputsNeverRemoved: true,
             prefix: 'filter',
-            debounce: true
+            debounce: true,
+            pinable: false
         });
         $('.runsdrill').html5finder({
             loading: true,
@@ -189,7 +191,7 @@ var MT = (function (MT, $) {
                 name: "caseversion__name__contains",
                 tag: "tags",
                 author: "created_by",
-                productversion: "productversion__name"
+                productversion: "productversion"
             },
             use_latest: true
         });
@@ -205,9 +207,9 @@ var MT = (function (MT, $) {
                 name: "name__contains",
                 tag: "tags",
                 author: "created_by",
-                productversion: "productversion__name"
+                productversion: "productversion"
             },
-            hide_without_trigger_value: true
+            fetch_without_trigger_value: true
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',
