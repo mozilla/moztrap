@@ -4,11 +4,9 @@ from tastypie.exceptions import BadRequest
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from django.http import HttpResponse
-
-from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
+from .models import CaseVersion, Case, Suite, CaseStep
 from ..core.api import (ProductVersionResource, ProductResource)
-from ..mtapi import MTResource, MTAuthorization, MTApiKeyAuthentication
+from ..mtapi import MTResource
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 

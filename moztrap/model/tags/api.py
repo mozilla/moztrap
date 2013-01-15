@@ -4,7 +4,7 @@ from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import ImmediateHttpResponse
 
 from .models import Tag
-from ..mtapi import MTResource, MTAuthorization, MTApiKeyAuthentication
+from ..mtapi import MTResource
 from ..core.api import ProductResource
 
 import logging

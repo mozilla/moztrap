@@ -3,9 +3,9 @@ from tastypie import http
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import ImmediateHttpResponse
 
-from .models import Product, ProductVersion, ApiKey
+from .models import Product, ProductVersion
 from ..environments.api import EnvironmentResource
-from ..mtapi import MTResource, MTAuthorization, MTApiKeyAuthentication
+from ..mtapi import MTResource, MTAuthorization
 
 import logging
 logger = logging.getLogger(__name__)
