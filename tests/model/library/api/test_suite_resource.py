@@ -41,7 +41,8 @@ class SuiteResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for Create, Update, and Delete.
+        """String defining the permission required for 
+        Create, Update, and Delete.
         """
         return "library.manage_suites"
 
@@ -51,14 +52,16 @@ class SuiteResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a POST message.
+        The output of this method can be sent in the payload parameter of a 
+        POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
         modifiers = (self.datetime, self.resource_name)
         fields = {
             u"name": unicode("test_%s_%s" % modifiers),
             u"description": unicode("test %s %s" % modifiers),
-            u"product": unicode(self.get_detail_url("product",self.product_fixture.id)),
+            u"product": unicode(self.get_detail_url(
+                "product", self.product_fixture.id)),
             u"status": unicode("draft"),
         }
         return fields
@@ -85,8 +88,8 @@ class SuiteResourceTest(ApiCrudCases):
         actual[u"product"] = unicode(
                         self.get_detail_url("product", backend_obj.product.id))
         actual[u"status"] = unicode(backend_obj.status)
-        actual[u"resource_uri"] = unicode(self.get_detail_url(self.resource_name,
-                                                              str(backend_obj.id)))
+        actual[u"resource_uri"] = unicode(
+            self.get_detail_url(self.resource_name, str(backend_obj.id)))
 
         return actual
 

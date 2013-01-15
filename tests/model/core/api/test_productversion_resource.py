@@ -22,7 +22,8 @@ class ProductVersionResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for Create, Update, and Delete."""
+        """String defining the permission required for 
+        Create, Update, and Delete."""
         return "core.manage_products"
 
 
@@ -37,13 +38,16 @@ class ProductVersionResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a POST message.
+        The output of this method can be sent in the payload parameter of a 
+        POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
         fields = {
-            u"product": unicode(self.get_detail_url('product', str(self.product_fixture.id))),
+            u"product": unicode(
+                self.get_detail_url('product', str(self.product_fixture.id))),
             u"version": unicode(self.datetime),
-            u"codename": unicode("amazing test %s %s"% (self.datetime, self.resource_name)),
+            u"codename": unicode(
+                "amazing test %s %s"% (self.datetime, self.resource_name)),
         }
         return fields
 
@@ -64,10 +68,12 @@ class ProductVersionResourceTest(ApiCrudCases):
         """
         actual = {}
         actual[u"id"] = unicode(backend_obj.id)
-        actual[u"product"] = unicode(self.get_detail_url('product', str(backend_obj.product.id)))
+        actual[u"product"] = unicode(
+            self.get_detail_url('product', str(backend_obj.product.id)))
         actual[u"version"] = unicode(backend_obj.version)
         actual[u"codename"] = unicode(backend_obj.codename)
-        actual[u"resource_uri"] = unicode(self.get_detail_url(self.resource_name, str(backend_obj.id)))
+        actual[u"resource_uri"] = unicode(
+            self.get_detail_url(self.resource_name, str(backend_obj.id)))
 
         return actual
 
