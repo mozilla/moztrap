@@ -48,7 +48,8 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
 
         act_objects = act["objects"]
         exp_objects = []
-        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1), (cv2, suitecase2, casestep2)]:
+        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1), 
+                                        (cv2, suitecase2, casestep2)]:
 
             exp_objects.append({
                 u"case": {
@@ -57,9 +58,12 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
                                  u"id": unicode(suitecase.suite.id),
                                  u"status": u"active",
                                  u"description": u"",
-                                 u"product": unicode(self.get_detail_url("product",suitecase.suite.product.id)),
+                                 u"product": unicode(
+                                    self.get_detail_url(
+                                        "product", suitecase.suite.product.id)),
                                  u"resource_uri": unicode(
-                                    self.get_detail_url("suite",suitecase.suite.id))
+                                    self.get_detail_url(
+                                        "suite", suitecase.suite.id))
                                  }],
                     u"resource_uri": unicode(
                         self.get_detail_url("case",cv.case.id)),
@@ -110,10 +114,20 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_obj(self, cv, tags=[]):
         """Return an expected caseselection object with fields filled."""
 
-        exp_tags = [{
-            u'name': unicode(t.name),
-            u'resource_uri': unicode(self.get_detail_url("tag",t.id)),
-            } for t in tags]
+        exp_tags = []
+        for t in tags:
+            exp_tag = {
+                u'id': unicode(t.id),
+                u'name': unicode(t.name),
+                u'description': unicode(t.description),
+                u'resource_uri': unicode(self.get_detail_url("tag",t.id)),
+                u'product': None,
+                }
+            if t.product:
+                exp_tag[u'product'] = unicode(
+                    self.get_detail_url("product", str(t.product.id)))
+            exp_tags.append(exp_tag)
+
         return {
             u'case': unicode(
                 self.get_detail_url("case",cv.case.id)),

@@ -115,3 +115,11 @@ Copy local.sample.py to local.py and modify as needed.
 #        "KEY_PREFIX": "", # add a global key prefix here if necessary
 #    }
 #}
+
+# if DEBUG:
+    # LOGGING["handlers"]["console"] = {
+    #     "level": "DEBUG",
+    #     "class": "logging.StreamHandler",
+    #     }
+
+    # LOGGING["root"] = {"handlers": ["console"]}
