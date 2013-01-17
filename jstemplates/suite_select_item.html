@@ -5,6 +5,9 @@
         <label for="bulk-select-{{ suite_id }}" class="bulk-type" title="select or drag">bulk select {{ suite_id }}</label>
         <div class="name">
             <h5 class="title" title="{{ name }}">{{ name }}</h5>
+            <span class="casecount">
+                (<a href="{{ filter_cases }}" class="drill-link" title="manage all cases in {{ name }}" target="_blank">{{ case_count }} Cases</a>)
+            </span>
         </div>
         <div class="author vcard"><span class="fn">{{ created_by.username }}</span></div>
     </div>
