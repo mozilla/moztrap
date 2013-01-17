@@ -66,7 +66,8 @@ var MT = (function (MT, $) {
             restrictAllowNew: true,
             inputType: 'tag',
             noInputsNote: true,
-            prefix: 'tag'
+            prefix: 'tag',
+            pinable: false
         });
         $('#editprofile .add-item, #editproductversionenvs .add-item').customAutocomplete({
             textbox: '#env-elements-input',
@@ -87,7 +88,8 @@ var MT = (function (MT, $) {
             triggerSubmit: null,
             inputsNeverRemoved: true,
             prefix: 'filter',
-            debounce: true
+            debounce: true,
+            pinable: false
         });
         $('.runsdrill').html5finder({
             loading: true,

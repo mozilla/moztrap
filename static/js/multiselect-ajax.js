@@ -237,6 +237,7 @@ var MT = (function (MT, $) {
                         beforeSend: function () {
                             included.html("");
                             included.loadingOverlay();
+                            included.find(".select").attr("disabled", true);
                         },
                         success: function (response) {
                             /*

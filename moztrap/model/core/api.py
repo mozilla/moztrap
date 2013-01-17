@@ -1,108 +1,67 @@
-from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import  Authorization
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie import http
+from tastypie.exceptions import ImmediateHttpResponse
 
-from .models import Product, ProductVersion, ApiKey
+from .models import Product, ProductVersion
+from .auth import User
 from ..environments.api import EnvironmentResource
+from ..mtapi import MTResource, MTAuthorization
 
+import logging
+logger = logging.getLogger(__name__)
 
-
-class MTApiKeyAuthentication(ApiKeyAuthentication):
-    """Authentication that requires our custom api key implementation."""
-
-    def get_key(self, user, api_key):
-        try:
-            ApiKey.objects.get(owner=user, key=api_key, active=True)
-
-        except:
-            return self._unauthorized()
-
-        return True
-
-
-    def is_authenticated(self, request, **kwargs):
-        """
-        Finds the user and checks their API key. GET requests are always allowed.
-
-        This overrides Tastypie's default impl, because we use a User
-        proxy class, which Tastypie doesn't find
-
-        Should return either ``True`` if allowed, ``False`` if not or an
-        ``HttpResponse`` if you need something custom.
-        """
-        if request.method == "GET":
-            return True
-
-        from .auth import User
-
-        username = request.GET.get("username") or request.POST.get("username")
-        api_key = request.GET.get("api_key") or request.POST.get("api_key")
-
-        if not username or not api_key:
-            return self._unauthorized()
-
-        try:
-            user = User.objects.get(username=username)
-        except (User.DoesNotExist, User.MultipleObjectsReturned):
-            return self._unauthorized()
-
-        request.user = user
-        return self.get_key(user, api_key)
-
-
-
-class ReportResultsAuthorization(Authorization):
+class ReportResultsAuthorization(MTAuthorization):
     """Authorization that only allows users with execute privileges."""
 
-    def is_authorized(self, request, object=None):
-        if request.method == "GET":
-            return True
-        elif request.user.has_perm("execution.execute"):
-            return True
-        else:
-            return False
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "execution.execute"
 
 
 
-class MTAuthorization(Authorization):
-    """Authorization that allows any user to GET but only users with permissions to modify."""
+class ProductVersionAuthorization(MTAuthorization):
+    """A permission of 'core.manage_productversions does not exist,
+    use core.manage_products instead."""
 
-    def is_authorized(self, request, object=None):
-        klass = self.resource_meta.object_class
-        permission = "%s.manage_%ss" % (klass._meta.app_label, klass._meta.module_name)
-
-        if request.method == "GET":
-            return True
-        elif request.user.has_perm(permission):
-                return True
-        else:
-            return False
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "core.manage_products"
 
 
 
-class ProductVersionResource(ModelResource):
+class ProductVersionResource(MTResource):
     """
-    Return a list of product versions.
+    Create, Read, Update and Delete capabilities for Product Version.
 
-    Filterable by version field.
+    Filterable by version and product fields.
     """
-    product = fields.ToOneField("moztrap.model.core.api.ProductResource", "product")
+    product = fields.ToOneField(
+        "moztrap.model.core.api.ProductResource", "product")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = ProductVersion.objects.all()
-        list_allowed_methods = ['get']
         fields = ["id", "version", "codename", "product"]
         filtering = {
             "version": ALL,
             "product": ALL_WITH_RELATIONS,
             }
+        authorization = ProductVersionAuthorization()
+        ordering = ['product__id', 'version', 'id']
+
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return ProductVersion
 
 
 
-class ProductResource(ModelResource):
+class ProductResource(MTResource):
     """
-    Return a list of products.
+    Create, Read, Update and Delete capabilities for Product.
 
     Filterable by name field.
     """
@@ -113,11 +72,74 @@ class ProductResource(ModelResource):
         full=True,
         )
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Product.objects.all()
-        list_allowed_methods = ['get']
         fields = ["id", "name", "description"]
         filtering = {"name": ALL}
+        ordering = ['name', 'id']
+
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Product
+
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """Oversee the creation of product and its required productversion.
+        Probably not strictly RESTful.
+        """
+
+        pv_required_msg = str("The 'productversions' key must exist, " +
+                          "must be a list, and the list must contain " +
+                          "at least one entry.")
+        # pull the productversions off, they don't exist yet
+        try:
+            productversions = bundle.data.pop('productversions')
+            if not isinstance(productversions, list):
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(pv_required_msg))
+            if not len(productversions):
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(pv_required_msg))
+
+            bundle.data["productversions"] = []
+        except KeyError:
+            raise ImmediateHttpResponse(
+                response=http.HttpBadRequest(pv_required_msg))
+
+        # create the product
+        updated_bundle = super(ProductResource, self).obj_create(
+            bundle=bundle, request=request, **kwargs)
+
+        # create the productversions
+        for pv in productversions:
+            ProductVersion.objects.get_or_create(
+                product=updated_bundle.obj, **pv)
+
+        return updated_bundle
+
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Oversee updating of product.
+        If this were RESTful, it would remove all existing versions and add
+        the requested versions. But this isn't restful, it just adds the
+        version if it doesn't exist already.
+        """
+
+        # pull the productversions off, you can't edit them from here
+        productversions = bundle.data.pop("productversions", [])
+        bundle.data["productversions"] = []
+
+        updated_bundle =  super(ProductResource, self).obj_update(
+            bundle=bundle, request=request, **kwargs)
+
+        # create the productversions
+        for pv in productversions:
+            ProductVersion.objects.get_or_create(
+                product=updated_bundle.obj, **pv)
+
+        return updated_bundle
 
 
 
@@ -134,4 +156,14 @@ class ProductVersionEnvironmentsResource(ModelResource):
         queryset = ProductVersion.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "version", "codename"]
+
+
+
+class UserResource(ModelResource):
+    """Return a list of usernames"""
+
+    class Meta:
+        queryset = User.objects.all()
+        list_allowed_methods = ['get']
+        fields = ["id", "username"]
 

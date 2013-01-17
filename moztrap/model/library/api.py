@@ -1,73 +1,39 @@
 import datetime
 from tastypie.exceptions import BadRequest
 
-from tastypie.resources import ALL, ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from tastypie.resources import ModelResource
 
 from ..core.api import (ProductVersionResource, ProductResource,
-                        MTAuthorization, MTApiKeyAuthentication)
+                        UserResource)
 from .models import CaseVersion, Case, Suite, CaseStep
+from ..mtapi import MTResource
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
 
 
+class SuiteResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for Suite.
 
-class SuiteResource(ModelResource):
+    Filterable by name and product fields.
+    """
 
     product = fields.ToOneField(ProductResource, "product")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Suite.objects.all()
         fields = ["name", "product", "description", "status", "id"]
-        list_allowed_methods = ["get", "post"]
-        detail_allowed_methods = ["get", "put", "delete"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
             }
-        authentication = MTApiKeyAuthentication()
-        authorization = MTAuthorization()
-        always_return_data = True
+        ordering = ['name', 'product__id', 'id']
 
-
-    def obj_create(self, bundle, request=None, **kwargs):
-        """Set the created_by field for the suite to the request's user"""
-
-        bundle = super(SuiteResource, self).obj_create(bundle=bundle, request=request, **kwargs)
-        bundle.obj.created_by = request.user
-        bundle.obj.save(user=request.user)
-        return bundle
-
-
-    def obj_update(self, bundle, request=None, **kwargs):
-        """Set the modified_by field for the suite to the request's user"""
-
-        bundle = super(SuiteResource, self).obj_update(bundle=bundle, request=request, **kwargs)
-        bundle.obj.modified_on = datetime.datetime.utcnow()
-        bundle.obj.save(user=request.user)
-        return bundle
-
-
-    def obj_delete(self, request=None, **kwargs):
-        """Delete the object.
-        The DELETE request may include permanent=True/False in its params parameter
-        (ie, along with the user's credentials). Default is False.
-        """
-        permanent = request._request.dicts[1].get("permanent", False)
-        # pull the id out of the request's path
-        suite_id = request.path.split('/')[-2]
-        suite = Suite.objects.get(id=suite_id)
-        suite.delete(user=request.user, permanent=permanent)
-
-
-    def delete_detail(self, request, **kwargs):
-        """Avoid the following error:
-        WSGIWarning: Content-Type header found in a 204 response, which not return content.
-        """
-        res = super(SuiteResource, self).delete_detail(request, **kwargs)
-        del(res._headers["content-type"])
-        return res
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Suite
 
 
 
@@ -96,8 +62,10 @@ class CaseVersionResource(ModelResource):
 
     case = fields.ForeignKey(CaseResource, "case", full=True)
     steps = fields.ToManyField(CaseStepResource, "steps", full=True)
-    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion")
+    environments = fields.ToManyField(
+        EnvironmentResource, "environments", full=True)
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
 
 
@@ -118,7 +86,8 @@ class BaseSelectionResource(ModelResource):
     """Adds filtering by negation for use with multi-select widget"""
     #@@@ move this to mtapi.py when that code is merged in.
 
-    def apply_filters(self, request, applicable_filters, applicable_excludes={}):
+    def apply_filters(self,
+        request, applicable_filters, applicable_excludes={}):
         """Apply included and excluded filters to query."""
         return self.get_object_list(request).filter(
             **applicable_filters).exclude(**applicable_excludes)
@@ -167,6 +136,7 @@ class CaseSelectionResource(BaseSelectionResource):
     case = fields.ForeignKey(CaseResource, "case")
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
@@ -178,12 +148,13 @@ class CaseSelectionResource(BaseSelectionResource):
                 "case__suitecases",
                 ).distinct().order_by("case__suitecases__order")
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest"]
+        fields = ["id", "name", "latest", "created_by"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "latest": ALL,
+            "created_by": ALL_WITH_RELATIONS
             }
 
 
@@ -194,14 +165,6 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(bundle.obj.created_by.id),
-                "username": bundle.obj.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
 
         if "case__suites" in bundle.request.GET.keys():
             suite_id=int(bundle.request.GET["case__suites"])
@@ -222,8 +185,10 @@ class CaseVersionSelectionResource(BaseSelectionResource):
     """
 
     case = fields.ForeignKey(CaseResource, "case")
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion", full=True)
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
@@ -234,11 +199,12 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "tags",
             )
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest"]
+        fields = ["id", "name", "latest", "created_by_id"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS
             }
 
 
@@ -250,13 +216,5 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
         bundle.data["productversion_name"] = bundle.obj.productversion.name
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(bundle.obj.created_by.id),
-                "username": bundle.obj.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
 
         return bundle

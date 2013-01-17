@@ -77,7 +77,7 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         if "caseversions" in self.changed_data:
             TagCV = tag.caseversions.through
 
-            # used to be delete() instead of clear.  May be remove?
+            # @@@ used to be delete() instead of clear.  May be remove?
             # why is delete() ok for cases of suites?  must be some special checking
             # for that.
             tag.caseversions.clear()

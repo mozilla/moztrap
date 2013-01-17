@@ -7,9 +7,10 @@ import json
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
-from .models import Run, RunCaseVersion, Result
+from .models import Run, RunCaseVersion, RunSuite, Result
+from ..mtapi import MTResource, MTApiKeyAuthentication
 from ..core.api import (ProductVersionResource, ProductResource,
-                        ReportResultsAuthorization, MTApiKeyAuthentication)
+                        ReportResultsAuthorization, UserResource)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource, BaseSelectionResource
@@ -299,6 +300,7 @@ class SuiteSelectionResource(BaseSelectionResource):
 
     product = fields.ForeignKey(ProductResource, "product")
     runs = fields.ToManyField(RunResource, "runs")
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = Suite.objects.all().select_related(
@@ -307,10 +309,11 @@ class SuiteSelectionResource(BaseSelectionResource):
             "runsuites",
             )
         list_allowed_methods = ['get']
-        fields = ["id", "name"]
+        fields = ["id", "name", "created_by"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
             "runs": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS,
             }
 
 
@@ -319,14 +322,6 @@ class SuiteSelectionResource(BaseSelectionResource):
 
         suite = bundle.obj
         bundle.data["suite_id"] = unicode(suite.id)
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(suite.created_by.id),
-                "username": suite.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
 
         if "runs" in bundle.request.GET.keys():
             run_id=int(bundle.request.GET["runs"])

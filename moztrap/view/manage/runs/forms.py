@@ -81,7 +81,8 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             # some of the values weren't ints, and therefore this is
             # from the read-only list of suites.  so return None so that we
             # don't try to remove and re-add them.
-            self.changed_data.remove("suites")
+            if "suites" in self.changed_data:
+                self.changed_data.remove("suites")
             return None
 
 

@@ -3955,6 +3955,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
   height: 18em;
   border-bottom: 1px solid;
+  resize: vertical;
   overflow-y: scroll;
 }
 .selectbox .select:empty {
