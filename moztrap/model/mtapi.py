@@ -1,4 +1,6 @@
-import datetime
+from django.db.models import Q
+from django.db.models.sql.constants import QUERY_TERMS, LOOKUP_SEP
+from django.utils.datastructures import MultiValueDict
 
 from tastypie.resources import ModelResource
 from tastypie.authentication import ApiKeyAuthentication
@@ -6,6 +8,7 @@ from tastypie.authorization import  Authorization
 from .core.models import ApiKey
 
 import logging, sys, traceback
+
 logger = logging.getLogger("moztrap.model.mtapi")
 
 class MTApiKeyAuthentication(ApiKeyAuthentication):
@@ -171,40 +174,138 @@ class MTBaseSelectionResource(ModelResource):
     """Adds filtering by negation for use with multi-select widget"""
 
     def apply_filters(self,
-                      request, applicable_filters, applicable_excludes={}):
+                      request,
+                      applicable_includes,
+                      applicable_excludes={},
+                      ):
         """Apply included and excluded filters to query."""
+        applicable_filters = self.convert_to_Q(applicable_includes)
         return self.get_object_list(request).filter(
-            **applicable_filters).exclude(**applicable_excludes)
+            applicable_filters).exclude(**applicable_excludes.dict())
+
+
+    def convert_to_Q(self, applicable_includes):
+        """Make this multivalue dict use OR for items that are multiple."""
+        filters = Q()
+        for key, list_values in applicable_includes.lists():
+            if len(list_values) == 1:
+                new_q = Q(**{key: list_values[0]})
+            else:
+                for item in list_values:
+                    new_q = new_q | Q(**{key: item})
+
+            filters &= (new_q)
+
+        return filters
 
 
     def obj_get_list(self, request=None, **kwargs):
         """Return the list with included and excluded filters, if they exist."""
-        filters = {}
+        filters = MultiValueDict()
 
+        # if there is more than one value for a field (like tags)
+        # then we want the key to have __in so it can be any of
+        # those values.  Otherwise, it would just be the last one
+        # in the list, ignoring other values.
         if hasattr(request, 'GET'): # pragma: no cover
             # Grab a mutable copy.
+#            for key in request.GET:
+#                qlist = request.GET.getlist(key)
+#                if len(qlist) > 1:
+#                    qkey = "{0}__in".format(key)
+#                else:
+#                    qkey = key
+#                filters[qkey] = ",".join(request.GET.getlist(key))
             filters = request.GET.copy()
 
         # Update with the provided kwargs.
         filters.update(kwargs)
 
         # Splitting out filtering and excluding items
-        new_filters = {}
-        excludes = {}
-        for key, value in filters.items():
+        new_filters = MultiValueDict()
+        excludes = MultiValueDict()
+        for key, value_list in filters.lists():
             # If the given key is filtered by ``not equal`` token, exclude it
             if key.endswith('__ne'):
                 key = key[:-4] # Stripping out trailing ``__ne``
-                excludes[key] = value
+                excludes.setlist(key, value_list)
             else:
-                new_filters[key] = value
+                new_filters.setlist(key, value_list)
 
         filters = new_filters
 
         # Building filters
-        applicable_filters = self.build_filters(filters=filters)
+        applicable_includes = self.build_filters(filters=new_filters)
         applicable_excludes = self.build_filters(filters=excludes)
 
         base_object_list = self.apply_filters(
-            request, applicable_filters, applicable_excludes)
+            request, applicable_includes, applicable_excludes)
         return self.apply_authorization_limits(request, base_object_list)
+
+
+    def build_filters(self, filters=None):
+        """
+        Given a dictionary of filters, create the necessary ORM-level filters.
+
+        Supports multiple filtering on the same field with a multi-value-dict.
+        """
+        if filters is None:
+            filters = MultiValueDict()
+
+        qs_filters = MultiValueDict()
+
+        if hasattr(self._meta, 'queryset'):
+            # Get the possible query terms from the current QuerySet.
+            query_terms = self._meta.queryset.query.query_terms.keys()
+        else:
+            query_terms = QUERY_TERMS.keys()
+
+        for filter_expr, values_list in filters.lists():
+            filter_bits = filter_expr.split(LOOKUP_SEP)
+            field_name = filter_bits.pop(0)
+            filter_type = 'exact'
+
+            if not field_name in self.fields:
+                # It's not a field we know about. Move along citizen.
+                continue
+
+            if len(filter_bits) and filter_bits[-1] in query_terms:
+                filter_type = filter_bits.pop()
+
+            from tastypie.resources import ModelResource
+            lookup_bits = self.check_filtering(field_name, filter_type, filter_bits)
+            new_values_list = [self.filter_value_to_python(
+                x, field_name, filters, filter_expr, filter_type
+                ) for x in values_list]
+
+            db_field_name = LOOKUP_SEP.join(lookup_bits)
+            qs_filter = "%s%s%s" % (db_field_name, LOOKUP_SEP, filter_type)
+            qs_filters.setlist(str(qs_filter), new_values_list)
+
+        return qs_filters
+
+
+    def filter_value_to_python(self, value, field_name, filters, filter_expr,
+                               filter_type):
+        """
+        Turn the string ``value`` into a python object.
+        """
+        # Simple values
+        if value in ['true', 'True', True]:
+            value = True
+        elif value in ['false', 'False', False]:
+            value = False
+        elif value in ('nil', 'none', 'None', None):
+            value = None
+
+        # Split on ',' if not empty string and either an in or range filter.
+        if filter_type in ('in', 'range') and len(value):
+            if hasattr(filters, 'getlist'):
+                value = []
+
+                for part in filters.getlist(filter_expr):
+                    value.extend(part.split(','))
+            else:
+                value = value.split(',')
+
+        return value

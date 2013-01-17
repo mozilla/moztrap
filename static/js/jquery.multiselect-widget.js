@@ -37,48 +37,23 @@
                 bulkExclude = context.find(options.bulkExcludeSel),
                 form = $(options.formSel),
                 headers = context.find(options.headerSel),
-                bulkSelects = context.find(options.bulkSel),
-                ms = $(".multiselect"),
+                bulkSelects = context.find(options.bulkSel);
 
-                updateBulkSel = function (select, list) {
-                    var visibleNum = list.find(options.itemSel + ' ' +
-                            options.inputSel + ':visible').length,
-                        checkedNum = list.find(options.itemSel + ' ' +
-                            options.inputSel + ':visible:checked').length;
-                    if (checkedNum && checkedNum === visibleNum) {
-                        select.prop('checked', true);
-                    } else {
-                        select.prop('checked', false);
-                    }
-                },
 
-                filterItemsAjax = function filterItemsAjax(filter_type_map) {
-                    var url_str = $(options.availableSel).data(
-                            options.availableAjaxReplace),
-                        ajax_url = ms.multiselect("filterUrl",
-                            new URI(url_str),
-                            filter_type_map);
+            context.multiselect("filterItemsAjax",
+                options.filter_type_map,
+                options.ich_template);
 
-                    // remove the offset, if there is one, initial filtering
-                    // won't use an offset
-                    ajax_url.removeQuery("offset");
-
-                    availableList.html("");
-                    ms.multiselect("populateList",
-                        availableList,
-                        ajax_url.toString(),
-                        options.ich_template, true
-                    );
-
-                };
+            context.find(".visual").bind('DOMNodeInserted DOMNodeRemoved', function (event) {
+                context.multiselect("filterItemsAjax",
+                                    options.filter_type_map,
+                                    options.ich_template);
+            });
 
             // add change handlers to all the checkboxes in the filter groups
-            filterLists.find(options.filterSel).change(
-                    function filterChangeHandler() {
-                filterItemsAjax(options.filter_type_map);
-                updateBulkSel(availableList.closest('.itemlist').find(
-                    options.bulkSel), availableList);
-            });
+            context.multiselect("addFilterHandlers",
+                                options.filter_type_map,
+                                options.ich_template);
 
             // add click handlers to tag chicklets in both lists
             availableList.add(includedList).on(
@@ -108,9 +83,9 @@
                         options.filterListSel + ' ' + options.filterSel + ':checked'
                     ).prop('checked', false).change();
                     ui.item.find(options.inputSel).prop('checked', false);
-                    updateBulkSel(availableList.closest('.itemlist').find(
+                    context.multiselect("updateBulkSel", availableList.closest('.itemlist').find(
                         options.bulkSel), availableList);
-                    updateBulkSel(includedList.closest('.itemlist').find(
+                    context.multiselect("updateBulkSel", includedList.closest('.itemlist').find(
                         options.bulkSel), includedList);
                     headers.removeClass('asc desc');
                 }
@@ -176,8 +151,8 @@
             bulkInclude.click(function (e) {
                 var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
                 selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(includedList);
-                updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
-                updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
+                context.multiselect("updateBulkSel", availableList.closest('.itemlist').find(options.bulkSel), availableList);
+                context.multiselect("updateBulkSel", includedList.closest('.itemlist').find(options.bulkSel), includedList);
                 e.preventDefault();
             });
 
@@ -186,8 +161,8 @@
                 var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
                 selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(availableList);
                 filterLists.find(options.filterSel + ':checked').prop('checked', false).change();
-                updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
-                updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
+                context.multiselect("updateBulkSel", availableList.closest('.itemlist').find(options.bulkSel), availableList);
+                context.multiselect("updateBulkSel", includedList.closest('.itemlist').find(options.bulkSel), includedList);
                 e.preventDefault();
             });
 
@@ -245,7 +220,7 @@
             context.on('change', options.itemSel + ' ' + options.inputSel, function (e) {
                 var thisList = $(this).closest('.itemlist'),
                     thisSelect = thisList.find(options.bulkSel);
-                updateBulkSel(thisSelect, thisList);
+                context.multiselect("updateBulkSel", thisSelect, thisList);
             });
 
             return this;
@@ -332,7 +307,66 @@
                 true);
         },
 
-        // if the set of fetched available items is not all that is truly available,
+        updateBulkSel: function (select, list) {
+            var options = $.extend({}, msDefaults),
+                visibleNum = list.find(options.itemSel + ' ' +
+                                           options.inputSel + ':visible').length,
+                checkedNum = list.find(options.itemSel + ' ' +
+                                           options.inputSel + ':visible:checked').length;
+            if (checkedNum && checkedNum === visibleNum) {
+                select.prop('checked', true);
+            } else {
+                select.prop('checked', false);
+            }
+        },
+
+
+        addFilterHandlers: function addFilterEvents(filter_type_map, ich_template) {
+            var options = $.extend({}, msDefaults),
+                context = $(this),
+                availableList = context.find(options.availableSel + ' ' +
+                                                 options.itemListSel),
+                filterLists = context.find(options.availableSel + ' ' +
+                                               options.filterListSel);
+
+            // add change handlers to all the checkboxes in the filter groups
+            filterLists.find(options.filterSel).change(
+                function filterChangeHandler() {
+                    context.multiselect("filterItemsAjax",
+                        filter_type_map,
+                        ich_template);
+                    context.multiselect("updateBulkSel",
+                        availableList.closest('.itemlist').find(
+                            options.bulkSel), availableList);
+                });
+
+        },
+
+        filterItemsAjax: function filterItemsAjax(filter_type_map, ich_template) {
+            var options = $.extend({}, msDefaults),
+                context = $(this),
+                availableList = context.find(options.availableSel + ' ' +
+                    options.itemListSel),
+                url_str = $(options.availableSel).data(
+                    options.availableAjaxReplace),
+                ajax_url = this.multiselect("filterUrl",
+                    new URI(url_str),
+                    filter_type_map);
+
+            // remove the offset, if there is one, initial filtering
+            // won't use an offset
+            ajax_url.removeQuery("offset");
+
+            availableList.html("");
+            this.multiselect("populateList",
+                availableList,
+                ajax_url.toString(),
+                ich_template, true
+            );
+
+        },
+
+    // if the set of fetched available items is not all that is truly available,
         // then let the user fetch more if they would like.
         updateshowmore: function (meta, ich_template) {
             var options = $.extend({}, msDefaults),

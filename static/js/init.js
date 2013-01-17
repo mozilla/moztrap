@@ -188,7 +188,7 @@ var MT = (function (MT, $) {
             for_type: "suite",
             ich_template: ich.case_select_item,
             filter_type_map: {
-                name: "caseversion__name__contains",
+                name: "caseversion__name__icontains",
                 tag: "tags",
                 author: "created_by",
                 productversion: "productversion"
@@ -204,7 +204,7 @@ var MT = (function (MT, $) {
             for_type: "tag",
             ich_template: ich.caseversion_select_item,
             filter_type_map: {
-                name: "name__contains",
+                name: "name__icontains",
                 tag: "tags",
                 author: "created_by",
                 productversion: "productversion"
@@ -234,7 +234,7 @@ var MT = (function (MT, $) {
             ich_template: ich.suite_select_item,
             refetch_on_trigger: false,
             filter_type_map: {
-                name: "name__contains",
+                name: "name__icontains",
                 author: "created_by"
             }
         });
