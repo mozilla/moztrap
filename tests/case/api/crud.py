@@ -204,6 +204,10 @@ class ApiCrudCases(ApiTestCase):
         self.addCleanup(patcher.stop)
 
 
+    def _id_from_uri(self, uri):
+        return uri.split('/')[-2]
+
+
     # test cases 
 
     def test_create(self):
@@ -228,7 +232,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
         # make sure response included detail uri
-        object_id = res.headers["location"].split('/')[-2] # pull id out of uri
+        object_id = self._id_from_uri(res.headers["location"])
         self.assertIsNotNone(object_id)
 
         # get data from backend
@@ -237,6 +241,8 @@ class ApiCrudCases(ApiTestCase):
 
         # compare backend data to desired data
         self.maxDiff = None
+        mozlogger.debug("actual: %s", created_object_data)
+        mozlogger.debug("expected: %s", fields)
         self.assertEqual(created_object_data, fields)
 
         # make sure meta data is correct
@@ -372,11 +378,13 @@ class ApiCrudCases(ApiTestCase):
         # create fixture
         fixture1 = self.factory
         backend_obj = self.backend_object(fixture1.id)
+        mozlogger.debug("fixture: %s", self.backend_data(backend_obj))
         # change modified on to 2 hours earlier than utcnow
         backend_obj.modified_on = datetime(2011, 12, 13, 20, 39)
         meta_before = self.backend_meta_data(backend_obj)
         obj_id = str(fixture1.id)
         fields = self.new_object_data
+        mozlogger.debug("new data: %s", fields)
 
         # do put
         res = self.put(

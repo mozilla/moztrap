@@ -148,7 +148,7 @@ class MTResource(ModelResource):
         try:
             permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
-            obj_id = request.path.split('/')[-2]
+            obj_id = self._id_from_uri(request.path)
             obj = self.model.objects.get(id=obj_id)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
@@ -164,3 +164,7 @@ class MTResource(ModelResource):
         res = super(MTResource, self).delete_detail(request, **kwargs)
         del(res._headers["content-type"])
         return res
+
+
+    def _id_from_uri(self, uri):
+        return uri.split('/')[-2]
