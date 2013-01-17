@@ -8,10 +8,19 @@
     {{ run.description|markdown }}
   </p>
   {% endif %}
-  {% if run.status == run.STATUS.active %}
-    <span class="button"><a href="{% url 'runtests_environment' run_id=run.id %}">run tests in {{ run }}</a></span>
-  {% else %}
-    <span class="status-note">Activate this run to execute its tests.</span>
+  <div class="runtests">
+    {% if run.status == run.STATUS.active %}
+      <span class="button"><a href="{% url 'runtests_environment' run_id=run.id %}">run tests in {{ run }}</a></span>
+    {% else %}
+      <span class="status-note">Activate this run to execute its tests.</span>
+    {% endif %}
+  </div>
+  {% if not run.is_series %}
+    <div class="resultcounts">
+    {% with "results_runcaseversions"|filter_url:run as detail_url %}
+    {% include "results/_results_summary.html" with results=run.result_summary %}
+    {% endwith %}
+    </div>
   {% endif %}
 
 </div>
