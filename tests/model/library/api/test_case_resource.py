@@ -81,23 +81,23 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_obj(self, cv, order=None):
         """Return an expected caseselection object with fields filled."""
         return {
-            u'case': unicode(
+            u"case": unicode(
                 self.get_detail_url("case",cv.case.id)),
-            u'case_id': unicode(cv.case.id),
-            u'created_by': None,
-            u'id': unicode(cv.id),
-            u'latest': True,
-            u'name': unicode(cv.name),
-            u'order': order,
-            u'product': {
-                u'id': unicode(cv.productversion.product_id)
+            u"case_id": unicode(cv.case.id),
+            u"created_by": None,
+            u"id": unicode(cv.id),
+            u"latest": True,
+            u"name": unicode(cv.name),
+            u"order": order,
+            u"product": {
+                u"id": unicode(cv.productversion.product_id)
             },
-            u'product_id': unicode(cv.productversion.product_id),
-            u'productversion': unicode(
+            u"product_id": unicode(cv.productversion.product_id),
+            u"productversion": unicode(
                 self.get_detail_url("productversion",cv.productversion.id)),
-            u'resource_uri': unicode(
+            u"resource_uri": unicode(
                 self.get_detail_url("caseselection",cv.id)),
-            u'tags': [],
+            u"tags": [],
             }
 
 

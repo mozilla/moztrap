@@ -60,10 +60,11 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         user = user or self.user
         suite = super(SuiteForm, self).save(user=user)
 
-        suite.suitecases.all().delete(permanent=True)
-        for i, case in enumerate(self.cleaned_data["cases"]):
-            model.SuiteCase.objects.create(
-                suite=suite, case=case, order=i, user=user)
+        if "cases" in self.changed_data:
+            suite.suitecases.all().delete(permanent=True)
+            for i, case in enumerate(self.cleaned_data["cases"]):
+                model.SuiteCase.objects.create(
+                    suite=suite, case=case, order=i, user=user)
 
         return suite
 

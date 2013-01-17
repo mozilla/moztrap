@@ -11,7 +11,9 @@
       <input type="checkbox" name="{{ prefix }}-{{ field.key }}" data-name="{{ field.key }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.key }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %} class="check">
       <span class="onoff">
         <label for="id-{{ prefix }}-{{ field.key }}-{{ forloop.counter }}" class="onoffswitch">{{ option.label }}</label>
-        <span class="pinswitch"></span>
+        {% if pinable %}
+            <span class="pinswitch"></span>
+        {% endif %}
         <span class="content">{{ option.label }}</span>
       </span>
     </li>

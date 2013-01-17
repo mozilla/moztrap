@@ -22,7 +22,7 @@ class ProductVersionResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for 
+        """String defining the permission required for
         Create, Update, and Delete."""
         return "core.manage_products"
 
@@ -38,7 +38,7 @@ class ProductVersionResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a 
+        The output of this method can be sent in the payload parameter of a
         POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
@@ -58,24 +58,23 @@ class ProductVersionResourceTest(ApiCrudCases):
         """
         return self.model.ProductVersion.everything.get(id=id)
 
- 
+
     def backend_data(self, backend_obj):
-        """Query's the database for the object's current values. Output is a 
-        dictionary that should match the result of getting the object's detail 
+        """Query's the database for the object's current values. Output is a
+        dictionary that should match the result of getting the object's detail
         via the API, and can be used to verify API output.
 
         Note: both keys and data should be in unicode
         """
-        actual = {}
-        actual[u"id"] = unicode(backend_obj.id)
-        actual[u"product"] = unicode(
-            self.get_detail_url('product', str(backend_obj.product.id)))
-        actual[u"version"] = unicode(backend_obj.version)
-        actual[u"codename"] = unicode(backend_obj.codename)
-        actual[u"resource_uri"] = unicode(
-            self.get_detail_url(self.resource_name, str(backend_obj.id)))
-
-        return actual
+        return {
+            u"id": unicode(backend_obj.id),
+            u"product": unicode(
+                self.get_detail_url('product', str(backend_obj.product.id))),
+            u"version": unicode(backend_obj.version),
+            u"codename": unicode(backend_obj.codename),
+            u"resource_uri": unicode(
+                self.get_detail_url(self.resource_name, str(backend_obj.id))),
+            }
 
 
     # additional test cases, if any

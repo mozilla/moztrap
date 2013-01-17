@@ -442,7 +442,8 @@
                             id: inputName,
                             index: index,
                             newInput: true,
-                            prefix: prefix
+                            prefix: prefix,
+                            pinable: options.pinable
                         };
                         if ($(this).data(options.extraDataName)) {
                             data.responseDataName = options.extraDataName;
@@ -470,7 +471,8 @@
                             inputName: inputName,
                             id: thisID,
                             index: index,
-                            prefix: prefix
+                            prefix: prefix,
+                            pinable: options.pinable
                         };
                         if ($(this).data(options.extraDataName)) {
                             data.responseDataName = options.extraDataName;
@@ -528,7 +530,8 @@
                             id: thisText,
                             index: index,
                             newInput: true,
-                            prefix: prefix
+                            prefix: prefix,
+                            pinable: options.pinable
                         }),
                         addInput = function () {
                             if (thisGroup.children('ul').length) {
@@ -610,7 +613,8 @@
         prefix: '',                                     // Prefix to apply to each input ID (to avoid ID duplication when using multiple times on one page)
         noInputsNote: false,                            // Set ``true`` to add "none" when no there are no inputs
         extraDataName: null,                            // Additional key to be sent with ajax-request
-        extraDataFn: null                               // Function which returns additional value to be sent with ajax-request
+        extraDataFn: null,                              // Function which returns additional value to be sent with ajax-request
+        pinable: true                                   // Whether the result template supports pinning, as in a pinable filter.
     };
 
 }(jQuery));
