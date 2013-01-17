@@ -5698,10 +5698,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 1.099%;
 }
 #manageruns .iteminfo .runtests {
-  padding: 0.375em 0.75em;
+  padding: 0.75em;
 }
 #manageruns .iteminfo .resultcounts {
-  padding: 0.375em 0.75em;
   padding-right: 41.237%;
 }
 #manageruns .envs, #manageruns .suites, #manageruns .testers {

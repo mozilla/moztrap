@@ -2,6 +2,13 @@
 
 <div class="iteminfo">
   {% include "lists/_byline.html" with item=run %}
+  {% if not run.is_series %}
+    <div class="resultcounts">
+        {% with "results_runcaseversions"|filter_url:run as detail_url %}
+        {% include "results/_results_summary.html" with results=run.result_summary %}
+        {% endwith %}
+    </div>
+  {% endif %}
 
   {% if run.description %}
   <p class="details">
@@ -15,13 +22,6 @@
       <span class="status-note">Activate this run to execute its tests.</span>
     {% endif %}
   </div>
-  {% if not run.is_series %}
-    <div class="resultcounts">
-    {% with "results_runcaseversions"|filter_url:run as detail_url %}
-    {% include "results/_results_summary.html" with results=run.result_summary %}
-    {% endwith %}
-    </div>
-  {% endif %}
 
 </div>
 
