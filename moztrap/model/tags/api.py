@@ -46,7 +46,7 @@ class TagResource(MTResource):
         err_msg = str("Tag's Product may not be changed unless " +
                   "the tag is not in use, the product is being " +
                   "set to None, or the product matches the existing cases.")
-        
+
         # if we're even thinking about changing the product
         if 'product' in bundle.data.keys():
             logger.debug('thinking about product')
@@ -63,7 +63,7 @@ class TagResource(MTResource):
                     # if changing from global to product-specific
                     if not desired_product == None:
                         logger.debug('changing from global to product-specific')
-                        # if existing caseversions represent more than one 
+                        # if existing caseversions represent more than one
                         # product
                         desired_product_id = desired_product.split('/')[-2]
                         if len(products) > 1:
@@ -75,9 +75,9 @@ class TagResource(MTResource):
                             logger.exception(err_msg)
                             raise ImmediateHttpResponse(
                                 response=http.HttpBadRequest(err_msg))
-        # code from here through the last else is optional, 
+        # code from here through the last else is optional,
         # but nice if tracking down coverage problems
-                         # requested product matches the single product used by 
+                         # requested product matches the single product used by
                          # all of the caseversions
                         else:
                             logger.debug(

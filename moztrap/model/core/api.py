@@ -1,9 +1,10 @@
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie import http
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import ImmediateHttpResponse
 
 from .models import Product, ProductVersion
+from .auth import User
 from ..environments.api import EnvironmentResource
 from ..mtapi import MTResource, MTAuthorization
 
@@ -50,10 +51,12 @@ class ProductVersionResource(MTResource):
         authorization = ProductVersionAuthorization()
         ordering = ['product__id', 'version', 'id']
 
+
     @property
     def model(self):
         """Model class related to this resource."""
         return ProductVersion
+
 
 
 class ProductResource(MTResource):
@@ -116,6 +119,7 @@ class ProductResource(MTResource):
 
         return updated_bundle
 
+
     def obj_update(self, bundle, request=None, **kwargs):
         """Oversee updating of product.
         If this were RESTful, it would remove all existing versions and add
@@ -152,4 +156,14 @@ class ProductVersionEnvironmentsResource(ModelResource):
         queryset = ProductVersion.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "version", "codename"]
+
+
+
+class UserResource(ModelResource):
+    """Return a list of usernames"""
+
+    class Meta:
+        queryset = User.objects.all()
+        list_allowed_methods = ['get']
+        fields = ["id", "username"]
 

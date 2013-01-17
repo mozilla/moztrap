@@ -4,8 +4,9 @@ from tastypie.exceptions import BadRequest
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
+from ..core.api import (ProductVersionResource, ProductResource,
+                        UserResource)
 from .models import CaseVersion, Case, Suite, CaseStep
-from ..core.api import (ProductVersionResource, ProductResource)
 from ..mtapi import MTResource
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
@@ -85,7 +86,7 @@ class BaseSelectionResource(ModelResource):
     """Adds filtering by negation for use with multi-select widget"""
     #@@@ move this to mtapi.py when that code is merged in.
 
-    def apply_filters(self, 
+    def apply_filters(self,
         request, applicable_filters, applicable_excludes={}):
         """Apply included and excluded filters to query."""
         return self.get_object_list(request).filter(
@@ -135,6 +136,7 @@ class CaseSelectionResource(BaseSelectionResource):
     case = fields.ForeignKey(CaseResource, "case")
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
@@ -146,12 +148,13 @@ class CaseSelectionResource(BaseSelectionResource):
                 "case__suitecases",
                 ).distinct().order_by("case__suitecases__order")
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest"]
+        fields = ["id", "name", "latest", "created_by"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "latest": ALL,
+            "created_by": ALL_WITH_RELATIONS
             }
 
 
@@ -162,14 +165,6 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(bundle.obj.created_by.id),
-                "username": bundle.obj.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
 
         if "case__suites" in bundle.request.GET.keys():
             suite_id=int(bundle.request.GET["case__suites"])
@@ -193,6 +188,7 @@ class CaseVersionSelectionResource(BaseSelectionResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
@@ -203,11 +199,12 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "tags",
             )
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest"]
+        fields = ["id", "name", "latest", "created_by_id"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS
             }
 
 
@@ -219,13 +216,5 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
         bundle.data["productversion_name"] = bundle.obj.productversion.name
-
-        try:
-            bundle.data["created_by"] = {
-                "id": unicode(bundle.obj.created_by.id),
-                "username": bundle.obj.created_by.username,
-                }
-        except AttributeError:
-            bundle.data["created_by"] = None
 
         return bundle
