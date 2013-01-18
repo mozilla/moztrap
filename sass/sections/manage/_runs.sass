@@ -25,6 +25,10 @@
 
     .resultcounts
       +suffix(10)
+      +rhythm-borders(1px,.25)
+      +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
+      +box-shadow(rgba($base,$xsmall) 0 1px $xxxsmallpx inset)
+      border-color: rgba($blue-dark,$small)
 
   .envs, .suites, .testers
     +columns(4,23)
@@ -33,7 +37,7 @@
 
   .suites, .testers
     @extend .detailslist
-  .suites-title, .testers-title
+  .suites-title, .testers-title, .results-title
     @extend .detailstitle
 
   .iteminfo

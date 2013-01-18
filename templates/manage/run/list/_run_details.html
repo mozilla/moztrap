@@ -4,6 +4,7 @@
   {% include "lists/_byline.html" with item=run %}
   {% if not run.is_series %}
     <div class="resultcounts">
+        <div class="results-title">Results</div>
         {% with "results_runcaseversions"|filter_url:run as detail_url %}
         {% include "results/_results_summary.html" with results=run.result_summary %}
         {% endwith %}
