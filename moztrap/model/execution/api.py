@@ -119,7 +119,7 @@ class RunResource(ModelResource):
             data,
             response_class=response_class,
             **response_kwargs
-            );
+            )
 
         if isinstance(data, Bundle):
             # data will be a bundle if we are creating a new Run.  And in that
@@ -133,7 +133,7 @@ class RunResource(ModelResource):
             new_content["ui_uri"] = full_url
             new_content["resource_uri"] = data.data["resource_uri"]
 
-            resp.content = json.dumps(new_content);
+            resp.content = json.dumps(new_content)
             # need to set the content type to application/json
             resp._headers["content-type"] = ("Content-Type", "application/json; charset=utf-8")
         return resp
@@ -322,6 +322,8 @@ class SuiteSelectionResource(BaseSelectionResource):
 
         suite = bundle.obj
         bundle.data["suite_id"] = unicode(suite.id)
+        bundle.data["case_count"] = suite.cases.count()
+        bundle.data["filter_cases"] = filter_url("manage_cases", suite)
 
         if "runs" in bundle.request.GET.keys():
             run_id=int(bundle.request.GET["runs"])

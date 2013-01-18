@@ -1,42 +1,23 @@
+.. image:: img/126x126.png
+
 Welcome to MozTrap
 ==================
 
-MozTrap is a test case manager.
+MozTrap is a test case manager by Mozilla.  We hope you like it.
 
-Quickstart
-----------
+Useful links
+------------
 
-MozTrap requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5.1+ with the InnoDB
-backend.
+* You can browse around read-only on our `staging`_ site
+* Or download it from `github`_ and run it locally
+* Visit our `forum`_
+* Feel free to ask questions: irc.mozilla.org #moztrap
+* If you find any bugs, please enter them in `Bugzilla`_
 
-These steps assume that you have `git`_, `virtualenv`_, `virtualenvwrapper`_,
-and a compilation toolchain available (with the `Python`_ and `MySQL`_ client
-development header files), and that you have a local `MySQL`_ server running
-which your shell user has permission to create databases in. See the full
-:doc:`installation` documentation for details and troubleshooting.
-
-1. ``git clone --recursive git://github.com/mozilla/moztrap``
-2. ``cd moztrap``
-3. ``mkvirtualenv moztrap``
-4. ``bin/install-reqs``
-5. ``echo "CREATE DATABASE moztrap CHARACTER SET utf8" | mysql``
-6. ``./manage.py syncdb --migrate``
-7. ``./manage.py create_default_roles``
-8. ``./manage.py runserver``
-9. Visit http://localhost:8000 in your browser.
-
-Congratulations! If that all worked, you have a functioning instance of MozTrap
-for local testing, experimentation, and :doc:`development <development>`.
-
-Please read the :doc:`deployment` documentation for important security and
-other considerations before deploying a public instance of MozTrap.
-
-.. _git: http://git-scm.com
-.. _Python: http://www.python.org
-.. _MySQL: http://www.mysql.com
-.. _virtualenv: http://www.virtualenv.org
-.. _virtualenvwrapper: http://www.doughellmann.com/projects/virtualenvwrapper/
-
+.. _staging: https://moztrap.allizom.org/
+.. _github: https://github.com/mozilla/moztrap/
+.. _forum: https://groups.google.com/forum/?fromgroups#!forum/moztrap
+.. _Bugzilla: https://bugzilla.mozilla.org/enter_bug.cgi?component=MozTrap&product=Mozilla%20QA
 
 Contents
 --------
@@ -45,11 +26,11 @@ Contents
    :maxdepth: 2
 
    releasenotes
+   userguide/index
    installation
    upgrading
    development
    deployment
-   userguide/index
 
 
 Indices and tables

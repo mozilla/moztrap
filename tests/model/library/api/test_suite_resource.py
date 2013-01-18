@@ -41,7 +41,7 @@ class SuiteResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for 
+        """String defining the permission required for
         Create, Update, and Delete.
         """
         return "library.manage_suites"
@@ -52,7 +52,7 @@ class SuiteResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a 
+        The output of this method can be sent in the payload parameter of a
         POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
@@ -111,52 +111,74 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
         return "suiteselection"
 
 
-    def test_none_selected_available(self):
+    @property
+    def included_param(self):
+        return "runs"
+
+
+    @property
+    def available_param(self):
+        return "{0}__ne".format(self.included_param)
+
+
+    def get_exp_obj(self, s, runs=[], order=None):
+        """Return an expected suiteselection object with fields filled."""
+
+        return {
+            u"case_count": s.cases.count(),
+            u"created_by": None,
+            u"filter_cases":
+                u"/manage/cases/?filter-suite={0}".format(s.id),
+            u"id": unicode(s.id),
+            u"name": unicode(s.name),
+            u"runs": runs,
+            u"order": order,
+            u"product": unicode(
+                self.get_detail_url("product",s.product.id)),
+            u"resource_uri": unicode(
+                self.get_detail_url("suiteselection",s.id)),
+            u"suite_id": unicode(s.id)
+        }
+
+
+    def get_exp_meta(self, count=0):
+        """Return an expected meta object with count field filled"""
+        return {
+            u"limit" : 20,
+            u"next" : None,
+            u"offset" : 0,
+            u"previous" : None,
+            u"total_count" : count,
+            }
+
+
+    def _do_test(self, for_id, filter_param, exp_objects):
+        params={filter_param: for_id}
+
+        res = self.get_list(params=params)
+        self.assertEqual(res.status_int, 200)
+
+        act = res.json
+
+        self.maxDiff = None
+        self.assertEquals(act["meta"], self.get_exp_meta(len(exp_objects)))
+        self.assertEqual(exp_objects, act["objects"])
+
+
+    def test_available_for_none_included(self):
         """Get a list of available suites, none selected"""
 
         s1 = self.factory.create(name="Suite1")
         s2 = self.factory.create(name="Suite2")
 
-        res = self.get_list()
-        self.assertEqual(res.status_int, 200)
-
-        act = res.json
-
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
-            }
-
-        self.assertEquals(act_meta, exp_meta)
-
-        act_objects = act["objects"]
-        exp_objects = []
-        for s in [s1, s2]:
-
-            exp_objects.append(
-                {
-                    u"created_by": None,
-                    u"id": unicode(s.id),
-                    u"name": unicode(s.name),
-                    u"runs": [],
-                    u"order": None,
-                    u"product": unicode(
-                        self.get_detail_url("product",s.product.id)),
-                    u"resource_uri": unicode(
-                        self.get_detail_url("suiteselection",s.id)),
-                    u"suite_id": unicode(s.id)
-                })
+        self._do_test(
+            -1,
+            self.available_param,
+            [self.get_exp_obj(s) for s in [s1, s2]],
+            )
 
 
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
-
-
-    def _setup_two_selected(self):
+    def _setup_two_included(self):
         s1 = self.factory.create(name="Suite1")
         s2 = self.factory.create(name="Suite2")
         run = self.F.RunFactory.create()
@@ -172,73 +194,39 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
             "runsuite2": runsuite2,
             }
 
-    def test_available_for_all_selected(self):
-        """Get a list of available cases, both selected"""
 
-        run = self._setup_two_selected()["run"]
-        res = self.get_list(params={"runs__ne": run.id})
-        self.assertEqual(res.status_int, 200)
+    def test_available_for_two_included(self):
+        """Get a list of available cases, both included"""
 
-        act = res.json
-
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 0,
-            }
-
-        self.assertEquals(act_meta, exp_meta)
-        self.assertEquals(act["objects"], [])
+        data = self._setup_two_included()
+        self._do_test(
+            data["run"].id,
+            self.available_param,
+            [],
+            )
 
 
-    def test_two_selected(self):
-        """Get a list of available cases, both selected"""
+    def test_included_for_two_included(self):
+        """Get a list of available cases, both included"""
 
-        data = self._setup_two_selected()
-        res = self.get_list(params={"runs": data["run"].id})
-        self.assertEqual(res.status_int, 200)
+        data = self._setup_two_included()
 
-        act = res.json
+        exp_objects = [self.get_exp_obj(
+            s,
+            [unicode(self.get_detail_url("run", data["run"].id))],
+            rs.order,
+            ) for s, rs in [
+                (data["s1"], data["runsuite1"]),
+                (data["s2"], data["runsuite2"])]]
 
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
-            }
-
-        self.assertEquals(act_meta, exp_meta)
-
-        act_objects = act["objects"]
-        exp_objects = []
-        for s, runsuite in [
-            (data["s1"], data["runsuite1"]),
-            (data["s2"], data["runsuite2"])]:
-
-            exp_objects.append(
-                {
-                    u"created_by": None,
-                    u"id": unicode(s.id),
-                    u"name": unicode(s.name),
-                    u"order": runsuite.order,
-                    u'runs': [self.get_detail_url("run", data["run"].id)],
-                    u"product": unicode(
-                        self.get_detail_url("product",s.product.id)),
-                    u"resource_uri": unicode(
-                        self.get_detail_url("suiteselection",s.id)),
-                    u"suite_id": unicode(s.id)
-                })
-
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
+        self._do_test(
+            data["run"].id,
+            self.included_param,
+            exp_objects=exp_objects,
+            )
 
 
-    def _setup_one_selected_one_not(self):
+    def _setup_for_one_included_one_not(self):
         s1 = self.factory.create(name="Suite1")
         s2 = self.factory.create(name="Suite2")
         run = self.F.RunFactory.create()
@@ -252,81 +240,31 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
             }
 
 
-    def test_available_for_one_selected_one_not(self):
-        """Get a list of cases for a suite, one selected, one not."""
+    def test_available_for_one_included_one_not(self):
+        """Get a list of available cases, one included"""
 
-        data = self._setup_one_selected_one_not()
-        res = self.get_list(params={"runs__ne": data["run"].id})
-        self.assertEqual(res.status_int, 200)
-        act = res.json
+        data = self._setup_for_one_included_one_not()
+        exp_objects = [self.get_exp_obj(data["s2"])]
 
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
-            }
-
-        self.assertEquals(exp_meta, act_meta)
-
-        def get_suite(s, order):
-            return [{
-                        u"created_by": None,
-                        u"id": unicode(s.id),
-                        u"name": unicode(s.name),
-                        u"order": order,
-                        u"runs": [],
-                        u"product": unicode(
-                            self.get_detail_url("product",s.product.id)),
-                        u"resource_uri": unicode(
-                            self.get_detail_url("suiteselection",s.id)),
-                        u"suite_id": unicode(s.id)
-                    }]
-
-        self.maxDiff = None
-        self. assertEqual(
-            get_suite(data["s2"], None),
-            act["objects"],
+        self._do_test(
+            data["run"].id,
+            self.available_param,
+            exp_objects=exp_objects,
             )
 
 
-    def test_selected_for_one_selected_one_not(self):
-        """Get a list of cases for a suite, one selected, one not."""
+    def test_included_for_one_included_one_not(self):
+        """Get a list of included cases, one included"""
 
-        data = self._setup_one_selected_one_not()
-        res = self.get_list(params={"runs": data["run"].id})
-        self.assertEqual(res.status_int, 200)
-        act = res.json
+        data = self._setup_for_one_included_one_not()
+        exp_objects = [self.get_exp_obj(
+            data["s1"],
+            [unicode(self.get_detail_url("run", data["run"].id))],
+            data["runsuite1"].order,
+            )]
 
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
-            }
-
-        self.assertEquals(act_meta, exp_meta)
-
-        def get_suite(s, order):
-            return [{
-                        u"created_by": None,
-                        u"id": unicode(s.id),
-                        u"name": unicode(s.name),
-                        u"order": order,
-                        u'runs': [self.get_detail_url("run", data["run"].id)],
-                        u"product": unicode(
-                            self.get_detail_url("product",s.product.id)),
-                        u"resource_uri": unicode(
-                            self.get_detail_url("suiteselection",s.id)),
-                        u"suite_id": unicode(s.id)
-                    }]
-
-        self.maxDiff = None
-        self. assertEqual(
-            get_suite(data["s1"], data["runsuite1"].order),
-            act["objects"],
+        self._do_test(
+            data["run"].id,
+            self.included_param,
+            exp_objects=exp_objects,
             )
