@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, .legend, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, .add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary, #results .case-details b, .results .result, .result-action, .invalid-summary, .stepfail-summary {
+.allcaps, h1, h2, .selectenvhead, caption, .legend, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #manageruns .results-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, .add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary, #results .case-details b, .results .result, .result-action, .invalid-summary, .stepfail-summary {
   text-transform: uppercase;
 }
 
@@ -1615,7 +1615,7 @@ body > div {
 
 .pintoggle, .chickcheck .pinswitch, .reversecheck .pinswitch, .versioned .attachment-item .pinswitch, .tag-item .pinswitch, .magicfilter .compact .filter-item .pinswitch, .selectsearch .compact .filter-item .pinswitch, #add-environment-form .element-item .pinswitch {
   left: 0;
-  background-image: url('../images/ui/pin.png?1356724323');
+  background-image: url('../images/ui/pin.png?1358540517');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -3162,7 +3162,7 @@ body > div {
   -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
   border-color: rgba(72, 78, 85, 0.667);
-  background-image: url('../images/ui/link.png?1354905356');
+  background-image: url('../images/ui/link.png?1358540517');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -5702,6 +5702,14 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 }
 #manageruns .iteminfo .resultcounts {
   padding-right: 41.237%;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
+  -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
+  -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
+  box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
+  border-color: rgba(75, 87, 101, 0.667);
 }
 #manageruns .envs, #manageruns .suites, #manageruns .testers {
   display: inline;

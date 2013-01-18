@@ -1,8 +1,8 @@
 Release Notes
 =============
 
-Version 1.4.X
--------------
+Version 1.4
+-----------
 *release date - 1/22/2013*
 
 * **Fill Product Version Cases** - Added the ability to fill in case versions
