@@ -26,11 +26,11 @@ Contents
    :maxdepth: 2
 
    releasenotes
+   userguide/index
    installation
    upgrading
    development
    deployment
-   userguide/index
 
 
 Indices and tables

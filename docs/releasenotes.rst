@@ -1,9 +1,9 @@
 Release Notes
 =============
 
-Version 1.3.7
+Version 1.4.X
 -------------
-*release date - 1/3/2013*
+*release date - 1/22/2013*
 
 * **Fill Product Version Cases** - Added the ability to fill in case versions
   when they exist in one product version and not in another.  This can be handy
