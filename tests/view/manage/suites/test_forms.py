@@ -150,54 +150,6 @@ class EditSuiteFormTest(case.DBTestCase):
         self.assertEqual(set(suite.cases.all()), set([c]))
 
 
-    def test_edit_save_without_cases_field(self):
-        """Saving form before cases load doesn't remove them."""
-        s = self.F.SuiteFactory.create()
-        c = self.F.CaseFactory.create(product=s.product)
-        self.F.SuiteCaseFactory.create(suite=s, case=c)
-
-        f = self.form(
-            {
-                "product": str(s.product.id),
-                "name": s.name,
-                "description": s.description,
-                "status": s.status,
-                "cases": [str(c.id)],
-                "cc_version": str(s.cc_version),
-                },
-            instance=s,
-            )
-
-        self.assertTrue(f.is_valid())
-        suite = f.save()
-
-        self.assertEqual(set(suite.cases.all()), set([c]))
-
-
-    def test_edit_save_with_cases_field_none(self):
-        """Saving form before cases load doesn't remove them."""
-        s = self.F.SuiteFactory.create()
-        c = self.F.CaseFactory.create(product=s.product)
-        self.F.SuiteCaseFactory.create(suite=s, case=c)
-
-        f = self.form(
-            {
-                "product": str(s.product.id),
-                "name": s.name,
-                "description": s.description,
-                "status": s.status,
-                "cases": None,
-                "cc_version": str(s.cc_version),
-                },
-            instance=s,
-            )
-
-        self.assertTrue(f.is_valid())
-        suite = f.save()
-
-        self.assertEqual(set(suite.cases.all()), set([c]))
-
-
 
 class AddSuiteFormTest(case.DBTestCase):
     """Tests for AddSuiteForm."""

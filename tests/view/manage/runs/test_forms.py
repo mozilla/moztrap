@@ -121,55 +121,6 @@ class EditRunFormTest(case.DBTestCase):
         self.assertEqual(set(run.suites.all()), set([s]))
 
 
-    def test_save_run_before_suite_list_loaded(self):
-        """Included suites preserved if suites not submitted."""
-        pv = self.F.ProductVersionFactory.create()
-        r = self.F.RunFactory.create(productversion__product=pv.product)
-        s = self.F.SuiteFactory.create(product=pv.product)
-        self.F.RunSuiteFactory.create(run=r, suite=s)
-
-        f = self.form(
-            {
-                "productversion": str(pv.id),
-                "name": r.name,
-                "description": r.description,
-                "start": r.start.strftime("%m/%d/%Y"),
-                "end": "",
-                "suites": None,
-                "cc_version": str(r.cc_version),
-                },
-            instance=r,
-            )
-
-        run = f.save()
-
-        self.assertEqual(set(run.suites.all()), set([s]))
-
-
-    def test_save_run_missing_suite_list(self):
-        """Included suites preserved if suites not submitted."""
-        pv = self.F.ProductVersionFactory.create()
-        r = self.F.RunFactory.create(productversion__product=pv.product)
-        s = self.F.SuiteFactory.create(product=pv.product)
-        self.F.RunSuiteFactory.create(run=r, suite=s)
-
-        f = self.form(
-            {
-                "productversion": str(pv.id),
-                "name": r.name,
-                "description": r.description,
-                "start": r.start.strftime("%m/%d/%Y"),
-                "end": "",
-                "cc_version": str(r.cc_version),
-                },
-            instance=r,
-            )
-
-        run = f.save()
-
-        self.assertEqual(set(run.suites.all()), set([s]))
-
-
     def test_no_change_product_option(self):
         """No option to change to a version of a different product."""
         self.F.ProductVersionFactory.create()

@@ -225,6 +225,7 @@ var MT = (function (MT, $) {
                         included.html(cache[incl_url.toString()]);
                         available.loadingOverlay("remove");
                         available.html(cache[avail_url.toString()]);
+                        $(".form-actions :input").prop("disabled", false);
                     }
                 };
 
@@ -237,7 +238,8 @@ var MT = (function (MT, $) {
                         beforeSend: function () {
                             included.html("");
                             included.loadingOverlay();
-                            included.find(".select").attr("disabled", true);
+                            // disable saving form till the values are loaded.
+                            $(".form-actions :input").prop("disabled", true);
                         },
                         success: function (response) {
                             /*
@@ -250,7 +252,6 @@ var MT = (function (MT, $) {
                                 {items: response.objects});
                             incl_complete = true;
                             setItems();
-                            included.find(".select").attr("disabled", false);
                         },
                         error: function (response) {
                             $(".multiselected").loadingOverlay("remove");
@@ -258,7 +259,12 @@ var MT = (function (MT, $) {
                             // so that if the form is submitted when the ajax
                             // has failed, we don't try to update the items
                             // list, only update the other fields in the form.
-                            included.find(".select").attr("disabled", true);
+                            $(".multiselect").parent().find(":input").prop("disabled", true);
+                            $(ich.message({
+                                message: "Error loading data.  Please reload page or try again later.",
+                                tags: "error"
+                            })).appendTo($('#messages ul'));
+                            $('#messages ul').messages();
 
                             console.error(response);
                         },

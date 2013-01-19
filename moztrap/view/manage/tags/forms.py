@@ -105,6 +105,9 @@ class EditTagForm(TagForm):
         count = products_tagged.count()
 
         pf = self.fields["product"]
+        self.initial["caseversions"] = list(
+            self.instance.caseversions.values_list(
+                "name", flat=True))
 
         if count > 1:
             # ro - no options

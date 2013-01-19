@@ -130,6 +130,9 @@ class EditRunForm(RunForm):
         pvf = self.fields["productversion"]
         sf = self.fields["suites"]
         isf = self.fields["is_series"]
+        self.initial["suites"] = list(
+            self.instance.suites.values_list(
+                "name", flat=True).order_by("runsuites__order"))
         if self.instance.status == model.Run.STATUS.active:
             # can't change the product version of an active run.
             pvf.queryset = pvf.queryset.filter(
@@ -139,9 +142,9 @@ class EditRunForm(RunForm):
             isf.readonly = True
             # can't change suites of an active run either
             sf.readonly = True
-            self.initial["suites"] = list(
-                self.instance.suites.values_list(
-                    "name", flat=True).order_by("runsuites__order"))
+#            self.initial["suites"] = list(
+#                self.instance.suites.values_list(
+#                    "name", flat=True).order_by("runsuites__order"))
         else:
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
