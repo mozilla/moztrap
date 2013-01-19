@@ -152,53 +152,6 @@ class EditTagFormTest(case.DBTestCase):
         self.assertEqual(set(tag.caseversions.all()), set([cv_new]))
 
 
-    def test_save_with_cases_field_none(self):
-        """Save the form before cases ajax list has loaded."""
-        pv = self.F.ProductVersionFactory()
-        t = self.F.TagFactory(product=pv.product)
-        cv = self.F.CaseVersionFactory(productversion=pv)
-        t.caseversions.add(cv)
-
-        f = self.form(
-            {
-                "product": str(t.product.id),
-                "name": t.name,
-                "description": t.description,
-                "caseversions": None,
-                "cc_version": str(t.cc_version),
-                },
-            instance=t,
-            )
-
-        self.assertTrue(f.is_valid())
-        tag = f.save()
-
-        self.assertEqual(set(tag.caseversions.all()), set([cv]))
-
-
-    def test_save_without_cases(self):
-        """Save the form before cases ajax list has loaded."""
-        pv = self.F.ProductVersionFactory()
-        t = self.F.TagFactory(product=pv.product)
-        cv = self.F.CaseVersionFactory(productversion=pv)
-        t.caseversions.add(cv)
-
-        f = self.form(
-            {
-                "product": str(t.product.id),
-                "name": t.name,
-                "description": t.description,
-                "cc_version": str(t.cc_version),
-                },
-            instance=t,
-            )
-
-        self.assertTrue(f.is_valid())
-        tag = f.save()
-
-        self.assertEqual(set(tag.caseversions.all()), set([cv]))
-
-
 
 class AddTagFormTest(case.DBTestCase):
     """Tests for AddTagForm."""

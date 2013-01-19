@@ -82,6 +82,9 @@ class EditSuiteForm(SuiteForm):
         """Initialize EditSuiteForm; no changing product."""
         super(EditSuiteForm, self).__init__(*args, **kwargs)
 
+        self.initial["cases"] = list(
+            self.instance.cases.values_list("id", flat=True))
+
         # for suites with cases in them, product is readonly and case options
         # are filtered to that product
         if self.instance.cases.exists():
