@@ -6,7 +6,7 @@ Tag
 
 .. http:get:: /api/v1/tag
 
-    Return a list of test runs
+    Return a list of tags
 
     .. note::
 
