@@ -36,3 +36,12 @@ respectively.
 .. _moztrap-tests: https://github.com/mozilla/moztrap-tests
 .. _moztrap-reqs: https://github.com/mozilla/moztrap-reqs
 .. _moztrap-vendor-lib: https://github.com/mozilla/moztrap-vendor-lib
+
+Live Site
+=======
+you can see moztrap in action at
+
+
+[https://moztrap.mozilla.org](https://moztrap.mozilla.org) Live site
+
+[https://moztrap.allizom.org](https://moztrap.allizom.org) Stage site
