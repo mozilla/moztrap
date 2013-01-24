@@ -45,11 +45,15 @@ The general format for all rest endpoints is:
     * PUT to a list is not supported
 
 
-Filtering
----------
+Query Parameters
+----------------
 
-See each individual :ref:`Object Types<object-types>` for the params it
-supports.
+* See each individual :ref:`Object Types<object-types>` for the params it
+  supports.
+* See `TastyPie Filtering`_ for more info on query parameters.
+
+.. _TastyPie Filtering: http://django-tastypie.readthedocs.org/en/latest/resources.html#basic-filtering
+
 
 Some fields are universal to all requests and :ref:`Object Types<object-types>`:
 

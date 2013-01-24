@@ -32,8 +32,8 @@ can also check out `MozTrap Connect on github`_.
         GET /api/v1/run/?format=json&productversion__version=10&case__suites__name=Sweet%20Suite
 
 
-RunCaseVersions
----------------
+Run Case Versions
+-----------------
 
 .. http:get:: /api/v1/runcaseversion
 

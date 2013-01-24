@@ -1,8 +1,8 @@
 Test Cases and Suites API
 =========================
 
-Test Case Version
------------------
+Case Version
+------------
 
 .. http:get:: /api/v1/caseversion
 
@@ -25,6 +25,8 @@ Filtering
         GET /api/v1/caseversion/?format=json&productversion__version=10&case__suites__name=Sweet%20Suite
         GET /api/v1/caseversion/?format=json&productversion__product__name=Firefox
 
+Suites
+------
 
 .. http:get:: /api/v1/suite
 .. http:post:: /api/v1/suite
