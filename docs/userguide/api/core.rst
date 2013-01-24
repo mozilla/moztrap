@@ -5,43 +5,36 @@ Product
 -------
 
 .. http:get:: /api/v1/product
+.. http:post:: /api/v1/product
+.. http:delete:: /api/v1/product/<id>
+.. http:put:: /api/v1/product/<id>
 
-    Return a list of products and the product versions it owns.
+Filtering
+^^^^^^^^^
 
-
-    :format: (required) The API **always** requires a value of ``json`` for this
-        field.
-    :name: (optional) The name of the product to filter on.
-    :limit: (optional) Defaults to 20 items, but can be set higher or lower.  0
-        will return all records.
-
-    **Example request**:
+    :name: The name of the product to filter on.
 
     .. sourcecode:: http
 
-        GET /api/v1/product/?format=json
+        GET /api/v1/product/?format=json&name=Firefox
 
 
 Product Version
 ---------------
 
 .. http:get:: /api/v1/productversion
+.. http:post:: /api/v1/productversion
+.. http:delete:: /api/v1/productversion/<id>
+.. http:put:: /api/v1/productversion/<id>
 
-    Return a list of product versions.
+Filtering
+^^^^^^^^^
 
-    .. note::
-
-        The underscores in query params (like ``case__suites``) are **DOUBLE**
-        underscores.
-
-    :format: (required) The API **always** requires a value of ``json`` for this
-        field.
-    :version: (optional) The ProductVersion ``name`` to filter
+    :version: The ProductVersion ``name`` to filter
         on.  For example, if the Product and Version are ``Firefox 10`` then
         the ``version`` would be ``10``.
-    :product__name: (optional) The Product ``name`` to filter on.
-    :limit: (optional) Defaults to 20 items, but can be set higher or lower.  0
-        will return all records.
+    :product: The Product ``id`` to filter on.
+    :product__name: The Product ``name`` to filter on.
 
     **Example request**:
 

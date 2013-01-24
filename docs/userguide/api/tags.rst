@@ -5,25 +5,16 @@ Tag
 --------
 
 .. http:get:: /api/v1/tag
+.. http:post:: /api/v1/suite
+.. http:delete:: /api/v1/suite/<id>
+.. http:put:: /api/v1/suite/<id>
 
-    Return a list of tags
+Filtering
+^^^^^^^^^
 
-    .. note::
-
-        Requires an API key in the header.  You must request this API key
-        from your MozTrap admin.  It is generated in the User edit page.
-        ``username=foo&api_key=bar``
-
-    .. note::
-
-        The underscores in query params (like ``case__suites``) are **DOUBLE**
-        underscores.
-
-    :format: (required) The API **always** requires a value of ``json`` for this
-        field.
-    :name: (optional) The name of the tag.
-    :limit: (optional) Defaults to 20 items, but can be set higher or lower.  0
-        will return all records.
+    :name: The name of the tag.
+    :product: The id of the product.
+    :product__name: The name of the product
 
     **Example request**:
 
