@@ -41,6 +41,27 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         self.assertEqual(cv.case.product, self.pv.product)
 
 
+    def test_create_caseversion_idprefix(self):
+        """Successful import creates a caseversion with an idprefix."""
+        self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "idprefix": "wow",
+                        "steps": [{"instruction": "do this"}],
+                        }
+                ]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.name, "Foo")
+        self.assertEqual(cv.case.idprefix, "wow")
+        self.assertEqual(cv.productversion, self.pv)
+        self.assertEqual(cv.case.product, self.pv.product)
+
+
     def test_create_caseversion_description(self):
         """Test the description field of a new test case"""
         result = self.import_data(

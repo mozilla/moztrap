@@ -202,7 +202,10 @@ class CaseImporter(object):
             sid = transaction.savepoint()
 
             # create the top-level case object which holds the versions
-            case = Case.objects.create(product=self.productversion.product)
+            case = Case.objects.create(
+                product=self.productversion.product,
+                idprefix=new_case.get("idprefix", ""),
+                )
 
             # create the case version which holds the details
             caseversion = CaseVersion.objects.create(
