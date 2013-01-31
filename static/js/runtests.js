@@ -1,6 +1,6 @@
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery, VALID_ENVIRONMENTS */
+/*global    ich, jQuery, VALID_ENVIRONMENTS, MT */
 
 var MT = (function (MT, $) {
 
@@ -98,9 +98,9 @@ var MT = (function (MT, $) {
                         }
                         else {
                             $(ich.message({
-                                  message: "This test run is no longer available.  Please see your test manager.",
-                                  tags: "error"
-                              })).appendTo($('#messages ul'));
+                                    message: "This test run is no longer available.  Please see your test manager.",
+                                    tags: "error"
+                            })).appendTo($('#messages ul'));
                             $('#messages ul').messages();
                         }
                     }
@@ -250,8 +250,8 @@ var MT = (function (MT, $) {
         var context = $(container),
             filterForm = context.find('#filterform');
         if (context.length) {
-            var replaceList = context.find('.action-ajax-replace')
-            console.log(replaceList.data("ajax-update-url"))
+            var replaceList = context.find('.action-ajax-replace');
+            console.log(replaceList.data("ajax-update-url"));
             var pagenum = replaceList.find(".listnav").find(".current").html();
             $.ajax({
                 url: replaceList.data("ajax-update-url"),
@@ -268,7 +268,7 @@ var MT = (function (MT, $) {
                         // and replace its other-result with what we have in this response
 
                         // loop through all the articles.
-                        $('article').each(function(idx, item) {
+                        $('article').each(function (idx, item) {
                             // find the matching one in the response.html
                             var match = newList.find("#" + item.id);
                             if (match.length) {
@@ -279,8 +279,8 @@ var MT = (function (MT, $) {
                         });
                     }
                 },
-                complete: function() {
-                    setTimeout("MT.refreshRuntests('#runtests')", 30000);
+                complete: function () {
+                    setTimeout(MT.refreshRuntests('#runtests'), 30000);
                 }
             });
         }
@@ -290,7 +290,7 @@ var MT = (function (MT, $) {
         var context = $(container),
             filterForm = context.find('#filterform');
         if (context.length) {
-            setTimeout("MT.refreshRuntests('#runtests')", 30000);
+            setTimeout(MT.refreshRuntests('#runtests'), 30000);
         }
     };
 

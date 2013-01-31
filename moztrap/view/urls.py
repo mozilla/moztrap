@@ -39,8 +39,8 @@ urlpatterns = patterns(
     # admin ------------------------------------------------------------------
     url(r"^admin/", include(admin.site.urls)),
 
-    # browserid --------------------------------------------------------------
-    url(r"^browserid/", include("moztrap.view.users.browserid_urls")),
+    # persona ----------------------------------------------------------------
+    url(r"^persona/", include("moztrap.view.users.persona_urls")),
 
     # api --------------------------------------------------------------------
     url(r"^api/", include("moztrap.view.api.urls")),

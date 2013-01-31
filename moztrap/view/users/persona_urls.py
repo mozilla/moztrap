@@ -5,5 +5,5 @@ from .views import Verify
 
 urlpatterns = patterns(
     "",
-    url("^browserid/verify/", Verify.as_view(), name="browserid_verify"),
+    url("^persona/verify/", Verify.as_view(), name="persona_verify"),
 )
