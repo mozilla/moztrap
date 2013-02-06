@@ -1,0 +1,17 @@
+SRC_DIR = '/data/genericrhel6-stage/src/moztrap.allizom.org/moz-trap'
+WWW_DIR = '/data/genericrhel6-stage/www/moztrap.allizom.org/moz-trap'
+
+#CRON_NAME = 'moztrap.allizom.org-gencron'
+
+DEPLOY_SCRIPT = "/data/genericrhel6-stage/deploy -n moztrap.allizom.org"
+REMOTE_UPDATE_SCRIPT = "/data/bin/update-www.sh moztrap.allizom.org"
+
+WEB_HOSTGROUP = 'genericrhel6-stage'
+#CELERY_HOSTGROUP = 'genericrhel6-celery-stage'
+#CELERY_SERVICE = 'celeryd-moztrap-stage'
+
+UPDATE_REF = '1.0.X'
+SSH_KEY = ''
+
+REMOTE_WSGI = '/data/www/moztrap.allizom.org/moz-trap/moztrap/deploy/vendor_wsgi.py'
+REMOTE_HOSTNAME = 'moztrap.allizom.org'
