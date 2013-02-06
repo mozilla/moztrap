@@ -3,16 +3,20 @@ Tests for CaseResource api.
 
 """
 
+from tests.case.api.crud import ApiCrudCases
 from tests import case
 
+import logging
+mozlogger = logging.getLogger('moztrap.test')
 
 
-class CaseResourceTest(case.api.ApiTestCase):
+
+class CaseResourceTest(ApiCrudCases):
 
     @property
     def factory(self):
         """The model factory for this object."""
-        return self.F.CaseFactory
+        return self.F.CaseFactory()
 
 
     @property
@@ -20,39 +24,103 @@ class CaseResourceTest(case.api.ApiTestCase):
         return "case"
 
 
-    def test_case_list(self):
-        """Get a list of existing cases"""
+    @property
+    def permission(self):
+        """String defining the permission required for
+        Create, Update, and Delete.
+        """
+        return "library.manage_cases"
 
-        case1 = self.factory.create()
-        case2 = self.factory.create()
 
-        res = self.get_list()
+    @property
+    def new_object_data(self):
+        """Generates a dictionary containing the field names and auto-generated
+        values needed to create a unique object.
 
-        act = res.json
+        The output of this method can be sent in the payload parameter of a
+        POST message.
+        """
+        shortdatetime = "-".split(self.datetime)[-1]
+        self.product_fixture = self.F.ProductFactory.create()
 
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
-            }
+        fields = {
+            u'product': unicode(
+                self.get_detail_url("product", str(self.product_fixture.id))),
+            u'idprefix': unicode("%s" % shortdatetime),
+            u'suites': [],
+        }
 
-        self.assertEquals(act_meta, exp_meta)
+        return fields
 
-        act_objects = act["objects"]
-        exp_objects = []
-        for case in [case1, case2]:
 
-            exp_objects.append({
-                u"id": unicode(case.id),
-                u"suites": [],
-                u"resource_uri": unicode(self.get_detail_url("case",case.id)),
-                })
+    def backend_object(self, id):
+        """Returns the object from the backend, so you can query it's values in
+        the database for validation.
+        """
+        return self.model.Case.everything.get(id=id)
 
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
+
+    def backend_data(self, backend_obj):
+        """Query's the database for the object's current values. Output is a
+        dictionary that should match the result of getting the object's detail
+        via the API, and can be used to verify API output.
+
+        Note: both keys and data should be in unicode
+        """
+        actual = {}
+        actual[u"resource_uri"] = unicode(
+            self.get_detail_url(self.resource_name, str(backend_obj.id)))
+        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"product"] = unicode(
+            self.get_detail_url("product", str(backend_obj.product.id)))
+        actual[u"idprefix"] = unicode(backend_obj.idprefix)
+        actual[u"suites"] = [unicode(self.get_detail_url("suite", str(suite.id))
+                               ) for suite in backend_obj.suites.all()]
+
+        return actual
+
+
+    def edit_read_only_fields(self, fixture, fields):
+        """product is read-only"""
+        fields[u'product'] = unicode(
+            self.get_detail_url('product', str(fixture.product.id)))
+
+        return fields
+
+
+    # overrides from crud.py
+
+    # additional test cases, if any
+
+    # validation cases
+
+    @property
+    def _ro_message(self):
+        return "product of an existing case may not be changed."
+
+
+    def test_update_change_product_error(self):
+        """product is a read-only field"""
+
+        mozlogger.info("test_update_change_product_error")
+
+        # fixtures
+        fixture1 = self.factory
+        prod = self.F.ProductFactory()
+        fields = self.backend_data(fixture1)
+        fields[u'product'] = unicode(
+            self.get_detail_url("product", prod.id))
+
+        # do put
+        res = self.put(
+            self.get_detail_url(self.resource_name, fixture1.id),
+            params=self.credentials,
+            data=fields,
+            status=400,
+        )
+
+        self.assertEqual(res.text, self._ro_message)
+
 
 
 

@@ -170,6 +170,12 @@ class ApiCrudCases(ApiTestCase):
         return actual
 
 
+    def edit_read_only_fields(self, fixture, fields):
+        """may be used to replace items in the fields dicts with the values
+        from the fixture, so as not to disturb read-only fields."""
+        return fields
+
+
     @property
     def datetime(self):
         """May be used to provide mostly-unique strings"""
@@ -194,7 +200,9 @@ class ApiCrudCases(ApiTestCase):
         # credentials
         self.user = self.F.UserFactory.create(permissions=[self.permission])
         self.apikey = self.F.ApiKeyFactory.create(owner=self.user)
-        self.credentials = {"username": self.user.username, "api_key": self.apikey.key}
+        self.credentials = {
+            "username": self.user.username, 
+            "api_key": self.apikey.key}
 
         # mocking
         self.utcnow = datetime(2011, 12, 13, 22, 39)
@@ -247,9 +255,11 @@ class ApiCrudCases(ApiTestCase):
 
         # make sure meta data is correct
         created_obj_meta_data = self.backend_meta_data(backend_obj)
-        self.assertEqual(created_obj_meta_data["created_by"], self.user.username)
+        self.assertEqual(
+            created_obj_meta_data["created_by"], self.user.username)
         self.assertEqual(created_obj_meta_data["created_on"], self.utcnow)
-        self.assertEqual(created_obj_meta_data["modified_by"], self.user.username)
+        self.assertEqual(
+            created_obj_meta_data["modified_by"], self.user.username)
         self.assertEqual(created_obj_meta_data["modified_on"], self.utcnow)
 
 
@@ -377,14 +387,14 @@ class ApiCrudCases(ApiTestCase):
 
         # create fixture
         fixture1 = self.factory
-        backend_obj = self.backend_object(fixture1.id)
-        mozlogger.debug("fixture: %s", self.backend_data(backend_obj))
         # change modified on to 2 hours earlier than utcnow
-        backend_obj.modified_on = datetime(2011, 12, 13, 20, 39)
-        meta_before = self.backend_meta_data(backend_obj)
+        fixture1.modified_on = datetime(2011, 12, 13, 20, 39)
+        meta_before = self.backend_meta_data(fixture1)
         obj_id = str(fixture1.id)
         fields = self.new_object_data
-        mozlogger.debug("new data: %s", fields)
+
+        # make read-only fields unchanging
+        fields = self.edit_read_only_fields(fixture1, fields)
 
         # do put
         res = self.put(
