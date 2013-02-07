@@ -11,6 +11,7 @@ from tests.case.api.crud import ApiCrudCases
 import logging
 mozlogger = logging.getLogger('moztrap.test')
 
+
 class CaseVersionResourceTest(ApiCrudCases):
 
     @property
@@ -57,11 +58,11 @@ class CaseVersionResourceTest(ApiCrudCases):
             u"environments": [],
             u"tags": [],
 #            u"attachments": [],
-            u"steps": [ {
+            u"steps": [{
                 u"number": 1,
                 u"instruction": u"instruction 1",
                 u"expected": u"expected 1",
-            },{
+            }, {
                 u"number": 2,
                 u"instruction": u"instruction 2",
                 u"expected": u"expected 2",
@@ -92,7 +93,7 @@ class CaseVersionResourceTest(ApiCrudCases):
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"productversion"] = unicode(
-            self.get_detail_url("productversion", 
+            self.get_detail_url("productversion",
                 backend_obj.productversion.id))
         actual[u"status"] = unicode(backend_obj.status)
         actual[u"resource_uri"] = unicode(
@@ -102,7 +103,7 @@ class CaseVersionResourceTest(ApiCrudCases):
                 ) for env in backend_obj.environments.all()]
         actual[u"tags"] = [unicode(self.get_detail_url("tag", str(tag.id))
                                   ) for tag in backend_obj.tags.all()]
-#        actual[u"attachments"] = [unicode(self.get_detail_url("attachment", 
+#        actual[u"attachments"] = [unicode(self.get_detail_url("attachment",
 #             str(attch.id))) for attch in backend_obj.attachments.all()]
         actual[u"steps"] = [{
                 u"number": int(str(step.number)),
@@ -124,7 +125,7 @@ class CaseVersionResourceTest(ApiCrudCases):
         return data
 
 
-    def edit_read_only_fields(self, fixture, fields):
+    def manipulate_edit_data(self, fixture, fields):
         """case and productversion are read-only"""
         fields[u'case'] = unicode(
             self.get_detail_url('case', str(fixture.case.id)))
@@ -142,7 +143,8 @@ class CaseVersionResourceTest(ApiCrudCases):
 
     @property
     def _steps_required_message(self):
-        return u"'steps' must be a list containing at least one dict or resource uri."
+        return str("'steps' must be a list containing at least one " +
+            "dict or resource uri.")
 
 
     def test_create_caseversion_error_no_steps(self):
@@ -213,7 +215,8 @@ class CaseVersionResourceTest(ApiCrudCases):
         # fixtures
         fixture1 = self.factory
         fields = self.new_object_data
-        fields[u'case'] = unicode(self.get_detail_url("case", fixture1.case.id))
+        fields[u'case'] = unicode(
+            self.get_detail_url("case", fixture1.case.id))
         fields[u'productversion'] = unicode(
             self.get_detail_url("productversion", fixture1.productversion.id))
         fields[u'id'] = unicode(fixture1.id)
@@ -238,7 +241,8 @@ class CaseVersionResourceTest(ApiCrudCases):
         # fixtures
         fixture1 = self.factory
         fields = self.new_object_data
-        fields[u'case'] = unicode(self.get_detail_url("case", fixture1.case.id))
+        fields[u'case'] = unicode(
+            self.get_detail_url("case", fixture1.case.id))
         fields[u'productversion'] = unicode(
             self.get_detail_url("productversion", fixture1.productversion.id))
         fields[u'id'] = unicode(fixture1.id)
@@ -263,7 +267,8 @@ class CaseVersionResourceTest(ApiCrudCases):
         # fixtures
         fixture1 = self.factory
         fields = self.new_object_data
-        fields[u'case'] = unicode(self.get_detail_url("case", fixture1.case.id))
+        fields[u'case'] = unicode(
+            self.get_detail_url("case", fixture1.case.id))
         fields[u'productversion'] = unicode(
             self.get_detail_url("productversion", fixture1.productversion.id))
         fields[u'id'] = unicode(fixture1.id)
@@ -454,16 +459,16 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_meta(self, count=0):
         """Return an expected meta object with count field filled"""
         return {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : count,
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": count,
             }
 
 
     def _do_test(self, for_id, filter_param, exp_objects):
-        params={filter_param: for_id}
+        params = {filter_param: for_id}
 
         res = self.get_list(params=params)
         self.assertEqual(res.status_int, 200)
