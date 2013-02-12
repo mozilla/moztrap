@@ -139,6 +139,205 @@ class CaseVersionResourceTest(ApiCrudCases):
 
     # additional test cases, if any
 
+    def test_edit_case_add_step(self):
+        """test add of nested step"""
+
+        mozlogger.info('test_edit_case_add_step')
+
+        # set up caseversion
+        cv_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv_fields,
+        )
+        cv_object_id = self._id_from_uri(res.headers["location"])
+        cv_backend_obj = self.backend_object(cv_object_id)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure steps ok
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+        # add a step
+        cv_fields['steps'].append({
+            u"instruction": u"a third instruction",
+            u"expected": u"a third expected",
+            u"number": 3,
+        })
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv_object_id),
+            params=self.credentials,
+            data=cv_fields
+        )
+        self.refresh(cv_backend_obj)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure step added
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+
+    def test_edit_case_edit_step(self):
+        """test edit of nested step."""
+
+        mozlogger.info('test_edit_case_edit_step')
+
+        # set up caseversion
+        cv_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv_fields,
+        )
+        cv_object_id = self._id_from_uri(res.headers["location"])
+        cv_backend_obj = self.backend_object(cv_object_id)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure steps ok
+        mozlogger.info("post add sanity check")
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+        # edit the steps on one of them
+        mozlogger.info("editing steps")
+        cv_fields[u'steps'][0][u'instruction'] = u"this is a new instruction"
+        cv_fields[u'steps'][1][u'expected'] = u"this is a new expected"
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv_object_id),
+            params=self.credentials,
+            data=cv_fields
+        )
+        self.refresh(cv_backend_obj)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure step edited
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+
+    def test_edit_case_delete_step(self):
+        """test delete of nested step."""
+
+        mozlogger.info('test_edit_case_delete_step')
+
+        # set up caseversion
+        cv_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv_fields,
+        )
+        cv_object_id = self._id_from_uri(res.headers["location"])
+        cv_backend_obj = self.backend_object(cv_object_id)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure steps ok
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+        # delete a step
+        cv_fields['steps'] = [ cv_fields['steps'][1] ]
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv_object_id),
+            params=self.credentials,
+            data=cv_fields
+        )
+        self.refresh(cv_backend_obj)
+        cv_object_data = self.clean_backend_data(cv_backend_obj)
+
+        # make sure step deleted
+        self.maxDiff = None
+        self.assertEqual(cv_fields, cv_object_data)
+
+
+    def test_each_cases_steps_are_isolated(self):
+        """make sure add / edit / delete of steps
+        on one case does not affect other cases' steps."""
+
+        mozlogger.info('test_each_case_steps_are_isolated')
+
+        # set up three caseversions
+        cv1_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv1_fields,
+        )
+        cv1_object_id = self._id_from_uri(res.headers["location"])
+        cv1_backend_obj = self.backend_object(cv1_object_id)
+        cv1_object_data = self.clean_backend_data(cv1_backend_obj)
+
+        cv2_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv2_fields,
+        )
+        cv2_object_id = self._id_from_uri(res.headers["location"])
+        cv2_backend_obj = self.backend_object(cv2_object_id)
+        cv2_object_data = self.clean_backend_data(cv2_backend_obj)
+
+        cv3_fields = self.new_object_data
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=cv2_fields,
+        )
+        cv3_object_id = self._id_from_uri(res.headers["location"])
+        cv3_backend_obj = self.backend_object(cv3_object_id)
+        cv3_object_data = self.clean_backend_data(cv3_backend_obj)
+
+        # make sure steps for both objects exist
+        mozlogger.info("post create sanity check")
+        exp_objects = [cv1_fields, cv2_fields, cv3_fields]
+        act_objects = [cv1_object_data, cv2_object_data, cv3_object_data]
+        self.maxDiff = None
+        self.assertEqual(exp_objects, act_objects)
+
+        # edit the steps on one of them
+        cv1_fields[u'steps'][0][u'instruction'] = u"this is a new instruction"
+        cv1_fields[u'steps'][1][u'expected'] = u"this is a new expected"
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv1_object_id),
+            params=self.credentials,
+            data=cv1_fields
+        )
+
+        # delete a step on one of them
+        cv2_fields['steps'] = [ cv2_fields['steps'][1] ]
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv2_object_id),
+            params=self.credentials,
+            data=cv2_fields
+        )
+
+        # add a step
+        mozlogger.info("add a step")
+        cv3_fields['steps'].append({
+            u"instruction": u"a third instruction",
+            u"expected": u"a third expected",
+            u"number": 3,
+            })
+        res = self.put(
+            self.get_detail_url(self.resource_name, cv3_object_id),
+            params=self.credentials,
+            data=cv3_fields
+        )
+
+        # make sure all the steps are still ok
+        self.refresh(cv1_backend_obj)
+        cv1_object_data = self.clean_backend_data(cv1_backend_obj)
+        self.refresh(cv2_backend_obj)
+        cv2_object_data = self.clean_backend_data(cv2_backend_obj)
+        self.refresh(cv3_backend_obj)
+        cv3_object_data = self.clean_backend_data(cv3_backend_obj)
+
+        exp_objects = [cv1_fields, cv2_fields, cv3_fields]
+        act_objects = [cv1_object_data, cv2_object_data, cv3_object_data]
+        self.maxDiff = None
+        self.assertEqual(exp_objects, act_objects)
+
     # validation cases
 
     @property

@@ -1,6 +1,9 @@
 Test Cases and Suites API
 =========================
 
+For additional information, please consult
+https://moztrap.readthedocs.org/en/latest/userguide/model/library.html
+
 Case
 ____
 
@@ -31,7 +34,7 @@ Required Fields
 Optional Fields
 ^^^^^^^^^^^^^^^
 
-    :idprefix: No one knows what this is for.
+    :idprefix: A string that will be displayed as part of the case ID.
 
 .. http:delete:: /api/v1/case/<id>
 .. http:put:: /api/v1/case/<id>
