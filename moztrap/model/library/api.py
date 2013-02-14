@@ -1,15 +1,39 @@
-import datetime
-from tastypie.exceptions import BadRequest
-
+from tastypie import http, fields
+from tastypie.bundle import Bundle
+from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie import fields
 
 from ..core.api import (ProductVersionResource, ProductResource,
                         UserResource)
-from .models import CaseVersion, Case, Suite, CaseStep
-from ..mtapi import MTResource
+from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
+from ...model.core.models import ProductVersion
+from ..mtapi import MTResource, MTAuthorization
 from ..environments.api import EnvironmentResource
 from ..tags.api import TagResource
+
+import logging
+logger = logging.getLogger(__name__)
+
+
+class SuiteCaseAuthorization(MTAuthorization):
+    """Atypically named permission."""
+
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "library.manage_suite_cases"
+
+
+
+class CaseVersionAuthorization(MTAuthorization):
+    """A permission of 'core.manage_productversions does not exist,
+    use core.manage_products instead."""
+
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "library.manage_cases"
+
 
 
 class SuiteResource(MTResource):
@@ -37,48 +61,257 @@ class SuiteResource(MTResource):
 
 
 
-class CaseResource(ModelResource):
-    suites = fields.ToManyField(SuiteResource, "suites", full=True)
+class CaseResource(MTResource):
+    suites = fields.ToManyField(SuiteResource, "suites", readonly=True)
+    product = fields.ForeignKey(ProductResource, "product")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = Case.objects.all()
-        fields= ["id", "suites"]
+        fields = ["id", "suites", "product", "idprefix"]
         filtering = {
             "suites": ALL_WITH_RELATIONS,
+            "product": ALL_WITH_RELATIONS,
             }
 
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Case
 
 
-class CaseStepResource(ModelResource):
+    def hydrate_product(self, bundle):
+        """product is read-only on PUT"""
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            case = self.get_via_uri(bundle.request.path)
+            prod_id = self._id_from_uri(bundle.data['product'])
+            if str(case.product.id) != prod_id:
+                error_msg = "product of an existing case may not be changed."
+                logger.error(
+                    "\n".join([error_msg, "old: %s, new: %s"]),
+                    case.product.id, prod_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_msg))
+
+        return bundle
 
 
-    class Meta:
+
+class CaseStepResource(MTResource):
+
+    caseversion = fields.ForeignKey(
+        "moztrap.model.library.api.CaseVersionResource", "caseversion")
+
+    class Meta(MTResource.Meta):
         queryset = CaseStep.objects.all()
-        fields = ["instruction", "expected"]
+        fields = ["id", "caseversion", "instruction", "expected", "number"]
+        filtering = {
+            "caseversion": ALL_WITH_RELATIONS,
+        }
+        ordering = ["number", "id"]
+        authorization = CaseVersionAuthorization()
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return CaseStep
+
+
+    def hydrate_caseversion(self, bundle):
+        """caseversion is read-only on PUT
+        """
+        if 'caseversion' not in bundle.data.keys():
+            return bundle
+
+        # edit (PUT)
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            cs = self.get_via_uri(bundle.request.path)
+            cv_id = self._id_from_uri(bundle.data['caseversion'])
+            if str(cs.caseversion.id) != cv_id:
+                error_message = str(
+                    "caseversion of an existing casestep " +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    cs.caseversion.id, cv_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
 
 
 
-class CaseVersionResource(ModelResource):
+class SuiteCaseResource(MTResource):
 
-    case = fields.ForeignKey(CaseResource, "case", full=True)
-    steps = fields.ToManyField(CaseStepResource, "steps", full=True)
+    case = fields.ForeignKey(CaseResource, 'case')
+    suite = fields.ForeignKey(SuiteResource, 'suite')
+
+    class Meta(MTResource.Meta):
+        queryset = SuiteCase.objects.all()
+        fields = ["suite", "case", "order", "id"]
+        filtering = {
+            "suite": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS
+        }
+        authorization = SuiteCaseAuthorization()
+
+    @property
+    def model(self):
+        return SuiteCase
+
+    def hydrate_case(self, bundle):
+        """case is read-only on PUT
+        case.product must match suite.product on CREATE
+        """
+
+        # edit (PUT)
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            if 'case' not in bundle.data.keys():
+                return bundle
+            sc = self.get_via_uri(bundle.request.path)
+            case_id = self._id_from_uri(bundle.data['case'])
+            if str(sc.case.id) != case_id:
+                error_message = str(
+                    "case of an existing suitecase " +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    sc.case.id, case_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+            return bundle
+
+        # CREATE
+        case_id = self._id_from_uri(bundle.data['case'])
+        case = Case.objects.get(id=case_id)
+        suite_id = self._id_from_uri(bundle.data['suite'])
+        suite = Suite.objects.get(id=suite_id)
+        if case.product.id != suite.product.id:
+            error_message = str(
+                "case's product must match suite's product."
+            )
+            logger.error(
+                "\n".join([error_message, "case prod: %s, suite prod: %s"]),
+                case.product.id, suite.product.id)
+            raise ImmediateHttpResponse(
+                response=http.HttpBadRequest(error_message))
+
+        return bundle
+
+
+    def hydrate_suite(self, bundle):
+        """suite is read-only on PUT
+        """
+
+        # edit (PUT)
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            if 'suite' not in bundle.data.keys():
+                return bundle
+            sc = self.get_via_uri(bundle.request.path)
+            suite_id = self._id_from_uri(bundle.data['suite'])
+            if str(sc.suite.id) != suite_id:
+                error_message = str(
+                    "suite of an existing suitecase " +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    sc.suite.id, suite_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
+
+
+
+class CaseVersionResource(MTResource):
+
+    case = fields.ForeignKey(CaseResource, "case")
+    steps = fields.ToManyField(
+        CaseStepResource, "steps", full=True, readonly=True)
     environments = fields.ToManyField(
-        EnvironmentResource, "environments", full=True)
+        EnvironmentResource, "environments", full=True, readonly=True)
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion")
-    tags = fields.ToManyField(TagResource, "tags", full=True)
+    tags = fields.ToManyField(TagResource, "tags", full=True, readonly=True)
+    #@@@ attachments
 
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        list_allowed_methods = ['get']
-        fields = ["id", "name", "description", "case"]
+        fields = ["id", "name", "description", "case", "status"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             }
+        authorization = CaseVersionAuthorization()
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return CaseVersion
+
+
+    def hydrate_productversion(self, bundle):
+        """productversion is read-only on PUT
+        case.product must match productversion.product on CREATE
+        """
+        if 'productversion' not in bundle.data.keys():
+            return bundle
+
+        # edit (PUT)
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            cv = self.get_via_uri(bundle.request.path)
+            pv_id = self._id_from_uri(bundle.data['productversion'])
+            if str(cv.productversion.id) != pv_id:
+                error_message = str(
+                    "productversion of an existing caseversion " +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    cv.productversion.id, pv_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+            return bundle
+
+        # create
+        pv_id = self._id_from_uri(bundle.data['productversion'])
+        pv = ProductVersion.objects.get(id=pv_id)
+        case_id = self._id_from_uri(bundle.data['case'])
+        case = Case.objects.get(id=case_id)
+        if not case.product.id == pv.product.id:
+            message = str("productversion must match case's product")
+            logger.error("\n".join([message,
+                "productversion product id: %s case product id: %s"], ),
+                pv.product.id,
+                case.product.id)
+            raise ImmediateHttpResponse(
+                response=http.HttpBadRequest(message))
+
+        return bundle
+
+
+    def hydrate_case(self, bundle):
+        """case is a primary key and as such is not editable."""
+
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            if 'case' not in bundle.data.keys():
+                return bundle
+
+            cv = self.get_via_uri(bundle.request.path)
+            case_id = self._id_from_uri(bundle.data['case'])
+            if str(cv.case.id) != case_id:
+                error_message = str(
+                    "case of an existing caseversion may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    cv.case.id, case_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
 
 
 
@@ -97,7 +330,7 @@ class BaseSelectionResource(ModelResource):
         """Return the list with included and excluded filters, if they exist."""
         filters = {}
 
-        if hasattr(request, 'GET'): # pragma: no cover
+        if hasattr(request, 'GET'):  # pragma: no cover
             # Grab a mutable copy.
             filters = request.GET.copy()
 
@@ -110,7 +343,7 @@ class BaseSelectionResource(ModelResource):
         for key, value in filters.items():
             # If the given key is filtered by ``not equal`` token, exclude it
             if key.endswith('__ne'):
-                key = key[:-4] # Stripping out trailing ``__ne``
+                key = key[:-4]  # Stripping out trailing ``__ne``
                 excludes[key] = value
             else:
                 new_filters[key] = value
@@ -134,7 +367,8 @@ class CaseSelectionResource(BaseSelectionResource):
     """
 
     case = fields.ForeignKey(CaseResource, "case")
-    productversion = fields.ForeignKey(ProductVersionResource, "productversion")
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
     created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
@@ -167,7 +401,7 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["product"] = {"id": unicode(case.product_id)}
 
         if "case__suites" in bundle.request.GET.keys():
-            suite_id=int(bundle.request.GET["case__suites"])
+            suite_id = int(bundle.request.GET["case__suites"])
             order = [x.order for x in case.suitecases.all()
                 if x.suite_id == suite_id][0]
             bundle.data["order"] = order

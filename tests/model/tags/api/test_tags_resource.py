@@ -99,7 +99,7 @@ class TagResourceTest(ApiCrudCases):
             )
 
         # make sure response included detail uri
-        object_id = res.headers["location"].split('/')[-2] # pull id out of uri
+        object_id = self._id_from_uri(res.headers["location"])
         self.assertIsNotNone(object_id)
 
         # get data from backend

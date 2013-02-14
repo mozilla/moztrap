@@ -53,14 +53,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
 
             exp_objects.append({
                 u"caseversion": {
-                    u"case": {
-                        u"id": unicode(cv.case.id),
-                        u"suites": [],
-                        u"resource_uri": unicode(self.get_detail_url(
-                            "case",
-                            cv.case.id,
-                            )),
-                        },
+                    u"case": unicode(self.get_detail_url("case", cv.case.id)),
                     u"description": unicode(cv.description),
                     u'environments': [],
                     u"id": unicode(cv.id),
@@ -74,6 +67,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                         )),
                     u'steps': [],
                     u'tags': [],
+                    u'status': unicode(cv.status),
                     },
                 u"id": unicode(rcv.id),
                 u"run": unicode(self.get_detail_url("run",rcv.run.id)),
