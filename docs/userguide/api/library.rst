@@ -71,7 +71,7 @@ Filtering
 
 .. note::
 
-    Environments, Tags, and Suites are displayed in the GET results for
+    Environments, Tags, Suites and CaseSteps are displayed in the GET results for
     informational purposes, but may not be changed.
 
 .. http:post:: /api/v1/caseversion
@@ -81,7 +81,6 @@ Required Fields
 
     :case: A resource uri to the parent Case
     :productversion: A resource uri to a ProductVersion
-    :steps: A list of Steps containing fields instruction, expected, number
 
 Optional Fields
 ^^^^^^^^^^^^^^^
@@ -97,14 +96,41 @@ Optional Fields
 .. http:delete:: /api/v1/caseversion/<id>
 .. http:put:: /api/v1/caseversion/<id>
 
-Required Fields
-^^^^^^^^^^^^^^^
-
-    :steps: A list of Steps containing fields instruction, expected, number
-
 .. note::
 
     The ``productversion`` and ``case`` fields are not required, and may not be changed.
+
+CaseSteps
+---------
+
+.. http:get:: /api/v1/casestep
+
+Filtering
+^^^^^^^^^
+
+    :caseversion: The ``id`` of the parent caseversion
+    :caseversion__name: The ``name`` of the parent caseversion
+
+.. http:post:: /api/v1/casestep
+
+Required Fields
+^^^^^^^^^^^^^^^
+
+    :caseversion: A resource uri to a CaseVersion
+    :instruction: A string describing what actions to take
+    :number: An integer used to order steps
+
+Optional Fields
+^^^^^^^^^^^^^^^
+
+    :expected: The expected result following the instruction
+
+.. http:delete:: /api/v1/casestep/<id>
+.. http:put:: /api/v1/casestep/<id>
+
+.. note::
+
+    The CaseVersion of an existing CaseStep may not be changed.
 
 Suites
 ------

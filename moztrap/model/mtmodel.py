@@ -188,6 +188,7 @@ class MTManager(models.Manager):
                 )
 
 
+
 class MTModel(models.Model):
     """
     Common base abstract model for all MozTrap models.
@@ -248,8 +249,8 @@ class MTModel(models.Model):
                 id=self.id, cc_version=previous_version)._update(values)
             if not rows:
                 raise ConcurrencyError(
-                    "No row with id {0} and version {1} updated.".format(
-                        self.id, previous_version)
+                    "No {0} row with id {1} and version {2} updated.".format(
+                        self.__class__, self.id, previous_version)
                     )
         else:
             return super(MTModel, self).save(*args, **kwargs)

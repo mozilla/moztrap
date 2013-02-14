@@ -15,6 +15,27 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class SuiteCaseAuthorization(MTAuthorization):
+    """Atypically named permission."""
+
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "library.manage_suite_cases"
+
+
+
+class CaseVersionAuthorization(MTAuthorization):
+    """A permission of 'core.manage_productversions does not exist,
+    use core.manage_products instead."""
+
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "library.manage_cases"
+
+
+
 class SuiteResource(MTResource):
     """
     Create, Read, Update and Delete capabilities for Suite.
@@ -75,22 +96,47 @@ class CaseResource(MTResource):
 
 
 
-class CaseStepResource(ModelResource):
+class CaseStepResource(MTResource):
 
+    caseversion = fields.ForeignKey(
+        "moztrap.model.library.api.CaseVersionResource", "caseversion")
 
-    class Meta:
+    class Meta(MTResource.Meta):
         queryset = CaseStep.objects.all()
-        fields = ["instruction", "expected", "number"]
-
-
-
-class SuiteCaseAuthorization(MTAuthorization):
-    """"""
+        fields = ["id", "caseversion", "instruction", "expected", "number"]
+        filtering = {
+            "caseversion": ALL_WITH_RELATIONS,
+        }
+        ordering = ["number", "id"]
+        authorization = CaseVersionAuthorization()
 
     @property
-    def permission(self):
-        """This permission should be checked by is_authorized."""
-        return "library.manage_suite_cases"
+    def model(self):
+        """Model class related to this resource."""
+        return CaseStep
+
+
+    def hydrate_caseversion(self, bundle):
+        """caseversion is read-only on PUT
+        """
+        if 'caseversion' not in bundle.data.keys():
+            return bundle
+
+        # edit (PUT)
+        if bundle.request.META['REQUEST_METHOD'] == 'PUT':
+            cs = self.get_via_uri(bundle.request.path)
+            cv_id = self._id_from_uri(bundle.data['caseversion'])
+            if str(cs.caseversion.id) != cv_id:
+                error_message = str(
+                    "caseversion of an existing casestep " +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    cs.caseversion.id, cv_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
 
 
 
@@ -177,21 +223,11 @@ class SuiteCaseResource(MTResource):
 
 
 
-class CaseVersionAuthorization(MTAuthorization):
-    """A permission of 'core.manage_productversions does not exist,
-    use core.manage_products instead."""
-
-    @property
-    def permission(self):
-        """This permission should be checked by is_authorized."""
-        return "library.manage_cases"
-
-
-
 class CaseVersionResource(MTResource):
 
     case = fields.ForeignKey(CaseResource, "case")
-    steps = fields.ToManyField(CaseStepResource, "steps", full=True)
+    steps = fields.ToManyField(
+        CaseStepResource, "steps", full=True, readonly=True)
     environments = fields.ToManyField(
         EnvironmentResource, "environments", full=True, readonly=True)
     productversion = fields.ForeignKey(
@@ -253,37 +289,6 @@ class CaseVersionResource(MTResource):
                 case.product.id)
             raise ImmediateHttpResponse(
                 response=http.HttpBadRequest(message))
-
-        return bundle
-
-
-    def hydrate_steps(self, bundle):
-        """Validate & hydrate (m2m) steps"""
-
-        steps_required_message = str(
-            "'steps' must be a list containing at " +
-            "least one dict or resource uri.")
-        if "steps" not in bundle.data.keys():
-            logger.error(steps_required_message)
-            raise ImmediateHttpResponse(
-                response=http.HttpBadRequest(steps_required_message))
-        elif not isinstance(bundle.data['steps'], list):
-            logger.error(steps_required_message)
-            raise ImmediateHttpResponse(
-                response=http.HttpBadRequest(steps_required_message))
-        elif not len(bundle.data["steps"]):
-            logger.error(steps_required_message)
-            raise ImmediateHttpResponse(
-                response=http.HttpBadRequest(steps_required_message))
-
-        # populate the FK (if in hydrate_m2m where steps are bundles)
-        if isinstance(bundle.data['steps'][0], Bundle):
-            new_steps = []
-            for step in bundle.data['steps']:
-                step.obj.caseversion_id = bundle.obj.id
-                new_steps.append(step)
-
-            bundle.data['steps'] = new_steps
 
         return bundle
 
