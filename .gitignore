@@ -10,3 +10,4 @@ docs/_build/*
 .idea
 .coverage
 logs/*
+build/*
