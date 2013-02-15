@@ -4,15 +4,18 @@ Tests for CaseVersionResource api.
 """
 
 from tests import case
+from tests.case.api.crud import ApiCrudCases
+
+import logging
+mozlogger = logging.getLogger('moztrap.test')
 
 
-
-class CaseVersionResourceTest(case.api.ApiTestCase):
+class CaseVersionResourceTest(ApiCrudCases):
 
     @property
     def factory(self):
         """The model factory for this object."""
-        return self.F.CaseVersionFactory
+        return self.F.CaseVersionFactory()
 
 
     @property
@@ -20,72 +23,201 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
         return "caseversion"
 
 
-    def test_caseversion_list(self):
-        """Get a list of existing caseversions"""
+    @property
+    def permission(self):
+        """String defining the permission required for
+        Create, Update, and Delete.
+        """
+        return "library.manage_cases"
 
-        cv1 = self.factory.create(name="Case1", description="ab")
-        cv2 = self.factory.create(name="Case2", description="cd")
-        casestep1 = self.F.CaseStepFactory.create(caseversion=cv1)
-        casestep2 = self.F.CaseStepFactory.create(caseversion=cv2)
-        suitecase1 = self.F.SuiteCaseFactory.create(case=cv1.case)
-        suitecase2 = self.F.SuiteCaseFactory.create(case=cv2.case)
 
-        res = self.get_list()
-        self.assertEqual(res.status_int, 200)
+    @property
+    def new_object_data(self):
+        """Generates a dictionary containing the field names and auto-generated
+        values needed to create a unique object.
 
-        act = res.json
+        The output of this method can be sent in the payload parameter of a
+        POST message.
+        """
+        modifiers = (self.datetime, self.resource_name)
+        self.productversion_fixture = self.F.ProductVersionFactory.create()
+        self.case_fixture = self.F.CaseFactory.create()
+        self.case_fixture.product = self.productversion_fixture.product
+        self.case_fixture.save()
 
-        act_meta = act["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
-            }
+        fields = {
+            u"case": unicode(self.get_detail_url(
+                "case", self.case_fixture.id)),
+            u"name": unicode("test_%s_%s" % modifiers),
+            u"description": unicode("test %s %s" % modifiers),
+            u"productversion": unicode(self.get_detail_url(
+                "productversion", self.productversion_fixture.id)),
+            u"status": unicode("draft"),
+            u"environments": [],
+            u"tags": [],
+#            u"attachments": [],
+            u"steps": [],
+        }
 
-        self.assertEquals(act_meta, exp_meta)
+        return fields
 
-        act_objects = act["objects"]
-        exp_objects = []
-        for cv, suitecase, casestep in [(cv1, suitecase1, casestep1),
-                                        (cv2, suitecase2, casestep2)]:
 
-            exp_objects.append({
-                u"case": {
-                    u"id": unicode(cv.case.id),
-                    u"suites": [{u"name": u"Test Suite",
-                                 u"id": unicode(suitecase.suite.id),
-                                 u"status": u"active",
-                                 u"description": u"",
-                                 u"product": unicode(
-                                    self.get_detail_url(
-                                        "product", suitecase.suite.product.id)),
-                                 u"resource_uri": unicode(
-                                    self.get_detail_url(
-                                        "suite", suitecase.suite.id))
-                                 }],
-                    u"resource_uri": unicode(
-                        self.get_detail_url("case",cv.case.id)),
-                    },
-                u"description": unicode(cv.description),
-                u"environments": [],
-                u"id": unicode(cv.id),
-                u"name": unicode(cv.name),
-                u"productversion": unicode(
-                    self.get_detail_url("productversion",cv.productversion.id)),
-                u"resource_uri": unicode(
-                    self.get_detail_url("caseversion",cv.id)),
-                u"steps": [{u"expected": u"",
-                            u"instruction": u"Test step instruction",
-                            u"resource_uri": unicode(
-                                self.get_detail_url("casestep",casestep.id))
-                            }],
-                u"tags": [],
-                })
+    def backend_object(self, id):
+        """Returns the object from the backend, so you can query it's values in
+        the database for validation.
+        """
+        return self.model.CaseVersion.everything.get(id=id)
 
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
+
+    def backend_data(self, backend_obj):
+        """Query's the database for the object's current values. Output is a
+        dictionary that should match the result of getting the object's detail
+        via the API, and can be used to verify API output.
+
+        Note: both keys and data should be in unicode
+        """
+        actual = {}
+        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"case"] = unicode(
+            self.get_detail_url("case", str(backend_obj.case.id)))
+        actual[u"name"] = unicode(backend_obj.name)
+        actual[u"description"] = unicode(backend_obj.description)
+        actual[u"productversion"] = unicode(
+            self.get_detail_url("productversion",
+                backend_obj.productversion.id))
+        actual[u"status"] = unicode(backend_obj.status)
+        actual[u"resource_uri"] = unicode(
+            self.get_detail_url(self.resource_name, str(backend_obj.id)))
+        actual[u"environments"] = [unicode(
+            self.get_detail_url("environment", str(env.id))
+                ) for env in backend_obj.environments.all()]
+        actual[u"tags"] = [unicode(self.get_detail_url("tag", str(tag.id))
+                                  ) for tag in backend_obj.tags.all()]
+#        actual[u"attachments"] = [unicode(self.get_detail_url("attachment",
+#             str(attch.id))) for attch in backend_obj.attachments.all()]
+        actual[u"steps"] = [unicode(
+                    self.get_detail_url("casestep", str(step.id)))
+             for step in backend_obj.steps.all()]
+
+        return actual
+
+
+    def manipulate_edit_data(self, fixture, fields):
+        """case and productversion are read-only"""
+        fields[u'case'] = unicode(
+            self.get_detail_url('case', str(fixture.case.id)))
+        fields[u'productversion'] = unicode(
+            self.get_detail_url(
+                'productversion', str(fixture.productversion.id)))
+
+        return fields
+
+    # overrides from crud.py
+
+    # additional test cases, if any
+
+    # validation cases
+
+    @property
+    def _product_mismatch_message(self):
+        return "productversion must match case's product"
+
+
+    def test_create_mismatched_product(self):
+        """productversion.product must match case.product"""
+
+        mozlogger.info("test_create_mismatched_product")
+
+        # fixtures
+        pv = self.F.ProductVersionFactory()
+        fields = self.new_object_data
+        fields['productversion'] = unicode(
+            self.get_detail_url("productversion", pv.id))
+
+        # do put
+        res = self.post(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=400,
+        )
+
+        self.assertEqual(res.text, self._product_mismatch_message)
+
+
+    def test_change_productversion_should_error(self):
+        """productversion is a create-only field."""
+
+        mozlogger.info('test_change_productversion_should_error')
+
+        # fixtures
+        fixture1 = self.factory
+        pv = self.F.ProductVersionFactory()
+        pv.product = fixture1.case.product
+        pv.save()
+        fields = self.backend_data(fixture1)
+        fields[u'steps'] = self.new_object_data[u'steps']
+        fields[u'productversion'] = unicode(
+            self.get_detail_url("productversion", pv.id))
+
+        # do put
+        res = self.put(
+            self.get_detail_url(self.resource_name, fixture1.id),
+            params=self.credentials,
+            data=fields,
+            status=400,
+        )
+
+        self.assertEqual(res.text,
+            "productversion of an existing caseversion may not be changed.")
+
+
+    def test_change_case_should_error(self):
+        """case is a create-only field."""
+
+        mozlogger.info('test_change_case_should_error')
+
+        # fixtures
+        fixture1 = self.factory
+        case = self.F.CaseFactory()
+        case.product = fixture1.case.product
+        case.save()
+        fields = self.backend_data(fixture1)
+        fields[u'steps'] = self.new_object_data[u'steps']
+        fields[u'case'] = unicode(
+            self.get_detail_url("case", case.id))
+
+        # do put
+        res = self.put(
+            self.get_detail_url(self.resource_name, fixture1.id),
+            params=self.credentials,
+            data=fields,
+            status=400,
+        )
+
+        self.assertEqual(res.text,
+            "case of an existing caseversion may not be changed.")
+
+
+    def test_update_without_productversion_and_case(self):
+        """productversion and case cannot be changed,
+        so they are not required on edit."""
+
+        mozlogger.info('test_update_without_productversion_and_case')
+
+        # fixtures
+        fixture1 = self.factory
+        fields = self.backend_data(fixture1)
+        fields[u'steps'] = self.new_object_data[u'steps']
+        fields.pop('case')
+        fields.pop('productversion')
+
+        # do put
+        res = self.put(
+            self.get_detail_url(self.resource_name, fixture1.id),
+            params=self.credentials,
+            data=fields,
+        )
 
 
 
@@ -160,16 +292,16 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_meta(self, count=0):
         """Return an expected meta object with count field filled"""
         return {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : count,
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": count,
             }
 
 
     def _do_test(self, for_id, filter_param, exp_objects):
-        params={filter_param: for_id}
+        params = {filter_param: for_id}
 
         res = self.get_list(params=params)
         self.assertEqual(res.status_int, 200)
