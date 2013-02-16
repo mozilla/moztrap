@@ -23,7 +23,8 @@ from ..lists import filters
 class NonFieldErrorList(ErrorList):
     """A custom ErrorList for non-field errors with "nonfield" HTML class."""
     def as_ul(self):
-        if not self: return u''
+        if not self:
+            return u''
         return mark_safe(u'<ul class="errorlist nonfield">%s</ul>'
                 % ''.join([u'<li>%s</li>' % conditional_escape(force_unicode(e)) for e in self]))
 

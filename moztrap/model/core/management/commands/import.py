@@ -128,4 +128,3 @@ class Command(BaseCommand):
                 'Could not open "{0}", I/O error {1}: {2}'.format(
                     args[2], errno, strerror)
                 )
-

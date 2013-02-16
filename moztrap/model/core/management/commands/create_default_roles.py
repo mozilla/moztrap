@@ -50,7 +50,7 @@ class Command(NoArgsCommand):
             if not created:
                 if verbosity:
                     print("Role %r already exists; skipping." % role_name)
-                continue # pragma: no cover http://bugs.python.org/issue2506
+                continue  # pragma: no cover http://bugs.python.org/issue2506
 
             if verbosity:
                 print("Role %r created." % role_name)
@@ -64,7 +64,7 @@ class Command(NoArgsCommand):
                 except Permission.DoesNotExist:
                     if verbosity:
                         print("  Permission %r unknown; skipping." % perm_label)
-                    continue # pragma: no cover http://bugs.python.org/issue2506
+                    continue  # pragma: no cover http://bugs.python.org/issue2506
 
                 role.permissions.add(perm)
 

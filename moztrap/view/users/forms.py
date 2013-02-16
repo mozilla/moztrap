@@ -170,7 +170,7 @@ class CaptchaAuthenticationForm(auth_forms.AuthenticationForm):
 
         # only add the captcha field if this request hit the rate limit
         if getattr(self.request, "limited", False):
-            a, b = random.randint(1,9), random.randint(1, 9)
+            a, b = random.randint(1, 9), random.randint(1, 9)
             # avoid negative answers
             if b > a:
                 a, b = b, a

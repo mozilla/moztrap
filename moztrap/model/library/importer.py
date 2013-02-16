@@ -273,7 +273,7 @@ class CaseImporter(object):
             try:
                 casestep = CaseStep.objects.create(
                     caseversion=caseversion,
-                    number=step_num+1,
+                    number=step_num + 1,
                     instruction=new_step["instruction"],
                     expected=new_step.get("expected", ""),
                     )
