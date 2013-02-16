@@ -534,7 +534,7 @@ class Result(MTModel):
             is_latest=True,
             ).exclude(pk=self.pk).update(is_latest=False)
 
-        self.is_latest=True
+        self.is_latest = True
 
 
 
@@ -576,5 +576,3 @@ def result_summary(results):
     cursor.execute(sql, states)
 
     return dict(zip(states, cursor.fetchone()))
-
-

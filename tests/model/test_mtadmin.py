@@ -42,6 +42,7 @@ class MTAdminSiteTest(case.view.ViewTestCase):
 
         """
         from django.contrib.auth.signals import user_logged_out
+
         def handler(*args, **kwargs):
             self.fail("User logged out, should not have been.")
         user_logged_out.connect(handler, weak=True)

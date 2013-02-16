@@ -82,7 +82,7 @@ class TagResource(MTResource):
                         else:
                             logger.debug(
                                 "product matches caseversions' product")
-                    else: # changing from product-specific to global
+                    else:  # changing from product-specific to global
                         logger.debug("changing from product-specific to global")
                 else:
                     logger.debug("not changing product")
@@ -93,4 +93,3 @@ class TagResource(MTResource):
 
         return super(TagResource, self).obj_update(
             bundle=bundle, request=request, **kwargs)
-

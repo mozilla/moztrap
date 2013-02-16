@@ -115,7 +115,7 @@ def tag_edit(request, tag_id):
         {
             "form": form,
             "tag": tag,
-            "hide_multiselect": (tag.product==None),
+            "hide_multiselect": (tag.product is None),
             }
         )
 
@@ -139,7 +139,7 @@ def tag_autocomplete(request):
         # want pre and post to be case-accurate
         start = tag.name.lower().index(text.lower())
         pre = tag.name[:start]
-        post = tag.name[start+len(text):]
+        post = tag.name[start + len(text):]
         suggestions.append({
                 "preText": pre,
                 "typedText": text,

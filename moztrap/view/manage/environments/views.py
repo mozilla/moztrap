@@ -203,7 +203,7 @@ def element_autocomplete(request):
     for e in elements:
         start = e.name.lower().index(text.lower())
         pre = e.name[:start]
-        post = e.name[start+len(text):]
+        post = e.name[start + len(text):]
         suggestions.append({
                 "preText": pre,
                 "typedText": text,
@@ -264,6 +264,6 @@ def narrow_environments(request, object_type, object_id):
         {
             "environments": obj.productversion.environments.all(),
             "selected_env_ids": current_env_ids,
-            "filters": EnvironmentFilterSet().bind(), # for JS filtering
+            "filters": EnvironmentFilterSet().bind(),  # for JS filtering
             "obj": obj,
             })

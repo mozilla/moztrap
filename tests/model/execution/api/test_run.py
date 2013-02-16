@@ -50,11 +50,11 @@ class RunResourceTest(case.api.ApiTestCase):
         res = self.get_list(params=self.auth_params)
 
         exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": 2,
             }
 
         self.assertEquals(res.json["meta"], exp_meta)
@@ -465,6 +465,3 @@ class RunResourceTest(case.api.ApiTestCase):
             params=params,
             status=401,
             )
-
-
-

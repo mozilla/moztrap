@@ -46,7 +46,7 @@ class ApiTestCase(WebTest):
         return self.app.patch(
             url,
             json_data,
-            headers = {"content-type": "application/json"},
+            headers={"content-type": "application/json"},
             status=status,
             )
 
@@ -59,7 +59,7 @@ class ApiTestCase(WebTest):
         return self.app.post(
             url,
             json_data,
-            headers = {"content-type": "application/json"},
+            headers={"content-type": "application/json"},
             status=status,
             )
 
@@ -71,7 +71,7 @@ class ApiTestCase(WebTest):
         return self.app.put(
             url,
             json_data,
-            headers = {"content-type": "application/json"},
+            headers={"content-type": "application/json"},
             status=status,
             )
 

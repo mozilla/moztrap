@@ -26,8 +26,8 @@ class SuiteCaseAuthorization(MTAuthorization):
 
 
 class CaseVersionAuthorization(MTAuthorization):
-    """A permission of 'core.manage_productversions does not exist,
-    use core.manage_products instead."""
+    """A permission of 'library.manage_caseversions does not exist,
+    use library.manage_cases instead."""
 
     @property
     def permission(self):
@@ -62,6 +62,12 @@ class SuiteResource(MTResource):
 
 
 class CaseResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for Case.
+
+    Filterable by suites and product fields.
+    """
+
     suites = fields.ToManyField(SuiteResource, "suites", readonly=True)
     product = fields.ForeignKey(ProductResource, "product")
 
@@ -97,6 +103,11 @@ class CaseResource(MTResource):
 
 
 class CaseStepResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for CaseSteps.
+
+    Filterable by caseversion field.
+    """
 
     caseversion = fields.ForeignKey(
         "moztrap.model.library.api.CaseVersionResource", "caseversion")
@@ -141,6 +152,11 @@ class CaseStepResource(MTResource):
 
 
 class SuiteCaseResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for SuiteCase.
+
+    Filterable by suite and case fields.
+    """
 
     case = fields.ForeignKey(CaseResource, 'case')
     suite = fields.ForeignKey(SuiteResource, 'suite')
@@ -224,6 +240,11 @@ class SuiteCaseResource(MTResource):
 
 
 class CaseVersionResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for CaseVersions.
+
+    Filterable by environments, productversion, case, and tags fields.
+    """
 
     case = fields.ForeignKey(CaseResource, "case")
     steps = fields.ToManyField(

@@ -12,8 +12,6 @@ from .... import model
 from ...utils import mtforms
 
 
-
-
 class BaseCaseForm(mtforms.NonFieldErrorsClassFormMixin, forms.Form):
     """
     Base form for all test case/version forms.
@@ -108,7 +106,7 @@ class BaseCaseVersionForm(forms.Form):
         delete_ids = set(self.data.getlist("remove-attachment"))
         caseversion.attachments.filter(id__in=delete_ids).delete()
 
-        if self.files: # if no files, it's a plain dict, has no getlist
+        if self.files:  # if no files, it's a plain dict, has no getlist
             for uf in self.files.getlist("add_attachment"):
                 model.CaseAttachment.objects.create(
                     attachment=uf,
@@ -205,7 +203,7 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
                 case=case,
                 suite=suite,
                 user=self.user,
-                order=order+1,
+                order=order + 1,
                 )
 
         productversions = [version_kwargs.pop("productversion")]

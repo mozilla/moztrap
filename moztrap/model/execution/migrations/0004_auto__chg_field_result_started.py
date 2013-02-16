@@ -11,6 +11,7 @@ class Migration(SchemaMigration):
 
         # Changing field 'Result.started'
         db.alter_column('execution_result', 'started', self.gf('django.db.models.fields.DateTimeField')(null=True))
+
     def backwards(self, orm):
 
         # Changing field 'Result.started'

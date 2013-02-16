@@ -58,7 +58,7 @@ class ResultTest(case.DBTestCase):
         r2 = rcv.results.get(is_latest=True)
 
         r1 = self.refresh(r1)
-        r1.comment="this is it"
+        r1.comment = "this is it"
         r1.save()
 
         r1 = self.refresh(r1)

@@ -4,8 +4,9 @@ from tastypie.authorization import  Authorization
 
 from .core.models import ApiKey
 
-import logging, sys, traceback
+import logging
 logger = logging.getLogger("moztrap.model.mtapi")
+
 
 class MTApiKeyAuthentication(ApiKeyAuthentication):
     """Authentication that requires our custom api key implementation."""
@@ -23,7 +24,7 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
 
     def is_authenticated(self, request, **kwargs):
         """
-        Finds the user and checks their API key. GET requests are always 
+        Finds the user and checks their API key. GET requests are always
         allowed.
 
         This overrides Tastypie's default impl, because we use a User
@@ -45,7 +46,7 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
                 logger.debug("no username")  # pragma: no cover
             elif not api_key:  # pragma: no cover
                 logger.debug("no api key")  # pragma: no cover
-            return self._unauthorized() 
+            return self._unauthorized()
 
         try:
             user = User.objects.get(username=username)
@@ -66,7 +67,7 @@ class MTAuthorization(Authorization):
     def permission(self):
         """This permission should be checked by is_authorized."""
         klass = self.resource_meta.object_class
-        permission = "%s.manage_%ss" % (klass._meta.app_label, 
+        permission = "%s.manage_%ss" % (klass._meta.app_label,
             klass._meta.module_name)
         logger.debug("desired permission %s" % permission)
         return permission
@@ -125,7 +126,7 @@ class MTResource(ModelResource):
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Set the modified_by field for the object to the request's user"""
-        # this try/except logging is more helpful than 500 / 404 errors on the 
+        # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
         try:
             bundle = super(MTResource, self).obj_update(
@@ -138,11 +139,11 @@ class MTResource(ModelResource):
 
 
     def obj_delete(self, request=None, **kwargs):
-        """Delete the object. 
+        """Delete the object.
         The DELETE request may include permanent=True/False in its params
         parameter (ie, along with the user's credentials). Default is False.
         """
-        # this try/except logging is more helpful than 500 / 404 errors on 
+        # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
         try:
             permanent = request._request.dicts[1].get("permanent", False)
@@ -157,7 +158,7 @@ class MTResource(ModelResource):
 
     def delete_detail(self, request, **kwargs):
         """Avoid the following error:
-        WSGIWarning: Content-Type header found in a 204 response, which not 
+        WSGIWarning: Content-Type header found in a 204 response, which not
         return content.
         """
         res = super(MTResource, self).delete_detail(request, **kwargs)

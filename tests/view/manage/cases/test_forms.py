@@ -156,7 +156,7 @@ class AddCaseFormTest(case.DBTestCase):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
             model.Permission.objects.get(codename="manage_suite_cases"))
-        suite = self.F.SuiteFactory.create() # some other product
+        suite = self.F.SuiteFactory.create()  # some other product
 
         data = self.get_form_data()
         data["suite"] = suite.id
@@ -415,7 +415,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
             model.Permission.objects.get(codename="manage_suite_cases"))
-        suite = self.F.SuiteFactory.create() # some other product
+        suite = self.F.SuiteFactory.create()  # some other product
 
         data = self.get_form_data()
         data["suite"] = suite.id
@@ -679,7 +679,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
         cv = self.F.CaseVersionFactory.create(
             name="a name", description="a desc", status="draft")
         submitted_version = cv.cc_version
-        cv.save() # increments the concurrency-control version
+        cv.save()  # increments the concurrency-control version
 
         form = self.form(
             instance=cv,
@@ -804,7 +804,7 @@ class StepFormSetTest(case.DBTestCase):
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "0",
-                "steps-INITIAL_FORMS": "1", # JS doesn't touch this
+                "steps-INITIAL_FORMS": "1",  # JS doesn't touch this
                 },
             instance=step.caseversion,
             )
@@ -819,7 +819,7 @@ class StepFormSetTest(case.DBTestCase):
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "1",
-                "steps-INITIAL_FORMS": "1", # JS doesn't touch this
+                "steps-INITIAL_FORMS": "1",  # JS doesn't touch this
                 "steps-0-id": "",
                 "steps-0-instruction": "do this",
                 "steps-0-expected": "see that",

@@ -134,9 +134,9 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
             u"runs": runs,
             u"order": order,
             u"product": unicode(
-                self.get_detail_url("product",s.product.id)),
+                self.get_detail_url("product", s.product.id)),
             u"resource_uri": unicode(
-                self.get_detail_url("suiteselection",s.id)),
+                self.get_detail_url("suiteselection", s.id)),
             u"suite_id": unicode(s.id)
         }
 
@@ -144,16 +144,16 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
     def get_exp_meta(self, count=0):
         """Return an expected meta object with count field filled"""
         return {
-            u"limit" : 20,
-            u"next" : None,
-            u"offset" : 0,
-            u"previous" : None,
-            u"total_count" : count,
+            u"limit": 20,
+            u"next": None,
+            u"offset": 0,
+            u"previous": None,
+            u"total_count": count,
             }
 
 
     def _do_test(self, for_id, filter_param, exp_objects):
-        params={filter_param: for_id}
+        params = {filter_param: for_id}
 
         res = self.get_list(params=params)
         self.assertEqual(res.status_int, 200)

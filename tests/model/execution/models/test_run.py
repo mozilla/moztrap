@@ -25,7 +25,7 @@ class RunTest(case.DBTestCase):
         today = datetime.date(2011, 12, 13)
         r = self.F.RunFactory(
             start=today,
-            end=today-datetime.timedelta(days=1))
+            end=today - datetime.timedelta(days=1))
 
         with self.assertRaises(ValidationError):
             r.full_clean()
@@ -36,7 +36,7 @@ class RunTest(case.DBTestCase):
         today = datetime.date(2011, 12, 13)
         r = self.F.RunFactory(
             start=today,
-            end=today+datetime.timedelta(days=1))
+            end=today + datetime.timedelta(days=1))
 
         r.full_clean()
 
@@ -848,7 +848,7 @@ class RunActivationTest(case.DBTestCase):
         cv_needed = []
         for num in range(6):
             cv = self.F.CaseVersionFactory.create(
-                name="casey"+str(num),
+                name="casey" + str(num),
                 productversion=self.pv8,
                 status="active",
                 )
@@ -943,7 +943,7 @@ class RunActivationTest(case.DBTestCase):
         cv_needed = []
         for num in range(6):
             cv = self.F.CaseVersionFactory.create(
-                name="casey"+str(num),
+                name="casey" + str(num),
                 productversion=self.pv8,
                 status="active",
                 )
@@ -1048,7 +1048,7 @@ class RefreshTransactionTest(case.TransactionTestCase):
         cv_needed = []
         for num in range(6):
             cv = self.F.CaseVersionFactory.create(
-                name="casey"+str(num),
+                name="casey" + str(num),
                 productversion=self.pv8,
                 status="active",
                 )
@@ -1106,8 +1106,10 @@ class RefreshTransactionTest(case.TransactionTestCase):
 
         class SurpriseException(RuntimeError):
             pass
+
         def raise_exception(*args, **kwargs):
             raise SurpriseException("Surprise!")
+
         new_func.side_effect = raise_exception
 
         with self.assertRaises(SurpriseException):

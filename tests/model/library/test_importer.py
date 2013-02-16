@@ -359,7 +359,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         # need a user to exist, so the import can find it.
         user = self.F.UserFactory.create(email="sumbudee@mozilla.com")
 
-        case_data= {
+        case_data = {
             "cases": [
                 {
                     "created_by": "sumbudee@mozilla.com",
@@ -703,8 +703,10 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
 
         class SurpriseException(RuntimeError):
             pass
+
         def raise_exception():
             raise SurpriseException("Surprise!")
+
         new_import_suites.side_effect = raise_exception
 
         with self.assertRaises(SurpriseException):
@@ -736,4 +738,3 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
             result.warnings[0]["reason"],
             ImportResult.SKIP_STEP_NO_INSTRUCTION,
             )
-

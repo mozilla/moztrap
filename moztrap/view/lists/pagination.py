@@ -69,9 +69,9 @@ class Pager(object):
         Elides some ranges of page numbers with None in long lists.
 
         """
-        MIN_SKIP = 3 # don't bother eliding just one or two pages
-        FROM_CURRENT = 2 # always show two to either side of current page
-        FROM_END = 2 # always show two from each end
+        MIN_SKIP = 3  # don't bother eliding just one or two pages
+        FROM_CURRENT = 2  # always show two to either side of current page
+        FROM_END = 2  # always show two from each end
 
         skip = []
         ret = []
@@ -118,7 +118,7 @@ class Pager(object):
             if not self.high:
                 self._sliced_qs = self._queryset.empty()
             else:
-                self._sliced_qs = self._queryset[self.low-1:self.high]
+                self._sliced_qs = self._queryset[self.low - 1:self.high]
         return self._sliced_qs
 
 

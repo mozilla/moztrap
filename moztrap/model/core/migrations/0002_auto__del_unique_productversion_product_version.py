@@ -4,16 +4,17 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Removing unique constraint on 'ProductVersion', fields ['product', 'version']
         db.delete_unique('core_productversion', ['product_id', 'version'])
 
 
     def backwards(self, orm):
-        
+
         # Adding unique constraint on 'ProductVersion', fields ['product', 'version']
         db.create_unique('core_productversion', ['product_id', 'version'])
 

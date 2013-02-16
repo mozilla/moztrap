@@ -47,7 +47,7 @@ class ProductVersionResourceTest(ApiCrudCases):
                 self.get_detail_url('product', str(self.product_fixture.id))),
             u"version": unicode(self.datetime),
             u"codename": unicode(
-                "amazing test %s %s"% (self.datetime, self.resource_name)),
+                "amazing test %s %s" % (self.datetime, self.resource_name)),
         }
         return fields
 

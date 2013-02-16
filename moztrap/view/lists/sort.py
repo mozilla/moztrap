@@ -28,7 +28,7 @@ def sort(ctx_name, defaultfield=None, defaultdirection=DEFAULT):
             ctx["sort"] = Sort(request, defaultfield, defaultdirection)
             try:
                 sortqs = ctx[ctx_name].order_by(*ctx["sort"].order_by)
-                str(sortqs.query) # hack to force evaluation of sort arguments
+                str(sortqs.query)  # hack to force evaluation of sort arguments
             except FieldError:
                 pass
             else:

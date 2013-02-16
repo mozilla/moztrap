@@ -16,5 +16,3 @@ register = Library()
 def filter_url(view, obj):
     """Template filter to get filtered url."""
     return filters.filter_url(view, obj)
-
-

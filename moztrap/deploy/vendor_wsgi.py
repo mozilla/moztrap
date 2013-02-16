@@ -1,9 +1,10 @@
-""" 
+"""
 Alternative WSGI entry-point that uses requirements/vendor for
 dependencies.
 
 """
-import os, sys
+import os
+import sys
 
 base_dir = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

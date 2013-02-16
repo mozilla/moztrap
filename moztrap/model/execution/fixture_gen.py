@@ -7,6 +7,7 @@ from ..library.models import Suite
 
 from .models import Run, RunSuite, RunCaseVersion
 
+
 @fixture_generator(
     Run, RunSuite, RunCaseVersion, requires=[
         "library.sample_suites", "core.sample_users", "core.sample_products"])

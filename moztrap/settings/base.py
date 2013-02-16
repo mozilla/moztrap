@@ -174,7 +174,7 @@ LOGGING = {
         }
     },
     "loggers": {
-        "django.request":{
+        "django.request": {
             "handlers": ["mail_admins"],
             "level": "ERROR",
             "propagate": True,
@@ -199,7 +199,7 @@ INSTALLED_APPS += ["floppyforms"]
 
 INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = 8 * 60 * 60 # 8 hours
+SESSION_COOKIE_AGE = 8 * 60 * 60  # 8 hours
 SECURE_FRAME_DENY = True
 
 MINIMUM_PASSWORD_CHARS = 8
@@ -210,7 +210,7 @@ FORBIDDEN_PASSWORDS = [
     "pass",
     "123",
     "test"
-    ] # @@@ get full list from InfraSec
+    ]  # @@@ get full list from InfraSec
 
 ALLOW_ANONYMOUS_ACCESS = False
 

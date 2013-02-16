@@ -2,6 +2,7 @@
 Utilities for filtering querysets in a view.
 
 """
+
 from collections import namedtuple
 from functools import wraps
 import json
@@ -60,6 +61,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
     if filterset_class is None:
         filterset_class = FilterSet
     filterset = filterset_class(filters)
+
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):

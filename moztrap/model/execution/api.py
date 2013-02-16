@@ -99,14 +99,14 @@ class RunResource(ModelResource):
     def dispatch_detail(self, request, **kwargs):
         """For details, we want the full info on environments for the run """
 
-        self.fields["environments"].full=True
+        self.fields["environments"].full = True
         return super(RunResource, self).dispatch_detail(request, **kwargs)
 
 
     def dispatch_list(self, request, **kwargs):
         """For list, we don't want the full info on environments """
 
-        self.fields["environments"].full=False
+        self.fields["environments"].full = False
         return super(RunResource, self).dispatch_list(request, **kwargs)
 
 
@@ -258,9 +258,9 @@ class ResultResource(ModelResource):
 
         try:
             status = data.pop("status")
-            case=data.pop("case")
+            case = data.pop("case")
             env = Environment.objects.get(pk=data.get("environment"))
-            run=data.pop("run_id")
+            run = data.pop("run_id")
 
         except KeyError as e:
             raise ValidationError(
@@ -326,7 +326,7 @@ class SuiteSelectionResource(BaseSelectionResource):
         bundle.data["filter_cases"] = filter_url("manage_cases", suite)
 
         if "runs" in bundle.request.GET.keys():
-            run_id=int(bundle.request.GET["runs"])
+            run_id = int(bundle.request.GET["runs"])
             s = suite.runsuites.all()
             order = [x.order for x in suite.runsuites.all()
                      if x.run_id == run_id][0]
@@ -335,6 +335,3 @@ class SuiteSelectionResource(BaseSelectionResource):
             bundle.data["order"] = None
 
         return bundle
-
-
-

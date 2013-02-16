@@ -1,6 +1,7 @@
 from filters import KeywordFilter
 from django.db.models import Q
 
+
 class PrefixIDFilter(KeywordFilter):
     """
     A string and an int, separated by a delimiter.

@@ -11,6 +11,7 @@ from ..mtapi import MTResource, MTAuthorization
 import logging
 logger = logging.getLogger(__name__)
 
+
 class ReportResultsAuthorization(MTAuthorization):
     """Authorization that only allows users with execute privileges."""
 
@@ -131,7 +132,7 @@ class ProductResource(MTResource):
         productversions = bundle.data.pop("productversions", [])
         bundle.data["productversions"] = []
 
-        updated_bundle =  super(ProductResource, self).obj_update(
+        updated_bundle = super(ProductResource, self).obj_update(
             bundle=bundle, request=request, **kwargs)
 
         # create the productversions
@@ -166,4 +167,3 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "username"]
-

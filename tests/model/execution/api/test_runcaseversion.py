@@ -37,11 +37,11 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
 
         act_meta = act["meta"]
         exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 2,
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": 2,
             }
 
         self.assertEquals(act_meta, exp_meta)
@@ -70,7 +70,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                     u'status': unicode(cv.status),
                     },
                 u"id": unicode(rcv.id),
-                u"run": unicode(self.get_detail_url("run",rcv.run.id)),
+                u"run": unicode(self.get_detail_url("run", rcv.run.id)),
                 u"resource_uri": unicode(self.get_detail_url(
                     "runcaseversion",
                     rcv.id,

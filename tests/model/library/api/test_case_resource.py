@@ -347,7 +347,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             u"productversion": unicode(
                 self.get_detail_url("productversion", cv.productversion.id)),
             u"resource_uri": unicode(
-                self.get_detail_url("caseselection",cv.id)),
+                self.get_detail_url("caseselection", cv.id)),
             u"tags": [],
             }
 

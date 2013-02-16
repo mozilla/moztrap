@@ -4,10 +4,11 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Removing unique constraint on 'CaseStep', fields ['caseversion', 'number']
         db.delete_unique('library_casestep', ['caseversion_id', 'number'])
 
@@ -19,7 +20,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Adding unique constraint on 'SuiteCase', fields ['case', 'suite']
         db.create_unique('library_suitecase', ['case_id', 'suite_id'])
 

@@ -76,7 +76,7 @@ def category_element_ajax_add_edit(view_func):
                             "category": cat,
                             "selected_element_ids": set(
                                 map(int, request.POST.getlist("elements"))),
-                            "name": "elements" # @@@ duplicated form field name
+                            "name": "elements"  # @@@ duplicated form field name
                             },
                         RequestContext(request)
                         )
@@ -108,7 +108,7 @@ def category_element_ajax_add_edit(view_func):
                         template_name,
                         {
                             "element": e,
-                            "name": "elements" # @@@ duplicated form field name
+                            "name": "elements"  # @@@ duplicated form field name
                             },
                         RequestContext(request))
 
