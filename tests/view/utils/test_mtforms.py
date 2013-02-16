@@ -340,7 +340,7 @@ class MTModelFormTest(MTFormsTestCase):
     def test_cc_version_initial(self):
         """With an instance, cc_version initial value is from instance."""
         p = self.F.ProductFactory.create()
-        p.save() # make the version nonzero
+        p.save()  # make the version nonzero
 
         f = self.form(instance=p)
 

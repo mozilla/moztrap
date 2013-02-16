@@ -246,5 +246,3 @@ class SuitesForTest(case.DBTestCase):
                 "{% for suite in suites %}{{ suite.id }} {% endfor %}"),
             "{0} ".format(ts.id)
         )
-
-

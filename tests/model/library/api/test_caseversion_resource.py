@@ -252,7 +252,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
                 u"id": unicode(t.id),
                 u"name": unicode(t.name),
                 u"description": unicode(t.description),
-                u"resource_uri": unicode(self.get_detail_url("tag",t.id)),
+                u"resource_uri": unicode(self.get_detail_url("tag", t.id)),
                 u"product": None,
                 }
             if t.product:
@@ -262,7 +262,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
 
         return {
             u"case": unicode(
-                self.get_detail_url("case",cv.case.id)),
+                self.get_detail_url("case", cv.case.id)),
             u"case_id": unicode(cv.case.id),
             u"created_by": None,
             u"id": unicode(cv.id),
@@ -284,7 +284,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
                 u"version": u"1.0"},
             u"productversion_name": unicode(cv.productversion.name),
             u"resource_uri": unicode(
-                self.get_detail_url("caseversionselection",cv.id)),
+                self.get_detail_url("caseversionselection", cv.id)),
             u"tags": exp_tags,
             }
 

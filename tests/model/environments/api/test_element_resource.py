@@ -29,11 +29,11 @@ class ElementResourceTest(case.api.ApiTestCase):
 
         act_meta = res.json["meta"]
         exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": 1,
             }
 
         self.assertEquals(act_meta, exp_meta)

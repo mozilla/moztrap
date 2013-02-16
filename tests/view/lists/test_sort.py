@@ -86,7 +86,7 @@ class SortDecoratorTest(case.DBTestCase):
         """Silently ignores bad sort field."""
         req = RequestFactory().get(
             "/a/url", {"sortfield": "foo", "sortdirection": "asc"})
-        from moztrap.model.core.models import Product # has no "foo" field
+        from moztrap.model.core.models import Product  # has no "foo" field
 
         qs = Product.objects.all()
         res = self.on_template_response({"ctx_name": qs}, request=req)
