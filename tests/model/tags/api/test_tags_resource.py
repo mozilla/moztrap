@@ -24,7 +24,7 @@ class TagResourceTest(ApiCrudCases):
 
     @property
     def permission(self):
-        """String defining the permission required for 
+        """String defining the permission required for
         Create, Update, and Delete."""
         return "tags.manage_tags"
 
@@ -34,7 +34,7 @@ class TagResourceTest(ApiCrudCases):
         """Generates a dictionary containing the field names and auto-generated
         values needed to create a unique object.
 
-        The output of this method can be sent in the payload parameter of a 
+        The output of this method can be sent in the payload parameter of a
         POST message.
         """
         self.product_fixture = self.F.ProductFactory.create()
@@ -54,10 +54,10 @@ class TagResourceTest(ApiCrudCases):
         """
         return self.model.Tag.everything.get(id=id)
 
- 
+
     def backend_data(self, backend_obj):
-        """Query's the database for the object's current values. Output is a 
-        dictionary that should match the result of getting the object's detail 
+        """Query's the database for the object's current values. Output is a
+        dictionary that should match the result of getting the object's detail
         via the API, and can be used to verify API output.
 
         Note: both keys and data should be in unicode
@@ -230,7 +230,7 @@ class TagResourceTest(ApiCrudCases):
         tc1 = self.F.CaseVersionFactory()
         tc1.tags = [tag1]
         tc2 = self.F.CaseVersionFactory()
-        tc2.productversion = tc1.productversion # make it be same product
+        tc2.productversion = tc1.productversion  # make it be same product
         tc2.save()
         tc2.tags = [tag1]
 
@@ -298,8 +298,8 @@ class TagResourceTest(ApiCrudCases):
         # create fixtures
         tag1 = self.factory
         tc1 = self.F.CaseVersionFactory()
-        tag1.product = tc1.productversion.product # make tag product-specific
-        tc1.tags = [tag1] # use the tag
+        tag1.product = tc1.productversion.product  # make tag product-specific
+        tc1.tags = [tag1]  # use the tag
 
         self.assertEqual(len(tag1.caseversions.all()), 1)
 
@@ -327,9 +327,9 @@ class TagResourceTest(ApiCrudCases):
         # create fixtures
         tag1 = self.factory
         tc1 = self.F.CaseVersionFactory()
-        tag1.product = tc1.productversion.product # make tag product-specific
+        tag1.product = tc1.productversion.product  # make tag product-specific
         tag1.save()
-        tc1.tags = [tag1] # use the tag
+        tc1.tags = [tag1]  # use the tag
 
         self.assertEqual(len(tag1.caseversions.all()), 1)
 

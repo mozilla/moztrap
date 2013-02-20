@@ -173,8 +173,10 @@ class ActionsTest(case.TestCase):
         class MockModelDoesNotExist(Exception):
             pass
         self.mock_model.DoesNotExist = MockModelDoesNotExist
+
         def raise_does_not_exist(*args, **kwargs):
             raise self.mock_model.DoesNotExist
+
         self.mock_model._base_manager.get.side_effect = raise_does_not_exist
 
         res = self.view(req)

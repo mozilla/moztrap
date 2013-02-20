@@ -115,7 +115,7 @@ class EditTagFormTest(case.DBTestCase):
                 "product": str(t.product.id),
                 "name": t.name,
                 "description": t.description,
-                "caseversions": [str(cv.id+1)],
+                "caseversions": [str(cv.id + 1)],
                 "cc_version": str(t.cc_version),
                 },
             instance=t,

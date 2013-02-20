@@ -323,7 +323,7 @@ class RunCaseVersionTest(case.DBTestCase):
         rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
 
-        rcv.result_fail(environment= envs[0], user=u)
+        rcv.result_fail(environment=envs[0], user=u)
 
         r = rcv.results.get()
         self.assertEqual(r.status, "failed")

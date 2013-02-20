@@ -36,5 +36,3 @@ class EnvironmentResource(ModelResource):
         list_allowed_methods = ['get']
         fields = ["id"]
         filtering = {"elements": ALL}
-
-

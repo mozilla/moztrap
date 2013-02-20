@@ -84,7 +84,7 @@ class LoginTest(case.view.ViewTestCase):
 
             form = res.forms["loginform"]
             answer = session_data["auth_captcha_answer"]
-            form["captcha"] = answer + 1 # oops, wrong answer!
+            form["captcha"] = answer + 1  # oops, wrong answer!
             form["username"] = "test"
             form["password"] = "sekrit"
             res = form.submit(status=200)

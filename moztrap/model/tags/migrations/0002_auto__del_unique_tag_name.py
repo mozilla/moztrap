@@ -4,16 +4,17 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Removing unique constraint on 'Tag', fields ['name']
         db.delete_unique('tags_tag', ['name'])
 
 
     def backwards(self, orm):
-        
+
         # Adding unique constraint on 'Tag', fields ['name']
         db.create_unique('tags_tag', ['name'])
 

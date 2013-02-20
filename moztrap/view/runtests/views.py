@@ -196,7 +196,7 @@ def run(request, run_id, env_id):
             if rcv is None:
                 return HttpResponse(
                     json.dumps({"html": "", "no_replace": True}),
-                    content_type = "application/json",
+                    content_type="application/json",
                     )
             # by not returning a TemplateResponse, we skip the sort and finder
             # decorators, which aren't applicable to a single case.

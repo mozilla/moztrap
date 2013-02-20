@@ -6,6 +6,7 @@ from ..core.models import Product
 
 from .models import Tag
 
+
 @fixture_generator(Tag, requires=["core.sample_products", "core.sample_users"])
 def sample_tags():
     admin = User.objects.get(username="admin")

@@ -11,6 +11,7 @@ from ..environments.models import Profile
 
 from .models import Product, ProductVersion
 
+
 @fixture_generator(
     Product, ProductVersion, requires=[
         "environments.sample_environments", "core.sample_users"])
