@@ -80,57 +80,13 @@ class CaseStepResourceTest(ApiCrudCases):
         return actual
 
 
-    def manipulate_edit_data(self, fixture, fields):
+    @property
+    def read_create_fields(self):
         """caseversion is read-only"""
-        fields[u'caseversion'] = unicode(
-            self.get_detail_url('caseversion', str(fixture.caseversion.id)))
-
-        return fields
+        return ["caseversion"]
 
     # overrides from crud.py
 
     # additional test cases, if any
 
     # validation cases
-
-    def test_change_caseversion_should_error(self):
-        """caseversion is a create-only field."""
-
-        mozlogger.info('test_change_caseversion_should_error')
-
-        # fixtures
-        fixture1 = self.factory
-        cv = self.F.CaseVersionFactory()
-        fields = self.backend_data(fixture1)
-        fields[u'caseversion'] = unicode(
-            self.get_detail_url("caseversion", cv.id))
-
-        # do put
-        res = self.put(
-            self.get_detail_url(self.resource_name, fixture1.id),
-            params=self.credentials,
-            data=fields,
-            status=400,
-        )
-
-        self.assertEqual(res.text,
-            "caseversion of an existing casestep may not be changed.")
-
-
-    def test_update_without_caseversion(self):
-        """caseversion cannot be changed,
-        so it is not required on edit."""
-
-        mozlogger.info('test_update_without_caseversion')
-
-        # fixtures
-        fixture1 = self.factory
-        fields = self.backend_data(fixture1)
-        fields.pop('caseversion')
-
-        # do put
-        res = self.put(
-            self.get_detail_url(self.resource_name, fixture1.id),
-            params=self.credentials,
-            data=fields,
-        )

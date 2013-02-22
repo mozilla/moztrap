@@ -44,6 +44,11 @@ class ElementResourceTest(ApiCrudCases):
             }
 
 
+    @property
+    def read_create_fields(self):
+        """category is read-only."""
+        return ["category"]
+
 
     def backend_object(self, id):
         """Returns the object from the backend, so you can query it's values in

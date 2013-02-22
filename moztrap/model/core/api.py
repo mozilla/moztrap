@@ -59,6 +59,35 @@ class ProductVersionResource(MTResource):
         return ProductVersion
 
 
+    @property
+    def read_create_fields(self):
+        """product is read-only"""
+        return ["product"]
+
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Avoid concurrency error caused by the setting of latest_version"""
+        bundle = self.check_read_create(bundle)
+
+        try:
+            # use grandparent rather than parent
+            bundle = super(MTResource, self).obj_update(
+                bundle=bundle, request=request, **kwargs)
+
+            # update the cc_version
+            bundle.obj.cc_version = self.model.objects.get(
+                id=bundle.obj.id).cc_version
+
+            # specify the user
+            bundle.obj.save(user=request.user)
+
+        except Exception:  # pragma: no cover
+            logger.exception("error updating %s", bundle)  # pragma: no cover
+            raise  # pragma: no cover
+
+        return bundle
+
+
 
 class ProductResource(MTResource):
     """

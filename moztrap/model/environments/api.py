@@ -44,7 +44,7 @@ class CategoryResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = Category.objects.all()
-        fields = ["id", "profile", "name"]
+        fields = ["id", "name"]
         authorization = EnvironmentAuthorization()
         ordering = ["id", "name"]
 
@@ -74,6 +74,11 @@ class ElementResource(MTResource):
     def model(self):
         """Model class related to this resource."""
         return Element
+
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return ["category"]
 
 
 

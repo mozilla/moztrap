@@ -77,4 +77,9 @@ class ProductVersionResourceTest(ApiCrudCases):
             }
 
 
+    @property
+    def read_create_fields(self):
+        """product is read-only"""
+        return ["product"]
+
     # additional test cases, if any
