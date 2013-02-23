@@ -1,5 +1,5 @@
 from tastypie import fields
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from ..mtapi import MTResource, MTAuthorization
 
 from .models import Profile, Environment, Element, Category
@@ -21,9 +21,12 @@ class ProfileResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = Profile.objects.all()
-        fields = ["id", "name", "categories"]
+        fields = ["id", "name"]
         authorization = EnvironmentAuthorization()
         ordering = ["id", "name"]
+        filtering = {
+            "name": ALL,
+        }
 
     @property
     def model(self):
@@ -47,6 +50,9 @@ class CategoryResource(MTResource):
         fields = ["id", "name"]
         authorization = EnvironmentAuthorization()
         ordering = ["id", "name"]
+        filtering = {
+            "name": ALL,
+        }
 
     @property
     def model(self):
@@ -65,7 +71,8 @@ class ElementResource(MTResource):
         fields = ["id", "name", "category"]
         authorization = EnvironmentAuthorization()
         filtering = {
-            "category": ALL,
+            "category": ALL_WITH_RELATIONS,
+            "name": ALL,
         }
         ordering = ["id", "name"]
 
