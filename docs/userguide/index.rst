@@ -22,4 +22,5 @@ If you find an issue with MozTrap, please enter a bug in `Bugzilla`_
    ui/lists
    ui/runtests
    ui/import
+   howto
    faq
