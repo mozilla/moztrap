@@ -102,15 +102,11 @@ class CaseVersionResourceTest(ApiCrudCases):
         return actual
 
 
-    def manipulate_edit_data(self, fixture, fields):
-        """case and productversion are read-only"""
-        fields[u'case'] = unicode(
-            self.get_detail_url('case', str(fixture.case.id)))
-        fields[u'productversion'] = unicode(
-            self.get_detail_url(
-                'productversion', str(fixture.productversion.id)))
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return ["case", "productversion"]
 
-        return fields
 
     # overrides from crud.py
 
@@ -143,81 +139,6 @@ class CaseVersionResourceTest(ApiCrudCases):
         )
 
         self.assertEqual(res.text, self._product_mismatch_message)
-
-
-    def test_change_productversion_should_error(self):
-        """productversion is a create-only field."""
-
-        mozlogger.info('test_change_productversion_should_error')
-
-        # fixtures
-        fixture1 = self.factory
-        pv = self.F.ProductVersionFactory()
-        pv.product = fixture1.case.product
-        pv.save()
-        fields = self.backend_data(fixture1)
-        fields[u'steps'] = self.new_object_data[u'steps']
-        fields[u'productversion'] = unicode(
-            self.get_detail_url("productversion", pv.id))
-
-        # do put
-        res = self.put(
-            self.get_detail_url(self.resource_name, fixture1.id),
-            params=self.credentials,
-            data=fields,
-            status=400,
-        )
-
-        self.assertEqual(res.text,
-            "productversion of an existing caseversion may not be changed.")
-
-
-    def test_change_case_should_error(self):
-        """case is a create-only field."""
-
-        mozlogger.info('test_change_case_should_error')
-
-        # fixtures
-        fixture1 = self.factory
-        case = self.F.CaseFactory()
-        case.product = fixture1.case.product
-        case.save()
-        fields = self.backend_data(fixture1)
-        fields[u'steps'] = self.new_object_data[u'steps']
-        fields[u'case'] = unicode(
-            self.get_detail_url("case", case.id))
-
-        # do put
-        res = self.put(
-            self.get_detail_url(self.resource_name, fixture1.id),
-            params=self.credentials,
-            data=fields,
-            status=400,
-        )
-
-        self.assertEqual(res.text,
-            "case of an existing caseversion may not be changed.")
-
-
-    def test_update_without_productversion_and_case(self):
-        """productversion and case cannot be changed,
-        so they are not required on edit."""
-
-        mozlogger.info('test_update_without_productversion_and_case')
-
-        # fixtures
-        fixture1 = self.factory
-        fields = self.backend_data(fixture1)
-        fields[u'steps'] = self.new_object_data[u'steps']
-        fields.pop('case')
-        fields.pop('productversion')
-
-        # do put
-        res = self.put(
-            self.get_detail_url(self.resource_name, fixture1.id),
-            params=self.credentials,
-            data=fields,
-        )
 
 
 

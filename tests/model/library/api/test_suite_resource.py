@@ -94,6 +94,11 @@ class SuiteResourceTest(ApiCrudCases):
         return actual
 
 
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return ["product"]
+
     # additional test cases, if any
 
 
