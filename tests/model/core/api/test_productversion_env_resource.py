@@ -53,14 +53,8 @@ class ProductVersionEnvironmentsResourceTest(case.api.ApiTestCase):
             u"codename": unicode(pv.codename),
             u'environments': [{
                 u'elements': [{
-                    u'category': {
-                        u'id': unicode(category.id),
-                        u'name': u'OS',
-                        u'resource_uri': unicode(self.get_detail_url(
-                            "category",
-                            category.id,
-                            )),
-                        },
+                    u'category': unicode(
+                        self.get_detail_url("category", category.id)),
                     u'id': unicode(element.id),
                     u'name': u'OS X',
                     u'resource_uri': unicode(self.get_detail_url(

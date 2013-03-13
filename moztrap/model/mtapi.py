@@ -1,6 +1,8 @@
-from tastypie.resources import ModelResource
+from tastypie import http
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import  Authorization
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.resources import ModelResource
 
 from .core.models import ApiKey
 
@@ -109,6 +111,36 @@ class MTResource(ModelResource):
         raise NotImplementedError  # pragma: no cover
 
 
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return []
+
+
+    def check_read_create(self, bundle):
+        """Verify that request isn't trying to change a read-create field."""
+
+        obj = self.get_via_uri(bundle.request.path)
+        for fk in self.read_create_fields:
+
+            if fk not in bundle.data:
+                continue
+
+            new_fk_id = self._id_from_uri(bundle.data[fk])
+            old_fk_id = str(getattr(obj, fk).id)
+            if new_fk_id != old_fk_id:
+                error_message = str(
+                    "%s of an existing %s " % (fk, self._meta.resource_name) +
+                    "may not be changed.")
+                logger.error(
+                    "\n".join([error_message, "old: %s, new: %s"]),
+                    old_fk_id, new_fk_id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
+
+
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
         # this try/except logging is more helpful than 500 / 404 errors on
@@ -128,6 +160,7 @@ class MTResource(ModelResource):
         """Set the modified_by field for the object to the request's user"""
         # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
+        bundle = self.check_read_create(bundle)
         try:
             bundle = super(MTResource, self).obj_update(
                 bundle=bundle, request=request, **kwargs)

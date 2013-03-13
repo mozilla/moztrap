@@ -96,14 +96,10 @@ class RunResourceTest(case.api.ApiTestCase):
 
         exp_objects = {
             u'elements': [
-                {u'category':
-                     {u'resource_uri': unicode(self.get_detail_url(
-                         "category",
-                         envs[0].elements.get().category.id),
-                        ),
-                      u'id': unicode(envs[0].elements.get().category.id),
-                      u'name': u'OS'
-                     },
+                {u'category': unicode(
+                    self.get_detail_url(
+                        "category",
+                        envs[0].elements.get().category.id)),
                  u'resource_uri': unicode(self.get_detail_url(
                      "element",
                      envs[0].elements.get().id),
