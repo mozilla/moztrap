@@ -14,8 +14,8 @@ The following is a description of how to setup your new system to test your
 product.
 
 
-Create the environments
-^^^^^^^^^^^^^^^^^^^^^^^
+Create environments
+^^^^^^^^^^^^^^^^^^^
 
 Odds are you will be testing your product in several
 :ref:`environments<environments>`.  These could be a collection of hardware
@@ -57,8 +57,8 @@ To winnow down the list of environments to test:
     #. click ``done editing``
 
 
-Create your Product
-^^^^^^^^^^^^^^^^^^^
+Create a Product
+^^^^^^^^^^^^^^^^
 
 For this example, we will presume your product is called **SpeckDetector**.
 It detects specks.  Very handy.
