@@ -87,3 +87,16 @@ Filtering
     .. sourcecode:: http
 
         GET /api/v1/environment/?format=json&elements=5
+
+.. http:get:: /api/v1/environment/<id>
+.. http:post:: /api/v1/environment
+
+Required Fields
+^^^^^^^^^^^^^^^
+
+    :profile: A resource uri to the parent Profile.
+    :elements: A list of element resource uri's.
+
+.. note:: Each element must be from a separate category.
+
+.. http:delete:: /api/v1/environment/<id>
