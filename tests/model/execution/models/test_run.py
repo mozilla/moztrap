@@ -429,12 +429,16 @@ class RunActivationTest(case.DBTestCase):
         tc3 = self.F.CaseFactory.create(product=self.p)
         tcv3 = self.F.CaseVersionFactory.create(
             case=tc3, productversion=self.pv8, status="active")
+        tc4 = self.F.CaseFactory.create(product=self.p)
+        tcv4 = self.F.CaseVersionFactory.create(
+            case=tc4, productversion=self.pv8, status="active")
 
         ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts1, case=tc3, order=1)
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc4, order=2)
         ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
-        self.F.SuiteCaseFactory.create(suite=ts2, case=tc2, order=1)
-        self.F.SuiteCaseFactory.create(suite=ts2, case=tc1, order=2)
+        self.F.SuiteCaseFactory.create(suite=ts2, case=tc1, order=1)
+        self.F.SuiteCaseFactory.create(suite=ts2, case=tc2, order=2)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
         self.F.RunSuiteFactory.create(suite=ts2, run=r, order=1)
@@ -442,7 +446,7 @@ class RunActivationTest(case.DBTestCase):
 
         r.activate()
 
-        self.assertOrderedCaseVersions(r, [tcv2, tcv1, tcv3])
+        self.assertOrderedCaseVersions(r, [tcv1, tcv2, tcv3, tcv4])
 
 
     def test_sets_status_active(self):
@@ -500,7 +504,8 @@ class RunActivationTest(case.DBTestCase):
         ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
-        r = self.F.RunFactory.create(productversion=self.pv8, status="disabled")
+        r = self.F.RunFactory.create(
+            productversion=self.pv8, status="disabled")
         self.F.RunSuiteFactory.create(suite=ts, run=r)
 
         r.activate()
@@ -510,6 +515,57 @@ class RunActivationTest(case.DBTestCase):
 
 
     def test_removes_duplicate_runcaseversions(self):
+        """
+        Re-activating a run that has duplicate runcaseversions removes them.
+
+        If there is a result for any dupes, it will preserve the one with the
+        latest result.
+
+        """
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.pv8,
+            status="active",
+            name="got a dup",
+            )
+        rcv1 = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion=cv,
+            )
+        # rcv1 will have results
+        self.F.ResultFactory.create(runcaseversion=rcv1)
+        self.F.ResultFactory.create(runcaseversion=rcv1)
+
+        # rcv2 will be a dup, but will have a later result, so rcv1 will
+        # get removed on activation
+        rcv2 = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion=cv,
+            )
+        self.F.ResultFactory.create(runcaseversion=rcv2)
+        rcv3 = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            caseversion__name="no dup",
+            )
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+
+        # add the cases to the suite
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv3.caseversion.case)
+
+        # add the suite to the run
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.all()
+        self.assertEqual(rcv.count(), 2)
+        self.assertEqual(set(rcv), set([rcv2, rcv3]))
+
+
+    def test_removes_unused_runcaseversions(self):
         """
         Re-activating a run that has had a caseversion removed cleans them up.
 
@@ -642,7 +698,7 @@ class RunActivationTest(case.DBTestCase):
             ORDER BY rs.order, sc.order
             ",
 
-        Query 3-7: Get all the runcaseversions that are not in the result of
+        Query 3-6: Get all the runcaseversions that are not in the result of
          Query 2
             to be used for delete. and then delete them.
 
@@ -674,13 +730,21 @@ class RunActivationTest(case.DBTestCase):
             `execution_result`.`reviewed_by_id` FROM `execution_result`
             WHERE `execution_result`.`runcaseversion_id` IN (1)",
 
-            "DELETE FROM `execution_runcaseversion_suites` WHERE
-            `runcaseversion_id` IN (1)",
-
             "DELETE FROM `execution_runcaseversion_environments` WHERE
             `runcaseversion_id` IN (1)",
 
             "DELETE FROM `execution_runcaseversion` WHERE `id` IN (1)",
+
+        Query 7: find duplicates in the existing rcvs, if they exist
+
+            SELECT `execution_runcaseversion`.`caseversion_id`,
+            COUNT(`execution_runcaseversion`.`caseversion_id`) AS
+            `num_records` FROM `execution_runcaseversion` WHERE (
+            `execution_runcaseversion`.`deleted_on` IS NULL AND
+            `execution_runcaseversion`.`run_id` = 8 ) GROUP BY
+            `execution_runcaseversion`.`caseversion_id` HAVING COUNT(
+            `execution_runcaseversion`.`caseversion_id`) > 1  ORDER BY
+            `execution_runcaseversion`.`order` ASC
 
         Query 8: Get existing runcaseversions with the caseversion ids so we
          can use
@@ -694,33 +758,32 @@ class RunActivationTest(case.DBTestCase):
             .`deleted_on` IS NULL AND `execution_runcaseversion`.`run_id` =
             1 ) ORDER BY `execution_runcaseversion`.`order` ASC",
 
-        Query 9: bulk insert for RunCaseVersions, updates if already existing
+        Query 9: update order on existing rcvs
 
-            "INSERT INTO execution_runcaseversion (`id`, `created_on`,
+            "UPDATE `execution_runcaseversion` SET `modified_on` =
+            '2013-03-15 01:00:08', `modified_by_id` = NULL, `order` = 4,
+            `cc_version` = `execution_runcaseversion`.`cc_version` + 1 WHERE
+             (`execution_runcaseversion`.`deleted_on` IS NULL AND
+             `execution_runcaseversion`.`run_id` = 8  AND
+             `execution_runcaseversion`.`caseversion_id` = 16 )",
+
+        Query 10: bulk insert for RunCaseVersions
+
+            "INSERT INTO `execution_runcaseversion` (`created_on`,
             `created_by_id`, `modified_on`, `modified_by_id`, `deleted_on`,
             `deleted_by_id`, `cc_version`, `run_id`, `caseversion_id`,
-            `order`) VALUES (NULL, '2012-11-20 00:11:25.417158', NULL,
-            '2012-11-20 00:11:25.417176', NULL, NULL, NULL, 0, 1, 2, 1),
-            (NULL, '2012-11-20 00:11:25.417239', NULL,
-            '2012-11-20 00:11:25.417251', NULL, NULL, NULL, 0, 1, 3, 2),
-            (NULL, '2012-11-20 00:11:25.417298', NULL,
-            '2012-11-20 00:11:25.417310', NULL, NULL, NULL, 0, 1, 4, 3), (2,
-             '2012-11-20 00:11:25.417353', NULL, '2012-11-20 00:11:25
-             .417365', NULL, NULL, NULL, 0, 1, 5, 4), (NULL,
-             '2012-11-20 00:11:25.417411', NULL, '2012-11-20 00:11:25
-             .417423', NULL, NULL, NULL, 0, 1, 6, 5), (NULL,
-             '2012-11-20 00:11:25.417469', NULL, '2012-11-20 00:11:25
-             .417481', NULL, NULL, NULL, 0, 1, 7, 6) ON DUPLICATE KEY UPDATE
-              `caseversion_id`=VALUES(`caseversion_id`),
-              `run_id`=VALUES(`run_id`), `cc_version`=VALUES(`cc_version`),
-              `modified_by_id`=VALUES(`modified_by_id`),
-              `modified_on`=VALUES(`modified_on`), `order`=VALUES(`order`)",
+            `order`) VALUES ('2013-03-15 01:00:08', NULL,
+            '2013-03-15 01:00:08', NULL, NULL, NULL, 0, 8, 13, 1),
+            ('2013-03-15 01:00:08', NULL, '2013-03-15 01:00:08', NULL, NULL,
+             NULL, 0, 8, 14, 2), ('2013-03-15 01:00:08', NULL,
+             '2013-03-15 01:00:08', NULL, NULL, NULL, 0, 8, 15, 3),
+             ('2013-03-15 01:00:08', NULL, '2013-03-15 01:00:08', NULL, NULL,
+             NULL, 0, 8, 17, 5), ('2013-03-15 01:00:08', NULL,
+             '2013-03-15 01:00:08', NULL, NULL, NULL, 0, 8, 18, 6)"
 
-        Query 10: In order to add the runcaseversion_environment records,
-        we need to
-            have all the relevant runcaseversions and prefetch the
-            environments for the
-            caseversions
+        Query 11: In order to add the runcaseversion_environment records,
+            we need to have all the relevant runcaseversions and prefetch the
+            environments for the caseversions
 
             "SELECT `execution_runcaseversion`.`id`,
             `execution_runcaseversion`.`created_on`,
@@ -748,7 +811,7 @@ class RunActivationTest(case.DBTestCase):
             .`deleted_on` IS NULL AND `execution_runcaseversion`.`run_id` =
             1 ) ORDER BY `execution_runcaseversion`.`order` ASC",
 
-        Query 11: This is the prefetch_related query used with Query 9.  Django
+        Query 12: This is the prefetch_related query used with Query 9.  Django
             makes a separate query and links them in-memory.
 
             "SELECT (`library_caseversion_environments`.`caseversion_id`) AS
@@ -769,7 +832,7 @@ class RunActivationTest(case.DBTestCase):
              `library_caseversion_environments`.`caseversion_id` IN (2, 3,
              4, 5, 6, 7))",
 
-        Query 12: runcaseversion_environments that already existed that
+        Query 13: runcaseversion_environments that already existed that
         pertain to
             the runcaseversions that are still relevant.
 
@@ -779,7 +842,7 @@ class RunActivationTest(case.DBTestCase):
             WHERE `execution_runcaseversion_environments`
             .`runcaseversion_id` IN (3, 4, 5, 2, 6, 7)",
 
-        Query 13: Get the environments for this run so we can find the
+        Query 14: Get the environments for this run so we can find the
         intersection
             with the caseversions.
 
@@ -790,7 +853,7 @@ class RunActivationTest(case.DBTestCase):
              `environments_environment`.`deleted_on` IS NULL AND
              `execution_run_environments`.`run_id` = 1 )",
 
-        Query 14: Find the runcaseversion_environments that are no longer
+        Query 15: Find the runcaseversion_environments that are no longer
         relevant.
 
             "SELECT `execution_runcaseversion_environments`.`id`,
@@ -801,13 +864,13 @@ class RunActivationTest(case.DBTestCase):
             = 2  AND `execution_runcaseversion_environments`.`environment_id`
             = 5 ))",
 
-        Query 15: Delete the runcaseversion_environments that pertained to the
+        Query 16: Delete the runcaseversion_environments that pertained to the
             caseversion that are no longer relevant.
 
             "DELETE FROM `execution_runcaseversion_environments` WHERE `id`
             IN (9)",
 
-        Query 16: Bulk insert of runcaseversion_environment mappings.
+        Query 17: Bulk insert of runcaseversion_environment mappings.
 
             "INSERT INTO `execution_runcaseversion_environments`
             (`runcaseversion_id`, `environment_id`) VALUES (7, 3), (5, 4),
@@ -815,7 +878,7 @@ class RunActivationTest(case.DBTestCase):
             (7, 1), (6, 3), (6, 2), (4, 3), (4, 2), (3, 4), (5, 1), (4, 1),
             (7, 2), (5, 3)",
 
-        Query 17: Update the test run to make it active.
+        Query 18: Update the test run to make it active.
 
             "UPDATE `execution_run` SET `created_on` = '2012-11-20 00:11:25',
             `created_by_id` = NULL, `modified_on` = '2012-11-20 00:11:25',
@@ -877,23 +940,23 @@ class RunActivationTest(case.DBTestCase):
         connection.queries = []
 
         try:
-            with self.assertNumQueries(16):
+            with self.assertNumQueries(18):
                 r.activate()
 
             # to debug, uncomment these lines:
-#            import json
-#            r.activate()
-#            print(json.dumps([x["sql"] for x in connection.queries], indent=4))
-#            print("NumQueries={0}".format(len(connection.queries)))
+            # import json
+            # r.activate()
+            # print(json.dumps([x["sql"] for x in connection.queries], indent=4))
+            # print("NumQueries={0}".format(len(connection.queries)))
 
             selects = [x["sql"] for x in connection.queries if x["sql"].startswith("SELECT")]
             inserts = [x["sql"] for x in connection.queries if x["sql"].startswith("INSERT")]
             updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
             deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
 
-            self.assertEqual(len(selects), 10)
+            self.assertEqual(len(selects), 11)
             self.assertEqual(len(inserts), 2)
-            self.assertEqual(len(updates), 1)
+            self.assertEqual(len(updates), 2)
             self.assertEqual(len(deletes), 3)
         except AssertionError as e:
             raise e
