@@ -13,7 +13,7 @@
 
       {% if user|has_perm:"library.manage_cases" %}
         {% url 'manage_caseversion_edit' caseversion_id=caseversion.id as caseversion_edit_url %}
-        <a href="{{ caseversion_edit_url }}" target="_blank" class="case-edit">Edit Case Details</a>
+        <a href="{{ caseversion_edit_url }}" target="_blank" class="detail-case-edit">Edit Case Details</a>
       {% endif %}
 
     {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}

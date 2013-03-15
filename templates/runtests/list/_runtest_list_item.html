@@ -4,18 +4,17 @@
 {% result_for runcaseversion user environment as result %}
 {% other_result_for runcaseversion user environment as other_result %}
 {% suites_for run runcaseversion as suites %}
+{% url "results_results" rcv_id=runcaseversion.id as result_url %}
 
 <article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
-      <span class="result {{ result.status }}" title="your result">
         {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
-          pending
+          <span class="result {{ result.status }}">pending</span>
         {% else %}
-          {{ result.status }}
+          <a class="result {{ result.status }}" href="{{ result_url }}" target="_blank" data-id="{{ result.id }}" title="your result">{{ result.status }}</a>
         {% endif %}
-      </span>
     </div>
 
     {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
@@ -27,7 +26,6 @@
 
       <div class="other-result">
           {% if other_result and other_result.status != result.STATUS.assigned and other_result.status != result.STATUS.started %}
-            {% url "results_results" rcv_id=runcaseversion.id as detail_url %}
             <a href="{{ detail_url }}" target="_blank" class="other-{{ other_result.status }}" data-id="{{ other_result.id }}" title="marked {{ other_result.status }} by {{ other_result.tester }} {% if other_result.comment %} - {{ other_result.comment }}{% endif %}"></a>
           {% else %}
             <span class="other-empty"></span>
