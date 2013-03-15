@@ -2,7 +2,10 @@
 Utility functions for deployment-related path-munging.
 
 """
-import os, sys, site
+
+import os
+import sys
+import site
 
 
 def add_vendor_lib():

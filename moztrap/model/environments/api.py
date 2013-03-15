@@ -1,28 +1,91 @@
 from tastypie import fields
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from ..mtapi import MTResource, MTAuthorization
 
-from .models import Environment, Element, Category
+from .models import Profile, Environment, Element, Category
 
 
 
-class CategoryResource(ModelResource):
-    """Return a list of environment categories."""
+class EnvironmentAuthorization(MTAuthorization):
+    """Atypically named permission."""
 
-    class Meta:
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "environments.manage_environments"
+
+
+
+class ProfileResource(MTResource):
+    """Create, Read, Update, and Delete capabilities for Profile."""
+
+    class Meta(MTResource.Meta):
+        queryset = Profile.objects.all()
+        fields = ["id", "name"]
+        authorization = EnvironmentAuthorization()
+        ordering = ["id", "name"]
+        filtering = {
+            "name": ALL,
+        }
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Profile
+
+
+
+class CategoryResource(MTResource):
+    """Create, Read, Update and Delete capabilities for Category."""
+
+    elements = fields.ToManyField(
+        "moztrap.model.environments.api.ElementResource",
+        "elements",
+        full=True,
+        readonly=True
+    )
+
+    class Meta(MTResource.Meta):
         queryset = Category.objects.all()
-        list_allowed_methods = ['get']
         fields = ["id", "name"]
+        authorization = EnvironmentAuthorization()
+        ordering = ["id", "name"]
+        filtering = {
+            "name": ALL,
+        }
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Category
 
 
-class ElementResource(ModelResource):
-    """Return a list of environment elements."""
 
-    category = fields.ForeignKey(CategoryResource, "category", full=True)
+class ElementResource(MTResource):
+    """Create, Read, Update and Delete capabilities for Element."""
 
-    class Meta:
+    category = fields.ForeignKey(CategoryResource, "category")
+
+    class Meta(MTResource.Meta):
         queryset = Element.objects.all()
-        list_allowed_methods = ['get']
-        fields = ["id", "name"]
+        fields = ["id", "name", "category"]
+        authorization = EnvironmentAuthorization()
+        filtering = {
+            "category": ALL_WITH_RELATIONS,
+            "name": ALL,
+        }
+        ordering = ["id", "name"]
+
+
+    @property
+    def model(self):
+        """Model class related to this resource."""
+        return Element
+
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return ["category"]
 
 
 
@@ -36,5 +99,3 @@ class EnvironmentResource(ModelResource):
         list_allowed_methods = ['get']
         fields = ["id"]
         filtering = {"elements": ALL}
-
-

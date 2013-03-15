@@ -4,10 +4,11 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding field 'ProductVersion.cc_version'
         db.add_column('core_productversion', 'cc_version', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
 
@@ -16,7 +17,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Deleting field 'ProductVersion.cc_version'
         db.delete_column('core_productversion', 'cc_version')
 

@@ -39,6 +39,9 @@ class TagResource(MTResource):
         return Tag
 
 
+    # do not put read_create_fields here, as product is a special
+    # case that may be changed some times but not others
+
     def obj_update(self, bundle, request=None, **kwargs):
         """Lots of rules for modifying product for tags."""
         tag = self.get_via_uri(bundle.request.path, request)
@@ -82,7 +85,7 @@ class TagResource(MTResource):
                         else:
                             logger.debug(
                                 "product matches caseversions' product")
-                    else: # changing from product-specific to global
+                    else:  # changing from product-specific to global
                         logger.debug("changing from product-specific to global")
                 else:
                     logger.debug("not changing product")
@@ -93,4 +96,3 @@ class TagResource(MTResource):
 
         return super(TagResource, self).obj_update(
             bundle=bundle, request=request, **kwargs)
-

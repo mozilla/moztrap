@@ -3,16 +3,16 @@ Tests for EnvironmentResource api.
 
 """
 
-from tests import case
+from tests.case.api.crud import ApiCrudCases
 
 
 
-class ElementResourceTest(case.api.ApiTestCase):
+class ElementResourceTest(ApiCrudCases):
 
     @property
     def factory(self):
         """The model factory for this object."""
-        return self.F.ElementFactory
+        return self.F.ElementFactory()
 
 
     @property
@@ -20,43 +20,56 @@ class ElementResourceTest(case.api.ApiTestCase):
         return "element"
 
 
-    def test_element_list(self):
-        """Get a list of existing elements"""
-        category = self.F.CategoryFactory.create(name="OS")
-        element = self.factory.create(name="OS X", category=category)
+    @property
+    def permission(self):
+        """The permissions needed to modify this object type."""
+        return "environments.manage_environments"
 
-        res = self.get_list()
 
-        act_meta = res.json["meta"]
-        exp_meta = {
-            "limit" : 20,
-            "next" : None,
-            "offset" : 0,
-            "previous" : None,
-            "total_count" : 1,
+    @property
+    def new_object_data(self):
+        """Generates a dictionary containing the field names and auto-generated
+        values needed to create a unique object.
+
+        The output of this method can be sent in the payload parameter of a
+        POST message.
+        """
+        modifiers = (self.datetime, self.resource_name)
+        self.category_fixture = self.F.CategoryFactory()
+
+        return {
+            u"name": u"element %s %s" % modifiers,
+            u"category": unicode(
+                self.get_detail_url("category", str(self.category_fixture.id))),
             }
 
-        self.assertEquals(act_meta, exp_meta)
 
-        act_objects = res.json["objects"]
-        exp_objects = []
+    @property
+    def read_create_fields(self):
+        """category is read-only."""
+        return ["category"]
 
-        exp_objects.append({
-            u'category': {
-                u'id': unicode(category.id),
-                u'name': u'OS',
-                u'resource_uri': unicode(self.get_detail_url(
-                    "category",
-                    category.id,
-                    )),
-                },
-            u'id': unicode(element.id),
-            u'name': u'OS X',
-            u'resource_uri': unicode(self.get_detail_url(
-                "element",
-                element.id,
-                )),
-            })
 
-        self.maxDiff = None
-        self.assertEqual(exp_objects, act_objects)
+    def backend_object(self, id):
+        """Returns the object from the backend, so you can query it's values in
+        the database for validation.
+        """
+        return self.model.Element.everything.get(id=id)
+
+
+    def backend_data(self, backend_obj):
+        """Query's the database for the object's current values. Output is a
+        dictionary that should match the result of getting the object's detail
+        via the API, and can be used to verify API output.
+
+        Note: both keys and data should be in unicode
+        """
+        return {
+            u"id": unicode(str(backend_obj.id)),
+            u"name": unicode(backend_obj.name),
+            u"category": unicode(
+                self.get_detail_url("category", str(backend_obj.category.id))
+            ),
+            u"resource_uri": unicode(
+                self.get_detail_url(self.resource_name, str(backend_obj.id))),
+        }

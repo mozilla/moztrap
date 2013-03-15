@@ -8,6 +8,7 @@ from ..tags.models import Tag
 from .models import (
     Case, CaseVersion, Suite, SuiteCase, CaseStep, CaseAttachment)
 
+
 @fixture_generator(
     Case, CaseVersion, CaseStep, CaseAttachment,
     requires=["core.sample_products", "tags.sample_tags", "core.sample_users"])

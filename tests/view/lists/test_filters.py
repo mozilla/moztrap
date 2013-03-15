@@ -649,7 +649,7 @@ class PinnedFilterTest(FiltersTestCase):
             })
 
         pf = self.filters.PinnedFilters(COOKIES=COOKIES)
-        newfilters=pf.fill_form_querystring(GET=GET)
+        newfilters = pf.fill_form_querystring(GET=GET)
         self.assertEqual(
             newfilters,
             {"foo": [u"2"], "one": ["bub"]},
@@ -676,7 +676,7 @@ class PinnedFilterTest(FiltersTestCase):
             })
 
         pf = self.filters.PinnedFilters(COOKIES=COOKIES)
-        newfilters=pf.fill_form_querystring(GET=GET)
+        newfilters = pf.fill_form_querystring(GET=GET)
         self.assertEqual(
             newfilters,
             {"foo": ["5"], "one": ["bub"]},

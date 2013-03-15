@@ -2,6 +2,8 @@
 Parser for text format for bulk test case entry.
 
 """
+
+
 class ParsingError(Exception):
     pass
 

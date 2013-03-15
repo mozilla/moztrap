@@ -37,17 +37,17 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
         c_i = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="InvalidCase",
             )
         c_f = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="FailCase",
             )
         self.F.CaseStepFactory(caseversion=c_f)
@@ -127,7 +127,7 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
 
@@ -167,7 +167,7 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
 
@@ -208,7 +208,7 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
 
@@ -242,7 +242,7 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
 
@@ -280,7 +280,7 @@ class ResultResourceTest(case.api.ApiTestCase):
 
         c_p = self.F.CaseVersionFactory.create(
             case__product=pv.product,
-            productversion = pv,
+            productversion=pv,
             name="PassCase",
             )
 

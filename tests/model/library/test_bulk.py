@@ -32,12 +32,12 @@ class ParseBulkTest(case.TestCase):
                 And
                 When I am done
                 Then I feel satisfied
-                
+
                   tEst that a second testcase works
                  With any old description
                   whEn I do this thing
                 Over here
-                tHen I see that thing  
+                tHen I see that thing
                 Over there
                 """)
                 ),

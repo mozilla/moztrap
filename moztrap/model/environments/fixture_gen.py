@@ -6,6 +6,7 @@ from fixture_generator import fixture_generator
 from ..core.auth import User
 from .models import Profile, Environment, Element, Category
 
+
 @fixture_generator(
     Profile, Category, Element, Environment, requires=["core.sample_users"])
 def sample_environments():

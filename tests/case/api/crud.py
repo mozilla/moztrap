@@ -25,6 +25,10 @@ class ApiCrudCases(ApiTestCase):
     If any of these properties / methods are called on a child class without
     having implemented them, a NotImplementedError will be thrown.
 
+    The following methods have default behavior, but may be extended:
+     - manipulate_edit_data                     (method)
+     - read_create_fields                       (property)
+
     Child classes are may extend setUp() to provide required fixtures.
 
     The test methods provided by this class are:
@@ -33,6 +37,8 @@ class ApiCrudCases(ApiTestCase):
       - test_read_list()
       - test_read_detail()
       - test_update_detail()
+      - test_change_fk_should_error()
+      - test_update_without_fk()
       - test_update_list_forbidden()
       - test_update_fails_without_creds()
       - test_delete_detail_perminant()
@@ -171,9 +177,19 @@ class ApiCrudCases(ApiTestCase):
 
 
     def manipulate_edit_data(self, fixture, fields):
-        """may be used to replace items in the fields dicts with the values
-        from the fixture, so as not to disturb read-only fields."""
+        """replace the data for the foreign keys with the current values."""
+
+        for fk in self.read_create_fields:
+            fields[fk] = unicode(
+                self.get_detail_url(fk, str(getattr(fixture, fk).id)))
+
         return fields
+
+
+    @property
+    def read_create_fields(self):
+        """List of fields that are required for create but read-only for update."""
+        return []
 
 
     @property
@@ -416,6 +432,64 @@ class ApiCrudCases(ApiTestCase):
         self.assertEqual(meta_after["modified_on"], self.utcnow)
         self.assertNotEqual(
             meta_before['modified_on'], meta_after['modified_on'])
+
+
+    def test_change_fk_should_error(self):
+        """Trying to change a read-only foreign key should result in a 400 error."""
+
+        if self.is_abstract_class:
+            return
+
+        for fk in self.read_create_fields:
+            mozlogger.info('test_change_fk_should_error %s' % fk)
+
+            # create fixture
+            fixture1 = self.factory
+            obj_id = str(fixture1.id)
+            fields = self.new_object_data
+
+            # make sure only the fk under test is inappropriate
+            if len(self.read_create_fields) > 1:
+                fk_value = fields[fk]
+                fields = self.manipulate_edit_data(fixture1, fields)
+                fields[fk] = fk_value
+
+            # do put
+            res = self.put(
+                self.get_detail_url(self.resource_name, obj_id),
+                params=self.credentials,
+                data=fields,
+                status=400,
+            )
+
+            assert res.text == str(
+                "%s of an existing %s " % (fk, self.resource_name) +
+                "may not be changed.")
+
+
+
+    def test_update_without_fk(self):
+        """fk's cannot be changed, so they are not required on edit."""
+
+        if self.is_abstract_class:
+            return
+
+        # fixtures
+        fixture1 = self.factory
+
+        for fk in self.read_create_fields:
+            mozlogger.info('test_update_without_fk %s' % fk)
+
+            fields = self.backend_data(fixture1)
+            fields = self.manipulate_edit_data(fixture1, fields)
+            fields.pop(fk)
+
+            # do put
+            res = self.put(
+                self.get_detail_url(self.resource_name, fixture1.id),
+                params=self.credentials,
+                data=fields,
+            )
 
 
     def test_update_list_forbidden(self):
