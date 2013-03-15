@@ -13,7 +13,8 @@
         {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
           pending
         {% else %}
-          {{ result.status }}
+            {% url "results_results" rcv_id=runcaseversion.id as result_url %}
+            <a href="{{ result_url }}" target="_blank" data-id="{{ result.id }}">{{ result.status }}</a>
         {% endif %}
       </span>
     </div>
