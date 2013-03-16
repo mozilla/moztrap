@@ -100,3 +100,11 @@ Required Fields
 .. note:: Each element must be from a separate category.
 
 .. http:delete:: /api/v1/environment/<id>
+.. http:put:: /api/v1/environment/<id>
+
+.. http:patch:: /api/v1/environment
+
+The `PATCH` command is being overloaded to provide combinatorics services.
+If you send a `PATCH` with
+data={u'profile': u'<resource uri>, u'categories': [u'<resource uri>, ...]}
+it will create environments for all of the combinations of elements in the categories.

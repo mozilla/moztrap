@@ -57,13 +57,6 @@ class EnvironmentResourceTest(ApiCrudCases):
             }
 
 
-    # def _element_fixture(self, category, name=None):
-    #     """
-    #     elem = self.F.ElementFactory(name=name)
-    #     elem.category = category
-    #     elem.save()
-    #     return elem
-
     def backend_object(self, id):
         """Returns the object from the backend, so you can query it's values in
         the database for validation.
@@ -87,16 +80,6 @@ class EnvironmentResourceTest(ApiCrudCases):
             u"resource_uri": unicode(
                 self.get_detail_url(self.resource_name, str(backend_obj.id))),
         }
-
-
-    def test_update_detail(self):
-        """PUT is not supported for environments."""
-        pass
-
-
-    def test_update_fails_without_creds(self):
-        """PUT is not supported for environments."""
-        pass
 
 
     def test_elements_must_be_from_different_categories(self):

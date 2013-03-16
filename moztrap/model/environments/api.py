@@ -104,7 +104,7 @@ class EnvironmentResource(MTResource):
     class Meta(MTResource.Meta):
         queryset = Environment.objects.all()
         list_allowed_methods = ['get', 'post', 'patch']
-        detail_allowed_methods = ['get','delete']
+        detail_allowed_methods = ['get', 'put', 'delete']
         fields = ["id", "profile", "elements"]
         filtering = {
             "elements": ALL,
@@ -117,6 +117,7 @@ class EnvironmentResource(MTResource):
     def model(self):
         """Model class related to this resource."""
         return Environment
+
 
     def hydrate_m2m(self, bundle):
         """Validate the elements, which should each belong to separate categories."""
