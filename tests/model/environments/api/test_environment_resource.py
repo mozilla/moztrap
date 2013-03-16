@@ -36,20 +36,14 @@ class EnvironmentResourceTest(ApiCrudCases):
         The output of this method can be sent in the payload parameter of a
         POST message.
         """
-        modifiers = (self.datetime, self.resource_name)
+
         self.profile_fixture = self.F.ProfileFactory()
-        self.category_fixture1 = self.F.CategoryFactory()
-        self.category_fixture2 = self.F.CategoryFactory()
-        self.category_fixture3 = self.F.CategoryFactory()
-        self.element_fixture1 = self.F.ElementFactory()
-        self.element_fixture1.category = self.category_fixture1
-        self.element_fixture1.save()
-        self.element_fixture2 = self.F.ElementFactory()
-        self.element_fixture2.category = self.category_fixture2
-        self.element_fixture2.save()
-        self.element_fixture3 = self.F.ElementFactory()
-        self.element_fixture3.category = self.category_fixture3
-        self.element_fixture3.save()
+        self.category_fixture1 = self.F.CategoryFactory(name="A")
+        self.category_fixture2 = self.F.CategoryFactory(name="B")
+        self.category_fixture3 = self.F.CategoryFactory(name="C")
+        self.element_fixture1 = self.F.ElementFactory(category=self.category_fixture1, name="A 2")
+        self.element_fixture2 = self.F.ElementFactory(category=self.category_fixture2, name="B 2")
+        self.element_fixture3 = self.F.ElementFactory(category=self.category_fixture3, name="C 2")
         self.element_fixture_list = [
             self.element_fixture1, self.element_fixture2, self.element_fixture3]
 
@@ -62,6 +56,13 @@ class EnvironmentResourceTest(ApiCrudCases):
                 ) for elem in self.element_fixture_list],
             }
 
+
+    # def _element_fixture(self, category, name=None):
+    #     """
+    #     elem = self.F.ElementFactory(name=name)
+    #     elem.category = category
+    #     elem.save()
+    #     return elem
 
     def backend_object(self, id):
         """Returns the object from the backend, so you can query it's values in
@@ -102,7 +103,7 @@ class EnvironmentResourceTest(ApiCrudCases):
         """A post with two elements from the same category should error."""
         logger.info("test_elements_must_be_from_different_categories")
 
-        # get data for creation
+        # get data for creation & munge it
         fields = self.new_object_data
         self.element_fixture2.category = self.element_fixture1.category
         self.element_fixture2.save()
@@ -117,3 +118,38 @@ class EnvironmentResourceTest(ApiCrudCases):
 
         error_msg = "Elements must each belong to a different Category."
         self.assertEqual(res.text, error_msg)
+
+
+    def test_basic_combinatorics_patch(self):
+        """A Patch request with profile and categories should do combinatorics
+        on the categories and create environments."""
+        logger.info("test_basic_combinatorics_patch")
+
+        fields = self.new_object_data
+
+        # create more elements for each category
+        for x in range(2):
+            self.F.ElementFactory(category=self.category_fixture1, name="A %s" % x)
+            self.F.ElementFactory(category=self.category_fixture2, name="B %s" % x)
+            self.F.ElementFactory(category=self.category_fixture3, name="C %s" % x)
+
+        # modify fields to send categories rather than elements
+        fields.pop('elements')
+        fields['categories'] = [
+            unicode(self.get_detail_url(
+                "category", str(self.category_fixture1.id))),
+            unicode(self.get_detail_url(
+                "category", str(self.category_fixture2.id))),
+            unicode(self.get_detail_url(
+                "category", str(self.category_fixture3.id))),
+        ]
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            )
+
+        # check that it made the right number of environments
+        self._test_filter_list_by(u'profile', self.profile_fixture.id, 27)

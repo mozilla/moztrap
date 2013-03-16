@@ -103,7 +103,7 @@ class EnvironmentResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = Environment.objects.all()
-        list_allowed_methods = ['get', 'post']
+        list_allowed_methods = ['get', 'post', 'patch']
         detail_allowed_methods = ['get','delete']
         fields = ["id", "profile", "elements"]
         filtering = {
@@ -129,3 +129,38 @@ class EnvironmentResource(MTResource):
             raise ImmediateHttpResponse(response=http.HttpBadRequest(error_msg))
         return bundle
 
+
+    def patch_list(self, request, **kwargs):
+        """
+        Since there is no RESTful way to do what we want to do, and since ``PATCH``
+        is poorly defined with regards to RESTfulness, we are overloading ``PATCH``
+        to take a single request that performs combinatorics and creates multiple
+        objects.
+        """
+        import itertools
+        from django.db import transaction
+        from tastypie.utils import dict_strip_unicode_keys
+
+        deserialized = self.deserialize(request, request.raw_post_data, format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        # do the combinatorics
+        elem_lists = []
+        categories = deserialized.pop('categories', [])
+        for cat in categories:
+            logger.debug(cat)
+            cat = Category.objects.filter(id=self._id_from_uri(cat))
+            elem_list = Element.objects.filter(category=cat)
+            elem_lists.append(elem_list)
+
+        combinatorics = itertools.product(*elem_lists)
+
+        # do the creation
+        with transaction.commit_on_success():
+            for combo in combinatorics:
+                deserialized['elements'] = combo
+                bundle = self.build_bundle(data=dict_strip_unicode_keys(deserialized))
+                bundle.request.META['REQUEST_METHOD'] = 'PATCH'
+                self.is_valid(bundle, request)
+                self.obj_create(bundle, request=request)
+
+        return http.HttpAccepted()
