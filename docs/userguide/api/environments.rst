@@ -1,6 +1,12 @@
 Environment API
 ===============
 
+Environments do not behave in quite the same way in the API as they do in
+the Web UI. In the API, create Categories and their child Elements first,
+then create a Profile for which you can create Environments whose elements
+must each belong to a separate profile.
+
+
 Profile
 -------
 
@@ -104,7 +110,48 @@ Required Fields
 
 .. http:patch:: /api/v1/environment
 
-The `PATCH` command is being overloaded to provide combinatorics services.
-If you send a `PATCH` with
-data={u'profile': u'<resource uri>, u'categories': [u'<resource uri>, ...]}
-it will create environments for all of the combinations of elements in the categories.
+    The `PATCH` command is being overloaded to provide combinatorics
+    services to create `environments` out of `elements` contained by
+    `categories`.
+
+    To create environments for all of the combinations of elements in
+    the listed categories:
+
+    .. sourcecode:: python
+
+        data={
+            u'profile': u'/api/v1/profile/1',
+            u'categories': [u'/api/v1/category/1', ...]
+        }
+
+    You may also do combinatorics with partial sets of elements from
+    the categories by using dictionaries with 'include' and 'exclude' keys.
+
+    .. sourcecode:: python
+
+        data={
+            u'profile': u'/api/v1/profile/1',
+            u'categories': [
+                {
+                    u'category': u'/api/v1/category/1',
+                    u'exclude': [u'/api/v1/element/1']
+                },
+                {
+                    u'category': u'/api/v1/category/2',
+                    u'include': [
+                        u'/api/v1/element/4',
+                        u'/api/v1/element/5'
+                    ]
+                },
+                {
+                    u'category': u'/api/v1/category/3'
+                }
+            ]
+        }
+
+    .. note::
+
+        The included or excluded elements must be members of the category
+        they accompany. If both include and exclude are sent with the same
+        category, exclude will be performed.
+        

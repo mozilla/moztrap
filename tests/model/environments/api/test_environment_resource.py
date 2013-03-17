@@ -136,3 +136,192 @@ class EnvironmentResourceTest(ApiCrudCases):
 
         # check that it made the right number of environments
         self._test_filter_list_by(u'profile', self.profile_fixture.id, 27)
+
+
+    def test_patch_without_categories_error(self):
+        """'categories' must be provided in PATCH."""
+        logger.info("test_patch_without_categories_error")
+
+        fields = self.new_object_data
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=400,
+            )
+
+        error_msg = "PATCH request must contain categories list."
+        self.assertEqual(res.text, error_msg)
+
+
+    def test_patch_categories_not_list_error(self):
+        """'categories' must be a list in PATCH."""
+        logger.info("test_patch_categories_not_list_error")
+
+        fields = self.new_object_data
+        fields.pop("elements")
+        fields[u'categories'] = unicode(
+            self.get_detail_url("category", str(self.category_fixture1.id)))
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=400,
+            )
+
+        error_msg = "PATCH request must contain categories list."
+        self.assertEqual(res.text, error_msg)
+
+
+    def test_patch_categories_list_not_string_or_hash_error(self):
+        """'categories' must be a list in PATCH."""
+        logger.info("test_patch_categories_list_not_string_or_hash_error")
+
+        fields = self.new_object_data
+        fields.pop("elements")
+        fields[u'categories'] = [1, 2, 3]
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            status=400,
+            )
+
+        error_msg = "categories list must contain resource uris or hashes."
+        self.assertEqual(res.text, error_msg)
+
+
+    def test_patch_with_exclude(self):
+        """Combinatorics excluding some elements."""
+        logger.info("test_patch_with_exclude")
+
+        fields = self.new_object_data
+
+        # create more elements for each category
+        for x in range(2):
+            self.F.ElementFactory(category=self.category_fixture1, name="A %s" % x)
+            self.F.ElementFactory(category=self.category_fixture2, name="B %s" % x)
+            self.F.ElementFactory(category=self.category_fixture3, name="C %s" % x)
+
+        # modify fields to send categories rather than elements
+        fields.pop('elements')
+        fields['categories'] = [
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture1.id))),
+                u'exclude': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture1.id))), ],
+            },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture2.id))),
+                u'exclude': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture2.id))), ],
+            },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture3.id))),
+                u'exclude': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture3.id))), ],
+            }, ]
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            )
+
+        # check that it made the right number of environments
+        self._test_filter_list_by(u'profile', self.profile_fixture.id, 8)
+
+
+    def test_patch_with_include(self):
+        """Combinatorics including some elements."""
+        logger.info("test_patch_with_include")
+
+        fields = self.new_object_data
+
+        # create more elements for each category
+        for x in range(2):
+            self.F.ElementFactory(category=self.category_fixture1, name="A %s" % x)
+            self.F.ElementFactory(category=self.category_fixture2, name="B %s" % x)
+            self.F.ElementFactory(category=self.category_fixture3, name="C %s" % x)
+
+        # modify fields to send categories rather than elements
+        fields.pop('elements')
+        fields['categories'] = [
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture1.id))),
+                u'include': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture1.id))), ],
+                },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture2.id))),
+                u'include': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture2.id))), ],
+                },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture3.id))),
+                u'include': [unicode(self.get_detail_url(
+                    "element", str(self.element_fixture3.id))), ],
+                }, ]
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            )
+
+        # check that it made the right number of environments
+        self._test_filter_list_by(u'profile', self.profile_fixture.id, 1)
+
+
+    def test_patch_no_include_no_exclude(self):
+        """Sending hashes without include or exclude should do the same as
+        sending regular uri strings."""
+        logger.info("test_patch_no_include_no_exclude")
+
+        fields = self.new_object_data
+
+        # create more elements for each category
+        for x in range(2):
+            self.F.ElementFactory(category=self.category_fixture1, name="A %s" % x)
+            self.F.ElementFactory(category=self.category_fixture2, name="B %s" % x)
+            self.F.ElementFactory(category=self.category_fixture3, name="C %s" % x)
+
+        # modify fields to send categories rather than elements
+        fields.pop('elements')
+        fields['categories'] = [
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture1.id))),
+                },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture2.id))),
+                },
+            {
+                u'category': unicode(self.get_detail_url(
+                    "category", str(self.category_fixture3.id))),
+                }, ]
+
+        # do the create
+        res = self.patch(
+            self.get_list_url(self.resource_name),
+            params=self.credentials,
+            payload=fields,
+            )
+
+        # check that it made the right number of environments
+        self._test_filter_list_by(u'profile', self.profile_fixture.id, 27)
