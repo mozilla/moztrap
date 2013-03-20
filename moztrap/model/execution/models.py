@@ -6,7 +6,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import connection, transaction, models
-from django.db.models import Q
+from django.db.models import Q, Count, Max
 
 from model_utils import Choices
 
@@ -133,6 +133,8 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         run_env_ids = self.environments.values_list("id", flat=True)
 
         # make a list of cvs in order by RunSuite, then SuiteCase.
+        # This list is built from the run / suite / env combination and has
+        # no knowledge of any possibly existing runcaseversions yet.
         if len(run_env_ids):
             cursor = connection.cursor()
             sql = """SELECT DISTINCT cv.id as id
@@ -158,11 +160,33 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             cursor.execute(sql)
 
             cv_list = [x[0] for x in cursor.fetchall()]
+
+            # @@@ do we need to check for duplicates?
+            # use itertools.unique_everseen
+            #if len(set(cv_list)) != len(cv_list):
+            #    cv_list = itertools.unique_everseen(cv_list)
+
         else:
             cv_list = []
 
         # delete rcvs that we won't be needing anymore
         self._delete_runcaseversions(cv_list)
+
+        # audit for duplicate rcvs for the same cv.id
+        dups = self.runcaseversions.values("caseversion_id").annotate(
+            num_records=Count("caseversion")).filter(num_records__gt=1)
+        if len(dups) > 0:
+            for dup in dups:
+                # get the runcaseversions, and sort descending by the id
+                # of the results.  So the first one is the one with the latest
+                # result.  We keep that one and delete the rest.
+                rcv_to_save = self.runcaseversions.annotate(
+                    latest_result=Max("results__id")).filter(
+                        caseversion=dup["caseversion_id"]).order_by(
+                            "-latest_result")[0]
+                self.runcaseversions.filter(
+                    caseversion=dup["caseversion_id"]).exclude(
+                        id=rcv_to_save.id).delete()
 
         # remaining rcvs should be ones we want to keep, and we need to inject
         # those ids into the insert/update list for bulk_insert.  So create
@@ -178,21 +202,31 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         # an update on insert error.
 
         # runcaseversion objects we will use to bulk create
-        rcv_proxies = []
+        rcv_to_update = []
+        rcv_proxies_to_create = []
 
         order = 1
         for cv in cv_list:
-            kwargs = {"run_id": self.id, "caseversion_id": cv, "order": order}
-            try:
-                kwargs["id"] = existing_rcv_map[cv]
-            except KeyError:
-                # this caseversion had not been previously included in the run
-                pass
-            rcv_proxies.append(RunCaseVersion(**kwargs))
+            if cv in existing_rcv_map:
+                # we will just update the order value
+                rcv_to_update.append({"caseversion_id": cv, "order": order})
+            else:
+                # we need to create a new one
+                kwargs = {
+                    "run_id": self.id,
+                    "caseversion_id": cv,
+                    "order": order
+                    }
+                rcv_proxies_to_create.append(RunCaseVersion(**kwargs))
             order += 1
 
+        # update existing rcvs
+        for rcv in rcv_to_update:
+            self.runcaseversions.filter(
+                caseversion=rcv["caseversion_id"]).update(order=rcv["order"])
+
         # insert these rcvs in bulk
-        self._bulk_insert_new_runcaseversions(rcv_proxies)
+        self._bulk_insert_new_runcaseversions(rcv_proxies_to_create)
 
         self._bulk_update_runcaseversion_environments_for_lock()
 
@@ -207,7 +241,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
     def _bulk_insert_new_runcaseversions(self, rcv_proxies):
         """Hook to bulk-insert runcaseversions we know we DO need."""
-        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
+        self.runcaseversions.bulk_create(rcv_proxies)
 
 
     def _bulk_update_runcaseversion_environments_for_lock(self):
