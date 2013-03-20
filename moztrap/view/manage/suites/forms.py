@@ -47,10 +47,24 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         Make sure all the ids for the cases are valid and populate
         self.cleaned_data with the real objects.
         """
+        # convert them to case objects, but loses order.
         cases = dict((unicode(x.id), x) for x in
             model.Case.objects.filter(pk__in=self.cleaned_data["cases"]))
+
+        # put them back in order and remove dups, if any
         try:
-            return [cases[x] for x in self.cleaned_data["cases"]]
+            # remove dups, if there are any.
+            clean_cases = []
+            for case_id in self.cleaned_data["cases"]:
+                case = cases[case_id]
+                if case not in clean_cases:
+                    clean_cases.append(case)
+
+            # if number is different, then add this to changed data
+            if len(self.cleaned_data) is not len(clean_cases):
+                self.changed_data.append("cases")
+
+            return clean_cases
         except KeyError as e:
             raise ValidationError("Not a valid case for this suite.")
 
@@ -62,9 +76,12 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
         if "cases" in self.changed_data:
             suite.suitecases.all().delete(permanent=True)
+            already_added = []
             for i, case in enumerate(self.cleaned_data["cases"]):
-                model.SuiteCase.objects.create(
-                    suite=suite, case=case, order=i, user=user)
+                if case.id not in already_added:
+                    model.SuiteCase.objects.create(
+                        suite=suite, case=case, order=i, user=user)
+                    already_added.append(case.id)
 
         return suite
 
