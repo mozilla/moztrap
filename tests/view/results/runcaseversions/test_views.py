@@ -98,11 +98,10 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
 
     def test_filter_by_productversion(self):
         """Can filter by product version; no implicit filter by latest."""
-        rcv = self.F.RunCaseVersionFactory.create(caseversion__name="Case 1")
+        rcv = self.F.RunCaseVersionFactory.create()
         other_pv = self.F.ProductVersionFactory(
             product=rcv.caseversion.productversion.product, version="2.0")
-        self.F.RunCaseVersionFactory.create(
-            caseversion__name="Case 2",
+        rcv2 = self.F.RunCaseVersionFactory.create(
             caseversion__case=rcv.caseversion.case,
             caseversion__productversion=other_pv,
             run__productversion=other_pv)
@@ -110,8 +109,8 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
         res = self.get(
             params={"filter-productversion": rcv.caseversion.productversion.id})
 
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
+        self.assertIdInList(res, "runcaseversion-id-{0}".format(rcv.id))
+        self.assertIdNotInList(res, "runcaseversion-id-{0}".format(rcv2.id))
 
 
     def test_filter_by_step_instruction(self):

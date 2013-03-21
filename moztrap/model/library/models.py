@@ -117,9 +117,6 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         skip_set_latest = kwargs.pop("skip_set_latest", False)
         skip_sync_name = kwargs.pop("skip_sync_name", False)
         super(CaseVersion, self).save(*args, **kwargs)
-
-        print("CV is \n'{0}'\nfor {1}".format(self.name, self.productversion))
-
         if not skip_set_latest:
             self.case.set_latest_version(update_instance=self)
 
