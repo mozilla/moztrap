@@ -225,6 +225,24 @@ class CaseVersionResource(MTResource):
         return ["case", "productversion"]
 
 
+    def obj_update(self, bundle, request=None, **kwargs):
+        """Set the modified_by field for the object to the request's user,
+        avoid ConcurrencyError by updating cc_version."""
+        # this try/except logging is more helpful than 500 / 404 errors on the
+        # client side
+        bundle = self.check_read_create(bundle)
+        try:
+            bundle = super(MTResource, self).obj_update(
+                bundle=bundle, request=request, **kwargs)
+            # avoid ConcurrencyError
+            bundle.obj.cc_version = self.model.objects.get(
+                id=bundle.obj.id).cc_version
+            bundle.obj.save(user=request.user)
+            return bundle
+        except Exception:  # pragma: no cover
+            logger.exception("error updating %s", bundle)  # pragma: no cover
+            raise  # pragma: no cover
+
     def hydrate_productversion(self, bundle):
         """case.product must match productversion.product on CREATE"""
 
