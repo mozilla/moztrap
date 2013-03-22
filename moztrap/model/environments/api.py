@@ -163,20 +163,25 @@ class EnvironmentResource(MTResource):
         # do the combinatorics
         elem_lists = []
         for cat in categories:
+            # do some type validation / variation
             if isinstance(cat, basestring):
+                # simple case of create all the combinations
                 cat = Category.objects.filter(id=self._id_from_uri(cat))
                 elem_list = Element.objects.filter(category=cat)
             elif isinstance(cat, dict):
+                # we must be working with at least one partial category
                 category = Category.objects.filter(
                     id=self._id_from_uri(cat['category']))
                 elem_list = Element.objects.filter(category=category)
                 if 'exclude' in cat:
+                    # exclude some element(s) from the combinations
                     exclude_uris = cat['exclude']
                     exclude_ids = [int(
                         self._id_from_uri(x)) for x in exclude_uris]
                     elem_list = [elem for elem in elem_list
                                  if elem.id not in exclude_ids]
                 elif 'include' in cat:
+                    # include only a few elements in the combinations
                     include_uris = cat['include']
                     include_ids = [int(
                         self._id_from_uri(x)) for x in include_uris]
@@ -192,8 +197,10 @@ class EnvironmentResource(MTResource):
                 raise ImmediateHttpResponse(
                     response=http.HttpBadRequest(error_msg))
 
+            # save off the elements from this category that will be used
             elem_lists.append(elem_list)
 
+        # create all the combinations of elements from categories
         combinatorics = itertools.product(*elem_lists)
 
         # do the creation
@@ -206,4 +213,6 @@ class EnvironmentResource(MTResource):
                 self.is_valid(bundle, request)
                 self.obj_create(bundle, request=request)
 
+        # don't try to reply with data, the request doesn't
+        # really match the results.
         return http.HttpAccepted()
