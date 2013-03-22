@@ -352,7 +352,7 @@ class ApiCrudCases(ApiTestCase):
         self._test_filter_list_by(u'product', u'', 3)
         """
 
-        res = self.get_list(params={key: value})
+        res = self.get_list(params={key: value, u'limit': 100})
         objects = res.json["objects"]
 
         # validate
@@ -362,7 +362,7 @@ class ApiCrudCases(ApiTestCase):
                 # can't use assertEqual here because for foriegn keys,
                 # the filter must be an id
                 # but the value in the response is an uri
-                self.assertTrue(value in obj[key])
+                self.assertTrue(str(value) in obj[key])
             else:
                 # case for value being None
                 self.assertEqual(value, obj[key])
