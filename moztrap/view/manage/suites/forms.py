@@ -61,7 +61,7 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     clean_cases.append(case)
 
             # if number is different, then add this to changed data
-            if len(self.cleaned_data) is not len(clean_cases):
+            if len(self.cleaned_data["cases"]) is not len(clean_cases):
                 self.changed_data.append("cases")
 
             return clean_cases
@@ -76,12 +76,9 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
         if "cases" in self.changed_data:
             suite.suitecases.all().delete(permanent=True)
-            already_added = []
             for i, case in enumerate(self.cleaned_data["cases"]):
-                if case.id not in already_added:
-                    model.SuiteCase.objects.create(
-                        suite=suite, case=case, order=i, user=user)
-                    already_added.append(case.id)
+                model.SuiteCase.objects.create(
+                    suite=suite, case=case, order=i, user=user)
 
         return suite
 
