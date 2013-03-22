@@ -52,17 +52,17 @@ class ProductVersionEnvironmentsResourceTest(case.api.ApiTestCase):
         exp_objects.append({
             u"codename": unicode(pv.codename),
             u'environments': [{
-                u'elements': [{
-                    u'category': unicode(
-                        self.get_detail_url("category", category.id)),
-                    u'id': unicode(element.id),
-                    u'name': u'OS X',
-                    u'resource_uri': unicode(self.get_detail_url(
+                u'elements': [
+                    unicode(self.get_detail_url(
                         "element",
                         element.id,
                         )),
-                    }],
+                    ],
                 u'id': unicode(envs[0].id),
+                u'profile': unicode(self.get_detail_url(
+                    "profile",
+                    envs[0].profile.id
+                )),
                 u'resource_uri': unicode(self.get_detail_url(
                     "environment",
                     envs[0].id,

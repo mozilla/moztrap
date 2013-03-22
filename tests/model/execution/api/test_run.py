@@ -96,22 +96,18 @@ class RunResourceTest(case.api.ApiTestCase):
 
         exp_objects = {
             u'elements': [
-                {u'category': unicode(
-                    self.get_detail_url(
-                        "category",
-                        envs[0].elements.get().category.id)),
-                 u'resource_uri': unicode(self.get_detail_url(
+                 unicode(self.get_detail_url(
                      "element",
                      envs[0].elements.get().id),
-                 ),
-                 u'id': unicode(envs[0].elements.get().id),
-                 u'name': u'OS X'
-                }],
+                 )],
             u'id': unicode(envs[0].id),
+            u'profile': unicode(self.get_detail_url(
+                "profile", envs[0].profile.id
+            )),
             u'resource_uri': unicode(self.get_detail_url(
                 "environment",
                 envs[0].id),
-                )
+                ),
             }
 
         self.assertEqual(unicode(r.name), res.json["name"], res.json)
