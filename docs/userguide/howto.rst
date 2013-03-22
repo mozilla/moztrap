@@ -80,3 +80,29 @@ Result
 ^^^^^^
 All test cases in 1.0 now have a 2.0 version.  If a 2.0 version already existed
 for a case, it will NOT replace it.
+
+
+Get a link to a result of a test just after submitting it
+---------------------------------------------------------
+
+Situation
+^^^^^^^^^
+You are executing a test run and find a bug.  You want to submit the bug, and
+then provide a link to the result in your bug report.  Or perhaps you just want
+to email that link to someone.
+
+Steps for solution 1
+^^^^^^^^^^^^^^^^^^^^
+    #. run the test run
+    #. mark the case with the result you found
+    #. If, for example, the case was marked "Failed," then click the red button that says:
+        * |case_result|
+
+Result
+^^^^^^
+You are taken to the result for that test case.  You will also see any result
+that other users have submitted for the same case in that environment.
+
+.. |case_result| image:: img/case_result.png
+    :height: 40px
+

@@ -43,18 +43,16 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
     def test_lists_all_versions(self):
         """Lists all versions of each case."""
-        cv = self.F.CaseVersionFactory.create(
-            name="Old Version", productversion__version="1.0")
-        self.F.CaseVersionFactory.create(
-            name="Latest Version",
+        cv = self.F.CaseVersionFactory.create(productversion__version="1.0")
+        cv2 = self.F.CaseVersionFactory.create(
             case=cv.case,
             productversion__product=cv.productversion.product,
             productversion__version="2.0")
 
         res = self.get()
 
-        self.assertInList(res, "Old Version")
-        self.assertInList(res, "Latest Version")
+        self.assertIdInList(res, "caseversion-id-{0}".format(cv.id))
+        self.assertIdInList(res, "caseversion-id-{0}".format(cv2.id))
 
 
     def test_filter_by_status(self):
@@ -125,17 +123,16 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
     def test_filter_by_productversion(self):
         """Can filter by product version; no implicit filter by latest."""
-        cv = self.F.CaseVersionFactory.create(name="Case 1")
-        self.F.CaseVersionFactory.create(
-            name="Case 2",
+        cv = self.F.CaseVersionFactory.create()
+        cv2 = self.F.CaseVersionFactory.create(
             case=cv.case,
             productversion__product=cv.productversion.product,
             productversion__version="2.0")
 
         res = self.get(params={"filter-productversion": cv.productversion.id})
 
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
+        self.assertIdInList(res, "caseversion-id-{0}".format(cv.id))
+        self.assertIdNotInList(res, "caseversion-id-{0}".format(cv2.id))
 
 
     def test_filter_by_step_instruction(self):

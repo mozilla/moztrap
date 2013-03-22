@@ -115,9 +115,21 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
     def save(self, *args, **kwargs):
         """Save CaseVersion, updating latest version."""
         skip_set_latest = kwargs.pop("skip_set_latest", False)
+        skip_sync_name = kwargs.pop("skip_sync_name", False)
         super(CaseVersion, self).save(*args, **kwargs)
         if not skip_set_latest:
             self.case.set_latest_version(update_instance=self)
+
+        # keep the name in sync for all caseversions
+        if not skip_sync_name:
+            for cv in self.case.versions.all():
+                if not cv == self:
+                    cv.name = self.name
+                    cv.save(
+                        skip_sync_name=True,
+                        skip_set_latest=True,
+                        )
+
 
 
     def delete(self, *args, **kwargs):

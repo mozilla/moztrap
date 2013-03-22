@@ -156,7 +156,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         Two caseversions that both use the same user.  Test that import caches
         the user and doesn't have to query for it a second time.
 
-        Expect 17 queries for this import:
+        Expect 19 queries for this import:
 
         Query 1: Ensure this caseversion does not already exist for this
         productversion::
@@ -240,7 +240,32 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             = Foo, `description` = , `latest` = True, `envs_narrowed` = False
             WHERE `library_caseversion`.`id` = 10
 
-        Query 9: Add the new step to the caseversion::
+        Query 9: During save, check if there are other caseversions for this
+                 case to sync names.
+            SELECT `library_caseversion`.`id`, `library_caseversion`
+            .`created_on`,
+            `library_caseversion`.`created_by_id`, `library_caseversion`
+            .`modified_on`,
+            `library_caseversion`.`modified_by_id`, `library_caseversion`
+            .`deleted_on`,
+            `library_caseversion`.`deleted_by_id`, `library_caseversion`
+            .`cc_version`,
+            `library_caseversion`.`status`, `library_caseversion`
+            .`productversion_id`,
+            `library_caseversion`.`case_id`, `library_caseversion`.`name`,
+            `library_caseversion`.`description`, `library_caseversion`
+            .`latest`,
+            `library_caseversion`.`envs_narrowed` FROM `library_caseversion`
+             INNER JOIN
+            `core_productversion` ON (`library_caseversion`
+            .`productversion_id` =
+            `core_productversion`.`id`) WHERE (`library_caseversion`
+            .`deleted_on` IS
+            NULL AND `library_caseversion`.`case_id` = 1 ) ORDER BY
+            `library_caseversion`.`case_id` ASC,
+            `core_productversion`.`order` ASC
+
+        Query 10: Add the new step to the caseversion::
 
             INSERT INTO `library_casestep` (`created_on`, `created_by_id`,
             `modified_on`, `modified_by_id`, `deleted_on`, `deleted_by_id`,
@@ -250,7 +275,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
 
         Transaction: RELEASE SAVEPOINT s140735243669888_x1
 
-        Query 10: Ensure the second caseversion with this name and pv doesn't
+        Query 11: Ensure the second caseversion with this name and pv doesn't
         exist::
 
             SELECT (1) AS `a` FROM `library_caseversion` WHERE
@@ -263,14 +288,14 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         **NOTE: We didn't have to search for the user again, since it was
         cached**
 
-        Query 11: Create the second new case::
+        Query 12: Create the second new case::
 
             INSERT INTO `library_case` (`created_on`, `created_by_id`,
             `modified_on`, `modified_by_id`, `deleted_on`, `deleted_by_id`,
             `product_id`) VALUES (2012-03-07 19:35:34, None, 2012-03-07
             19:35:34, None, None, None, 12)
 
-        Queries 12-16: Create the second new caseversion::
+        Queries 13-17: Create the second new caseversion::
 
              INSERT INTO `library_caseversion` (`created_on`, `created_by_id`,
              `modified_on`, `modified_by_id`, `deleted_on`, `deleted_by_id`,
@@ -326,7 +351,32 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
              True, `envs_narrowed` = False WHERE `library_caseversion`.`id` =
              11
 
-        Query 17: Add the step to the second caseversion::
+        Query 18: Check for other caseversions for the same case to sync names
+
+            SELECT `library_caseversion`.`id`, `library_caseversion`
+            .`created_on`,
+            `library_caseversion`.`created_by_id`, `library_caseversion`
+            .`modified_on`,
+            `library_caseversion`.`modified_by_id`, `library_caseversion`
+            .`deleted_on`,
+            `library_caseversion`.`deleted_by_id`, `library_caseversion`
+            .`cc_version`,
+            `library_caseversion`.`status`, `library_caseversion`
+            .`productversion_id`,
+            `library_caseversion`.`case_id`, `library_caseversion`.`name`,
+            `library_caseversion`.`description`, `library_caseversion`
+            .`latest`,
+            `library_caseversion`.`envs_narrowed` FROM `library_caseversion`
+             INNER JOIN
+            `core_productversion` ON (`library_caseversion`
+            .`productversion_id` =
+            `core_productversion`.`id`) WHERE (`library_caseversion`
+            .`deleted_on` IS
+            NULL AND `library_caseversion`.`case_id` = 2 ) ORDER BY
+            `library_caseversion`.`case_id` ASC,
+            `core_productversion`.`order` ASC
+
+        Query 19: Add the step to the second caseversion::
 
             INSERT INTO `library_casestep` (`created_on`, `created_by_id`,
             `modified_on`, `modified_by_id`, `deleted_on`, `deleted_by_id`,
@@ -338,7 +388,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
 
         Note: Django 1.4 now logs transaction points in the connection.queries
 
-        EXPECT: 17 Queries + 4 Transaction actions = 21 queries.
+        EXPECT: 19 Queries + 4 Transaction actions = 23 queries.
 
         To re-capture this query list, use a block like this in place
             of the "with self.assertNumQueries..." block::
@@ -351,7 +401,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 connection.queries = []
                 result = self.import_data(case_data)
 
-                self.assertFalse(json.dumps(connection.queries, indent=4))
+                print(json.dumps(connection.queries, indent=4))
                 settings.DEBUG = False
 
         """
@@ -375,7 +425,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             }
 
         # Test code as normal
-        with self.assertNumQueries(21):
+        with self.assertNumQueries(23):
             result = self.import_data(case_data)
 
         cv1 = self.model.CaseVersion.objects.get(name="Foo")
@@ -436,7 +486,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
 
 
     def test_create_caseversion_existing_tag_different_case(self):
-        """A caseversion that uses an existing product tag with different case"""
+        """A caseversion that uses an existing product tag with diff case"""
 
         # need a tag to exist, so the import can find it.
         tag = self.model.Tag.objects.create(

@@ -478,7 +478,7 @@ class ApiCrudCases(ApiTestCase):
         fixture1 = self.factory
 
         for fk in self.read_create_fields:
-            mozlogger.info('test_update_without_fk %s' % fk)
+            mozlogger.info('test_update_without_fk {0}'.format(fk))
 
             fields = self.backend_data(fixture1)
             fields = self.manipulate_edit_data(fixture1, fields)

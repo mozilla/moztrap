@@ -217,9 +217,28 @@ class ListViewTestCase(AuthenticatedViewTestCase):
             )
 
 
+    def assertIdInList(self, response, id, count=1):
+        """Assert that article's ``id`` is in the list ``count`` times."""
+        soup = self.soup(response)
+        itemlist = soup.find(True, "itemlist")
+        if itemlist is None:
+            self.fail("itemlist not found in: {0}".format(soup))
+        self.assertElement(
+            itemlist,
+            "article",
+            id=id,
+            count=count
+        )
+
+
     def assertNotInList(self, response, name):
         """Assert that item ``name`` is not in the list."""
         self.assertInList(response, name, 0)
+
+
+    def assertIdNotInList(self, response, id):
+        """Assert that item ``name`` is not in the list."""
+        self.assertIdInList(response, id, 0)
 
 
     def assertOrderInList(self, response, *names):
