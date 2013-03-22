@@ -1,5 +1,5 @@
 """
-Tests for EnvironmentResource api.
+Tests for ElementResource api.
 
 """
 

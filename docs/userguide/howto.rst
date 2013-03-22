@@ -3,6 +3,10 @@
 How To Do Some Common Tasks
 ===========================
 
+.. contents::
+   :depth: 1
+   :local:
+
 Create a new Product Version for an existing Product
 ----------------------------------------------------
 
@@ -82,6 +86,36 @@ All test cases in 1.0 now have a 2.0 version.  If a 2.0 version already existed
 for a case, it will NOT replace it.
 
 
+Migrate a test run to a new Product Version
+-------------------------------------------
+
+Situation
+^^^^^^^^^
+You have an existing Product, Version 1.0 along with
+test cases, suites, runs, etc.  You created version 2.0 of the product and
+want to run some of the same test runs against from 1.0 against 2.0.  You
+will need to clone the 1.0 test runs to 2.0 and update them.
+
+Steps
+^^^^^
+    #. navigate to ``Manage | Runs``
+    #. find the test run you want to use in 2.0
+    #. click the clone button for that run
+    #. The new run will have the name "Cloned: foo" and be in DRAFT mode
+    #. edit the newly cloned run.  **Note:** It must be in DRAFT mode to change
+       the product version field.
+    #. Update the name as you wish
+    #. change the Product Version field to the new version 2.0:
+        * |product_version|
+    #. save as status active, or...
+    #. activate the new run with the status drop-down.
+
+Result
+^^^^^^
+Now you will have a new run that applies to your new product version ``2.0``
+that is ready to be executed.
+
+
 Get a link to a result of a test just after submitting it
 ---------------------------------------------------------
 
@@ -104,5 +138,8 @@ You are taken to the result for that test case.  You will also see any result
 that other users have submitted for the same case in that environment.
 
 .. |case_result| image:: img/case_result.png
+    :height: 40px
+
+.. |product_version| image:: img/product_version.png
     :height: 40px
 
