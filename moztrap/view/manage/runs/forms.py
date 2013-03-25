@@ -142,9 +142,6 @@ class EditRunForm(RunForm):
             isf.readonly = True
             # can't change suites of an active run either
             sf.readonly = True
-#            self.initial["suites"] = list(
-#                self.instance.suites.values_list(
-#                    "name", flat=True).order_by("runsuites__order"))
         else:
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
