@@ -61,7 +61,7 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     clean_cases.append(case)
 
             # if number is different, then add this to changed data
-            if (self.initial["cases"] != self.cleaned_data["cases"] or
+            if (("cases" in self.initial and self.initial["cases"] != self.cleaned_data["cases"]) or
                 len(self.cleaned_data["cases"]) is not len(clean_cases)):
                     self.changed_data.append("cases")
 

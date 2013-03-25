@@ -150,6 +150,35 @@ class EditSuiteFormTest(case.DBTestCase):
         self.assertEqual(set(suite.cases.all()), set([c]))
 
 
+    def test_edit_cases_order_only(self):
+        """Can edit cases of a suite."""
+        s = self.F.SuiteFactory.create()
+        c1 = self.F.CaseFactory.create(product=s.product)
+        c2 = self.F.CaseFactory.create(product=s.product)
+        self.F.SuiteCaseFactory.create(suite=s, case=c1, order=0)
+        self.F.SuiteCaseFactory.create(suite=s, case=c2, order=1)
+
+        f = self.form(
+            {
+                "product": str(s.product.id),
+                "name": s.name,
+                "description": s.description,
+                "status": s.status,
+                "cases": [str(c2.id), str(c1.id)],
+                "cc_version": str(s.cc_version),
+                },
+            instance=s,
+            )
+
+        self.assertTrue(f.is_valid())
+        suite = f.save()
+
+        self.assertEqual(
+            list(suite.cases.all().order_by("suitecases__order")),
+            [c2, c1],
+            )
+
+
     def test_remove_dup_cases(self):
         """Can edit cases of a suite."""
         s = self.F.SuiteFactory.create()
