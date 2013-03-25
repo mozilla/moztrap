@@ -307,7 +307,7 @@ class SuiteSelectionResource(BaseSelectionResource):
             "created_by",
             ).prefetch_related(
             "runsuites",
-            )
+            ).distinct().order_by("runsuites__order")
         list_allowed_methods = ['get']
         fields = ["id", "name", "created_by"]
         filtering = {

@@ -47,7 +47,7 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         Make sure all the ids for the cases are valid and populate
         self.cleaned_data with the real objects.
         """
-        # convert them to case objects, but loses order.
+        # fetch the case objects in one query, but loses order.
         cases = dict((unicode(x.id), x) for x in
             model.Case.objects.filter(pk__in=self.cleaned_data["cases"]))
 
@@ -61,8 +61,9 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     clean_cases.append(case)
 
             # if number is different, then add this to changed data
-            if len(self.cleaned_data["cases"]) is not len(clean_cases):
-                self.changed_data.append("cases")
+            if (self.initial["cases"] != self.cleaned_data["cases"] or
+                len(self.cleaned_data["cases"]) is not len(clean_cases)):
+                    self.changed_data.append("cases")
 
             return clean_cases
         except KeyError as e:
@@ -97,7 +98,10 @@ class EditSuiteForm(SuiteForm):
         super(EditSuiteForm, self).__init__(*args, **kwargs)
 
         self.initial["cases"] = list(
-            self.instance.cases.values_list("id", flat=True))
+            self.instance.cases.values_list(
+                "id",
+                flat=True,
+                ).order_by("suitecases__order"))
 
         # for suites with cases in them, product is readonly and case options
         # are filtered to that product
