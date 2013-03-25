@@ -98,7 +98,10 @@ class EditSuiteForm(SuiteForm):
         super(EditSuiteForm, self).__init__(*args, **kwargs)
 
         self.initial["cases"] = list(
-            self.instance.cases.values_list("id", flat=True).order_by("suitecases__order"))
+            self.instance.cases.values_list(
+                "id",
+                flat=True,
+                ).order_by("suitecases__order"))
 
         # for suites with cases in them, product is readonly and case options
         # are filtered to that product
