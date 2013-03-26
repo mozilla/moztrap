@@ -20,7 +20,7 @@ from ..finders import ResultsFinder
 @login_maybe_required
 @lists.finder(ResultsFinder)
 @lists.filter("runs", filterset_class=RunFilterSet)
-@lists.sort("runs", "start", "asc")
+@lists.sort("runs", "start", "desc")
 @ajax("results/run/list/_runs_list.html")
 def runs_list(request):
     """List runs."""
