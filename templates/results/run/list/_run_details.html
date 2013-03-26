@@ -1,11 +1,11 @@
-{% load filters %}
+{% load filters markup %}
 
 <div class="iteminfo">
   {% include "lists/_byline.html" with item=run %}
 
   {% if run.description %}
   <p class="details">
-    {{ run.description }}
+    {{ run.description|markdown }}
   </p>
   {% endif %}
 
