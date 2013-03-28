@@ -1,6 +1,17 @@
 Release Notes
 =============
 
+
+Version 1.4.5
+-------------
+*release date - 3/28/2013*
+
+* **Upgrade to Django 1.4.5**
+* **Bug fix for order of cases** - Test case order within suites was broken.
+* **Bug fix for repeated cases** - It was possible, in some circumstances to
+  have the same test case shown multiple times in a suite.
+
+
 Version 1.4.4
 -------------
 *release date - 3/22/2013*
