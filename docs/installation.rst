@@ -67,6 +67,11 @@ Python projects on your system, create the virtualenv and activate it. Then run
 ``bin/install-reqs`` to install the dependencies for this project into your
 Python environment.
 
+.. Note::
+
+On some linux flavors, you may need to run
+``sudo apt-get install libmysqlclient-dev`` prior to bin/install-reqs.
+
 Installing the dependencies requires `pip`_ 1.0 or higher. `pip`_ is
 automatically available in a `virtualenv`_; if not using `virtualenv`_ you may
 need to install it yourself.

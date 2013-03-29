@@ -14,7 +14,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = [
-    ("Carl Meyer", "cmeyer@mozilla.com"),
+    ("Some One", "someone@mozilla.com"),
 ]
 
 MANAGERS = ADMINS
