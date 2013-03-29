@@ -69,8 +69,8 @@ Python environment.
 
 .. Note::
 
-On some linux flavors, you may need to run
-``sudo apt-get install libmysqlclient-dev`` prior to bin/install-reqs.
+    On some linux flavors, you may need to run
+    ``sudo apt-get install libmysqlclient-dev`` prior to bin/install-reqs.
 
 Installing the dependencies requires `pip`_ 1.0 or higher. `pip`_ is
 automatically available in a `virtualenv`_; if not using `virtualenv`_ you may

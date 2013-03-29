@@ -1,21 +1,14 @@
-.. _getting-started:
+.. _tutorial-create-product:
 
-Getting Started Guide
-=====================
-
-If you're new to MozTrap and would like a general walk-though of how to get
-initial data setup and start testing your product, this is your guide.
-
-
-Setup a new product in a new system
------------------------------------
+MozTrap Tutorial, part 1
+========================
 
 The following is a description of how to setup your new system to test your
-product.
+product.  Part 1 will focus on setting up your Product and Environments.
 
 
-Create environments
-^^^^^^^^^^^^^^^^^^^
+Setup Environments
+------------------
 
 Odds are you will be testing your product in several
 :ref:`environments<environments>`.  These could be a collection of hardware
@@ -58,9 +51,10 @@ To winnow down the list of environments to test:
 
 
 Create a Product
-^^^^^^^^^^^^^^^^
+----------------
 
-For this example, we will presume your product is called **SpeckDetector**.
+Now that you have your environment profile setup, let's create your product.
+We will presume your product is called **SpeckDetector**.
 It detects specks.  Very handy.
 
     #. navigate to ``manage | products``:
@@ -85,13 +79,3 @@ It detects specks.  Very handy.
 .. |edit_icon| image:: img/edit_icon.png
     :height: 20px
 
-
-Create some tests in an existing system
----------------------------------------
-
-In progress...
-
-Run some tests in an existing system
-------------------------------------
-
-In progress...

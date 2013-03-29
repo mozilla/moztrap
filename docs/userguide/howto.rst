@@ -19,21 +19,7 @@ on the fields in that screen.
 
 Steps
 ^^^^^
-    #. navigate to ``Manage | Versions``
-    #. click the "create a version" button
-    #. set the product to the product in question
-    #. specify the version to copy Environments and Cases from.  In our case,
-       this will be ``1.0``
-    #. type in the name of the new Version.  In our case: ``2.0``
-    #. codename is optional.
-    #. click the "save productversion" button
-
-Result
-^^^^^^
-Now you will have a new product version, and a new ``2.0`` version of each test
-case.  If you change the ``2.0`` version of a case, the ``1.0`` version remains
-unchanged.  This is so that the steps in your test can evolve as your product
-does without changing the tests that applied to earlier versions.
+See Tutorial: :ref:`New Version<new-product-version>`
 
 
 Fill in test cases missing from one Product Version into another
@@ -98,22 +84,7 @@ will need to clone the 1.0 test runs to 2.0 and update them.
 
 Steps
 ^^^^^
-    #. navigate to ``Manage | Runs``
-    #. find the test run you want to use in 2.0
-    #. click the clone button for that run
-    #. The new run will have the name "Cloned: foo" and be in DRAFT mode
-    #. edit the newly cloned run.  **Note:** It must be in DRAFT mode to change
-       the product version field.
-    #. Update the name as you wish
-    #. change the Product Version field to the new version 2.0:
-        * |product_version|
-    #. save as status active, or...
-    #. activate the new run with the status drop-down.
-
-Result
-^^^^^^
-Now you will have a new run that applies to your new product version ``2.0``
-that is ready to be executed.
+See Tutorial: :ref:`Migrate Runs<migrate-runs>`
 
 
 Get a link to a result of a test just after submitting it
@@ -140,6 +111,4 @@ that other users have submitted for the same case in that environment.
 .. |case_result| image:: img/case_result.png
     :height: 40px
 
-.. |product_version| image:: img/product_version.png
-    :height: 40px
 
