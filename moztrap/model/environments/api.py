@@ -100,7 +100,8 @@ class EnvironmentResource(MTResource):
     """Create, Read and Delete capabilities for environments"""
 
     elements = fields.ToManyField(ElementResource, "elements")
-    profile = fields.ForeignKey(ProfileResource, "profile")
+    # an environment is not required to be associated with a profile
+    profile = fields.ForeignKey(ProfileResource, "profile", null=True)
 
     class Meta(MTResource.Meta):
         queryset = Environment.objects.all()
