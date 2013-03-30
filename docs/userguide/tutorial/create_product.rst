@@ -28,20 +28,31 @@ steps:
     #. navigate to ``manage | environments``
         * |manage_environments|
     #. click ``create a profile``
-    #. give your profile a name
-    #. Depending on your setup, you may have several
-       :ref:`environment elements<environment-elements>` in your system already.
-    #. If you see a category that applies to your product already, then expand
-       It to choose the elements that apply.  If not, then click |add_category|
-       to create a new one
-    #. Within a category, if you don't see the correct element, then create
-       one by typing in the field |add_element| and hitting enter
-    #. Once you have all the categories and elements checked that you want to
-       test, click ``save profile``
+    #. give your profile the name ``Speck Envs``
+    #. .. note::
 
-This will create a matrix list of all possible combinations of the environment
-elements you chose.  However, it may be true that you don't want to test ALL
-combinations.  If that's the case, then you can winnow down the list to test.
+           Depending on your setup, you may have several
+           :ref:`environment elements<environment-elements>` in your system already.
+
+           If you see a category that applies to your product already, then expand
+           It to choose the elements that apply.  If not, then click |add_category|
+           to create a new one
+    #. In our case, we'll need to create everything, so click |add_category|
+       and type ``location`` and hit enter
+    #. in the category, find the field that says |add_element| and type
+       ``laboratory`` and hit "enter"
+    #. add another element called ``field`` and hit enter
+    #. make sure to check the ``location`` category and all its elements
+    #. click ``save profile``
+
+.. note::
+
+    This will create a matrix list of all possible combinations of the
+    environment elements for each category you chose.  In our case it's very
+    simple (only 2).  However, for other products, you may have several
+    categories.  It may be true that you don't want to test ALL combinations
+    that were created.  If that's the case, then you can winnow down the list
+    to test.
 
 To winnow down the list of environments to test:
 

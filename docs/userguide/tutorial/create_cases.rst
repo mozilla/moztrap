@@ -72,6 +72,7 @@ Steps
 That's one down.  Whew!  OK, now create another test case for the ``firmware``
 suite with steps like this:
 
+    #. name: ``update firmware``
     #. for ``instruction`` 1, enter::
 
         navigate to firmware update screen and select "update"

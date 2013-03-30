@@ -28,8 +28,14 @@ The test case steps executed in test runs may be different for each Product
 Version, as the Product itself evolves. See :ref:`Test Cases <test-cases>` for
 more info on how test case versions relate to Product Versions.
 
-An active test run can be disabled, which halts all execution of tests in that
-run until it is made active again.
+.. _test-run-states:
+
+Draft test runs cannot be executed yet.  This is a good state if you're still
+working on it and aren't ready for people to see it.  It won't show up in the
+list of test runs for your product in the ``Run Tests`` section.
+
+An active test run can be disabled or made draft, which halts all
+execution of tests in that run until it is made active again.
 
 .. _test-run-series:
 

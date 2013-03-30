@@ -43,7 +43,28 @@ Steps
     #. click ``save run``
 
 
-Isn't this exciting?  You now have a test run series created!
+Activate your Run
+-----------------
+
+Your run is just about ready.  However, there's one more critical step you
+must take before it can be executed.  You must make the run *active*.
+
+Why not have test runs active all the time?  Good question.
+:ref:`Look here<test-run-states>`, Curious George.
+
+Steps
+^^^^^
+    #. navigate to ``manage | runs``
+    #. find your test run ``feature complete``
+    #. click the status icon
+        * |run_activate|
+    #. click "Activate"
+
+.. |run_activate| image:: img/run_activate.png
+    :height: 150px
+
+
+Isn't this exciting?  You now have a test run series created and ready to go!
 Go tell your boss.
 
 
