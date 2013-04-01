@@ -14,7 +14,7 @@
     <div class="end">{{ run.end }}</div>
 
     {% with "results_runcaseversions"|filter_url:run as detail_url %}
-    {% include "results/_results_summary.html" with results=run.result_summary %}
+    {% include "results/_results_summary_filtered.html" with results=run.result_summary %}
     {% endwith %}
 
   </header>
