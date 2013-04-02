@@ -112,7 +112,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
 
     @property
     def included_param(self):
-        return "case__suites"
+        return "suites"
 
 
     @property
@@ -120,26 +120,46 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         return "{0}__ne".format(self.included_param)
 
 
-    def get_exp_obj(self, cv, order=None):
+    def get_exp_obj(self, cv, order=None, suites=None):
         """Return an expected caseselection object with fields filled."""
+        if not suites:
+            suites = []
+        case = cv.case
+        product = case.product
+        pv = cv.productversion
+
         return {
-            u"case": unicode(
-                self.get_detail_url("case", cv.case.id)),
-            u"case_id": unicode(cv.case.id),
-            u"created_by": None,
-            u"id": unicode(cv.id),
-            u"latest": True,
+            u'suites': [unicode(self.get_detail_url("suite", s.id)) for s in suites],
+            u"product": unicode(self.get_detail_url("product", product.id)),
             u"name": unicode(cv.name),
+            u'versions': [{
+                u"case": unicode(
+                    self.get_detail_url("case", case.id)),
+                u'product': {u'id': unicode(product.id)},
+                u"name": unicode(cv.name),
+                u'tags': [],
+                u'productversion_name': unicode(pv.name),
+                u'created_by': None,
+                u'case_id': unicode(cv.case.id),
+                u'productversion': {
+                    u'product': unicode(self.get_detail_url(
+                        "product", product.id)),
+                    u'codename': u'',
+                    u'version': unicode(pv.version),
+                    u'id': unicode(pv.id),
+                    u'resource_uri': unicode(self.get_detail_url(
+                        "productversion", pv.id))
+                },
+                u'resource_uri': unicode(
+                    self.get_detail_url("caseversionselection", cv.id)),
+                u'product_id': unicode(product.id),
+                u'id': unicode(cv.id),
+                u'latest': True
+                }],
+            u'id': unicode(case.id),
             u"order": order,
-            u"product": {
-                u"id": unicode(cv.productversion.product_id)
-            },
-            u"product_id": unicode(cv.productversion.product_id),
-            u"productversion": unicode(
-                self.get_detail_url("productversion", cv.productversion.id)),
             u"resource_uri": unicode(
-                self.get_detail_url("caseselection", cv.id)),
-            u"tags": [],
+                self.get_detail_url("caseselection", case.id)),
             }
 
 
@@ -163,7 +183,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         act = res.json
 
         self.maxDiff = None
-        self.assertEquals(act["meta"], self.get_exp_meta(len(exp_objects)))
+        self.assertEquals(self.get_exp_meta(len(exp_objects)), act["meta"])
         self.assertEqual(exp_objects, act["objects"])
 
 
@@ -214,10 +234,16 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
 
         data = self._setup_two_included()
 
-        exp_objects = [self.get_exp_obj(cv, order=sc.order) for cv, sc in [
-            (data["cv1"], data["sc1"]),
-            (data["cv2"], data["sc2"]),
-            ]]
+        exp_objects = [
+            self.get_exp_obj(
+                cv,
+                order=sc.order,
+                suites=[data["s"]],
+                ) for cv, sc in [
+                    (data["cv1"], data["sc1"]),
+                    (data["cv2"], data["sc2"]),
+                    ]
+                ]
 
         self._do_test(
             data["s"].id,
@@ -260,9 +286,13 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         """Get a list of included cases, one included"""
 
         data = self._setup_for_one_included_one_not()
-        exp_objects = [self.get_exp_obj(cv, order=sc.order) for cv, sc in [
-            (data["cv1"], data["sc1"]),
-            ]]
+        exp_objects = [
+            self.get_exp_obj(
+                cv,
+                order=sc.order,
+                suites=[data["s"]],
+                ) for cv, sc in [(data["cv1"], data["sc1"])]
+            ]
 
         self._do_test(
             data["s"].id,
