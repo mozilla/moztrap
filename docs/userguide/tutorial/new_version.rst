@@ -14,14 +14,14 @@ version 2.0 of the **SpeckDetector**.
 Steps
 ^^^^^
 
-    #. navigate to ``Manage | Versions``
-    #. click the "create a version" button
-    #. set the product to the ``SpeckDetector``
-    #. specify the version to copy Environments and Cases from.  In our case,
-       this will be ``1.0``
-    #. type in the name of the new Version.  In our case: ``2.0``
-    #. codename is optional.
-    #. click the "save productversion" button
+    #. Navigate to ``Manage | Versions``.
+    #. Click the "create a version" button.
+    #. Set the product to the ``SpeckDetector``.
+    #. Specify the version to copy Environments and Cases from.  In our case,
+       this will be ``1.0``.
+    #. Type in the name of the new Version.  In our case: ``2.0``.
+    #. Codename is optional.
+    #. Click the "save productversion" button.
 
 
 Result
@@ -42,17 +42,17 @@ make copies of runs from one to the other.
 
 Steps
 ^^^^^
-    #. navigate to ``Manage | Runs``
-    #. find the test run you want to use in 2.0
-    #. click the clone button for that run
-    #. The new run will have the name "Cloned: foo" and be in DRAFT mode
-    #. edit the newly cloned run.  **Note:** It must be in DRAFT mode to change
+    #. Navigate to ``Manage | Runs``.
+    #. Find the test run you want to use in 2.0.
+    #. Click the clone button for that run.
+    #. The new run will have the name "Cloned: foo" and be in DRAFT mode.
+    #. Edit the newly cloned run.  **Note:** It must be in DRAFT mode to change
        the product version field.
-    #. Update the name as you wish
-    #. change the Product Version field to the new version 2.0:
+    #. Update the name as you wish.
+    #. Change the Product Version field to the new version 2.0:
         * |product_version|
-    #. save as status active, or...
-    #. activate the new run with the status drop-down.
+    #. Save as status active, or...
+    #. Activate the new run with the status drop-down.
 
 Result
 ^^^^^^
