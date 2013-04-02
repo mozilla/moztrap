@@ -25,10 +25,10 @@ before continuing.
 To create a new environment profile customized to your needs, follow these
 steps:
 
-    #. navigate to ``manage | environments``
+    #. Navigate to ``manage | environments``:
         * |manage_environments|
-    #. click ``create a profile``
-    #. give your profile the name ``Speck Envs``
+    #. Click ``create a profile``.
+    #. Give your profile the name ``Speck Envs``.
     #. .. note::
 
            Depending on your setup, you may have several
@@ -36,14 +36,14 @@ steps:
 
            If you see a category that applies to your product already, then expand
            It to choose the elements that apply.  If not, then click |add_category|
-           to create a new one
+           to create a new one.
     #. In our case, we'll need to create everything, so click |add_category|
-       and type ``location`` and hit enter
-    #. in the category, find the field that says |add_element| and type
-       ``laboratory`` and hit "enter"
-    #. add another element called ``field`` and hit enter
-    #. make sure to check the ``location`` category and all its elements
-    #. click ``save profile``
+       and type ``location`` and hit enter.
+    #. In the category, find the field that says |add_element| and type
+       ``laboratory`` and hit "enter".
+    #. Add another element called ``field`` and hit enter.
+    #. Make sure to select the ``location`` category checkbox and all its elements.
+    #. Click ``save profile``.
 
 .. note::
 
@@ -56,9 +56,9 @@ steps:
 
 To winnow down the list of environments to test:
 
-    #. click the edit |edit_icon| icon next to your environment profile.
-    #. exclude any environment by clicking the **X** next to it.
-    #. click ``done editing``
+    #. Click the edit |edit_icon| icon next to your environment profile.
+    #. Exclude any environment by clicking the **X** next to it.
+    #. Click ``done editing``.
 
 
 Create a Product
@@ -68,16 +68,16 @@ Now that you have your environment profile setup, let's create your product.
 We will presume your product is called **SpeckDetector**.
 It detects specks.  Very handy.
 
-    #. navigate to ``manage | products``:
+    #. Navigate to ``manage | products``:
         * |manage_products|
-    #. click ``create a product``
-    #. fill out the name and description
-    #. set version to 1.0.  see :ref:`Product Versions <product-versions>`
+    #. Click ``create a product``.
+    #. Fill out the name and description.
+    #. Set version to 1.0.  see :ref:`Product Versions <product-versions>`
        for more info on how version naming works.
-    #. set the environment to the environment profile you created earlier.  Or
+    #. Set the environment to the environment profile you created earlier.  Or
        you can optionally leave it blank and add them later.
-    #. click save
-    #. you now have a product and version!
+    #. Click save.
+    #. You now have a product and version!
 
 .. |manage_environments| image:: img/manage_environments.png
     :height: 50px

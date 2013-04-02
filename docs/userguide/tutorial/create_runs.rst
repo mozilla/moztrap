@@ -21,11 +21,11 @@ suites you have created so far.  Let's call this ``feature complete``.
 
 Steps
 ^^^^^
-    #. navigate to ``manage | runs``
-    #. click ``create a test run``
-    #. set your product version to ``SpeckDetector 1.0``
-    #. set name to ``feature complete``
-    #. enter a description that includes Markdown_ syntax.  This information
+    #. Navigate to ``manage | runs``.
+    #. Click ``create a test run``.
+    #. Set your product version to ``SpeckDetector 1.0``.
+    #. Set name to ``feature complete``.
+    #. Enter a description that includes Markdown_ syntax.  This information
        will be displayed at the top of each page while running the tests::
 
         LINKS
@@ -39,8 +39,8 @@ Steps
        what a :ref:`run series<test-run-series>` is.
     #. Leave the ``start`` date as today.  If you want the run to expire, then
        set the ``end`` date, too.
-    #. drag both suites from ``available`` to ``included``
-    #. click ``save run``
+    #. Drag both suites from ``available`` to ``included``.
+    #. Click ``save run``.
 
 
 Activate your Run
@@ -54,11 +54,11 @@ Why not have test runs active all the time?  Good question.
 
 Steps
 ^^^^^
-    #. navigate to ``manage | runs``
-    #. find your test run ``feature complete``
-    #. click the status icon
+    #. Navigate to ``manage | runs``.
+    #. Find your test run ``feature complete``.
+    #. Click the status icon.
         * |run_activate|
-    #. click "Activate"
+    #. Click "Activate".
 
 .. |run_activate| image:: img/run_activate.png
     :height: 150px
