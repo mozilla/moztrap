@@ -317,10 +317,6 @@ class SuiteSelectionResource(BaseSelectionResource):
             "created_by": ALL_WITH_RELATIONS,
             }
 
-    @property
-    def order_field(self):
-        return "runsuites__order"
-
 
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
