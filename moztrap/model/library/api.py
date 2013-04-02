@@ -320,8 +320,8 @@ class CaseSelectionResource(BaseSelectionResource):
 
     product = fields.ForeignKey(ProductResource, "product")
     versions = fields.ToManyField(
-        CaseVersionResource,
-        # we only want the latest of the caseversions.  this does that filtering
+        'moztrap.model.library.api.CaseVersionSelectionResource',
+        # filter for only the latest of the caseversions
         lambda bundle: CaseVersion.objects.filter(
             case=bundle.obj,
             latest=True
