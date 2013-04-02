@@ -187,8 +187,7 @@ var MT = (function (MT, $) {
             ajax_trigger_filter: "product",
             ajax_for_field: "suites",
             for_type: "suite",
-            ich_template: ich.case_select_item,
-            use_latest: false
+            ich_template: ich.case_select_item
         });
         MT.populateMultiselectItems({
             container: '#tag-add-form, #tag-edit-form',

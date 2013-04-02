@@ -205,7 +205,7 @@ class CaseVersionResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        fields = ["id", "name", "description", "case", "latest", "status"]
+        fields = ["id", "name", "description", "case", "status"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
@@ -353,13 +353,8 @@ class CaseSelectionResource(BaseSelectionResource):
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        case = bundle.obj
-        cv = bundle.obj.versions.all()[0]
-        bundle.data["case_id"] = unicode(case.id)
-        bundle.data["name"] = unicode(cv.name)
-        bundle.data["product_id"] = unicode(case.product_id)
-        bundle.data["product"] = {"id": unicode(case.product_id)}
-        bundle.data["order"] = case.order
+        bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+        bundle.data["order"] = bundle.obj.order
 
         return bundle
 

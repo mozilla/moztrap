@@ -281,21 +281,25 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
         s1 = self.factory.create(name="Suite1")
         s2 = self.factory.create(name="Suite2")
         run1 = self.F.RunFactory.create()
-        self.F.RunSuiteFactory.create(
+        runsuite1 = self.F.RunSuiteFactory.create(
             run=run1, suite=s1, order=0)
-        self.F.RunSuiteFactory.create(
+        runsuite2 = self.F.RunSuiteFactory.create(
             run=run1, suite=s2, order=1)
         run2 = self.F.RunFactory.create()
-        self.F.RunSuiteFactory.create(
+        runsuite3 = self.F.RunSuiteFactory.create(
             run=run2, suite=s1, order=0)
-        self.F.RunSuiteFactory.create(
+        runsuite4 = self.F.RunSuiteFactory.create(
             run=run2, suite=s2, order=1)
 
         self._do_test(
             -1,
             self.available_param,
-            [self.get_exp_obj(s, runs=[
-                unicode(self.get_detail_url("run", run1.id)),
-                unicode(self.get_detail_url("run", run2.id)),
-                ]) for s in [s1, s2]],
+            [self.get_exp_obj(
+                s,
+                runs=[
+                    unicode(self.get_detail_url("run", run1.id)),
+                    unicode(self.get_detail_url("run", run2.id)),
+                    ],
+                order=rs.order
+                ) for s, rs in [(s1, runsuite3), (s2, runsuite4)]],
             )
