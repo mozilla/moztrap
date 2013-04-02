@@ -6,9 +6,11 @@
         <div class="name-tags">
           <h5 class="title" title="{{ name }}">{{ name }}</h5>
           <ul class="tags">
-            {{#tags}}
-              <li><a href="#{{ name|slugify }}" title="filter by {{ name }}" class="filter-link tag" data-type="tag">{{ name }}</a></li>
-            {{/tags}}
+              {{#versions}}
+                  {{#tags}}
+                  <li><a href="#{{ name|slugify }}" title="filter by {{ name }}" class="filter-link tag" data-type="tag">{{ name }}</a></li>
+                  {{/tags}}
+              {{/versions}}
           </ul>
         </div>
 

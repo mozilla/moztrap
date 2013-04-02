@@ -1,3 +1,4 @@
+from django.db.models import Max
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -204,12 +205,13 @@ class CaseVersionResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        fields = ["id", "name", "description", "case", "status"]
+        fields = ["id", "name", "description", "case", "latest", "status"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
+            "latest": ALL,
             }
         authorization = CaseVersionAuthorization()
 
@@ -316,47 +318,48 @@ class CaseSelectionResource(BaseSelectionResource):
     for selecting cases.
     """
 
-    case = fields.ForeignKey(CaseResource, "case")
-    productversion = fields.ForeignKey(
-        ProductVersionResource, "productversion")
-    tags = fields.ToManyField(TagResource, "tags", full=True)
-    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
+    product = fields.ForeignKey(ProductResource, "product")
+    versions = fields.ToManyField(
+        CaseVersionResource,
+        # we only want the latest of the caseversions.  this does that filtering
+        lambda bundle: CaseVersion.objects.filter(
+            case=bundle.obj,
+            latest=True
+            ),
+        related_name="versions",
+        full=True,
+        )
+    suites = fields.ToManyField(SuiteResource, "suites")
 
     class Meta:
-        queryset = CaseVersion.objects.all().select_related(
-            "case",
-            "productversion",
-            "created_by",
+        queryset = Case.objects.all().select_related(
+            "product",
             ).prefetch_related(
-                "tags",
-                "case__suitecases",
-                ).distinct().order_by("case__suitecases__order")
+                "versions__tags",
+                ).annotate(
+                    order=Max("suitecases__order"),
+                    ).order_by("order")
+
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest", "created_by"]
+        fields = ["id", "versions", "created_by"]
         filtering = {
-            "productversion": ALL_WITH_RELATIONS,
-            "tags": ALL_WITH_RELATIONS,
-            "case": ALL_WITH_RELATIONS,
-            "latest": ALL,
-            "created_by": ALL_WITH_RELATIONS
+            "product": ALL_WITH_RELATIONS,
+            "versions": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS,
+            "suites": ALL_WITH_RELATIONS
             }
 
 
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        case = bundle.obj.case
+        case = bundle.obj
+        cv = bundle.obj.versions.all()[0]
         bundle.data["case_id"] = unicode(case.id)
+        bundle.data["name"] = unicode(cv.name)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
-
-        if "case__suites" in bundle.request.GET.keys():
-            suite_id = int(bundle.request.GET["case__suites"])
-            order = [x.order for x in case.suitecases.all()
-                if x.suite_id == suite_id][0]
-            bundle.data["order"] = order
-        else:
-            bundle.data["order"] = None
+        bundle.data["order"] = case.order
 
         return bundle
 

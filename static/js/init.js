@@ -184,11 +184,11 @@ var MT = (function (MT, $) {
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
             ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
-            ajax_trigger_filter: "productversion__product",
-            ajax_for_field: "case__suites",
+            ajax_trigger_filter: "product",
+            ajax_for_field: "suites",
             for_type: "suite",
             ich_template: ich.case_select_item,
-            use_latest: true
+            use_latest: false
         });
         MT.populateMultiselectItems({
             container: '#tag-add-form, #tag-edit-form',
