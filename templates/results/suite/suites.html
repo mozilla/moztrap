@@ -1,0 +1,12 @@
+{% extends 'results/suite/base.html' %}
+
+{% block content %}
+
+<section id="suiteresults" class="viewresults listpage">
+  <h2>Test Suite Results</h2>
+
+  {% include "lists/_filter.html" %}
+  {% include "results/suite/list/_suite_list.html" %}
+
+</section>
+{% endblock content %}
