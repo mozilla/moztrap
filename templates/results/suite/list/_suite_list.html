@@ -1,0 +1,18 @@
+{% load pagination %}
+
+<div class="itemlist action-ajax-replace" data-ajax-update-url="{{ request.get_full_path }}">
+
+  {% include "results/suite/list/_suites_listordering.html" %}
+
+  {% paginate suites as pager %}
+  {% if pager.objects %}
+    {% for suite in pager.objects %}
+      {% include "results/suite/list/_suite_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</div>

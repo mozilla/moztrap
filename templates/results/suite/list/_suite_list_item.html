@@ -1,0 +1,24 @@
+{% load results filters %}
+
+<article id="suite-id-{{ suite.id }}" class="listitem">
+  {% include "results/_status.html" with item=suite %}
+
+  <header class="itemhead">
+
+    <div class="completion" data-perc="{{ suite.completion|percentage }}">{{ suite.completion|percentage }}</div>
+
+    <h3 class="name" title="{{ suite.name }}">{{ suite.name }}</h3>
+
+    <div class="product">{{ suite.product }}</div>
+
+    {% with "results_runcaseversions"|filter_url:suite as detail_url %}
+    {% include "results/_results_summary_filtered.html" with results=suite.result_summary %}
+    {% endwith %}
+
+  </header>
+
+  {% url 'results_suite_details' suite.id as details_url %}
+  {# _suite_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

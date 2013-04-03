@@ -485,6 +485,10 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
         self.save(force_update=True, user=user)
 
 
+    def tags(self):
+        return self.caseversion.tags
+
+
 
 class RunSuite(MTModel):
     """

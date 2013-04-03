@@ -96,9 +96,9 @@ The generated CSS is included with MozTrap, so Sass and Compass are not
 needed to run MozTrap. You only need them if you plan to modify the Sass
 sources and re-generate the CSS.
 
-To install the necessary Ruby gems for Compass/Sass development, run
-``bin/install-gems``.  Update ``requirements/gems.txt`` if newer gems should be
-used.
+After installing gem ``apt-get install rubygems``, run ``bin/install-gems`` to
+install the necessary Ruby gems for Compass/Sass development.
+Update ``requirements/gems.txt`` if newer gems should be used.
 
 While tweaking the sass files, you should run the command line file to update
 the CSS as you go.  To do this::
