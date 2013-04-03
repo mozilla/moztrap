@@ -1,3 +1,4 @@
+from django.db.models import Max
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.bundle import Bundle
@@ -300,14 +301,14 @@ class SuiteSelectionResource(BaseSelectionResource):
 
     product = fields.ForeignKey(ProductResource, "product")
     runs = fields.ToManyField(RunResource, "runs")
-    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
+    created_by = fields.ForeignKey(
+        UserResource, "created_by", full=True, null=True)
 
     class Meta:
         queryset = Suite.objects.all().select_related(
             "created_by",
-            ).prefetch_related(
-            "runsuites",
-            ).distinct().order_by("runsuites__order")
+            ).annotate(order=Max("runsuites__order")).order_by("order")
+
         list_allowed_methods = ['get']
         fields = ["id", "name", "created_by"]
         filtering = {
@@ -324,14 +325,6 @@ class SuiteSelectionResource(BaseSelectionResource):
         bundle.data["suite_id"] = unicode(suite.id)
         bundle.data["case_count"] = suite.cases.count()
         bundle.data["filter_cases"] = filter_url("manage_cases", suite)
-
-        if "runs" in bundle.request.GET.keys():
-            run_id = int(bundle.request.GET["runs"])
-            s = suite.runsuites.all()
-            order = [x.order for x in suite.runsuites.all()
-                     if x.run_id == run_id][0]
-            bundle.data["order"] = order
-        else:
-            bundle.data["order"] = None
+        bundle.data["order"] = suite.order
 
         return bundle

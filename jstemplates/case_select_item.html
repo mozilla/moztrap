@@ -1,14 +1,16 @@
 {{#items}}
 <article class="selectitem" data-title="{{ name }}" data-product-id="{{ product_id }}">
-    <input type="checkbox" name="bulk-select" value="{{ case_id }}" class="bulk-value" id="bulk-select-{{ case_id }}" {{ checked }}>
+    <input type="checkbox" name="bulk-select" value="{{ id }}" class="bulk-value" id="bulk-select-{{ id }}" {{ checked }}>
     <div class="listitem itemhead bulk-item">
-        <label for="bulk-select-{{ case_id }}" class="bulk-type" title="select or drag">bulk select {{ case_id }}</label>
+        <label for="bulk-select-{{ id }}" class="bulk-type" title="select or drag">bulk select {{ case_id }}</label>
         <div class="name-tags">
           <h5 class="title" title="{{ name }}">{{ name }}</h5>
           <ul class="tags">
-            {{#tags}}
-              <li><a href="#{{ name|slugify }}" title="filter by {{ name }}" class="filter-link tag" data-type="tag">{{ name }}</a></li>
-            {{/tags}}
+              {{#versions}}
+                  {{#tags}}
+                  <li><a href="#{{ name|slugify }}" title="filter by {{ name }}" class="filter-link tag" data-type="tag">{{ name }}</a></li>
+                  {{/tags}}
+              {{/versions}}
           </ul>
         </div>
 
