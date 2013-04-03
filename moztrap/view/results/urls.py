@@ -11,7 +11,7 @@ urlpatterns = patterns(
 
     url("^$", "views.home", name="results"),
 
-    # runs ------------------------------------------------------------------
+    # runs (Runs) ------------------------------------------------------------
 
     # list
     url(r"^runs/$",
@@ -23,7 +23,7 @@ urlpatterns = patterns(
         "runs.views.run_details",
         name="results_run_details"),
 
-    # runcaseversions --------------------------------------------------------
+    # runcaseversions (Test Cases) -------------------------------------------
 
     # list
     url(r"^cases/$",
@@ -35,10 +35,22 @@ urlpatterns = patterns(
         "runcaseversions.views.runcaseversion_details",
         name="results_runcaseversion_details"),
 
-    # results ----------------------------------------------------------------
+    # suites (Suites) --------------------------------------------------------
+
+    # list
+    url(r"^suites/$",
+        "suites.views.suites_list",
+        name="results_suites"),
+
+    # ajax detail
+    url(r"^suites/_detail/(?P<suite_id>\d+)/$",
+        "suites.views.suite_details",
+        name="results_suite_details"),
+
+    # results (See Related button inside of ajax detail) ---------------------
 
     # list
     url(r"^case/(?P<rcv_id>\d+)/$",
         "results.views.results_list",
-        name="results_results")
+        name="results_results"),
 )

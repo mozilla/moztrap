@@ -11,6 +11,8 @@ from ..core.models import Product, ProductVersion
 from ..environments.models import HasEnvironmentsModel
 from ..tags.models import Tag
 
+import logging
+logger = logging.getLogger(__name__)
 
 
 class Case(MTModel):
@@ -280,6 +282,8 @@ class CaseStep(MTModel):
 
 class Suite(MTModel, DraftStatusModel):
     """An ordered suite of test cases."""
+
+
     DEFAULT_STATUS = DraftStatusModel.STATUS.active
 
     product = models.ForeignKey(Product, related_name="suites")
@@ -301,6 +305,31 @@ class Suite(MTModel, DraftStatusModel):
         overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))
         return super(Suite, self).clone(*args, **kwargs)
+
+
+    def result_summary(self):
+        """Return a dict summarizing status of results."""
+        from ..execution.models import Result, result_summary
+        summary = result_summary(
+            Result.objects.filter(runcaseversion__caseversion__case__suites=self))
+        logger.debug(summary)
+        return summary
+
+
+    def completion(self):
+        """Return fraction of case/env combos that have a completed result."""
+        from ..execution.models import Result, RunCaseVersion
+        total = RunCaseVersion.environments.through._default_manager.filter(
+            runcaseversion__caseversion__case__suites=self).count()
+        completed = Result.objects.filter(
+            status__in=Result.COMPLETED_STATES,
+            runcaseversion__caseversion__case__suites=self).values(
+            "runcaseversion", "environment").distinct().count()
+
+        try:
+            return float(completed) / total
+        except ZeroDivisionError:
+            return 0
 
 
     class Meta:

@@ -1,0 +1,14 @@
+{% load filters markup %}
+
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=suite %}
+
+  {% if suite.description %}
+  <p class="details">
+    {{ suite.description|markdown }}
+  </p>
+  {% endif %}
+
+  <a href="{{ 'results_runcaseversions'|filter_url:suite }}" class="drill-link" title="test cases related to {{ suite.name }}">See related test cases</a>
+
+</div>
