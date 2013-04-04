@@ -12,3 +12,5 @@
   <a href="{{ 'results_runcaseversions'|filter_url:suite }}" class="drill-link" title="test cases related to {{ suite.name }}">See related test cases</a>
 
 </div>
+
+{% include "lists/_runs.html" with runs=suite.runs %}

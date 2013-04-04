@@ -6112,7 +6112,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   width: 56.044%;
   margin-right: 1.099%;
 }
-#suiteresults .envs, #suiteresults .testers, #suiteresults .tags {
+#suiteresults .envs, #suiteresults .testers, #suiteresults .runs {
   display: inline;
   float: left;
   width: 20.879%;
