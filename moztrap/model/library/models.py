@@ -317,7 +317,19 @@ class Suite(MTModel, DraftStatusModel):
 
 
     def completion(self):
-        """Return fraction of case/env combos that have a completed result."""
+        """
+        Return fraction of case/env combos that have a completed result.
+
+        @@@ Camd: This might be tricky.  If you are not filtering by any run,
+            then this should show % of cases in the suite that have EVER been
+            touched.  Perhaps regardless of env, but not sure.
+
+            If you ARE filtering by a run, then you want the % completed for
+            the run, with env as a multiplier.
+
+            Below this is overall, even if the suites have tests that belong
+            to a disabled run.
+        """
         from ..execution.models import Result, RunCaseVersion
         total = RunCaseVersion.environments.through._default_manager.filter(
             runcaseversion__caseversion__case__suites=self).count()
