@@ -1,4 +1,5 @@
-from django.db.models import Max, Count
+from django.db.models import Max
+from moztrap.model.mtmodel import NotDeletedCount
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -342,7 +343,7 @@ class CaseSelectionResource(BaseSelectionResource):
         # case versions.
         queryset = Case.objects.all().annotate(
             order=Max("suitecases__order"),
-            version_count=Count("versions"),
+            version_count=NotDeletedCount("versions"),
             ).exclude(version_count=0).select_related(
                 "product",
                 ).prefetch_related(
@@ -350,7 +351,7 @@ class CaseSelectionResource(BaseSelectionResource):
                     ).order_by("order")
 
         list_allowed_methods = ['get']
-        fields = ["id", "versions", "created_by"]
+        fields = ["id", "versions", "created_by", "version_count"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
             "versions": ALL_WITH_RELATIONS,
