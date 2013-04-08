@@ -74,7 +74,12 @@ class CaseResource(MTResource):
     Filterable by suites and product fields.
     """
 
-    suites = fields.ToManyField(SuiteResource, "suites", readonly=True)
+    suites = fields.ToManyField(
+        SuiteResource,
+        "suites",
+        readonly=True,
+        null=True,
+        )
     product = fields.ForeignKey(ProductResource, "product")
 
     class Meta(MTResource.Meta):
@@ -328,11 +333,14 @@ class CaseSelectionResource(BaseSelectionResource):
             ),
         related_name="versions",
         full=True,
+        null=True,
         )
-    suites = fields.ToManyField(SuiteResource, "suites")
+    suites = fields.ToManyField(SuiteResource, "suites", null=True)
 
     class Meta:
-        queryset = Case.objects.all().select_related(
+        # versions=None exclude is just in case a ``case`` exists with no
+        # case versions.
+        queryset = Case.objects.all().exclude(versions=None).select_related(
             "product",
             ).prefetch_related(
                 "versions__tags",
@@ -370,7 +378,12 @@ class CaseVersionSelectionResource(BaseSelectionResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
-    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
