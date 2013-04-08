@@ -1,4 +1,5 @@
 from django.db.models import Max
+from moztrap.model.mtmodel import NotDeletedCount
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -340,16 +341,17 @@ class CaseSelectionResource(BaseSelectionResource):
     class Meta:
         # versions=None exclude is just in case a ``case`` exists with no
         # case versions.
-        queryset = Case.objects.all().exclude(versions=None).select_related(
-            "product",
-            ).prefetch_related(
-                "versions__tags",
-                ).annotate(
-                    order=Max("suitecases__order"),
+        queryset = Case.objects.all().annotate(
+            order=Max("suitecases__order"),
+            version_count=NotDeletedCount("versions"),
+            ).exclude(version_count=0).select_related(
+                "product",
+                ).prefetch_related(
+                    "versions__tags",
                     ).order_by("order")
 
         list_allowed_methods = ['get']
-        fields = ["id", "versions", "created_by"]
+        fields = ["id", "versions", "created_by", "version_count"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
             "versions": ALL_WITH_RELATIONS,
@@ -361,7 +363,11 @@ class CaseSelectionResource(BaseSelectionResource):
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+        versions = bundle.obj.versions.all()
+        if versions:
+            bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+        else:
+            bundle.data["name"] = "No name available"  # pragma: no cover
         bundle.data["order"] = bundle.obj.order
 
         return bundle
