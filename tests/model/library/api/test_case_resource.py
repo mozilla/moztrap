@@ -299,3 +299,19 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             self.included_param,
             exp_objects=exp_objects,
             )
+
+
+    def test_case_without_version(self):
+        """Get a list of available cases, skip ones without versions"""
+
+        # create a case with no version
+        self.F.CaseFactory()
+
+        data = self._setup_for_one_included_one_not()
+        exp_objects = [self.get_exp_obj(data["cv2"])]
+
+        self._do_test(
+            data["s"].id,
+            self.available_param,
+            exp_objects=exp_objects,
+            )
