@@ -361,7 +361,11 @@ class CaseSelectionResource(BaseSelectionResource):
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+        versions = bundle.obj.versions.all()
+        if versions:
+            bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+        else:
+            bundle.data["name"] = "No version Exists for this case."
         bundle.data["order"] = bundle.obj.order
 
         return bundle
