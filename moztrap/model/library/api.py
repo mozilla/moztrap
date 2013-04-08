@@ -1,4 +1,4 @@
-from django.db.models import Max
+from django.db.models import Max, Count
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -340,12 +340,13 @@ class CaseSelectionResource(BaseSelectionResource):
     class Meta:
         # versions=None exclude is just in case a ``case`` exists with no
         # case versions.
-        queryset = Case.objects.all().exclude(versions=None).select_related(
-            "product",
-            ).prefetch_related(
-                "versions__tags",
-                ).annotate(
-                    order=Max("suitecases__order"),
+        queryset = Case.objects.all().annotate(
+            order=Max("suitecases__order"),
+            version_count=Count("versions"),
+            ).exclude(version_count=0).select_related(
+                "product",
+                ).prefetch_related(
+                    "versions__tags",
                     ).order_by("order")
 
         list_allowed_methods = ['get']
