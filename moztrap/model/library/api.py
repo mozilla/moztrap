@@ -341,14 +341,17 @@ class CaseSelectionResource(BaseSelectionResource):
     class Meta:
         # versions=None exclude is just in case a ``case`` exists with no
         # case versions.
-        queryset = Case.objects.all().annotate(
-            order=Max("suitecases__order"),
-            version_count=NotDeletedCount("versions"),
-            ).exclude(version_count=0).select_related(
+        queryset = Case.objects.filter(versions__latest=True).select_related(
                 "product",
+                "created_by",
                 ).prefetch_related(
+                    "versions",
                     "versions__tags",
-                    ).order_by("order")
+                    "suites",
+                    ).annotate(
+                        order=Max("suitecases__order"),
+                        version_count=NotDeletedCount("versions"),
+                        ).exclude(version_count=0).order_by("order")
 
         list_allowed_methods = ['get']
         fields = ["id", "versions", "created_by", "version_count"]
@@ -363,9 +366,9 @@ class CaseSelectionResource(BaseSelectionResource):
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        versions = bundle.obj.versions.all()
+        versions = bundle.obj.versions.filter(latest=1)
         if versions:
-            bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
+            bundle.data["name"] = unicode(versions[0].name)
         else:
             bundle.data["name"] = "No name available"  # pragma: no cover
         bundle.data["order"] = bundle.obj.order
