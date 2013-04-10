@@ -328,7 +328,12 @@ class CaseSelectionResource(BaseSelectionResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
-    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
 
     class Meta:
         queryset = CaseVersion.objects.filter(latest=True).select_related(
@@ -351,9 +356,20 @@ class CaseSelectionResource(BaseSelectionResource):
         ordering = ["case"]
 
 
-    # def build_filters(self, filters=None):
-    #
-    #     .order_by("case__suitecases__order")
+
+    def apply_filters(self, request, applicable_filters,
+                      applicable_excludes={}):
+        """
+        Workaround to add annotation of order only where we need it.
+        There is a bug that you can't annotate through 3 levels.
+        """
+        req =  super(CaseSelectionResource, self).apply_filters(request,
+                                                                applicable_filters,
+                                                                applicable_excludes)
+        if not len(applicable_excludes):
+            return req.annotate(case_order=Max("case__suitecases__order"))
+        else:
+            return req
 
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
@@ -364,9 +380,7 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["product"] = {"id": unicode(case.product_id)}
 
         if "case__suites" in bundle.request.GET.keys():
-            bundle.data["order"] = case.suitecases.get(
-                suite_id=int(bundle.request.GET["case__suites"])
-                ).order
+            bundle.data["order"] = bundle.obj.case_order
         else:
             bundle.data["order"] = None
 

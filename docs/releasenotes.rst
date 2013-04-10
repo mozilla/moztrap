@@ -2,6 +2,13 @@ Release Notes
 =============
 
 
+Version 1.4.5.4
+---------------
+*still beta
+
+* **Scalability fixes around editing huge test suites**
+
+
 Version 1.4.5
 -------------
 *release date - 3/28/2013*
