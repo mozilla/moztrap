@@ -341,10 +341,9 @@ class CaseSelectionResource(BaseSelectionResource):
             ).prefetch_related(
                 "tags",
                 "tags__product",
-                # "case__suitecases",
                 )
         list_allowed_methods = ['get']
-        fields = ["id", "name", "latest", "created_by"]
+        fields = ["id", "name", "created_by"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
