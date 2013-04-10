@@ -41,7 +41,7 @@ class ApiCrudCases(ApiTestCase):
       - test_update_without_fk()
       - test_update_list_forbidden()
       - test_update_fails_without_creds()
-      - test_delete_detail_perminant()
+      - test_delete_detail_permanent()
       - test_delete_detail_soft()
       - test_delete_list_forbidden()
       - test_delete_fails_with_wrong_perms()

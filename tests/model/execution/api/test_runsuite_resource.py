@@ -1,5 +1,5 @@
 """
-Tests for SuiteCaseResource api.
+Tests for RunRunResource api.
 
 """
 from tests.case.api.crud import ApiCrudCases
@@ -8,8 +8,8 @@ import logging
 mozlogger = logging.getLogger('moztrap.test')
 
 
-class SuiteCaseResourceTest(ApiCrudCases):
-    """Please see the test cases implemented in tests.case.api.ApiCrudCases.
+class RunSuiteResourceTest(ApiCrudCases):
+    """Please see the test suites implemented in tests.suite.api.ApiCrudSuites.
 
     The following abstract methods must be implemented:
       - factory(self)                           (property)
@@ -28,14 +28,14 @@ class SuiteCaseResourceTest(ApiCrudCases):
     def factory(self):
         """The factory to use to create fixtures of the object under test.
         """
-        return self.F.SuiteCaseFactory()
+        return self.F.RunSuiteFactory()
 
 
     @property
     def resource_name(self):
         """String defining the resource name.
         """
-        return "suitecase"
+        return "runsuite"
 
 
     @property
@@ -43,7 +43,7 @@ class SuiteCaseResourceTest(ApiCrudCases):
         """String defining the permission required for
         Create, Update, and Delete.
         """
-        return "library.manage_suite_cases"
+        return "execution.manage_runs"
 
 
     def order_generator(self):
@@ -61,20 +61,20 @@ class SuiteCaseResourceTest(ApiCrudCases):
         The output of this method can be sent in the payload parameter of a
         POST message.
         """
-        self.product_fixture = self.F.ProductFactory.create()
-        self.case_fixture = self.F.CaseFactory.create(
-            product=self.product_fixture)
+        self.productversion_fixture = self.F.ProductVersionFactory.create()
         self.suite_fixture = self.F.SuiteFactory.create(
-            product=self.product_fixture)
+            product=self.productversion_fixture.product)
+        self.run_fixture = self.F.RunFactory.create(
+            productversion=self.productversion_fixture)
 
         fields = {
-            u"case": unicode(
-                self.get_detail_url("case", str(self.case_fixture.id))),
             u"suite": unicode(
-                self.get_detail_url("suite", str(self.suite_fixture.id))
+                self.get_detail_url("suite", str(self.suite_fixture.id))),
+            u"run": unicode(
+                self.get_detail_url("run", str(self.run_fixture.id))
             ),
             u"order": self.order_generator(),
-        }
+            }
         return fields
 
 
@@ -82,7 +82,7 @@ class SuiteCaseResourceTest(ApiCrudCases):
         """Returns the object from the backend, so you can query it's values in
         the database for validation.
         """
-        return self.model.SuiteCase.everything.get(id=id)
+        return self.model.RunSuite.everything.get(id=id)
 
 
     def backend_data(self, backend_obj):
@@ -96,34 +96,34 @@ class SuiteCaseResourceTest(ApiCrudCases):
             u"id": unicode(str(backend_obj.id)),
             u"resource_uri": unicode(
                 self.get_detail_url(self.resource_name, str(backend_obj.id))),
-            u"case": unicode(
-                self.get_detail_url("case", str(backend_obj.case.id))),
             u"suite": unicode(
                 self.get_detail_url("suite", str(backend_obj.suite.id))),
+            u"run": unicode(
+                self.get_detail_url("run", str(backend_obj.run.id))),
             u"order": backend_obj.order,
-        }
+            }
 
 
     @property
     def read_create_fields(self):
         """List of fields that are required for create but read-only for update."""
-        return ["suite", "case"]
+        return ["run", "suite"]
 
     # overrides from crud.py
 
-    # additional test cases, if any
+    # additional test suites, if any
 
-    # validation cases
+    # validation suites
 
     def test_create_mismatched_product_error(self):
-        """error if suite.product does not match case.product"""
+        """error if run.product does not match suite.product"""
 
         mozlogger.info("test_create_mismatched_product_error")
 
         fields = self.new_object_data
         product = self.F.ProductFactory()
-        self.case_fixture.product = product
-        self.case_fixture.save()
+        self.suite_fixture.product = product
+        self.suite_fixture.save()
 
         # do post
         res = self.post(
@@ -131,9 +131,9 @@ class SuiteCaseResourceTest(ApiCrudCases):
             params=self.credentials,
             payload=fields,
             status=400,
-        )
+            )
 
         error_message = str(
-            "case's product must match suite's product."
+            "suite's product must match run's product."
         )
         self.assertEqual(res.text, error_message)

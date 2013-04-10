@@ -491,7 +491,7 @@ class RunSuite(MTModel):
     An ordered association between a Run and a Suite.
 
     The only direct impact of RunSuite instances is that they determine which
-    RunCaseVersions are created when the run is activated.
+    RunCaseVersions (and in what order) are created when the run is activated.
 
     """
     run = models.ForeignKey(Run, related_name="runsuites")

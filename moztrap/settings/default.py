@@ -16,9 +16,9 @@ try:
 except NameError:
     HMAC_KEYS = {"default": SECRET_KEY}
 
-# LOGGING["handlers"]["null"] = {
-#     'level': 'DEBUG',
-#     'class': 'django.utils.log.NullHandler',
-#     }
-#
-# LOGGING["root"] = {"handlers": ["null"]}
+LOGGING["handlers"]["null"] = {
+    'level': 'DEBUG',
+    'class': 'django.utils.log.NullHandler',
+    }
+
+LOGGING["root"] = {"handlers": ["null"]}

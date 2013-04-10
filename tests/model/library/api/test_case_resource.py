@@ -120,7 +120,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         return "{0}__ne".format(self.included_param)
 
 
-    def get_exp_obj(self, cv, order=None):
+    def get_exp_obj(self, cv):
         """Return an expected caseselection object with fields filled."""
         return {
             u"case": unicode(
@@ -130,7 +130,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             u"id": unicode(cv.id),
             u"latest": True,
             u"name": unicode(cv.name),
-            u"order": order,
             u"product": {
                 u"id": unicode(cv.productversion.product_id)
             },
@@ -217,7 +216,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         exp_objects = [
             self.get_exp_obj(
                 cv,
-                order=sc.order,
                 ) for cv, sc in [
                     (data["cv1"], data["sc1"]),
                     (data["cv2"], data["sc2"]),
@@ -238,7 +236,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         sc1 = self.F.SuiteCaseFactory.create(
             case=cv1.case,
             suite=suite,
-            order=0,
             )
         return {
             "cv1": cv1,
@@ -268,7 +265,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         exp_objects = [
             self.get_exp_obj(
                 cv,
-                order=sc.order,
                 ) for cv, sc in [(data["cv1"], data["sc1"])]
             ]
 

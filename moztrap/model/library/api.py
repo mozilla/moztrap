@@ -1,5 +1,3 @@
-from django.db.models import Max
-from moztrap.model.mtmodel import NotDeletedCount
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -343,7 +341,7 @@ class CaseSelectionResource(BaseSelectionResource):
             ).prefetch_related(
                 "tags",
                 "tags__product",
-                "case__suitecases",
+                # "case__suitecases",
                 )
         list_allowed_methods = ['get']
         fields = ["id", "name", "latest", "created_by"]
@@ -356,21 +354,6 @@ class CaseSelectionResource(BaseSelectionResource):
         ordering = ["case"]
 
 
-
-    def apply_filters(self, request, applicable_filters,
-                      applicable_excludes={}):
-        """
-        Workaround to add annotation of order only where we need it.
-        There is a bug that you can't annotate through 3 levels.
-        """
-        req =  super(CaseSelectionResource, self).apply_filters(request,
-                                                                applicable_filters,
-                                                                applicable_excludes)
-        if not len(applicable_excludes):
-            return req.annotate(case_order=Max("case__suitecases__order"))
-        else:
-            return req
-
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
@@ -378,11 +361,6 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
-
-        if "case__suites" in bundle.request.GET.keys():
-            bundle.data["order"] = bundle.obj.case_order
-        else:
-            bundle.data["order"] = None
 
         return bundle
 
