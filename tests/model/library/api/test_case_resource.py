@@ -112,7 +112,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
 
     @property
     def included_param(self):
-        return "suites"
+        return "case__suites"
 
 
     @property
@@ -120,46 +120,26 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         return "{0}__ne".format(self.included_param)
 
 
-    def get_exp_obj(self, cv, order=None, suites=None):
+    def get_exp_obj(self, cv, order=None):
         """Return an expected caseselection object with fields filled."""
-        if not suites:
-            suites = []
-        case = cv.case
-        product = case.product
-        pv = cv.productversion
-
         return {
-            u'suites': [unicode(self.get_detail_url("suite", s.id)) for s in suites],
-            u"product": unicode(self.get_detail_url("product", product.id)),
+            u"case": unicode(
+                self.get_detail_url("case", cv.case.id)),
+            u"case_id": unicode(cv.case.id),
+            u"created_by": None,
+            u"id": unicode(cv.id),
+            u"latest": True,
             u"name": unicode(cv.name),
-            u'versions': [{
-                u"case": unicode(
-                    self.get_detail_url("case", case.id)),
-                u'product': {u'id': unicode(product.id)},
-                u"name": unicode(cv.name),
-                u'tags': [],
-                u'productversion_name': unicode(pv.name),
-                u'created_by': None,
-                u'case_id': unicode(cv.case.id),
-                u'productversion': {
-                    u'product': unicode(self.get_detail_url(
-                        "product", product.id)),
-                    u'codename': u'',
-                    u'version': unicode(pv.version),
-                    u'id': unicode(pv.id),
-                    u'resource_uri': unicode(self.get_detail_url(
-                        "productversion", pv.id))
-                },
-                u'resource_uri': unicode(
-                    self.get_detail_url("caseversionselection", cv.id)),
-                u'product_id': unicode(product.id),
-                u'id': unicode(cv.id),
-                u'latest': True
-                }],
-            u'id': unicode(case.id),
             u"order": order,
+            u"product": {
+                u"id": unicode(cv.productversion.product_id)
+            },
+            u"product_id": unicode(cv.productversion.product_id),
+            u"productversion": unicode(
+                self.get_detail_url("productversion", cv.productversion.id)),
             u"resource_uri": unicode(
-                self.get_detail_url("caseselection", case.id)),
+                self.get_detail_url("caseselection", cv.id)),
+            u"tags": [],
             }
 
 
@@ -238,7 +218,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             self.get_exp_obj(
                 cv,
                 order=sc.order,
-                suites=[data["s"]],
                 ) for cv, sc in [
                     (data["cv1"], data["sc1"]),
                     (data["cv2"], data["sc2"]),
@@ -290,7 +269,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             self.get_exp_obj(
                 cv,
                 order=sc.order,
-                suites=[data["s"]],
                 ) for cv, sc in [(data["cv1"], data["sc1"])]
             ]
 

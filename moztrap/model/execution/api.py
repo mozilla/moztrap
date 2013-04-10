@@ -307,15 +307,16 @@ class SuiteSelectionResource(BaseSelectionResource):
     class Meta:
         queryset = Suite.objects.all().select_related(
             "created_by",
-            ).annotate(order=Max("runsuites__order")).order_by("order")
+            ).annotate(order=Max("runsuites__order"))
 
         list_allowed_methods = ['get']
-        fields = ["id", "name", "created_by"]
+        fields = ["id", "name", "created_by", "runsuites"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
             "runs": ALL_WITH_RELATIONS,
             "created_by": ALL_WITH_RELATIONS,
             }
+        ordering = ["runs"]
 
 
     def dehydrate(self, bundle):

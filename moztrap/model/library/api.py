@@ -324,54 +324,51 @@ class CaseSelectionResource(BaseSelectionResource):
     for selecting cases.
     """
 
-    product = fields.ForeignKey(ProductResource, "product")
-    versions = fields.ToManyField(
-        'moztrap.model.library.api.CaseVersionSelectionResource',
-        # filter for only the latest of the caseversions
-        lambda bundle: CaseVersion.objects.filter(
-            case=bundle.obj,
-            latest=True
-            ),
-        related_name="versions",
-        full=True,
-        null=True,
-        )
-    suites = fields.ToManyField(SuiteResource, "suites", null=True)
+    case = fields.ForeignKey(CaseResource, "case")
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion")
+    tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
 
     class Meta:
-        # versions=None exclude is just in case a ``case`` exists with no
-        # case versions.
-        queryset = Case.objects.filter(versions__latest=True).select_related(
-                "product",
-                "created_by",
-                ).prefetch_related(
-                    "versions",
-                    "versions__tags",
-                    "suites",
-                    ).annotate(
-                        order=Max("suitecases__order"),
-                        version_count=NotDeletedCount("versions"),
-                        ).exclude(version_count=0).order_by("order")
-
+        queryset = CaseVersion.objects.filter(latest=True).select_related(
+            "case",
+            "productversion",
+            "created_by",
+            ).prefetch_related(
+                "tags",
+                "tags__product",
+                "case__suitecases",
+                )
         list_allowed_methods = ['get']
-        fields = ["id", "versions", "created_by", "version_count"]
+        fields = ["id", "name", "latest", "created_by"]
         filtering = {
-            "product": ALL_WITH_RELATIONS,
-            "versions": ALL_WITH_RELATIONS,
-            "created_by": ALL_WITH_RELATIONS,
-            "suites": ALL_WITH_RELATIONS
+            "productversion": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS
             }
+        ordering = ["case"]
 
+
+    # def build_filters(self, filters=None):
+    #
+    #     .order_by("case__suitecases__order")
 
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        versions = bundle.obj.versions.filter(latest=1)
-        if versions:
-            bundle.data["name"] = unicode(versions[0].name)
+        case = bundle.obj.case
+        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["product_id"] = unicode(case.product_id)
+        bundle.data["product"] = {"id": unicode(case.product_id)}
+
+        if "case__suites" in bundle.request.GET.keys():
+            bundle.data["order"] = case.suitecases.get(
+                suite_id=int(bundle.request.GET["case__suites"])
+                ).order
         else:
-            bundle.data["name"] = "No name available"  # pragma: no cover
-        bundle.data["order"] = bundle.obj.order
+            bundle.data["order"] = None
 
         return bundle
 
@@ -400,8 +397,8 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "productversion",
             "created_by",
             ).prefetch_related(
-            "tags",
-            )
+                "tags",
+                )
         list_allowed_methods = ['get']
         fields = ["id", "name", "latest", "created_by_id"]
         filtering = {
