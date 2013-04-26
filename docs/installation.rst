@@ -56,7 +56,7 @@ the root of the clone, run::
 If you want to run the latest and greatest code, the default ``master`` branch
 is what you want. If you want to run a stable release branch, switch to it now::
 
-    git checkout 0.8.X
+    git checkout 1.4.5.5
 
 
 Install the Python dependencies
