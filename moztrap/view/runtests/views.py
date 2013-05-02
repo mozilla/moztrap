@@ -3,6 +3,7 @@ Views for test execution.
 
 """
 import json
+from django.db.models import Max
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -215,6 +216,12 @@ def run(request, run_id, env_id):
     envform = EnvironmentSelectionForm(
         current=environment.id, environments=run.environments.all())
 
+    current_result_select = (
+        "SELECT status from execution_result as r "
+        "WHERE r.runcaseversion_id = execution_runcaseversion.id "
+        "AND r.status in ('passed', 'invalidated', 'failed') "
+        "AND r.is_latest = 1 "
+        "ORDER BY r.created_on DESC LIMIT 1")
 
     return TemplateResponse(
         request,
@@ -229,7 +236,10 @@ def run(request, run_id, env_id):
                 "caseversion").prefetch_related(
                     "caseversion__tags",
                     "caseversion__case__suites",
-                    ).filter(environments=environment),
+                    ).filter(
+                        environments=environment,
+                        ).extra(select={
+                            "current_result": current_result_select}),
             "finder": {
                 # finder decorator populates top column (products), we
                 # prepopulate the other two columns
