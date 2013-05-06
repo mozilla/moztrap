@@ -11,7 +11,7 @@ Version 1.4.6
 * **filter by test description** - You can now filter by the description field
   of a test case.  This is handy if you have some specific keywords, urls or
   filenames in the description that you need to find.
-  
+
 
 Version 1.4.5.5
 ---------------
