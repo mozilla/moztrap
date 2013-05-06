@@ -5,9 +5,11 @@ Version 1.4.6
 -------------
 *release date - 5/6/13*
 
-* **sort on results in runtests** - When you are executing a test suite, you
+* **sort on results in runtests** - When you are executing a test run, you
   can now sort on the ``results`` field to help you find the tests that
-  neither you, nor anyone else has executed yet.
+  neither you, nor anyone else has executed yet.  Or if filtering descending,
+  it has the handy side-effect of sorting all failures to the top (since ``f``
+  comes before ``p``).
 * **filter by test description** - You can now filter by the description field
   of a test case.  This is handy if you have some specific keywords, urls or
   filenames in the description that you need to find.
