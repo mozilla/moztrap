@@ -1,10 +1,21 @@
 Release Notes
 =============
 
+Version 1.4.6
+-------------
+*release date - 5/6/13*
 
-Version 1.4.5.4
+* **sort on results in runtests** - When you are executing a test suite, you
+  can now sort on the ``results`` field to help you find the tests that
+  neither you, nor anyone else has executed yet.
+* **filter by test description** - You can now filter by the description field
+  of a test case.  This is handy if you have some specific keywords, urls or
+  filenames in the description that you need to find.
+  
+
+Version 1.4.5.5
 ---------------
-*still beta
+*release date - 4/2/13*
 
 * **Scalability fixes around editing huge test suites**
 
