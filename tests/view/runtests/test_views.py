@@ -460,6 +460,31 @@ class RunTestsTest(case.view.ListViewTestCase,
         self.assertOrderInList(res, "t1", "t2", "t3", "t4")
 
 
+    def test_sort_by_status_env_specific(self):
+        """
+        Can sort by status.  Specific to env in question.
+
+        If rcv has result for different env, it's ignored
+        """
+        user2 = self.F.UserFactory()
+        t1 = self.create_rcv(caseversion__name="t1")
+        t2 = self.create_rcv(caseversion__name="t2")
+        self.create_result(runcaseversion=t1, status="started")
+        self.create_result(runcaseversion=t2, status="failed", tester=user2)
+
+        # result for different env that should be ignored in sort
+        self.create_result(
+            runcaseversion=t1,
+            environment=self.envs[1],
+            status="passed",
+            )
+
+        res = self.get(
+            params={"sortfield": "current_result", "sortdirection": "asc"})
+
+        self.assertOrderInList(res, "t1", "t2")
+
+
     def test_description(self):
         """Returns details HTML snippet for given caseversion"""
 

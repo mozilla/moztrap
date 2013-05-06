@@ -97,6 +97,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
         filters.KeywordExactFilter(
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
+        filters.KeywordFilter("description", lookup="caseversion__description"),
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
@@ -140,6 +141,7 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
         filters.KeywordExactFilter(
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
+        filters.KeywordFilter("description", lookup="caseversion__description"),
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
@@ -210,6 +212,7 @@ class CaseVersionFilterSet(filters.FilterSet):
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
         cases.PrefixIDFilter("id"),
         filters.KeywordFilter("name"),
+        filters.KeywordFilter("description"),
         filters.ModelFilter(
             "tag", lookup="tags", queryset=model.Tag.objects.all()),
         filters.ModelFilter(
