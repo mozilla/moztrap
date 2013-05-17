@@ -1,6 +1,25 @@
 Release Notes
 =============
 
+Version 1.4.7
+-------------
+*beta*
+
+* **new run results of ``blocked`` and ``skipped``** - Blocked result is for
+  when a test cannot be executed because it is blocked by functionality that
+  prevents even starting the test.  Skipped result is so that a
+  ``test manager`` can specify that a test in a run should not be tested.
+  This removes the test from the % complete calculation and can only be set
+  by a :ref:`Test Manager<test-manager-role>` or :ref:`Admin<admin-role>`.
+  See: :ref:`Result Statuses<result-statuses>` for more info
+* **filter lists sorted** - The list of items in the advanced filtering are
+  now sorted for your convenience.  Why didn't we do that before, you ask?
+  Umm.. oops.
+* **run progress** - The % complete for the test run in that environment now
+  shows at the top of the page.  It doesn't yet update after each result is
+  submitted, only on page load for now.
+
+
 Version 1.4.6
 -------------
 *release date - 5/6/13*
