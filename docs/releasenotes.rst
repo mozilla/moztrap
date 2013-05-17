@@ -17,7 +17,8 @@ Version 1.4.7
   Umm.. oops.
 * **run progress** - The % complete for the test run in that environment now
   shows at the top of the page.  It doesn't yet update after each result is
-  submitted, only on page load for now.
+  submitted, only on page load for now.  This is actually a click-able link
+  to see the result details.
 
 
 Version 1.4.6

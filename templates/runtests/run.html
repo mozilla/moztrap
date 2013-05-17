@@ -1,6 +1,6 @@
 {% extends 'runtests/base.html' %}
 
-{% load execution markup results %}
+{% load execution markup results filters %}
 
 {% block test-subnav %}
 <li><a href="{% url 'runtests' %}">Run Tests</a></li>
@@ -25,10 +25,12 @@
     <h2>Run Tests:</h2>
 
     {% completion_for run environment as completion %}
+    {% with "results_runcaseversions"|filter_url:run as detail_url %}
     <div class="run-completion" data-perc="{{ completion|percentage }}">
       <span class="completion-label">Progress: </span>
-      <span class="env-completion">{{ completion|percentage }}</span>
+      <a href="{{ detail_url }}" target="_blank" title="view these results"><span class="env-completion">{{ completion|percentage }}</span></a>
     </div>
+    {% endwith %}
 
     {% if run.description %}
         <div class="run-description">
