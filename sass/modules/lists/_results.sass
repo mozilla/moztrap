@@ -12,6 +12,8 @@
     +icon('ui/warning_sm.png',$yellow-lighter,$notext:false)
   &.failed
     +icon('ui/x_sm.png',$red-lightest,$notext:false)
+  &.blocked
+    +icon('ui/no_sm.png',$red-lightest,$notext:false)
   &.passed
     +icon('ui/check_sm.png',$green-lightest,$notext:false)
 
@@ -22,7 +24,7 @@
 
   a
     @extend .resultsummary
-    width: 32%
+    width: 24%
     text-align: left
     #{$focus}
       &::before

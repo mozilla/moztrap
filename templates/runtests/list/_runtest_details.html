@@ -5,23 +5,59 @@
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
 {% block itembody-content %}
+{% other_result_for runcaseversion user environment as other_result %}
+
 
 <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
   {% csrf_token %}
   <div>
-    <span class="detailstitle">Submit your test result for case </span>
+    <span class="detailstitle">Case </span>
 
       {% if user|has_perm:"library.manage_cases" %}
         {% url 'manage_caseversion_edit' caseversion_id=caseversion.id as caseversion_edit_url %}
         <a href="{{ caseversion_edit_url }}" target="_blank" class="detail-case-edit">Edit Case Details</a>
       {% endif %}
 
-    {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}
+    {% block id %}
+        <strong class="id">
+            <a href="{% url 'manage_case' case_id=caseversion.case.id %}">#{% if caseversion.case.idprefix %}{{ caseversion.case.idprefix }}-{% endif %}{{ caseversion.case.id }}</a>
+        </strong>
+    {% endblock id %}
   </div>
-  {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
+  {% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped %}
     <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-result_pass">pass test</button>
+    {% if user|has_perm:"execution.manage_runs" %}
+      <button class="action-skip result-action" value="{{ runcaseversion.id }}" name="action-result_skip" title="mark test as skipped">skip test</button>
+    {% endif %}
   {% endif %}
 </form>
+
+{% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped %}
+
+  <div class="testinvalid details">
+    <p class="summary invalid-summary" title="mark test as invalid or unclear">invalid</p>
+    <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
+      {% csrf_token %}
+      <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
+      <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
+      <div class="form-actions">
+        <button class="invalid" value="{{ runcaseversion.id }}" name="action-result_invalid">mark as invalid</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="testblock details">
+    <p class="summary block-summary" title="mark test as blocked">block</p>
+    <form method="POST" id="test-block-form-{{ runcaseversion.id }}" class="block-form">
+      {% csrf_token %}
+      <label for="block-comment-{{ runcaseversion.id }}" class="block-label">description of problem:</label>
+      <textarea class="block-input" name="comment" id="block-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is blocked." required></textarea>
+      <div class="form-actions">
+        <button class="block" value="{{ runcaseversion.id }}" name="action-result_block">mark as blocked</button>
+      </div>
+    </form>
+  </div>
+{% endif %}
 
 <div class="description">
     {% with caseversion.tags.all as tags %}
@@ -45,20 +81,6 @@
     {% endif %}
 </div>
 
-{% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
-  <div class="testinvalid details">
-    <p class="summary invalid-summary" title="mark test as invalid or unclear">invalid</p>
-    <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
-      {% csrf_token %}
-      <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
-      <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
-      <div class="form-actions">
-        <button class="invalid" value="{{ runcaseversion.id }}" name="action-result_invalid">mark as invalid</button>
-      </div>
-    </form>
-  </div>
-{% endif %}
-
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   {% stepresult_for result step as stepresult %}
@@ -72,7 +94,7 @@
       {% endif %}
     </div>
 
-    {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
+    {% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped %}
       <div class="stepfail details">
         <p class="summary stepfail-summary">fail step</p>
         <form method="POST" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}" class="content stepfail-content">

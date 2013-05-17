@@ -1,4 +1,4 @@
-{% load execution urls %}
+{% load execution urls permissions %}
 
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
@@ -10,22 +10,28 @@
 
   <div class="itemhead">
     <div class="results">
-        {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
+        {% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped%}
           <span class="result {{ result.status }}">pending</span>
         {% else %}
-          <a class="result {{ result.status }}" href="{{ result_url }}" target="_blank" data-id="{{ result.id }}" title="your result">{{ result.status }}</a>
+          {% if result.status == result.STATUS.skipped or other_result.status == result.STATUS.skipped %}
+            <a class="result {{ result.STATUS.skipped }}">{{ result.STATUS.skipped }}</a>
+          {% else %}
+            <a class="result {{ result.status }}" href="{{ result_url }}" target="_blank" data-id="{{ result.id }}" title="your result">{{ result.status }}</a>
+          {% endif %}
         {% endif %}
     </div>
 
-    {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-      <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
-        {% csrf_token %}
-        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-start" title="restart '{{ caseversion.name }}'">restart</button>
-      </form>
+    {% if result.status not in result.PENDING_STATES %}
+      {% if result.status != result.STATUS.skipped and other_result.status != result.STATUS.skipped or user|has_perm:"execution.manage_runs" %}
+        <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
+          {% csrf_token %}
+          <button class="action-restart" value="{{ runcaseversion.id }}" name="action-start" title="restart '{{ caseversion.name }}'">restart</button>
+        </form>
+      {% endif %}
     {% endif %}
 
       <div class="other-result">
-          {% if other_result and other_result.status != result.STATUS.assigned and other_result.status != result.STATUS.started %}
+          {% if other_result and other_result.status not in result.PENDING_STATES %}
             <a href="{{ detail_url }}" target="_blank" class="other-{{ other_result.status }}" data-id="{{ other_result.id }}" title="marked {{ other_result.status }} by {{ other_result.tester }} {% if other_result.comment %} - {{ other_result.comment }}{% endif %}"></a>
           {% else %}
             <span class="other-empty"></span>
@@ -36,6 +42,9 @@
 
       {% if result.status == result.STATUS.invalidated %}
         <p class="invalid-note">{{ result.comment }}</p>
+      {% endif %}
+      {% if result.status == result.STATUS.blocked %}
+        <p class="blocked-note">{{ result.comment }}</p>
       {% endif %}
       {% if result.status == result.STATUS.failed %}
         <p class="failed-note">{{ result.comment }}</p>

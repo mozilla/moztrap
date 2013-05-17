@@ -11,7 +11,7 @@ var MT = (function (MT, $) {
         $('.runenvselect.empty').hide();
     };
 
-    // Add focus to ``invalid`` and ``fail`` textboxes when expanded
+    // Add focus to ``invalid``, ``fail``, ``block`` and ``skip`` textboxes when expanded
     MT.autoFocus = function (trigger, context) {
         $(context).on('click', trigger, function () {
             if ($(this).parent().hasClass('open')) {

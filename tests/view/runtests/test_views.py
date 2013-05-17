@@ -449,15 +449,19 @@ class RunTestsTest(case.view.ListViewTestCase,
         t2 = self.create_rcv(caseversion__name="t2")
         t3 = self.create_rcv(caseversion__name="t3")
         t4 = self.create_rcv(caseversion__name="t4")
+        t5 = self.create_rcv(caseversion__name="t5")
+        t6 = self.create_rcv(caseversion__name="t6")
         self.create_result(runcaseversion=t1, status="started")
-        self.create_result(runcaseversion=t2, status="failed", tester=user2)
-        self.create_result(runcaseversion=t3, status="invalidated")
-        self.create_result(runcaseversion=t4, status="passed")
+        self.create_result(runcaseversion=t2, status="blocked")
+        self.create_result(runcaseversion=t3, status="failed", tester=user2)
+        self.create_result(runcaseversion=t4, status="invalidated")
+        self.create_result(runcaseversion=t5, status="passed")
+        self.create_result(runcaseversion=t6, status="skipped")
 
         res = self.get(
             params={"sortfield": "current_result", "sortdirection": "asc"})
 
-        self.assertOrderInList(res, "t1", "t2", "t3", "t4")
+        self.assertOrderInList(res, "t1", "t2", "t3", "t4", "t5", "t6")
 
 
     def test_sort_by_status_env_specific(self):

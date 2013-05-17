@@ -1,6 +1,8 @@
 {% extends 'runtests/base.html' %}
 
-{% load execution markup %}
+{% load execution markup results filters %}
+
+{% completion_for run environment as completion %}
 
 {% block test-subnav %}
 <li><a href="{% url 'runtests' %}">Run Tests</a></li>
@@ -24,11 +26,14 @@
   <section id="runtests" class="run listpage">
     <h2>Run Tests:</h2>
 
+
   {% if run.description %}
   <div class="run-description">
     {{ run.description|markdown }}
   </div>
   {% endif %}
+
+  <div class="run-completion" data-perc="{{ completion }}">Run Progress:<span class="completion">{{ completion }}</span></div>
 
     {% include "lists/_filter.html" %}
     {% include "runtests/list/_runtest_list.html" %}

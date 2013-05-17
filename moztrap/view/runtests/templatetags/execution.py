@@ -81,7 +81,8 @@ class OtherResultFor(Tag):
             environment=environment,
             runcaseversion=runcaseversion,
             is_latest=True,
-            status__in=model.Result.COMPLETED_STATES,
+            status__in=(model.Result.COMPLETED_STATES +
+                [model.Result.STATUS.skipped]),
             )
         exclude_kwargs = dict(
             tester=user,
@@ -137,6 +138,40 @@ class StepResultFor(Tag):
 
 register.tag(StepResultFor)
 
+
+
+class CompletionFor(Tag):
+    """
+    Places StepResult for this result/casestep in context.
+
+    If no relevant StepResult exists, returns *unsaved* default StepResult for
+    use in template.
+
+    """
+    name = "completion_for"
+    options = Options(
+        Argument("run"),
+        Argument("environment"),
+        "as",
+        Argument("varname", resolve=False),
+        )
+
+
+    def render_tag(self, context, run, environment, varname):
+        """
+        Get/construct completion percentage
+        and place it in context under ``varname``
+        """
+        try:
+            completion = run.completion_single_env(environment.id)
+        except model.StepResult.DoesNotExist:
+            completion = 0
+
+        context[varname] = completion
+        return u""
+
+
+register.tag(CompletionFor)
 
 
 class SuitesFor(Tag):

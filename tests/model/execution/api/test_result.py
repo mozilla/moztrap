@@ -50,11 +50,23 @@ class ResultResourceTest(case.api.ApiTestCase):
             productversion=pv,
             name="FailCase",
             )
+        c_b = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            name="BlockCase",
+            )
+        c_s = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            name="SkipCase",
+            )
         self.F.CaseStepFactory(caseversion=c_f)
 
         self.factory.create(caseversion=c_p, run=r1, environments=envs)
         self.factory.create(caseversion=c_i, run=r1, environments=envs)
         self.factory.create(caseversion=c_f, run=r1, environments=envs)
+        self.factory.create(caseversion=c_b, run=r1, environments=envs)
+        self.factory.create(caseversion=c_s, run=r1, environments=envs)
 
         # submit results for these cases
         params = {"username": user.username, "api_key": apikey.key}
@@ -67,11 +79,24 @@ class ResultResourceTest(case.api.ApiTestCase):
                     "status": "passed"
                 },
                     {
+                    "case": c_s.case.id,
+                    "environment": envs[0].id,
+                    "run_id": r1.id,
+                    "status": "skipped"
+                },
+                    {
                     "case": c_i.case.id,
                     "comment": "why u no make sense??",
                     "environment": envs[0].id,
                     "run_id": r1.id,
                     "status": "invalidated"
+                },
+                    {
+                    "case": c_b.case.id,
+                    "comment": "why u no run??",
+                    "environment": envs[0].id,
+                    "run_id": r1.id,
+                    "status": "blocked"
                 },
                     {
                     "bug": "http://www.deathvalleydogs.com",

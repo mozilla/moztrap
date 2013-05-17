@@ -239,6 +239,8 @@ var MT = (function (MT, $) {
         MT.hideEmptyRuntestsEnv();
         MT.autoFocus('.details.stepfail > .summary', '#runtests');
         MT.autoFocus('.details.testinvalid > .summary', '#runtests');
+        MT.autoFocus('.details.testskip > .summary', '#runtests');
+        MT.autoFocus('.details.testblock > .summary', '#runtests');
         MT.breadcrumb('.drilldown');
         MT.expandAllTests('#runtests');
         MT.runTests('#runtests');

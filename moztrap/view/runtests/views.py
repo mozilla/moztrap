@@ -114,6 +114,8 @@ ACTIONS = {
     "start": {},
     "result_pass": {},
     "result_invalid": {"comment": ""},
+    "result_skip": {},
+    "result_block": {"comment": ""},
     "result_fail": {"stepnumber": None, "comment": "", "bug": ""},
     "start": {},
     }
@@ -220,9 +222,13 @@ def run(request, run_id, env_id):
         "SELECT status from execution_result as r "
         "WHERE r.runcaseversion_id = execution_runcaseversion.id "
         "AND r.environment_id = {0} "
-        "AND r.status in ('passed', 'invalidated', 'failed') "
+        "AND r.status not in ({1}) "
         "AND r.is_latest = 1 "
-        "ORDER BY r.created_on DESC LIMIT 1".format(environment.id))
+        "ORDER BY r.created_on DESC LIMIT 1".format(
+            environment.id,
+            ", ".join(
+                ["'{0}'".format(x) for x in model.Result.PENDING_STATES]
+                )))
 
     return TemplateResponse(
         request,

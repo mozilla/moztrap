@@ -213,6 +213,7 @@ class RunTest(case.DBTestCase):
         self.F.ResultFactory(runcaseversion=rcv1, status="passed")
         self.F.ResultFactory(runcaseversion=rcv2, status="failed")
         self.F.ResultFactory(runcaseversion=rcv1, status="failed")
+        self.F.ResultFactory(runcaseversion=rcv1, status="blocked")
         self.F.ResultFactory(runcaseversion=rcv2, status="invalidated")
         self.F.ResultFactory(runcaseversion=rcv1, status="invalidated")
         self.F.ResultFactory(runcaseversion=rcv2, status="invalidated")
@@ -222,6 +223,7 @@ class RunTest(case.DBTestCase):
             {
                 "passed": 1,
                 "failed": 2,
+                "blocked": 1,
                 "invalidated": 3
                 }
             )
@@ -240,6 +242,7 @@ class RunTest(case.DBTestCase):
             {
                 "passed": 0,
                 "failed": 0,
+                "blocked": 0,
                 "invalidated": 0
                 }
             )

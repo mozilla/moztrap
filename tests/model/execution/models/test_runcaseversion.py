@@ -131,6 +131,7 @@ class RunCaseVersionTest(case.DBTestCase):
         self.F.ResultFactory(runcaseversion=rcv, status="passed")
         self.F.ResultFactory(runcaseversion=rcv, status="failed")
         self.F.ResultFactory(runcaseversion=rcv, status="failed")
+        self.F.ResultFactory(runcaseversion=rcv, status="blocked")
         self.F.ResultFactory(runcaseversion=rcv, status="invalidated")
         self.F.ResultFactory(runcaseversion=rcv, status="invalidated")
         self.F.ResultFactory(runcaseversion=rcv, status="invalidated")
@@ -140,6 +141,7 @@ class RunCaseVersionTest(case.DBTestCase):
             {
                 "passed": 1,
                 "failed": 2,
+                "blocked": 1,
                 "invalidated": 3,
                 }
             )
@@ -157,6 +159,7 @@ class RunCaseVersionTest(case.DBTestCase):
             {
                 "passed": 0,
                 "failed": 0,
+                "blocked": 0,
                 "invalidated": 0,
                 }
             )
@@ -170,6 +173,7 @@ class RunCaseVersionTest(case.DBTestCase):
             {
                 "passed": 0,
                 "failed": 0,
+                "blocked": 0,
                 "invalidated": 0,
                 }
             )
@@ -313,6 +317,83 @@ class RunCaseVersionTest(case.DBTestCase):
 
         r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
         self.assertEqual(self.refresh(r).comment, "and this is why")
+
+
+    def test_result_block(self):
+        """result_block w/out start."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.result_block(environment=envs[0], user=u)
+
+        r = rcv.results.get()
+        self.assertEqual(r.status, "blocked")
+
+
+    def test_result_block_started(self):
+        """result_block creates result with blocked and only 1 latest."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.result_block(environment=envs[0], user=u)
+
+        r = rcv.results.get(is_latest=True)
+        self.assertEqual(r.status, "blocked")
+
+
+    def test_result_block_with_comment(self):
+        """result_block method can include comment."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.result_block(
+            environment=envs[0],
+            user=u,
+            comment="and this is why",
+            )
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(self.refresh(r).comment, "and this is why")
+
+
+    def test_result_skip(self):
+        """result_skip w/out start."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.result_skip(environment=envs[0], user=u)
+
+        r = rcv.results.get()
+        self.assertEqual(r.status, "skipped")
+
+
+    def test_result_skip_started(self):
+        """result_skip creates result with skipped and only 1 latest."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.result_skip(environment=envs[0], user=u)
+
+        r = rcv.results.get(is_latest=True)
+        self.assertEqual(r.status, "skipped")
 
 
     def test_result_fail(self):
