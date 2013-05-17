@@ -142,10 +142,7 @@ register.tag(StepResultFor)
 
 class CompletionFor(Tag):
     """
-    Places StepResult for this result/casestep in context.
-
-    If no relevant StepResult exists, returns *unsaved* default StepResult for
-    use in template.
+    Places completion percentage in context.
 
     """
     name = "completion_for"
@@ -162,12 +159,10 @@ class CompletionFor(Tag):
         Get/construct completion percentage
         and place it in context under ``varname``
         """
-        try:
-            completion = run.completion_single_env(environment.id)
-        except model.StepResult.DoesNotExist:
-            completion = 0
-
+        completion = run.completion_single_env(environment)
         context[varname] = completion
+        # context[varname] = "{0}and{1}".format(run, environment)
+        # context[varname] = "foo"
         return u""
 
 

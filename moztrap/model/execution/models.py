@@ -341,8 +341,8 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def completion_single_env(self, env_id):
         """Return fraction of cases that have a completed result for an env."""
         total = RunCaseVersion.objects.filter(
-            environment=env_id,
-            run=self)
+            environments=env_id,
+            run=self).count()
         skipped = Result.objects.filter(
             runcaseversion__run=self,
             environment=env_id,
@@ -358,7 +358,12 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         try:
             return float(completed) / (total - skipped)
         except ZeroDivisionError:
-            return 0
+            return 0.0
+
+
+        # total = RunCaseVersion.objects.filter(environments=env_id,run=76).count()
+        # skipped = Result.objects.filter(runcaseversion__run=76,environment=env_id,is_latest=True,status=Result.STATUS.skipped).count()
+        # completed = Result.objects.filter(status__in=Result.COMPLETED_STATES,is_latest=True,environment=env_id,runcaseversion__run=76).values("runcaseversion", "environment").distinct().count()
 
 
 def _environment_intersection(run, caseversion):

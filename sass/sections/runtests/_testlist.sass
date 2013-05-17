@@ -2,6 +2,21 @@
 // Runtest list basics
 #runtests
 
+  .run-completion
+    +full(20)
+    .completion-label
+      +columns(2, 20)
+    .env-completion
+      @extend .chick
+      +columns(6, 20)
+      +box-sizing(border-box)
+      text-align: center
+      &::after
+        content: "%"
+
+  .runtest-filter
+    +full(20)
+
   .listordering
     padding-left: rhythm(1)
 
