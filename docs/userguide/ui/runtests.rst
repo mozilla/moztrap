@@ -19,8 +19,12 @@ Result Statuses
                 extent that it was not possible to determine if it passed or
                 failed
 * **skipped** - A test manager decided this test should not be run and should
-                not count against the % complete.  Marking a test *skipped*
-                only marks it for the specific environment it was skipped in.
+                not count against the % complete for any environment.
+                Marking a test *skipped*
+                marks that test skipped for ALL environments the case applies
+                to.  This is true, even if the case had been marked passed or
+                otherwise in a different environment.  Likewise, restarting a
+                ``skipped`` case will restart it for all environments.
 * **blocked** - The test could not be run because the user was blocked from
                 beginning the test.  For example, if the steps are to complete
                 a purchase of something in their shopping cart, but the user
