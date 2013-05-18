@@ -1,11 +1,12 @@
 {% extends 'lists/_itembody.html' %}
+{% load markup %}
 
 {% block itembody-content %}
   {# @@@ display individual step result info, bug urls... #}
   {% if result.comment %}
     <h4>Notes:</h4>
-    <blockquote class="comment">
-      {{ result.comment }}
-    </blockquote>
+      {{ result.comment|markdown }}
   {% endif %}
+  {% include "lists/_associated_links.html" with bugs=caseversion.bug_urls %}
+
 {% endblock itembody-content %}

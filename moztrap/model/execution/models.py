@@ -4,7 +4,7 @@ Models for test execution (runs, results).
 """
 import datetime
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import connection, transaction, models
 from django.db.models import Q, Count, Max
 
@@ -361,10 +361,6 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             return 0.0
 
 
-        # total = RunCaseVersion.objects.filter(environments=env_id,run=76).count()
-        # skipped = Result.objects.filter(runcaseversion__run=76,environment=env_id,is_latest=True,status=Result.STATUS.skipped).count()
-        # completed = Result.objects.filter(status__in=Result.COMPLETED_STATES,is_latest=True,environment=env_id,runcaseversion__run=76).values("runcaseversion", "environment").distinct().count()
-
 
 def _environment_intersection(run, caseversion):
     """Intersection of run/caseversion environment IDs."""
@@ -460,13 +456,27 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     def start(self, environment=None, user=None):
         """Mark this result started."""
-        Result.objects.create(
-            runcaseversion=self,
-            tester=user,
-            environment=environment,
-            status=Result.STATUS.started,
-            user=user
-            )
+        # if we are restarted a case that was skipped, we want to restart
+        # for ALL envs, not just this one.
+        envs = [environment]
+        try:
+            latest = self.results.get(
+                is_latest=True,
+                environment=environment,
+                )
+            if latest.status == Result.STATUS.skipped:
+                envs = self.environments.all()
+        except ObjectDoesNotExist:
+            pass
+
+        for env in envs:
+            Result.objects.create(
+                runcaseversion=self,
+                tester=user,
+                environment=env,
+                status=Result.STATUS.started,
+                user=user
+                )
 
 
     def get_result_method(self, status):
@@ -495,14 +505,21 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
 
     def result_skip(self, environment=None, user=None):
-        """Create a skipped result for this case."""
-        Result.objects.create(
-            runcaseversion=self,
-            tester=user,
-            environment=environment,
-            status=Result.STATUS.skipped,
-            user=user
-        )
+        """
+        Create a skipped result for this case.
+
+        If no environment is specified, then skip for all envs.
+        """
+        envs = self.environments.all()
+
+        for env in envs:
+            Result.objects.create(
+                runcaseversion=self,
+                tester=user,
+                environment=env,
+                status=Result.STATUS.skipped,
+                user=user
+            )
 
 
     def result_invalid(self, environment=None, comment="", user=None):

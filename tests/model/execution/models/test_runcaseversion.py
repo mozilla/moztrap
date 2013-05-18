@@ -368,32 +368,63 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_result_skip(self):
-        """result_skip w/out start."""
+        """
+        result_skip w/out start.
+
+        skips all environments.
+        """
         envs = self.F.EnvironmentFactory.create_full_set(
-                {"OS": ["OS X"], "Language": ["English"]})
+                {"OS": ["OS X"], "Language": ["English", "Spanish"]})
         run = self.F.RunFactory.create(environments=envs)
         rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
+        for env in envs:
+            rcv.environments.add(env)
 
         rcv.result_skip(environment=envs[0], user=u)
 
-        r = rcv.results.get()
-        self.assertEqual(r.status, "skipped")
+        results = rcv.results.values_list("status", flat=True)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(set(results), set([u"skipped", u"skipped"]))
 
 
     def test_result_skip_started(self):
         """result_skip creates result with skipped and only 1 latest."""
         envs = self.F.EnvironmentFactory.create_full_set(
-                {"OS": ["OS X"], "Language": ["English"]})
+                {"OS": ["OS X"], "Language": ["English", "Spanish"]})
         run = self.F.RunFactory.create(environments=envs)
         rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
+        for env in envs:
+            rcv.environments.add(env)
 
         rcv.start(environment=envs[0], user=u)
         rcv.result_skip(environment=envs[0], user=u)
 
-        r = rcv.results.get(is_latest=True)
-        self.assertEqual(r.status, "skipped")
+        results = rcv.results.filter(is_latest=True).values_list(
+            "status", flat=True)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(set(results), set([u"skipped", u"skipped"]))
+
+
+    def test_result_skip_restarted(self):
+        """restarting skipped restarts all envs."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English", "Spanish"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+        for env in envs:
+            rcv.environments.add(env)
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.result_skip(environment=envs[0], user=u)
+        rcv.start(environment=envs[0], user=u)
+
+        results = rcv.results.filter(is_latest=True).values_list(
+            "status", flat=True)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(set(results), set([u"started"]))
 
 
     def test_result_fail(self):

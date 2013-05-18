@@ -98,7 +98,7 @@ var MT = (function (MT, $) {
                         }
                         else {
                             $(ich.message({
-                                  message: "This test run is no longer available.  Please see your test manager.",
+                                  message: "This test or test run is no longer available.  Please see your test manager.",
                                   tags: "error"
                               })).appendTo($('#messages ul'));
                             $('#messages ul').messages();
