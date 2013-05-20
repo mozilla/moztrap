@@ -462,6 +462,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
         try:
             latest = self.results.get(
                 is_latest=True,
+                tester=user,
                 environment=environment,
                 )
             if latest.status == Result.STATUS.skipped:
