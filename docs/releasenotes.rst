@@ -3,7 +3,7 @@ Release Notes
 
 Version 1.4.7
 -------------
-*beta*
+*release date - 5/21/13*
 
 * **new run results of ``blocked`` and ``skipped``** - Blocked result is for
   when a test cannot be executed because it is blocked by functionality that
