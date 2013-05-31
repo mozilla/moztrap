@@ -40,7 +40,8 @@ var MT = (function (MT, $) {
                         included_id = $(".edit-" + options.for_type).data(
                             options.for_type + "-id");
                     if (trigger_id || options.fetch_without_trigger_value) {
-                        $(".multiselect").removeClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -52,13 +53,15 @@ var MT = (function (MT, $) {
                         );
                     }
                     else if (options.hide_without_trigger_value) {
-                        $(".multiselect").addClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").addClass("hiddenfield");
                     }
                     else {
                         // the user selected the "----" option, so clear
                         // multiselect
                         $(".multiselect").find(".select").html("");
-                        $(".multiselect").removeClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                     }
                 });
             }
