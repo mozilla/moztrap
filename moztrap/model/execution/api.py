@@ -253,7 +253,11 @@ class ResultResource(ModelResource):
     class Meta:
         queryset = Result.objects.all()
         resource_name = "result"
-        list_allowed_methods = ["patch"]
+        list_allowed_methods = ["get", "patch"]
+
+        filtering = {
+            "created_on": ALL_WITH_RELATIONS,
+        }
 
         authentication = MTApiKeyAuthentication()
         authorization = ReportResultsAuthorization()
