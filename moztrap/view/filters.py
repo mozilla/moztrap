@@ -159,6 +159,11 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
         filters.KeywordFilter("description", lookup="caseversion__description"),
+        filters.ChoicesFilter(
+            "priority",
+            lookup="caseversion__case__priority",
+            choices=Choices(1, 2, 3, 4)
+            ),
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
@@ -240,6 +245,11 @@ class CaseVersionFilterSet(filters.FilterSet):
             choices=sorted(model.CaseVersion.STATUS),
             ),
         cases.PrefixIDFilter("id"),
+        filters.ChoicesFilter(
+            "priority",
+            lookup="case__priority",
+            choices=Choices(1, 2, 3, 4)
+            ),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
         filters.ModelFilter(

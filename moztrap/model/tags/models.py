@@ -17,6 +17,8 @@ class Tag(MTModel):
     # tags may be product-specific or global (in which case this FK is null)
     product = models.ForeignKey(Product, blank=True, null=True)
 
+    # a tag may be considered a user-story
+    # is_user_story = models.BooleanField(default=False)
 
     def __unicode__(self):
         """Unicode representation is name."""

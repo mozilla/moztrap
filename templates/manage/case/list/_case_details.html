@@ -2,6 +2,9 @@
 
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=caseversion %}
+  <div class="priority">
+    <span class="priority-title">Priority:</span> {{ caseversion.case.priority }}
+  </div>
 
   {% if caseversion.description %}
     <p class="description">
