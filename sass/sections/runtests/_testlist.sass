@@ -40,7 +40,7 @@
     +columns(1,24)
 
   .name, .byname
-    +columns(13,24)
+    +columns(11,24)
   .name
     .buglist
       @extend .chicklist
@@ -49,6 +49,11 @@
     .bugurl
       @extend .bugchick
       +trailer(0)
+
+  .priority, .bypriority
+    +columns(2,24)
+  .priority
+    +padding-leader(.25)
 
   .results + .name, .byname
     +prefix(2,24)

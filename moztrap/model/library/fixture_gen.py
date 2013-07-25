@@ -23,7 +23,7 @@ def sample_cases():
 
     registration = Tag.objects.get(name="registration")
 
-    login = Case.objects.create(product=mt, user=manager)
+    login = Case.objects.create(product=mt, user=manager, priority=1)
     login_data = {
         "name": "Can log in.",
         "case": login,
@@ -47,7 +47,7 @@ def sample_cases():
             CaseStep.objects.create(
                 **dict(step_data, caseversion=cv, number=i, user=manager))
 
-    register = Case.objects.create(product=mt, user=creator)
+    register = Case.objects.create(product=mt, user=creator, priority=2)
     register_data = {
         "name": "Can register.",
         "case": register,
@@ -84,7 +84,7 @@ def sample_cases():
 
     key = Tag.objects.get(name="key")
 
-    fast = Case.objects.create(product=ff, user=creator)
+    fast = Case.objects.create(product=ff, user=creator, priority=3)
     fast_data = {
         "name": "It is fast.",
         "case": fast,
