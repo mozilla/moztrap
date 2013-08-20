@@ -89,6 +89,7 @@ class AddCaseFormTest(case.DBTestCase):
         form = self.form()
 
         self.assertEqual(form["status"].value(), "active")
+        self.assertEqual(form["priority"].value(), None)
 
 
     def test_wrong_product_version(self):
@@ -549,6 +550,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                 "idprefix": "pref",
                 "status": "active",
                 "cc_version": cv.cc_version,
+                "priority": None,
                 }
             )
         self.assertEqual(
@@ -575,6 +577,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                     "name": ["new name"],
                     "description": ["new desc"],
                     "idprefix": ["pref"],
+                    "priority": [1],
                     "status": ["active"],
                     "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],
@@ -593,6 +596,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
         cv = self.refresh(cv)
 
         self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.case.priority, 1)
         self.assertEqual(cv.description, "new desc")
         self.assertEqual(cv.status, "active")
         self.assertEqual(
