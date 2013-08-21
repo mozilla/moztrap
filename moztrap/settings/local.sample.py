@@ -17,7 +17,7 @@ Copy local.sample.py to local.py and modify as needed.
 #         "PASSWORD": "",
 #         "STORAGE_ENGINE": "InnoDB",
 #         "OPTIONS": {
-#                 "init_command": "SET storage_engine=InnoDB",
+#                 "init_command": "SET default_storage_engine=InnoDB",
 #             },
 #         }
 #     }
