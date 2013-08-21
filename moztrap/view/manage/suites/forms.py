@@ -4,6 +4,7 @@ Management forms for suites.
 """
 from django.core.exceptions import ValidationError
 import floppyforms as forms
+from model_utils import Choices
 
 from moztrap import model
 from moztrap.view.lists import filters
@@ -25,6 +26,10 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     "tag", lookup="tags", queryset=model.Tag.objects.all()),
                 filters.ModelFilter(
                     "author", queryset=model.User.objects.all()),
+                filters.ChoicesFilter(
+                    "priority",
+                    choices=Choices(1, 2, 3, 4)
+                    )
                 ],
             )
         )

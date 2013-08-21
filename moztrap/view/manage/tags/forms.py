@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 import floppyforms as forms
 
 from .... import model
+from model_utils import Choices
 
 from ...utils import mtforms
 from ...lists import filters
@@ -33,6 +34,10 @@ class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                     "tag", lookup="tags", queryset=model.Tag.objects.all()),
                 filters.ModelFilter(
                     "author", queryset=model.User.objects.all()),
+                filters.ChoicesFilter(
+                    "priority",
+                    choices=Choices(1, 2, 3, 4)
+                    )
                 ],
             )
     )
