@@ -961,6 +961,11 @@ form > .errorlist {
   opacity: 1;
 }
 
+.suggest {
+  max-height: 600px;
+  overflow: auto;
+}
+
 body > div {
   overflow: hidden;
   *zoom: 1;
