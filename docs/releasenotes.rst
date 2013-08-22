@@ -6,12 +6,12 @@ Current - 1.4.8
 
 Version 1.4.8
 ^^^^^^^^^^^^^
-*release date - beta*
+*release date - 8/22/13*
 
 * **test case priority field** - The new field of ``priority`` has been added
   to test cases.  You can set the priority of a case to ``1``, ``2``, ``3``
   ``4`` or no priority.  You can filter and sort on this field as you can
-  many other fields.
+  many other fields.  See :ref:`test cases<test-cases>` for more info.
 * **filtering by tester in results** - This allows you to see how many cases
   a specific tester has executed overall and for a specific run.
 * **fix to edit tag dialog** - It wasn't loading the available cases for a
