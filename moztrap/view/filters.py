@@ -109,6 +109,12 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
         filters.KeywordFilter("description", lookup="caseversion__description"),
+        filters.ChoicesFilter(
+            "priority",
+            lookup="caseversion__case__priority",
+            choices=Choices(1, 2, 3, 4),
+            coerce=int,
+            ),
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
@@ -148,6 +154,11 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "suite",
             lookup="caseversion__case__suites",
             queryset=model.Suite.objects.all().order_by("name")),
+        filters.ModelFilter(
+            "tester",
+            lookup="results__tester",
+            queryset=model.User.objects.all().order_by("username"),
+            ),
         ]
 
 
@@ -159,6 +170,12 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
             "id", lookup="caseversion__case__id", coerce=int),
         filters.KeywordFilter("name", lookup="caseversion__name"),
         filters.KeywordFilter("description", lookup="caseversion__description"),
+        filters.ChoicesFilter(
+            "priority",
+            lookup="caseversion__case__priority",
+            choices=Choices(1, 2, 3, 4),
+            coerce=int,
+            ),
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
@@ -240,6 +257,12 @@ class CaseVersionFilterSet(filters.FilterSet):
             choices=sorted(model.CaseVersion.STATUS),
             ),
         cases.PrefixIDFilter("id"),
+        filters.ChoicesFilter(
+            "priority",
+            lookup="case__priority",
+            choices=Choices(1, 2, 3, 4),
+            coerce=int,
+            ),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
         filters.ModelFilter(

@@ -129,6 +129,7 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
             u"created_by": None,
             u"id": unicode(cv.id),
             u"name": unicode(cv.name),
+            u'priority': unicode(None),
             u"product": {
                 u"id": unicode(cv.productversion.product_id)
             },

@@ -28,27 +28,29 @@ The general format for all rest endpoints is:
 
     Return a single object
 
-.. https:post:: /api/v1/<object_type>/
+.. http:post:: /api/v1/<object_type>/
 
     Create one or more items.
 
-    **requires** :ref:`API key<api-key>`
-    **requires** :ref:`username`
+    * **requires** :ref:`API key<api-key>`
+    * **requires** username
 
     If sending the fields as data, the data must be sent as json, with
     Content-Type application/json in the headers.
 
-.. https:put:: /api/v1/<object_type>/<id>
+.. http:put:: /api/v1/<object_type>/<id>
 
     Update one item.
-    **requires** :ref:`API key<api-key>`
-    **requires** :ref:`username`
 
-.. https:delete:: /api/v1/<object_type>/<id>
+    * **requires** :ref:`API key<api-key>`
+    * **requires** username
+
+.. http:delete:: /api/v1/<object_type>/<id>
 
     Delete one item.
-    **requires** :ref:`API key<api-key>`
-    **requires** :ref:`username`
+
+    * **requires** :ref:`API key<api-key>`
+    * **requires** username
 
 .. note::
 

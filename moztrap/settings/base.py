@@ -26,7 +26,7 @@ DATABASES = {
         "USER": environ.get("USER", ""),
         "PASSWORD": "",
         "OPTIONS": {
-            "init_command": "SET storage_engine=InnoDB",
+            "init_command": "SET default_storage_engine=InnoDB",
             },
         "STORAGE_ENGINE": "InnoDB"
         }

@@ -360,6 +360,7 @@ class CaseSelectionResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
+        bundle.data["priority"] = unicode(case.priority)
 
         return bundle
 
@@ -398,6 +399,7 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "case": ALL_WITH_RELATIONS,
             "created_by": ALL_WITH_RELATIONS
             }
+        ordering = ["name"]
 
 
     def dehydrate(self, bundle):
@@ -408,5 +410,6 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
         bundle.data["productversion_name"] = bundle.obj.productversion.name
+        bundle.data["priority"] = unicode(case.priority)
 
         return bundle
