@@ -284,7 +284,7 @@ class Suite(MTModel, DraftStatusModel):
     DEFAULT_STATUS = DraftStatusModel.STATUS.active
 
     product = models.ForeignKey(Product, related_name="suites")
-    name = models.CharField(max_length=200)
+    name = models.CharField(db_index=True, max_length=200)
     description = models.TextField(blank=True)
 
     cases = models.ManyToManyField(

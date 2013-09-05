@@ -428,7 +428,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        return result_summary(self.results.all())
+        return result_summary(self.results.values())
 
 
     def completion(self):

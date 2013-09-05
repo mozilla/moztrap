@@ -160,7 +160,7 @@ class MTModel(models.Model):
     Tracks user and timestamp for creation, modification, and (soft) deletion.
 
     """
-    created_on = models.DateTimeField(default=utcnow)
+    created_on = models.DateTimeField(db_index=True, default=utcnow)
     created_by = models.ForeignKey(
         User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
