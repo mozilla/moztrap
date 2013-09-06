@@ -428,7 +428,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        return result_summary(self.results.all())
+        return result_summary(self.results.values())
 
 
     def completion(self):
@@ -671,7 +671,7 @@ class StepResult(MTModel):
     step = models.ForeignKey(CaseStep, related_name="stepresults")
     status = models.CharField(
         max_length=50, db_index=True, choices=STATUS, default=STATUS.passed)
-    bug_url = models.URLField(blank=True)
+    bug_url = models.URLField(db_index=True, blank=True)
 
 
     def __unicode__(self):

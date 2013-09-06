@@ -129,7 +129,7 @@ ACTIONS = {
 @lists.sort("runcaseversions", defaultfield="order")
 @ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
-    run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
+    run = get_object_or_404(model.Run.objects.select_related("product"), pk=run_id)
 
     if not run.status == model.Run.STATUS.active:
         messages.info(
@@ -240,9 +240,11 @@ def run(request, run_id, env_id):
             "run": run,
             "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
-                "caseversion").prefetch_related(
+                "caseversion__case",
+                ).prefetch_related(
                     "caseversion__tags",
-                    "caseversion__case__suites",
+                    "caseversion__attachments",
+                    "caseversion__steps",
                     ).filter(
                         environments=environment,
                         ).extra(select={

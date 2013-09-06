@@ -10,7 +10,7 @@
 
   <div class="itemhead">
     <div class="results">
-        {% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped%}
+        {% if result.status in result.PENDING_STATES and other_result.status != result.STATUS.skipped %}
           <span class="result {{ result.status }}">pending</span>
         {% else %}
           {% if result.status == result.STATUS.skipped or other_result.status == result.STATUS.skipped %}
@@ -62,15 +62,17 @@
       {% endwith %}
 
       {% if result.status == result.STATUS.failed %}
-        {% if result.bug_urls %}
-          <ul class="buglist">
-            {% for bug in result.bug_urls %}
-              <li class="bugurl">
-                {% include "bugs/bug.html" %}
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+        {% with result.bug_urls as bug_urls %}
+          {% if bug_urls %}
+            <ul class="buglist">
+              {% for bug in bug_urls %}
+                <li class="bugurl">
+                  {% include "bugs/bug.html" %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
       {% endif %}
 
     </div>

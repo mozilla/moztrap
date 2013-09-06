@@ -17,7 +17,7 @@ from .auth import Role, User
 
 
 class Product(MTModel, TeamModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(db_index=True, max_length=100)
     description = models.TextField(blank=True)
 
 

@@ -72,7 +72,7 @@ class Category(MTModel):
     X", "Windows"...
 
     """
-    name = models.CharField(max_length=200)
+    name = models.CharField(db_index=True, max_length=200)
 
 
     def __unicode__(self):
@@ -110,7 +110,7 @@ class Element(MTModel):
     An individual environment factor (e.g. "OS X" or "English").
 
     """
-    name = models.CharField(max_length=200)
+    name = models.CharField(db_index=True, max_length=200)
     category = models.ForeignKey(Category, related_name="elements")
 
 

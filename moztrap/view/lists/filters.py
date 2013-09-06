@@ -11,7 +11,6 @@ import urlparse
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 
-from moztrap.model.core.models import ProductVersion
 
 
 def filter_url(path_or_view, obj):
@@ -407,14 +406,21 @@ class ModelFilter(BaseChoicesFilter):
         """
         self.queryset = kwargs.pop("queryset")
         self.label_func = kwargs.pop("label", lambda o: unicode(o))
+        self._opts = None
         kwargs.setdefault("coerce", int)
         super(ModelFilter, self).__init__(*args, **kwargs)
+
+
+    def options(self, values):
+        """Given list of selected values, return options to display."""
+        return self._opts
 
 
     def get_choices(self):
         """Get the options for this filter."""
         # always clone to get new data; filter instances are persistent
-        return [(obj.pk, self.label_func(obj)) for obj in self.queryset.all()]
+        self._opts = [(obj.pk, self.label_func(obj)) for obj in self.queryset.all()]
+        return self._opts
 
 
 

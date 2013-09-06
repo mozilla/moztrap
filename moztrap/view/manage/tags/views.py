@@ -43,7 +43,7 @@ def tags_list(request):
         request,
         "manage/tag/tags.html",
         {
-            "tags": model.Tag.objects.all(),
+            "tags": model.Tag.objects.select_related("product", "created_by"),
             }
         )
 
