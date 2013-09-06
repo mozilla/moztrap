@@ -28,7 +28,6 @@ def runcaseversions_list(request):
         request,
         "results/case/cases.html",
         {
-            # "runcaseversions": model.RunCaseVersion.objects.select_related(),
             "runcaseversions": model.RunCaseVersion.objects.only(
                 "caseversion__name",
                 "caseversion__case__priority",
@@ -42,7 +41,7 @@ def runcaseversions_list(request):
                     "run__productversion",
                     "run__productversion__product",
                     "caseversion__case__priority",
-                    )#.prefetch_related("environments"),
+                    )
             }
         )
 

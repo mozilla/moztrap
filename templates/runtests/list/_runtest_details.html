@@ -5,7 +5,6 @@
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
 {% block itembody-content %}
-{% other_result_for runcaseversion user environment as other_result %}
 
 
 <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
@@ -106,7 +105,7 @@
             <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
           </div>
 
-          {% with runcaseversion.caseversion.bug_urls as bug_urls %}
+          {% with caseversion.bug_urls as bug_urls %}
 
             <ul class="assign-buglist">
               {% for bug_url in bug_urls %}
@@ -141,7 +140,7 @@
   {% endfor %}
 </ol>
 
-{% with caseversion.attachments.all as attachments %}
+{% with caseversion.attachments as attachments %}
   {% include "lists/_associated_links.html" %}
 {% endwith %}
 

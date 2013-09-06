@@ -314,8 +314,9 @@ class TagFilterSet(filters.FilterSet):
             "product version",
             lookup="product__versions",
             key="productversion",
-            queryset=model.ProductVersion.objects.all().order_by(
-                "product__name", "version"),
+            queryset=model.ProductVersion.objects.select_related(
+                "product").order_by(
+                    "product__name", "version"),
             ),
         filters.ModelFilter(
             "creator",

@@ -226,9 +226,13 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         Result = self.runcaseversions.model.results.related.model
         StepResult = Result.stepresults.related.model
         return set(
-            StepResult.objects.filter(
-                result__runcaseversion__caseversion=self).exclude(
-                bug_url="").values_list("bug_url", flat=True).distinct()
+            StepResult.objects.only(
+                "bug_url",
+                "deleted_on",
+                "result_id",
+                ).filter(
+                    result__runcaseversion__caseversion=self).exclude(
+                        bug_url="").values_list("bug_url", flat=True).distinct()
             )
 
 

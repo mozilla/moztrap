@@ -75,8 +75,8 @@ class OtherResultFor(Tag):
     def render_tag(self, context, runcaseversion, user, environment, varname):
         """Get/construct Result and place it in context under ``varname``"""
 
-        # if the result.status is pending or assigned, then we try to find a result
-        # from another user to return instead.
+        # check for any completed result states from other users for this
+        # same case/env combo.
         include_kwargs = dict(
             environment=environment,
             runcaseversion=runcaseversion,
@@ -89,9 +89,14 @@ class OtherResultFor(Tag):
             )
 
         try:
-            result = model.Result.objects.filter(
-                **include_kwargs).exclude(**exclude_kwargs).order_by(
-                "-modified_on")[0]
+            result = model.Result.objects.only(
+                "id",
+                "status",
+                "tester",
+                "comment",
+                ).filter(
+                    **include_kwargs).exclude(**exclude_kwargs).order_by(
+                    "-modified_on")[0]
         except IndexError:
             result = None
 
@@ -183,9 +188,7 @@ class SuitesFor(Tag):
 
     def render_tag(self, context, run, runcaseversion, varname):
         """Get/construct Suite list and place it in context under ``varname``"""
-        casesuites = set(runcaseversion.caseversion.case.suites.values_list("id", flat=True))
-        runsuites = set(run.suites.values_list("id", flat=True))
-        result = model.Suite.objects.filter(pk__in=casesuites.intersection(runsuites))
+        result = model.Suite.objects.filter(cases=runcaseversion.caseversion.case, runs=run)
 
         context[varname] = result
         return u""
