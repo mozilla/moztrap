@@ -1,8 +1,23 @@
 Release Notes
 =============
 
-Current - 1.4.8
+Current - 1.4.9
 ---------------
+
+Version 1.4.9
+^^^^^^^^^^^^^
+*release date - 9/9/13*
+
+* **Performance optimizations** - Went through many of the list screens and
+  elsewhere and updated the django queries to optimize for performance.  Also
+  added several new db indexes to speed filtering and sorting.
+* **Travis CI support** - Only developers will notice this, but now the unit
+  tests are run by travis in Github to help us with determining the safety of
+  a Pull Request.
+
+
+Previous
+--------
 
 Version 1.4.8
 ^^^^^^^^^^^^^
@@ -17,9 +32,6 @@ Version 1.4.8
 * **fix to edit tag dialog** - It wasn't loading the available cases for a
   product-specific tag due to a bug.
 
-
-Previous
---------
 
 Version 1.4.7
 ^^^^^^^^^^^^^
