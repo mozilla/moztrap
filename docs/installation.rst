@@ -157,6 +157,22 @@ Create the database tables
 
 Run ``./manage.py syncdb --migrate`` to install the database tables.
 
+.. Note::
+
+    There is a bug in the current version of South that may cause an error at this point.
+    If you see an error stating:
+
+     ``_mysql_exceptions.Warning: '@@storage_engine' is deprecated and will be removed in a future release. Please use '@@default_storage_engine' instead``
+
+     you will need to change a line of code in the source for South, which will be in your virtual environment.
+     The file should be located in {virtualenv_root}/lib/python2.7/site-packages/south/db/mysql.py and you will need to change the line that reads:
+
+     ``cursor.execute("SET storage_engine=%s;" % self._get_setting('STORAGE_ENGINE'))``
+
+     to:
+
+     ``cursor.execute("SET default_storage_engine=%s;" % self._get_setting('STORAGE_ENGINE'))``
+
 
 Create the default user roles
 -----------------------------
