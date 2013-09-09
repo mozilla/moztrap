@@ -1,4 +1,3 @@
-from django.db.models import Max
 from tastypie import http, fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -74,7 +73,12 @@ class CaseResource(MTResource):
     Filterable by suites and product fields.
     """
 
-    suites = fields.ToManyField(SuiteResource, "suites", readonly=True)
+    suites = fields.ToManyField(
+        SuiteResource,
+        "suites",
+        readonly=True,
+        null=True,
+        )
     product = fields.ForeignKey(ProductResource, "product")
 
     class Meta(MTResource.Meta):
@@ -318,43 +322,45 @@ class CaseSelectionResource(BaseSelectionResource):
     for selecting cases.
     """
 
-    product = fields.ForeignKey(ProductResource, "product")
-    versions = fields.ToManyField(
-        'moztrap.model.library.api.CaseVersionSelectionResource',
-        # filter for only the latest of the caseversions
-        lambda bundle: CaseVersion.objects.filter(
-            case=bundle.obj,
-            latest=True
-            ),
-        related_name="versions",
+    case = fields.ForeignKey(CaseResource, "case")
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion")
+    tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
         full=True,
+        null=True,
         )
-    suites = fields.ToManyField(SuiteResource, "suites")
 
     class Meta:
-        queryset = Case.objects.all().select_related(
-            "product",
+        queryset = CaseVersion.objects.filter(latest=True).select_related(
+            "case",
+            "productversion",
+            "created_by",
             ).prefetch_related(
-                "versions__tags",
-                ).annotate(
-                    order=Max("suitecases__order"),
-                    ).order_by("order")
-
+                "tags",
+                "tags__product",
+                )
         list_allowed_methods = ['get']
-        fields = ["id", "versions", "created_by"]
+        fields = ["id", "name", "created_by"]
         filtering = {
-            "product": ALL_WITH_RELATIONS,
-            "versions": ALL_WITH_RELATIONS,
-            "created_by": ALL_WITH_RELATIONS,
-            "suites": ALL_WITH_RELATIONS
+            "productversion": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS,
+            "created_by": ALL_WITH_RELATIONS
             }
+        ordering = ["case"]
 
 
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
-        bundle.data["name"] = unicode(bundle.obj.versions.all()[0].name)
-        bundle.data["order"] = bundle.obj.order
+        case = bundle.obj.case
+        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["product_id"] = unicode(case.product_id)
+        bundle.data["product"] = {"id": unicode(case.product_id)}
+        bundle.data["priority"] = unicode(case.priority)
 
         return bundle
 
@@ -370,7 +376,12 @@ class CaseVersionSelectionResource(BaseSelectionResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
-    created_by = fields.ForeignKey(UserResource, "created_by", full=True, null=True)
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
 
     class Meta:
         queryset = CaseVersion.objects.all().select_related(
@@ -378,8 +389,8 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "productversion",
             "created_by",
             ).prefetch_related(
-            "tags",
-            )
+                "tags",
+                )
         list_allowed_methods = ['get']
         fields = ["id", "name", "latest", "created_by_id"]
         filtering = {
@@ -388,6 +399,7 @@ class CaseVersionSelectionResource(BaseSelectionResource):
             "case": ALL_WITH_RELATIONS,
             "created_by": ALL_WITH_RELATIONS
             }
+        ordering = ["name"]
 
 
     def dehydrate(self, bundle):
@@ -398,5 +410,6 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["product_id"] = unicode(case.product_id)
         bundle.data["product"] = {"id": unicode(case.product_id)}
         bundle.data["productversion_name"] = bundle.obj.productversion.name
+        bundle.data["priority"] = unicode(case.priority)
 
         return bundle

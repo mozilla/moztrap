@@ -2,6 +2,21 @@
 // Runtest list basics
 #runtests
 
+  .run-completion
+    +full(20)
+    .completion-label
+      +columns(2, 20)
+    .env-completion
+      @extend .chick
+      +columns(6, 20)
+      +box-sizing(border-box)
+      text-align: center
+      &::after
+        content: "%"
+
+  .runtest-filter
+    +full(20)
+
   .listordering
     padding-left: rhythm(1)
 
@@ -25,7 +40,7 @@
     +columns(1,24)
 
   .name, .byname
-    +columns(13,24)
+    +columns(11,24)
   .name
     .buglist
       @extend .chicklist
@@ -35,18 +50,23 @@
       @extend .bugchick
       +trailer(0)
 
+  .priority, .bypriority
+    +columns(2,24)
+  .priority
+    +padding-leader(.25)
+
   .results + .name, .byname
     +prefix(2,24)
 
   .results + .restart + .name, .results + .other-result
     +prefix(1,24)
 
-  .title, .invalid-note, .failed-note
+  .title, .invalid-note, .failed-note, .blocked-note
     display: inline
   .title
     +adjust-font-size-to($medpx,1.5)
     +demi
-  .invalid-note, .failed-note
+  .invalid-note, .failed-note, .blocked-note
     +italic
 
   .suites, .bysuites
@@ -98,7 +118,7 @@
     +padding-leader(.25)
     +padding-trailer(.25)
     +icon('ui/clock.png',$notext:false)
-  .invalidated, .passed, .failed
+  .invalidated, .passed, .failed, .blocked, .skipped
     +rhythm-borders(1px,.25)
     +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
     +box-shadow(rgba($base,$xsmall) 0 1px $xxxsmallpx inset)
@@ -109,14 +129,18 @@
     +icon('ui/check.png',$green-lightest,$notext:false)
   .failed
     +icon('ui/x.png',$red-lightest,$notext:false)
+  .blocked
+    +icon('ui/no.png',$red-lightest,$notext:false)
+  .skipped
+    +icon('ui/skip.png',$blue-lightest,$notext:false)
 
 .other-result
-  .other-invalidated, .other-passed, .other-failed, .other-empty
+  .other-invalidated, .other-passed, .other-failed, .other-skipped, .other-blocked, .other-empty
     height: rhythm(1)
     display: block
   .other-empty
     +rhythm-borders(0px,.25)
-  .other-invalidated, .other-passed, .other-failed
+  .other-invalidated, .other-passed, .other-failed, .other-skipped, .other-blocked
     +rhythm-borders(1px,.25)
     +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
   .other-invalidated
@@ -131,11 +155,19 @@
     +box-shadow(rgba($red,$xsmall) 0 2px $xxxsmallpx inset)
     border-color: rgba($red-dark,$small)
     +icon('ui/x.png',$notext:true)
+  .other-blocked
+    +box-shadow(rgba($red,$xsmall) 0 3px $xxxsmallpx inset)
+    border-color: rgba($red-dark,$small)
+    +icon('ui/no.png',$notext:true)
+  .other-skipped
+    +box-shadow(rgba($blue-dark,$xsmall) 0 3px $xxxsmallpx inset)
+    border-color: rgba($blue-dark,$small)
+    +icon('ui/skip.png',$notext:true)
 
 
 // ---------------------------------------------------------------------------
 // Result action buttons
-.result-action, .invalid-summary
+.result-action, .invalid-summary, .block-summary
   @extend .allcaps
   +cond
   text-align: left
@@ -148,7 +180,11 @@
   +button-style($blue-lighter,'ui/power.png')
 .action-pass
   +button-style($green-light,'ui/check.png')
-
+.action-skip
+  +box-sizing('border-box')
+  +button-style($blue-lighter,'ui/skip.png',$notext:true)
+  +columns(1,24)
+  +trailer(0)
 .action-restart
   +button-style($blue-hint,'ui/refresh.png',$notext:true)
   width: 100%
@@ -171,6 +207,28 @@
       +gone
     .invalid
       +button-style($yellow-dark)
+    .form-actions
+      +padding-leader(.25)
+      +trailer(.5)
+
+// ---------------------------------------------------------------------------
+// Test block
+.testblock
+
+  .block-summary
+    +box-sizing('border-box')
+    +button-style($red-lightest,'ui/no.png',$notext:true)
+    +columns(1,24)
+    +trailer(0)
+
+  .block-form
+    +full(24)
+    +pad(3,4,24)
+    +trailer(0)
+    .block-label
+      +gone
+    .block
+      +button-style($red-lightest)
     .form-actions
       +padding-leader(.25)
       +trailer(.5)

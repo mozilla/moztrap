@@ -132,6 +132,14 @@ class RunResourceTest(case.api.ApiTestCase):
             case__product=pv.product,
             productversion=pv,
             )
+        c_b = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            )
+        c_s = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            )
         self.F.CaseStepFactory(caseversion=c_f)
 
         # submit results for these cases
@@ -148,10 +156,19 @@ class RunResourceTest(case.api.ApiTestCase):
                      "environment": unicode(envs[0].id),
                      "status": "invalidated",
                      },
+                    {"case": unicode(c_b.case.id),
+                     "comment": "no can do",
+                     "environment": unicode(envs[0].id),
+                     "status": "blocked",
+                     },
                     {"case": unicode(c_p.case.id),
                      "environment": unicode(envs[0].id),
                      "status": "passed"
-                },
+                    },
+                    {"case": unicode(c_s.case.id),
+                     "environment": unicode(envs[0].id),
+                     "status": "skipped"
+                    },
                     {"bug": "http://www.deathvalleydogs.com",
                      "case": unicode(c_f.case.id),
                      "comment": "dang thing...",

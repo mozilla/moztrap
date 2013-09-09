@@ -20,10 +20,11 @@ which your shell user has permission to create databases in. See the full
 3. ``mkvirtualenv moztrap``
 4. ``bin/install-reqs``
 5. ``echo "CREATE DATABASE moztrap CHARACTER SET utf8" | mysql``
-6. ``./manage.py syncdb --migrate``
-7. ``./manage.py create_default_roles``
-8. ``./manage.py runserver``
-9. Visit http://localhost:8000 in your browser.
+6. :ref:`create a local.py<create-db>`
+7. ``./manage.py syncdb --migrate``
+8. ``./manage.py create_default_roles``
+9. ``./manage.py runserver``
+10. Visit http://localhost:8000 in your browser.
 
 Congratulations! If that all worked, you have a functioning instance of MozTrap
 for local testing, experimentation, and :doc:`development <development>`.
@@ -56,7 +57,7 @@ the root of the clone, run::
 If you want to run the latest and greatest code, the default ``master`` branch
 is what you want. If you want to run a stable release branch, switch to it now::
 
-    git checkout 0.8.X
+    git checkout 1.4.5.5
 
 
 Install the Python dependencies
@@ -129,6 +130,8 @@ provided :ref:`vendor library`.
 
 Create a database
 -----------------
+
+.. _create-db:
 
 You'll need a MySQL database. If you have a local MySQL server and your user
 has rights to create databases on it, just run this command to create the

@@ -38,6 +38,12 @@ Case Edit Fields
 * **Description** - Any description, pre-conditions, links or notes to
   associate with the case.  This field is displayed while running the test.
   Markdown_ syntax is supported.
+* **Priority** - The priority of the test case.  Set a case as ``priority 1``
+  to indicate it is the highest priority.  This can be anywhere from no
+  priority, or from 1 through 4.  This is the same across all versions of the
+  case.  You can filter and sort by this field when running or managing
+  cases.  You can also filter by this when selecting which cases to include
+  in a suite.
 * **Add Tags** - Enter tags to apply to this case.  Hit enter after each tag to
   see the tag chicklet displayed.  Auto-completes for existing tags.  During
   test execution, cases that have tags will show the tag descriptions with

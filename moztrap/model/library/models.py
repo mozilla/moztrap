@@ -19,6 +19,7 @@ class Case(MTModel):
     """A test case for a given product."""
     product = models.ForeignKey(Product, related_name="cases")
     idprefix = models.CharField(max_length=25, blank=True)
+    priority = models.IntegerField(blank=True, null=True)
 
 
     def __unicode__(self):
@@ -227,9 +228,13 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         Result = self.runcaseversions.model.results.related.model
         StepResult = Result.stepresults.related.model
         return set(
-            StepResult.objects.filter(
-                result__runcaseversion__caseversion=self).exclude(
-                bug_url="").values_list("bug_url", flat=True).distinct()
+            StepResult.objects.only(
+                "bug_url",
+                "deleted_on",
+                "result_id",
+                ).filter(
+                    result__runcaseversion__caseversion=self).exclude(
+                        bug_url="").values_list("bug_url", flat=True).distinct()
             )
 
 
@@ -287,7 +292,7 @@ class Suite(MTModel, DraftStatusModel):
     DEFAULT_STATUS = DraftStatusModel.STATUS.active
 
     product = models.ForeignKey(Product, related_name="suites")
-    name = models.CharField(max_length=200)
+    name = models.CharField(db_index=True, max_length=200)
     description = models.TextField(blank=True)
 
     cases = models.ManyToManyField(

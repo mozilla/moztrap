@@ -11,12 +11,14 @@ from ..core.models import Product
 
 class Tag(MTModel):
     """A tag."""
-    name = models.CharField(max_length=100)
+    name = models.CharField(db_index=True, max_length=100)
     description = models.TextField(blank=True)
 
     # tags may be product-specific or global (in which case this FK is null)
     product = models.ForeignKey(Product, blank=True, null=True)
 
+    # a tag may be considered a user-story
+    # is_user_story = models.BooleanField(default=False)
 
     def __unicode__(self):
         """Unicode representation is name."""

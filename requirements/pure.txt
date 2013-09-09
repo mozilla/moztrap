@@ -1,7 +1,7 @@
 # Pure python dependencies.
 Django==1.4.5
 
-South==0.7.6
+South==0.8.2.moz1
 django_compressor==1.1.2
 django-appconf==0.4.1
 BeautifulSoup==3.2.0

@@ -5,17 +5,18 @@
   {% include "results/_status.html" with item=runcaseversion.caseversion %}
 
   <header class="itemhead">
-
-    <div class="completion" data-perc="{{ runcaseversion.completion|percentage }}">{{ runcaseversion.completion|percentage }}</div>
-
+    {% with runcaseversion.completion|percentage as pct %}
+      <div class="completion" data-perc="{{ pct }}">{{ pct }}</div>
+    {% endwith %}
     <div class="name">
 
       <h3 class="title" title="{{ runcaseversion.caseversion.name }}">{{ runcaseversion.caseversion.name }}</h3>
 
     </div>
 
-    <div class="run">{{ runcaseversion.run }}</div>
-    <div class="product-version">{{ runcaseversion.run.productversion }}</div>
+    <div class="priority">{{ runcaseversion.caseversion.case.priority }}</div>
+    <div class="run">{{ runcaseversion.run.name }}</div>
+    <div class="product-version">{{ runcaseversion.run.productversion.name }}</div>
 
     {% url "results_results" rcv_id=runcaseversion.id as detail_url %}
     {% include "results/_results_summary.html" with results=runcaseversion.result_summary %}

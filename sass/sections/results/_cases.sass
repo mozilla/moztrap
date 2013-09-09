@@ -3,13 +3,17 @@
   .listordering, .itemhead, .item-content
     padding-left: rhythm(2.5)
 
-  .name, .byname,
+  .name, .byname
     +columns(6,23)
 
-  .run, .byrun, .product-version, .byproduct-version, .results-summary, .byresults
-    +columns(5,23)
+  .priority, .bypriority
+    +columns(2,23)
+
+  .run, .byrun, .product-version, .byproduct-version
+    +columns(4,23)
 
   .results-summary, .byresults
+    +columns(5, 23)
     +omega(23)
     text-align: right
 

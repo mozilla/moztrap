@@ -28,7 +28,17 @@ def runs_list(request):
         request,
         "results/run/runs.html",
         {
-            "runs": model.Run.objects.select_related(),
+            "runs": model.Run.objects.filter(is_series=False).only(
+                "name",
+                "start",
+                "end",
+                "productversion",
+                "productversion__version",
+                "productversion__product__name",
+                ).select_related(
+                    "productversion",
+                    "productversion__product",
+                    )
             }
         )
 

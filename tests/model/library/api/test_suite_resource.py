@@ -126,7 +126,7 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
         return "{0}__ne".format(self.included_param)
 
 
-    def get_exp_obj(self, s, runs=[], order=None):
+    def get_exp_obj(self, s, runs=[]):
         """Return an expected suiteselection object with fields filled."""
 
         return {
@@ -137,7 +137,6 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
             u"id": unicode(s.id),
             u"name": unicode(s.name),
             u"runs": runs,
-            u"order": order,
             u"product": unicode(
                 self.get_detail_url("product", s.product.id)),
             u"resource_uri": unicode(
@@ -219,7 +218,6 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
         exp_objects = [self.get_exp_obj(
             s,
             [unicode(self.get_detail_url("run", data["run"].id))],
-            rs.order,
             ) for s, rs in [
                 (data["s1"], data["runsuite1"]),
                 (data["s2"], data["runsuite2"])]]
@@ -265,7 +263,6 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
         exp_objects = [self.get_exp_obj(
             data["s1"],
             [unicode(self.get_detail_url("run", data["run"].id))],
-            data["runsuite1"].order,
             )]
 
         self._do_test(
@@ -300,6 +297,5 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
                     unicode(self.get_detail_url("run", run1.id)),
                     unicode(self.get_detail_url("run", run2.id)),
                     ],
-                order=rs.order
                 ) for s, rs in [(s1, runsuite3), (s2, runsuite4)]],
             )

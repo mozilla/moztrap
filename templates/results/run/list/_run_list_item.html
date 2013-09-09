@@ -5,7 +5,9 @@
 
   <header class="itemhead">
 
-    <div class="completion" data-perc="{{ run.completion|percentage }}">{{ run.completion|percentage }}</div>
+    {% with run.completion|percentage as pct %}
+      <div class="completion" data-perc="{{ pct }}">{{ pct }}</div>
+    {% endwith %}
 
     <h3 class="name" title="{{ run.name }}">{{ run.name }}</h3>
 

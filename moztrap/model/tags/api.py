@@ -25,7 +25,7 @@ class TagResource(MTResource):
     #@@@ additional relationship caseversions needs to be handled
 
     class Meta(MTResource.Meta):
-        queryset = Tag.objects.all()
+        queryset = Tag.objects.all().select_related("product")
         fields = ["id", "name", "description", "product"]
         filtering = {
             "name": ALL,

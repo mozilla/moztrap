@@ -47,6 +47,10 @@ var MT = (function (MT, $) {
                         if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
+                    } else if (type === 'priority') {
+                        if (!(items.find('.priority span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
                     } else {
                         if (!(items.filter(function () { return $(this).find('.' + type).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;

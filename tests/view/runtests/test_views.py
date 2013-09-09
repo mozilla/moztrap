@@ -228,7 +228,7 @@ class SetEnvironmentTest(case.view.AuthenticatedViewTestCase,
 
 
 
-class RunTestsTest(case.view.AuthenticatedViewTestCase,
+class RunTestsTest(case.view.ListViewTestCase,
                    case.view.NoCacheTest,
                    ):
     """Tests for runtests view."""
@@ -248,6 +248,12 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         return reverse(
             "runtests_run",
             kwargs={"run_id": self.testrun.id, "env_id": self.envs[0].id})
+
+
+    def factory(self, **kwargs):
+        """Create a result for inherited tests."""
+        rcv = self.create_rcv(caseversion__name="Foo Bar")
+        return self.create_result(runcaseversion=rcv)
 
 
     def create_rcv(self, **kwargs):
@@ -430,6 +436,57 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         res = form.submit(name="action-result_pass", index=0, status=302)
 
         self.assertRedirects(res, self.url + "?sortfield=name")
+
+
+    def test_sort_by_status(self):
+        """
+        Can sort by status.  Honors status by ANY user for the env/test.
+
+        Ascending puts pending at the top, since they have no status.
+        """
+        user2 = self.F.UserFactory()
+        t1 = self.create_rcv(caseversion__name="t1")
+        t2 = self.create_rcv(caseversion__name="t2")
+        t3 = self.create_rcv(caseversion__name="t3")
+        t4 = self.create_rcv(caseversion__name="t4")
+        t5 = self.create_rcv(caseversion__name="t5")
+        t6 = self.create_rcv(caseversion__name="t6")
+        self.create_result(runcaseversion=t1, status="started")
+        self.create_result(runcaseversion=t2, status="blocked")
+        self.create_result(runcaseversion=t3, status="failed", tester=user2)
+        self.create_result(runcaseversion=t4, status="invalidated")
+        self.create_result(runcaseversion=t5, status="passed")
+        self.create_result(runcaseversion=t6, status="skipped")
+
+        res = self.get(
+            params={"sortfield": "current_result", "sortdirection": "asc"})
+
+        self.assertOrderInList(res, "t1", "t2", "t3", "t4", "t5", "t6")
+
+
+    def test_sort_by_status_env_specific(self):
+        """
+        Can sort by status.  Specific to env in question.
+
+        If rcv has result for different env, it's ignored
+        """
+        user2 = self.F.UserFactory()
+        t1 = self.create_rcv(caseversion__name="t1")
+        t2 = self.create_rcv(caseversion__name="t2")
+        self.create_result(runcaseversion=t1, status="started")
+        self.create_result(runcaseversion=t2, status="failed", tester=user2)
+
+        # result for different env that should be ignored in sort
+        self.create_result(
+            runcaseversion=t1,
+            environment=self.envs[1],
+            status="passed",
+            )
+
+        res = self.get(
+            params={"sortfield": "current_result", "sortdirection": "asc"})
+
+        self.assertOrderInList(res, "t1", "t2")
 
 
     def test_description(self):

@@ -38,6 +38,7 @@ class AddCaseFormTest(case.DBTestCase):
         defaults = {
             "product": [self.product.id],
             "productversion": [self.productversion.id],
+            "priority": [3],
             "idprefix": ["pref"],
             "name": ["Can register."],
             "description": ["A user can sign up for the site."],
@@ -73,6 +74,18 @@ class AddCaseFormTest(case.DBTestCase):
         self.assertEqual(cv.name, "Can register.")
 
 
+    def test_bad_priority(self):
+        """Can add a test case bad priority defaults to None."""
+        data = self.get_form_data()
+        data["priority"] = ["foo"]
+
+        form = self.form(data=data)
+
+        cv = form.save().versions.get()
+
+        self.assertEqual(cv.case.priority, None)
+
+
     def test_created_by(self):
         """If user is provided, created objects have created_by set."""
         form = self.form(data=self.get_form_data(), user=self.user)
@@ -89,6 +102,7 @@ class AddCaseFormTest(case.DBTestCase):
         form = self.form()
 
         self.assertEqual(form["status"].value(), "active")
+        self.assertEqual(form["priority"].value(), None)
 
 
     def test_wrong_product_version(self):
@@ -532,6 +546,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
         """Initial data is populated accurately."""
         cv = self.F.CaseVersionFactory.create(
             case__idprefix="pref",
+            case__priority=3,
             name="a name",
             description="a desc",
             status="active",
@@ -547,6 +562,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                 "name": "a name",
                 "description": "a desc",
                 "idprefix": "pref",
+                "priority": 3,
                 "status": "active",
                 "cc_version": cv.cc_version,
                 }
@@ -575,6 +591,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                     "name": ["new name"],
                     "description": ["new desc"],
                     "idprefix": ["pref"],
+                    "priority": [1],
                     "status": ["active"],
                     "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],
@@ -593,6 +610,48 @@ class EditCaseVersionFormTest(case.DBTestCase):
         cv = self.refresh(cv)
 
         self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.case.priority, 1)
+        self.assertEqual(cv.description, "new desc")
+        self.assertEqual(cv.status, "active")
+        self.assertEqual(
+            [s.instruction for s in cv.steps.all()],
+            ["new step", "do this instead"])
+
+
+    def test_save_edits_bad_priority(self):
+        """Can edit basic data and steps and save, priority set to None."""
+        cv = self.F.CaseVersionFactory.create(
+            name="a name", description="a desc", status="draft")
+        step = self.F.CaseStepFactory.create(
+            caseversion=cv, instruction="do this", expected="see that")
+
+        form = self.form(
+            instance=cv,
+            data=MultiValueDict(
+                {
+                    "name": ["new name"],
+                    "description": ["new desc"],
+                    "idprefix": ["pref"],
+                    "priority": ["foo"],
+                    "status": ["active"],
+                    "cc_version": str(cv.cc_version),
+                    "steps-TOTAL_FORMS": ["2"],
+                    "steps-INITIAL_FORMS": ["1"],
+                    "steps-0-id": [""],
+                    "steps-0-instruction": ["new step"],
+                    "steps-0-expected": [""],
+                    "steps-1-id": [str(step.id)],
+                    "steps-1-instruction": ["do this instead"],
+                    "steps-1-expected": [""],
+                    }
+                )
+            )
+
+        cv = form.save()
+        cv = self.refresh(cv)
+
+        self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.case.priority, None)
         self.assertEqual(cv.description, "new desc")
         self.assertEqual(cv.status, "active")
         self.assertEqual(

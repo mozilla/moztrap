@@ -75,22 +75,28 @@ class OtherResultFor(Tag):
     def render_tag(self, context, runcaseversion, user, environment, varname):
         """Get/construct Result and place it in context under ``varname``"""
 
-        # if the result.status is pending or assigned, then we try to find a result
-        # from another user to return instead.
+        # check for any completed result states from other users for this
+        # same case/env combo.
         include_kwargs = dict(
             environment=environment,
             runcaseversion=runcaseversion,
             is_latest=True,
-            status__in=model.Result.COMPLETED_STATES,
+            status__in=(model.Result.COMPLETED_STATES +
+                [model.Result.STATUS.skipped]),
             )
         exclude_kwargs = dict(
             tester=user,
             )
 
         try:
-            result = model.Result.objects.filter(
-                **include_kwargs).exclude(**exclude_kwargs).order_by(
-                "-modified_on")[0]
+            result = model.Result.objects.only(
+                "id",
+                "status",
+                "tester",
+                "comment",
+                ).filter(
+                    **include_kwargs).exclude(**exclude_kwargs).order_by(
+                    "-modified_on")[0]
         except IndexError:
             result = None
 
@@ -139,6 +145,35 @@ register.tag(StepResultFor)
 
 
 
+class CompletionFor(Tag):
+    """
+    Places completion percentage in context.
+
+    """
+    name = "completion_for"
+    options = Options(
+        Argument("run"),
+        Argument("environment"),
+        "as",
+        Argument("varname", resolve=False),
+        )
+
+
+    def render_tag(self, context, run, environment, varname):
+        """
+        Get/construct completion percentage
+        and place it in context under ``varname``
+        """
+        completion = run.completion_single_env(environment)
+        context[varname] = completion
+        # context[varname] = "{0}and{1}".format(run, environment)
+        # context[varname] = "foo"
+        return u""
+
+
+register.tag(CompletionFor)
+
+
 class SuitesFor(Tag):
     """Return suite intersection of case and run."""
 
@@ -153,9 +188,7 @@ class SuitesFor(Tag):
 
     def render_tag(self, context, run, runcaseversion, varname):
         """Get/construct Suite list and place it in context under ``varname``"""
-        casesuites = set(runcaseversion.caseversion.case.suites.values_list("id", flat=True))
-        runsuites = set(run.suites.values_list("id", flat=True))
-        result = model.Suite.objects.filter(pk__in=casesuites.intersection(runsuites))
+        result = model.Suite.objects.filter(cases=runcaseversion.caseversion.case, runs=run)
 
         context[varname] = result
         return u""

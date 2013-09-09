@@ -1,9 +1,69 @@
 Release Notes
 =============
 
+Current - 1.4.8
+---------------
+
+Version 1.4.8
+^^^^^^^^^^^^^
+*release date - 8/22/13*
+
+* **test case priority field** - The new field of ``priority`` has been added
+  to test cases.  You can set the priority of a case to ``1``, ``2``, ``3``
+  ``4`` or no priority.  You can filter and sort on this field as you can
+  many other fields.  See :ref:`test cases<test-cases>` for more info.
+* **filtering by tester in results** - This allows you to see how many cases
+  a specific tester has executed overall and for a specific run.
+* **fix to edit tag dialog** - It wasn't loading the available cases for a
+  product-specific tag due to a bug.
+
+
+Previous
+--------
+
+Version 1.4.7
+^^^^^^^^^^^^^
+*release date - 5/21/13*
+
+* **new run results of ``blocked`` and ``skipped``** - Blocked result is for
+  when a test cannot be executed because it is blocked by functionality that
+  prevents even starting the test.  Skipped result is so that a
+  ``test manager`` can specify that a test in a run should not be tested.
+  This removes the test from the % complete calculation and can only be set
+  by a :ref:`Test Manager<test-manager-role>` or :ref:`Admin<admin-role>`.
+  See: :ref:`Result Statuses<result-statuses>` for more info
+* **filter lists sorted** - The list of items in the advanced filtering are
+  now sorted for your convenience.  Why didn't we do that before, you ask?
+  Umm.. oops.
+* **run progress** - The % complete for the test run in that environment now
+  shows at the top of the page.  It doesn't yet update after each result is
+  submitted, only on page load for now.  This is actually a click-able link
+  to see the result details.
+
+
+Version 1.4.6
+^^^^^^^^^^^^^
+*release date - 5/6/13*
+
+* **sort on results in runtests** - When you are executing a test run, you
+  can now sort on the ``results`` field to help you find the tests that
+  neither you, nor anyone else has executed yet.  Or if filtering descending,
+  it has the handy side-effect of sorting all failures to the top (since ``f``
+  comes before ``p``).
+* **filter by test description** - You can now filter by the description field
+  of a test case.  This is handy if you have some specific keywords, urls or
+  filenames in the description that you need to find.
+
+
+Version 1.4.5.5
+^^^^^^^^^^^^^^^
+*release date - 4/2/13*
+
+* **Scalability fixes around editing huge test suites**
+
 
 Version 1.4.5
--------------
+^^^^^^^^^^^^^
 *release date - 3/28/2013*
 
 * **Upgrade to Django 1.4.5**
@@ -13,7 +73,7 @@ Version 1.4.5
 
 
 Version 1.4.4
--------------
+^^^^^^^^^^^^^
 *release date - 3/22/2013*
 
 * **Link to view result while running test** - If you want to share the result
@@ -30,7 +90,7 @@ Version 1.4.4
 
 
 Version 1.4
------------
+^^^^^^^^^^^
 *release date - 1/22/2013*
 
 * **Fill Product Version Cases** - Added the ability to fill in case versions
@@ -53,7 +113,7 @@ Version 1.4
 
 
 Version 1.3.5
--------------
+^^^^^^^^^^^^^
 *release date - 12/19/2012*
 
 * **Pinned Filters** - This feature allows you to **pin** a filter so that it
@@ -77,7 +137,7 @@ Version 1.3.5
 
 
 Version 1.3.2
--------------
+^^^^^^^^^^^^^
 *release date - 12/18/2012*
 
 * **Tag Descriptions** - You can now add descriptions to tags.  The result is
@@ -90,7 +150,7 @@ Version 1.3.2
 
 
 Version 1.3.1
--------------
+^^^^^^^^^^^^^
 *release date - 12/10/2012*
 
 * **Display all case versions** - Formerly, when you looked at the
@@ -106,7 +166,7 @@ Version 1.3.1
 
 
 Version 1.3
------------
+^^^^^^^^^^^
 *release date - 12/03/2012*
 
 * **Sharable list links** - When you have filtered a list somewhere in the
@@ -129,7 +189,7 @@ Version 1.3
 
 
 Version 1.2.7
--------------
+^^^^^^^^^^^^^
 * **Run activation scalability** - Using some new features in Django 1.4
   and a couple raw queries, we expanded support for test runs from ~700
   cases to several thousand.
@@ -144,7 +204,7 @@ Version 1.2.7
 
 
 Version 1.2.5
--------------
+^^^^^^^^^^^^^
 * **Django 1.4.2 upgrade**
 * **More non-ascii character fixes** - Primarily in some views and messages.
 * **Split-the-work:** When you and others are executing the same test run,
@@ -155,7 +215,7 @@ Version 1.2.5
 
 
 Version 1.2
--------------
+^^^^^^^^^^^
 * **Test case ordering** - As you drag and drop cases in the edit Suite
   screen, that order will be honored when users run your tests.  Same goes
   for suites of test runs.  So, the order will be first by suite, then by

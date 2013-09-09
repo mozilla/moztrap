@@ -9,12 +9,34 @@ of MozTrap.  From here, select the :ref:`Product<products>`,
 will be prompted to enter the :ref:`environment<environments>` you are using
 to test.
 
+.. _result-statuses:
+
+Result Statuses
+---------------
+* **passed** - All steps of the test matched the expected result.
+* **failed** - One or more steps of the test did not match the expected result.
+* **invalid** - The steps of the test were either incorrect, or unclear to the
+                extent that it was not possible to determine if it passed or
+                failed
+* **skipped** - A test manager decided this test should not be run and should
+                not count against the % complete for any environment.
+                Marking a test *skipped*
+                marks that test skipped for ALL environments the case applies
+                to.  This is true, even if the case had been marked passed or
+                otherwise in a different environment.  Likewise, restarting a
+                ``skipped`` case will restart it for all environments.
+* **blocked** - The test could not be run because the user was blocked from
+                beginning the test.  For example, if the steps are to complete
+                a purchase of something in their shopping cart, but the user
+                can't even add items to the shopping cart, then the case could
+                be considered blocked.
 
 .. _marking-results:
 
 Marking a result
 ----------------
-Expand a case to see buttons to mark the test *passed, failed or invalid*.
+Expand a case to see buttons to mark the test *passed, failed, skipped,
+blocked or invalid*.
 You can fail any specific step of a test case.  Marking a case invalid means
 that the tester was not able to execute the test and it needs updating.
 

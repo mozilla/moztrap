@@ -2,8 +2,9 @@
 
 {% block sortitems %}
   <li class="sortitem bybulk-open"><a href="#" title="show all details">bulk open</a></li>
-  {% include "lists/_sortitem.html" with sortname="results" %}
+  {% include "lists/_sortitem.html" with sortname="results" sortID="current_result" %}
   {% include "lists/_sortitem.html" with sortname="name" sortID="caseversion__name" %}
+  {% include "lists/_sortitem.html" with sortname="priority" sortID="caseversion__case__priority" %}
   {% include "lists/_sortitem.html" with sortname="suites" %}
   {% include "lists/_sortitem.html" with sortname="order" sortID="order" %}
 {% endblock sortitems %}

@@ -8,6 +8,7 @@ from django.db.models import Max
 import floppyforms as forms
 
 from .... import model
+from model_utils import Choices
 
 from ...utils import mtforms
 
@@ -29,6 +30,10 @@ class BaseCaseForm(mtforms.NonFieldErrorsClassFormMixin, forms.Form):
             url=lambda: reverse("manage_tags_autocomplete")),
         required=False)
     idprefix = forms.CharField(max_length=200, required=False)
+    priority = mtforms.MTChoiceField(
+        choices=Choices("------", 1, 2, 3, 4),
+        required=False
+        )
 
 
     def __init__(self, *args, **kwargs):
@@ -179,6 +184,13 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
         version_kwargs = self.cleaned_data.copy()
         product = version_kwargs.pop("product")
         idprefix = version_kwargs.pop("idprefix")
+        priority = version_kwargs.pop("priority")
+
+        # ensure priority is an int, if not, store "None"
+        try:
+            int(priority)
+        except ValueError:
+            priority = None
 
         self.save_new_tags(product)
 
@@ -186,6 +198,7 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
             product=product,
             user=self.user,
             idprefix=idprefix,
+            priority=priority,
             )
 
         version_kwargs["case"] = case
@@ -343,6 +356,7 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         initial["cc_version"] = self.instance.cc_version
 
         initial["idprefix"] = self.instance.case.idprefix
+        initial["priority"] = self.instance.case.priority
 
         super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
@@ -357,12 +371,21 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         del version_kwargs["add_attachment"]
 
         idprefix = version_kwargs.pop("idprefix")
+        priority = version_kwargs.pop("priority")
 
         for k, v in version_kwargs.items():
             setattr(self.instance, k, v)
 
         if self.instance.case.idprefix != idprefix:
             self.instance.case.idprefix = idprefix
+            self.instance.case.save(force_update=True)
+
+        if self.instance.case.priority != priority:
+            try:
+                int(priority)
+            except ValueError:
+                priority = None
+            self.instance.case.priority = priority
             self.instance.case.save(force_update=True)
 
         self.instance.save(force_update=True)

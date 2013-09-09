@@ -184,9 +184,10 @@ var MT = (function (MT, $) {
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
             ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
-            ajax_trigger_filter: "product",
-            ajax_for_field: "suites",
+            ajax_trigger_filter: "productversion__product",
+            ajax_for_field: "case__suites",
             for_type: "suite",
+            included_sort_field: "case__suitecases__order",
             ich_template: ich.case_select_item
         });
         MT.populateMultiselectItems({
@@ -196,6 +197,7 @@ var MT = (function (MT, $) {
             ajax_trigger_filter: "productversion__product",
             ajax_for_field: "tags",
             for_type: "tag",
+            included_sort_field: "name",
             ich_template: ich.caseversion_select_item,
             hide_without_trigger_value: true
         });
@@ -215,6 +217,7 @@ var MT = (function (MT, $) {
             ajax_trigger_filter: "product",
             ajax_for_field: "runs",
             for_type: "run",
+            included_sort_field: "runs__runsuites__order",
             ich_template: ich.suite_select_item,
             refetch_on_trigger: false
         });
@@ -237,6 +240,8 @@ var MT = (function (MT, $) {
         MT.hideEmptyRuntestsEnv();
         MT.autoFocus('.details.stepfail > .summary', '#runtests');
         MT.autoFocus('.details.testinvalid > .summary', '#runtests');
+        MT.autoFocus('.details.testskip > .summary', '#runtests');
+        MT.autoFocus('.details.testblock > .summary', '#runtests');
         MT.breadcrumb('.drilldown');
         MT.expandAllTests('#runtests');
         MT.runTests('#runtests');

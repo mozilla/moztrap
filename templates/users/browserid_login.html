@@ -4,7 +4,7 @@
 
 {% block login-content %}
   <div class="browserid">
-    <a id="browserid" href="#">Sign in</a> with <a href="https://browserid.org/">Mozilla Persona</a>.
+    <a id="browserid" href="#">Sign in</a> with <a href="https://persona.org/">Mozilla Persona</a>.
   </div>
   <form method="POST" action="{% url 'browserid_verify' %}" id="browserid-form">
     {% csrf_token %}

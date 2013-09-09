@@ -3,6 +3,7 @@ Views for test execution.
 
 """
 import json
+from django.db.models import Max
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -113,6 +114,8 @@ ACTIONS = {
     "start": {},
     "result_pass": {},
     "result_invalid": {"comment": ""},
+    "result_skip": {},
+    "result_block": {"comment": ""},
     "result_fail": {"stepnumber": None, "comment": "", "bug": ""},
     "start": {},
     }
@@ -126,7 +129,7 @@ ACTIONS = {
 @lists.sort("runcaseversions", defaultfield="order")
 @ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
-    run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
+    run = get_object_or_404(model.Run.objects.select_related("product"), pk=run_id)
 
     if not run.status == model.Run.STATUS.active:
         messages.info(
@@ -215,6 +218,17 @@ def run(request, run_id, env_id):
     envform = EnvironmentSelectionForm(
         current=environment.id, environments=run.environments.all())
 
+    current_result_select = (
+        "SELECT status from execution_result as r "
+        "WHERE r.runcaseversion_id = execution_runcaseversion.id "
+        "AND r.environment_id = {0} "
+        "AND r.status not in ({1}) "
+        "AND r.is_latest = 1 "
+        "ORDER BY r.created_on DESC LIMIT 1".format(
+            environment.id,
+            ", ".join(
+                ["'{0}'".format(x) for x in model.Result.PENDING_STATES]
+                )))
 
     return TemplateResponse(
         request,
@@ -226,10 +240,15 @@ def run(request, run_id, env_id):
             "run": run,
             "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
-                "caseversion").prefetch_related(
+                "caseversion__case",
+                ).prefetch_related(
                     "caseversion__tags",
-                    "caseversion__case__suites",
-                    ).filter(environments=environment),
+                    "caseversion__attachments",
+                    "caseversion__steps",
+                    ).filter(
+                        environments=environment,
+                        ).extra(select={
+                            "current_result": current_result_select}),
             "finder": {
                 # finder decorator populates top column (products), we
                 # prepopulate the other two columns

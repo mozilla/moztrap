@@ -40,7 +40,8 @@ var MT = (function (MT, $) {
                         included_id = $(".edit-" + options.for_type).data(
                             options.for_type + "-id");
                     if (trigger_id || options.fetch_without_trigger_value) {
-                        $(".multiselect").removeClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                         MT.doPopulateMultiselect(
                             options.ajax_url_root,
                             options.ajax_trigger_filter,
@@ -52,13 +53,15 @@ var MT = (function (MT, $) {
                         );
                     }
                     else if (options.hide_without_trigger_value) {
-                        $(".multiselect").addClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").addClass("hiddenfield");
                     }
                     else {
                         // the user selected the "----" option, so clear
                         // multiselect
                         $(".multiselect").find(".select").html("");
-                        $(".multiselect").removeClass("hiddenfield");
+                        $(".multiselect").closest(
+                            ".formfield").removeClass("hiddenfield");
                     }
                 });
             }
@@ -111,6 +114,7 @@ var MT = (function (MT, $) {
                             options.ich_template,
                             options.ajax_for_field,
                             included_id,
+                            options.included_sort_field,
                             options.use_latest
                         );
                     }
@@ -138,6 +142,7 @@ var MT = (function (MT, $) {
         ich_template,
         ajax_for_field,
         included_id,
+        included_sort_field,
         use_latest) {
 
         var available = $(".multiunselected").find(".select"),
@@ -163,7 +168,7 @@ var MT = (function (MT, $) {
             // get the ``latest`` case versions to display here
 
             // @@@ maybe we could check cookies here.  If productversion is
-            // set, then use that instead.  But, garsh.. what if they have more
+            // set, then use that instead.  But... what if they have more
             // than one productversion filter pinned?  Have to check if the
             // productversion matched the product set in this form, but I
             // don't have that info.  Need it server side, or via ajax.
@@ -176,6 +181,7 @@ var MT = (function (MT, $) {
         if (included_id) {
             avail_url.addSearch(ajax_for_field + "__ne", included_id);
             incl_url.addSearch(ajax_for_field, included_id);
+            incl_url.addSearch("order_by", included_sort_field);
         }
 
         if (available.length) {

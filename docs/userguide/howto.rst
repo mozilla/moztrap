@@ -84,7 +84,7 @@ will need to clone the 1.0 test runs to 2.0 and update them.
 
 Steps
 ^^^^^
-See Tutorial: :ref:`Migrate Runs<migrate-runs>`
+See Tutorial: :ref:`Migrate Runs<migrate_runs>`
 
 
 Get a link to a result of a test just after submitting it

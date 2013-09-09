@@ -2,7 +2,6 @@
 Tests for SuiteCaseResource api.
 
 """
-from tests import case
 from tests.case.api.crud import ApiCrudCases
 
 import logging
@@ -50,7 +49,7 @@ class SuiteCaseResourceTest(ApiCrudCases):
     def order_generator(self):
         """give an incrementing number for order."""
         self.__dict__.setdefault("order", 0)
-        self.order = self.order + 1
+        self.order += 1
         return self.order
 
 

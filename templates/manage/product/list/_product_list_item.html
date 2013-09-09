@@ -1,5 +1,7 @@
 {% load permissions %}
 
+{% load markup %}
+
 <article id="product-id-{{ product.id }}" class="listitem">
   <header class="itemhead">
 
@@ -18,7 +20,7 @@
 
     </div>
 
-    <div class="description">{{ product.description }}</div>
+    <div class="description">{{ product.description|markdown }}</div>
 
   </header>
 

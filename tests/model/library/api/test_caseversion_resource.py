@@ -189,6 +189,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
             u"id": unicode(cv.id),
             u"latest": True,
             u"name": unicode(cv.name),
+            u"priority": unicode(None),
             u"product": {
                 u"id": unicode(cv.productversion.product_id)
             },

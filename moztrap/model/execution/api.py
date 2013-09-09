@@ -1,6 +1,7 @@
-from django.db.models import Max
+from django.db.models import Count
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
-from tastypie import fields
+from tastypie import http, fields
+from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.bundle import Bundle
 
 import json
@@ -9,16 +10,28 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
 from .models import Run, RunCaseVersion, RunSuite, Result
-from ..mtapi import MTResource, MTApiKeyAuthentication
+from ..mtapi import MTResource, MTApiKeyAuthentication, MTAuthorization
 from ..core.api import (ProductVersionResource, ProductResource,
                         ReportResultsAuthorization, UserResource)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
-from ..library.api import CaseVersionResource, BaseSelectionResource
+from ..library.api import (CaseVersionResource, BaseSelectionResource,
+                           SuiteResource)
 from ..library.models import CaseVersion, Suite
 
 from ...view.lists.filters import filter_url
 
+import logging
+logger = logging.getLogger(__name__)
+
+
+class RunSuiteAuthorization(MTAuthorization):
+    """Atypically named permission."""
+
+    @property
+    def permission(self):
+        """This permission should be checked by is_authorized."""
+        return "execution.manage_runs"
 
 
 class RunCaseVersionResource(ModelResource):
@@ -293,6 +306,61 @@ class ResultResource(ModelResource):
 
 
 
+class RunSuiteResource(MTResource):
+    """
+    Create, Read, Update and Delete capabilities for RunSuite.
+
+    Filterable by suite and run fields.
+    """
+
+    run = fields.ForeignKey(RunResource, 'run')
+    suite = fields.ForeignKey(SuiteResource, 'suite')
+
+    class Meta(MTResource.Meta):
+        queryset = RunSuite.objects.all()
+        fields = ["suite", "run", "order", "id"]
+        filtering = {
+            "suite": ALL_WITH_RELATIONS,
+            "run": ALL_WITH_RELATIONS
+        }
+        authorization = RunSuiteAuthorization()
+
+    @property
+    def model(self):
+        return RunSuite
+
+
+    @property
+    def read_create_fields(self):
+        """run and suite are read-only"""
+        return ["suite", "run"]
+
+
+    def hydrate_suite(self, bundle):
+        """suite is read-only on PUT
+        suite.product must match run.productversion.product on CREATE
+        """
+
+        # CREATE
+        if bundle.request.META['REQUEST_METHOD'] == 'POST':
+            suite_id = self._id_from_uri(bundle.data['suite'])
+            suite = Suite.objects.get(id=suite_id)
+            run_id = self._id_from_uri(bundle.data['run'])
+            run = Run.objects.get(id=run_id)
+            if suite.product.id != run.productversion.product.id:
+                error_message = str(
+                    "suite's product must match run's product."
+                )
+                logger.error(
+                    "\n".join([error_message, "suite prod: %s, run prod: %s"]),
+                    suite.product.id, run.productversion.product.id)
+                raise ImmediateHttpResponse(
+                    response=http.HttpBadRequest(error_message))
+
+        return bundle
+
+
+
 class SuiteSelectionResource(BaseSelectionResource):
     """
     Specialty end-point for an AJAX call from the multi-select widget
@@ -307,7 +375,7 @@ class SuiteSelectionResource(BaseSelectionResource):
     class Meta:
         queryset = Suite.objects.all().select_related(
             "created_by",
-            ).annotate(order=Max("runsuites__order")).order_by("order")
+            ).annotate(case_count=Count("cases"))
 
         list_allowed_methods = ['get']
         fields = ["id", "name", "created_by"]
@@ -316,6 +384,7 @@ class SuiteSelectionResource(BaseSelectionResource):
             "runs": ALL_WITH_RELATIONS,
             "created_by": ALL_WITH_RELATIONS,
             }
+        ordering = ["runs"]
 
 
     def dehydrate(self, bundle):
@@ -323,8 +392,7 @@ class SuiteSelectionResource(BaseSelectionResource):
 
         suite = bundle.obj
         bundle.data["suite_id"] = unicode(suite.id)
-        bundle.data["case_count"] = suite.cases.count()
+        bundle.data["case_count"] = suite.case_count
         bundle.data["filter_cases"] = filter_url("manage_cases", suite)
-        bundle.data["order"] = suite.order
 
         return bundle

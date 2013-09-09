@@ -2710,9 +2710,6 @@
         "pk": 1,
         "model": "execution.runcaseversion",
         "fields": {
-            "suites": [
-                1
-            ],
             "caseversion": 5,
             "modified_by": null,
             "created_by": null,
@@ -2767,9 +2764,6 @@
         "pk": 2,
         "model": "execution.runcaseversion",
         "fields": {
-            "suites": [
-                1
-            ],
             "caseversion": 3,
             "modified_by": null,
             "created_by": null,
