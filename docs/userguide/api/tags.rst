@@ -20,7 +20,7 @@ Filtering
         GET /api/v1/tag/?format=json
 
 .. http:get:: /api/v1/tag/<id>
-.. http:post:: /api/v1/suite
+.. http:post:: /api/v1/tag
 
 Required Fields
 ^^^^^^^^^^^^^^^
@@ -33,8 +33,8 @@ Optional Fields
 
     :description: A string description for the Tag.
 
-.. http:delete:: /api/v1/suite/<id>
-.. http:put:: /api/v1/suite/<id>
+.. http:delete:: /api/v1/tag/<id>
+.. http:put:: /api/v1/tag/<id>
 
 .. note::
 
