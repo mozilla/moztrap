@@ -306,12 +306,16 @@ class Filter(object):
         self.key = name if key is None else key
         self.extra_filters = {} if extra_filters is None else extra_filters
         self._coerce_func = coerce
+        self.flagAND = None
 
 
     def filter(self, queryset, values):
         """Given queryset and selected values, return filtered queryset."""
         if values:
-            filters = {"{0}__in".format(self.lookup): values}
+            if self.flagAND:
+                filters = dict(("{0}__in".format(self.lookup), [v]) for v in values)
+            else:
+                filters = {"{0}__in".format(self.lookup): values}
             filters.update(self.extra_filters)
             return queryset.filter(
                 **filters).distinct()
@@ -362,7 +366,7 @@ class BaseChoicesFilter(Filter):
 
     def values(self, data):
         """Given data dict, return list of selected values."""
-        choice_values = set([k for k, v in self.get_choices()])
+        choice_values = set([k for k, v in self.get_choices()]) # set of primary key
         return [
             v for v in
             super(BaseChoicesFilter, self).values(data)
@@ -414,6 +418,11 @@ class ModelFilter(BaseChoicesFilter):
     def options(self, values):
         """Given list of selected values, return options to display."""
         return self._opts
+
+
+    def values(self, data):
+        self.flagAND = True if data.get('and-'+self.key) is not None else False
+        return super(ModelFilter, self).values(data)
 
 
     def get_choices(self):
