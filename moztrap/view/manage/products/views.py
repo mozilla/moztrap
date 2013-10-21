@@ -95,7 +95,8 @@ def product_edit(request, product_id):
         saved_product = form.save_if_valid()
         if saved_product is not None:
             messages.success(request, u"Saved '{0}'.".format(saved_product.name))
-            return redirect("manage_products")
+            pre_page = request.GET.get('from', "manage_products")
+            return redirect(pre_page)
     else:
         form = forms.EditProductForm(instance=product, user=request.user)
     return TemplateResponse(

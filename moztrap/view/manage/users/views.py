@@ -79,7 +79,8 @@ def user_edit(request, user_id):
         if form.is_valid():
             u = form.save()
             messages.success(request, u"Saved '{0}'.".format(u.username))
-            return redirect("manage_users")
+            pre_page = request.GET.get('from', "manage_users")
+            return redirect(pre_page)
     else:
         form = forms.EditUserForm(instance=user)
     return TemplateResponse(

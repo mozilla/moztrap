@@ -17,6 +17,8 @@
 
     <div class="form-actions">
       <button type="submit">save user</button>
+      {% url 'manage_users' as manage_url %}
+      {% include "manage/_cancel_button.html" with manage_url=manage_url %}
     </div>
   </form>
 

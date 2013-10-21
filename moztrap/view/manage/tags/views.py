@@ -106,7 +106,8 @@ def tag_edit(request, tag_id):
         saved_tag = form.save_if_valid()
         if saved_tag is not None:
             messages.success(request, u"Saved '{0}'.".format(saved_tag.name))
-            return redirect("manage_tags")
+            pre_page = request.GET.get('from', "manage_tags")
+            return redirect(pre_page)
     else:
         form = forms.EditTagForm(instance=tag, user=request.user)
     return TemplateResponse(

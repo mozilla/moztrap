@@ -35,6 +35,8 @@
 
     <div class="form-actions">
       <button type="submit">save run</button>
+      {% url 'manage_runs' as manage_url %}
+      {% include "manage/_cancel_button.html" with manage_url=manage_url %}
     </div>
   </form>
 </section>

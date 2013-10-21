@@ -103,7 +103,8 @@ def productversion_edit(request, productversion_id):
         pv = form.save_if_valid()
         if pv is not None:
             messages.success(request, u"Saved '{0}'.".format(pv.name))
-            return redirect("manage_productversions")
+            pre_page = request.GET.get('from', "manage_productversions")
+            return redirect(pre_page)
     else:
         form = forms.EditProductVersionForm(
             instance=productversion, user=request.user)
