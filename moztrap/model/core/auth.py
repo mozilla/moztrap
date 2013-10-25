@@ -38,6 +38,8 @@ class User(BaseUser):
         https://code.djangoproject.com/ticket/16128.
 
         """
+        if self.is_superuser == True and User.objects.filter(is_superuser=True).count() == 1:
+            return
         # @@@ Django ticket 16128, hopefully fixed in 1.4?
         # RegistrationProfile's FK is to Django's user model, not ours
         RegistrationProfile.objects.filter(user=self).delete()
@@ -52,6 +54,8 @@ class User(BaseUser):
 
     def deactivate(self, user=None):
         """Deactivate this user."""
+        if self.is_superuser == True and User.objects.filter(is_superuser=True).count() == 1:
+            return
         self.is_active = False
         self.save(force_update=True)
 
