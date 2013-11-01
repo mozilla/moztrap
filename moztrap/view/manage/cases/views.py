@@ -191,7 +191,8 @@ def caseversion_clone(request, caseversion_id):
             overrides={
                 "productversion": productversion,
                 "name": caseversion.name
-                }
+                },
+            user=request.user
             )
         messages.success(
             request,
