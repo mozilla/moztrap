@@ -91,13 +91,15 @@ class BulkParser(object):
 
     def instruction(self, lc, orig, data):
         """Expecting to encounter a step instruction."""
+        if lc.startswith("when ") or lc.startswith("and when "):
+            return self.expectedresult(lc, orig, data)
         if lc.startswith("then "):
             data[-1]["steps"][-1]["expected"] = [orig]
             return self.expectedresult
         data[-1]["steps"][-1]["instruction"].append(orig)
         return self.instruction
     instruction.keys = ["then "]
-    instruction.expect_end = False
+    instruction.expect_end = True
 
 
     def expectedresult(self, lc, orig, data):
