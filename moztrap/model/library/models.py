@@ -4,6 +4,7 @@ Models for test-case library (cases, suites).
 """
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Max
 
 from ..attachments.models import Attachment
 from ..mtmodel import MTModel, DraftStatusModel
@@ -191,6 +192,18 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         overrides.setdefault("name", u"Cloned: {0}".format(self.name))
         if "productversion" not in overrides and "case" not in overrides:
             overrides["case"] = self.case.clone(cascade=[])
+            suitecases = SuiteCase.objects.filter(case=self.case)
+            for suitecase in suitecases:
+                suite = suitecase.suite
+                order = SuiteCase.objects.filter(
+                    suite=suite,
+                    ).aggregate(Max("order"))["order__max"] or 0
+                SuiteCase.objects.create(
+                    case=overrides["case"],
+                    suite=suite,
+                    user=kwargs["user"],
+                    order=order + 1,
+                    )
         return super(CaseVersion, self).clone(*args, **kwargs)
 
 
