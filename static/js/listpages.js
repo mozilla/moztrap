@@ -81,6 +81,7 @@ var MT = (function (MT, $) {
             $.get(url, function (response) {
                 var newList = $(response.html);
                 replaceList.loadingOverlay('remove');
+                $('html, body').animate({scrollTop: replaceList.offset().top}, 0);
                 if (response.html) {
                     replaceList.replaceWith(newList);
                     newList.find('.details').html5accordion();
