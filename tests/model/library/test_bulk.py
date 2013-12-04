@@ -220,33 +220,6 @@ class ParseBulkTest(case.TestCase):
             )
 
 
-    def test_early_end_instruction(self):
-        """Unexpected end of input in the midst of a step causes error."""
-        self.assertEqual(
-            self.parser().parse(
-                textwrap.dedent("""
-                Test That a perfectly good name
-                And a good description
-                When insufficiently assisted
-                """)
-                ),
-            [
-                {
-                    "name": "Test That a perfectly good name",
-                    "description": "And a good description",
-                    "steps": [
-                        {
-                            "instruction": "When insufficiently assisted",
-                            },
-                        ],
-                    "error": (
-                        "Unexpected end of input, looking for 'Then '"
-                        ),
-                    },
-                ]
-            )
-
-
     def test_early_end_after_and(self):
         """Unexpected end of input after 'and' is ok."""
         self.assertEqual(
@@ -272,6 +245,88 @@ class ParseBulkTest(case.TestCase):
                     "error": (
                         "Unexpected end of input, looking for 'When '"
                         ),
+                    },
+                ]
+            )
+
+
+    def test_unmatched_when_then(self):
+        """Unexpected end of input in the midst of a step causes error."""
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test that this case is good
+                when ever you are
+                tesT that this case is better
+                when it's there
+                 Test that bulk parsing works
+                When I type a sonnet in the textarea
+                And I sing my sonnet aloud
+                And when I click the submit button
+                When I am done
+                Then I feel satisfied
+                wHen nothing happens
+
+                  tEst that another testcase works
+                 With any old description
+                  whEn I do this thing
+                """)
+                ),
+            [
+                {
+                    "name": "Test that this case is good",
+                    "description": "",
+                    "steps": [
+                        {
+                            "instruction": (
+                                "when ever you are"
+                                ),
+                            },
+                        ]
+                    },
+                {
+                    "name": "tesT that this case is better",
+                    "description": "",
+                    "steps": [
+                        {
+                            "instruction": (
+                                "when it's there"
+                                ),
+                            },
+                        ]
+                    },
+                {
+                    "name": "Test that bulk parsing works",
+                    "description": "",
+                    "steps": [
+                        {
+                            "instruction": (
+                                "When I type a sonnet in the textarea\n"
+                                "And I sing my sonnet aloud"
+                                ),
+                            },
+                        {
+                            "instruction": "And when I click the submit button",
+                            },
+                        {
+                            "instruction": "When I am done",
+                            "expected": "Then I feel satisfied",
+                            },
+                        {
+                            "instruction": "wHen nothing happens",
+                            },
+                        ]
+                    },
+                {
+                    "name": "tEst that another testcase works",
+                    "description": "With any old description",
+                    "steps": [
+                        {
+                            "instruction": (
+                                "whEn I do this thing"
+                                ),
+                            },
+                        ],
                     },
                 ]
             )
