@@ -209,6 +209,12 @@ var MT = (function (MT, $) {
         });
     };
 
+    MT.stickPagesizeSettings = function () {
+        $(document).on('click', ".perpage a", function() {
+            $.cookie('moztrap-pagesize', $(this).text(), {path: '/'});
+        });
+    }
+
     return MT;
 
 }(MT || {}, jQuery));
