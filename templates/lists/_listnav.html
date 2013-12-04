@@ -14,7 +14,7 @@
     {% for num in pager.display_pages %}
     <li>
       {% if num == pager.pagenumber %}
-      <span class="current page">{{ num }}</span>
+      <span class="current_page">{{ num }}</span>
       {% else %}
        {% if num %}
        <a href="{{ request|pagenumber_url:num }}" class="page">{{ num }}</a>
