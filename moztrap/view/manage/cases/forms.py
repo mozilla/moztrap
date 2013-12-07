@@ -108,8 +108,8 @@ class BaseCaseVersionForm(forms.Form):
 
     def save_attachments(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
-        delete_ids = set(self.data.getlist("remove-attachment"))
-        caseversion.attachments.filter(id__in=delete_ids).delete()
+        delete_names = set(self.data.getlist("remove-attachment"))
+        caseversion.attachments.filter(name__in=delete_names).delete()
 
         if self.files:  # if no files, it's a plain dict, has no getlist
             for uf in self.files.getlist("add_attachment"):
@@ -343,6 +343,7 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
                           ):
     """Form for editing a case version."""
     cc_version = forms.IntegerField(widget=forms.HiddenInput)
+    and_later_versions = forms.BooleanField(initial=False, required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -394,6 +395,19 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         self.save_tags(self.instance)
         self.save_attachments(self.instance)
         self.steps_formset.save(user=user)
+
+        if version_kwargs.pop("and_later_versions"):
+            productversion = self.instance.productversion
+            for cv in self.instance.case.versions.all():
+                if cv.productversion.order > productversion.order:
+                    cv.description = self.instance.description
+                    cv.status = self.instance.status
+                    cv.save(force_update=True, skip_sync_name=True,
+                        skip_set_latest=True)
+                    self.save_tags(cv)
+                    self.save_attachments(cv)
+                    steps_formset = StepFormSet(data=self.data, instance=cv)
+                    steps_formset.save(user=user)
 
         return self.instance
 
@@ -483,6 +497,10 @@ class BaseStepFormSet(BaseInlineFormSet):
 
         return super(BaseStepFormSet, self)._construct_form(i, **kwargs)
 
+
+    def delete_all_steps(self):
+        to_delete = set([o.pk for o in self.get_queryset()])
+        self.model._base_manager.filter(pk__in=to_delete).delete()
 
 
 

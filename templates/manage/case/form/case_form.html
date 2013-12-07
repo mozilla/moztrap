@@ -42,6 +42,8 @@
     <div class="form-actions">
       {% include "forms/_field.html" with field=form.status %}
       <button type="submit" name="save">save test case</button>
+      {% block sync_all_newer %}
+      {% endblock sync_all_newer %}
     </div>
   </form>
 

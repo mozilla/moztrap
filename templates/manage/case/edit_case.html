@@ -24,3 +24,7 @@
 {% include "forms/_field.html" with field=form.priority label="Priority" %}
 {{ form.cc_version }}
 {% endblock versioningform %}
+
+{% block sync_all_newer %}
+{% include "forms/_field.html" with field=form.and_later_versions %}
+{% endblock sync_all_newer %}
