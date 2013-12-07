@@ -53,6 +53,26 @@ Both top-level sections ("suites" and "cases") are optional.  However, if either
 section is included, each item requires a "name" field value.  Other than that,
 all fields are optional.
 
+Importing
+---------
+Importing test cases with this method involves the use of a ``management
+command``.  Before you import the cases, you must create your Product and
+:ref:`product version <product-versions>` in the user interface as mentioned
+above.  If the :ref:`suites <test-suites>` in your JSON file do not already
+exist, they will be created for you.
+
+Import command
+--------------
+Importing involves a ``management command`` on the command line.  For this
+example, we are importing test cases from a file called ``MyCases.json`` to 
+version ``1.0`` of product ``Foo``.  .
+
+1. cd into your MozTrap directory
+2. ``./manage.py import Foo 1.0 MyCases.json``
+
+That should be it.  Now go back to the web interface and your cases will be
+imported.
+
 
 CSV (future)
 ------------
