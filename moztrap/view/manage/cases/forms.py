@@ -279,6 +279,12 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
         idprefix = self.cleaned_data["idprefix"]
         priority = self.cleaned_data["priority"]
 
+        # ensure priority is an int, if not, store "None"
+        try:
+            int(priority)
+        except ValueError:
+            priority = None
+
         self.save_new_tags(product)
 
         productversions = [self.cleaned_data["productversion"]]
