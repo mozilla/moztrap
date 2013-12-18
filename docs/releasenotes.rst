@@ -1,8 +1,19 @@
 Release Notes
 =============
 
-Current - 1.4.9
+Current - 1.4.9.2
 ---------------
+
+Version 1.4.9.2
+^^^^^^^^^^^^^
+*release date - 12/18/13*
+
+* **security fixes**
+* **scroll to top when switching page** - When in the manage/results list.
+
+
+Previous
+--------
 
 Version 1.4.9
 ^^^^^^^^^^^^^
@@ -15,9 +26,6 @@ Version 1.4.9
   tests are run by travis in Github to help us with determining the safety of
   a Pull Request.
 
-
-Previous
---------
 
 Version 1.4.8
 ^^^^^^^^^^^^^
