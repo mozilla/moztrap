@@ -137,7 +137,7 @@ class BrowserIDTest(case.view.ViewTestCase):
 
     def test_fail_redirect(self):
         """Failed BrowserID verification redirects without losing 'next'."""
-        url = reverse("auth_login") + "?next=/foo"
+        url = reverse("auth_login") + "?next=/results/"
         form = self.app.get(url).forms["browserid-form"]
         res = form.submit(status=302)
 
