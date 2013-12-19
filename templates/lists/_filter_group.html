@@ -14,7 +14,7 @@
         {% if pinable %}
             <span class="pinswitch"></span>
         {% endif %}
-        <span class="content">{{ option.label }}</span>
+        <span class="content" title="{{ field.key }}: {{ option.label }}">{{ option.label }}</span>
       </span>
     </li>
     {% endfor %}
