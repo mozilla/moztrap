@@ -277,6 +277,13 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
 
         product = self.cleaned_data["product"]
         idprefix = self.cleaned_data["idprefix"]
+        priority = self.cleaned_data["priority"]
+
+        # ensure priority is an int, if not, store "None"
+        try:
+            int(priority)
+        except ValueError:
+            priority = None
 
         self.save_new_tags(product)
 
@@ -300,6 +307,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
                 product=product,
                 user=self.user,
                 idprefix=idprefix,
+                priority=priority,
                 )
 
             version_kwargs = case_data.copy()
