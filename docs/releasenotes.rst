@@ -1,8 +1,29 @@
 Release Notes
 =============
 
-Current - 1.4.9.2
----------------
+Current - 1.4.10
+----------------
+
+Version 1.4.10
+^^^^^^^^^^^^^
+*release date - 12/20/13*
+
+* **persist pagesize settings**
+* **support unmatched ``when`` and ``then`` syntax with bulk cases**
+* **hover text for field on filter chicklets**
+* **bug fixes**
+  * priority value not saved with bulk cases
+  * cloning test case keeps suite setting
+  * author unknown when add new version of existing test case
+  * saving from edit pages preserves filtered lists
+
+.. note::
+
+   A special thanks to sh1r0 for these fixes and enhancements!
+
+
+Previous
+--------
 
 Version 1.4.9.2
 ^^^^^^^^^^^^^
@@ -11,9 +32,6 @@ Version 1.4.9.2
 * **security fixes**
 * **scroll to top when switching page** - When in the manage/results list.
 
-
-Previous
---------
 
 Version 1.4.9
 ^^^^^^^^^^^^^
