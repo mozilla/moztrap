@@ -18,8 +18,11 @@ def from_request(request):
     Given a request, return tuple (pagesize, pagenumber).
 
     """
+    default_pagesize = positive_integer(
+        request.COOKIES.get("moztrap-pagesize", DEFAULT_PAGESIZE),
+        DEFAULT_PAGESIZE)
     pagesize = positive_integer(
-        request.GET.get("pagesize", DEFAULT_PAGESIZE), DEFAULT_PAGESIZE)
+        request.GET.get("pagesize", default_pagesize), default_pagesize)
     pagenumber = positive_integer(
         request.GET.get("pagenumber", 1), 1)
     return pagesize, pagenumber

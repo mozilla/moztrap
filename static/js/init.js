@@ -144,6 +144,7 @@ var MT = (function (MT, $) {
         );
         MT.itemStatusDropdown('.manage');
         MT.shareListUrlDropdown('.listpage');
+        MT.stickPagesizeSettings();
 
         // filtering.js
         MT.toggleAdvancedFiltering('.magicfilter');
