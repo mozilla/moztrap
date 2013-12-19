@@ -97,15 +97,15 @@ def suite_add(request):
 @permission_required("library.manage_suites")
 def suite_edit(request, suite_id):
     """Edit a suite."""
-    suite = get_object_or_404(
-        model.Suite, pk=suite_id)
+    suite = get_object_or_404(model.Suite, pk=suite_id)
     if request.method == "POST":
         form = forms.EditSuiteForm(
             request.POST, instance=suite, user=request.user)
         saved_suite = form.save_if_valid()
         if saved_suite is not None:
             messages.success(request, u"Saved '{0}'.".format(saved_suite.name))
-            return redirect("manage_suites")
+            pre_page = request.GET.get('from', "manage_suites")
+            return redirect(pre_page)
     else:
         form = forms.EditSuiteForm(
             instance=suite, user=request.user)

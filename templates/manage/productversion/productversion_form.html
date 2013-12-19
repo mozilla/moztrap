@@ -31,6 +31,8 @@
 
     <div class="form-actions">
       <button type="submit">save productversion</button>
+      {% url 'manage_productversions' as manage_url %}
+      {% include "manage/_cancel_button.html" with manage_url=manage_url %}
     </div>
   </form>
 </section>

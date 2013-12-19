@@ -104,7 +104,8 @@ def run_edit(request, run_id):
         saved_run = form.save_if_valid()
         if saved_run is not None:
             messages.success(request, u"Saved '{0}'.".format(saved_run.name))
-            return redirect("manage_runs")
+            pre_page = request.GET.get('from', "manage_runs")
+            return redirect(pre_page)
     else:
         form = forms.EditRunForm(
             instance=run, user=request.user)

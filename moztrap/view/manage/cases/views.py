@@ -155,7 +155,8 @@ def caseversion_edit(request, caseversion_id):
         cv = form.save_if_valid()
         if cv is not None:
             messages.success(request, u"Saved '{0}'.".format(cv.name))
-            return redirect("manage_cases")
+            pre_page = request.GET.get('from', "manage_cases")
+            return redirect(pre_page)
     else:
         form = forms.EditCaseVersionForm(
             instance=caseversion, user=request.user)

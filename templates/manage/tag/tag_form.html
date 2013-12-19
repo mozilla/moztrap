@@ -16,6 +16,8 @@
     </div>
     <div class="form-actions">
       <button type="submit">save tag</button>
+      {% url 'manage_tags' as manage_url %}
+      {% include "manage/_cancel_button.html" with manage_url=manage_url %}
     </div>
   </form>
 </section>

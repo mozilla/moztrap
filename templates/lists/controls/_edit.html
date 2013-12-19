@@ -1,1 +1,1 @@
-<a href="{{ edit_url }}" title="edit {{ edit_name }}" class="edit-link">edit</a>
+<a href="{{ edit_url }}?from={{ request.get_full_path|urlencode }}" title="edit {{ edit_name }}" class="edit-link">edit</a>
