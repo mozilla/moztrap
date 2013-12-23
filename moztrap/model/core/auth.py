@@ -38,7 +38,8 @@ class User(BaseUser):
         https://code.djangoproject.com/ticket/16128.
 
         """
-        if self.is_superuser == True and User.objects.filter(is_superuser=True).count() == 1:
+        if (self.is_superuser == True and self.is_active == True and
+            User.objects.filter(is_superuser=True).filter(is_active=True).count() == 1):
             return
         # @@@ Django ticket 16128, hopefully fixed in 1.4?
         # RegistrationProfile's FK is to Django's user model, not ours
@@ -54,10 +55,21 @@ class User(BaseUser):
 
     def deactivate(self, user=None):
         """Deactivate this user."""
-        if self.is_superuser == True and User.objects.filter(is_superuser=True).count() == 1:
-            return
         self.is_active = False
         self.save(force_update=True)
+
+
+    def save(self, force_insert=False, force_update=False, using=None):
+        if (self.is_superuser == True and self.is_active == False and
+            User.objects.filter(is_superuser=True).filter(is_active=True).count() == 1):
+            from django.shortcuts import get_object_or_404
+            user = get_object_or_404(User, pk=self.id)
+            # check whether the user is exactly the last superuser or not
+            if user.is_active == True:
+                self.is_active = True
+
+        super(User, self).save(force_insert=force_insert,
+            force_update=force_update, using=using)
 
 
     @property
