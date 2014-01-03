@@ -30,6 +30,15 @@ class UserTest(case.DBTestCase):
             self.refresh(u)
 
 
+    def test_cannot_delete_last_superuser(self):
+        """Cannot delete the last active superuser"""
+        su = self.F.UserFactory.create(is_active=True, is_superuser=True)
+
+        su.delete()
+
+        self.assertTrue(self.refresh(su).is_active)
+
+
     def test_activate(self):
         """Can activate a user."""
         u = self.F.UserFactory.create(is_active=False)
@@ -46,6 +55,22 @@ class UserTest(case.DBTestCase):
         u.deactivate(user=u)
 
         self.assertFalse(self.refresh(u).is_active)
+
+
+    def test_cannot_deactivate_last_superuser(self):
+        """Cannot deactivate the last active superuser."""
+        su1 = self.F.UserFactory.create(is_active=True, is_superuser=True)
+        su2 = self.F.UserFactory.create(is_active=False, is_superuser=True)
+
+        su2.is_active = False;
+        su2.save();
+
+        self.assertFalse(self.refresh(su2).is_active)
+
+        su1.is_active = False;
+        su1.save();
+
+        self.assertTrue(self.refresh(su1).is_active)
 
 
     def test_roles(self):

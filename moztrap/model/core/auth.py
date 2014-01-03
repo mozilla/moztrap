@@ -60,12 +60,12 @@ class User(BaseUser):
 
 
     def save(self, force_insert=False, force_update=False, using=None):
-        if (self.is_superuser == True and self.is_active == False and
+        if (not force_insert and self.is_superuser and not self.is_active and
             User.objects.filter(is_superuser=True).filter(is_active=True).count() == 1):
             from django.shortcuts import get_object_or_404
             user = get_object_or_404(User, pk=self.id)
-            # check whether the user is exactly the last superuser or not
-            if user.is_active == True:
+            # check whether the user is exactly the last `active` superuser or not
+            if user.is_active:
                 self.is_active = True
 
         super(User, self).save(force_insert=force_insert,
