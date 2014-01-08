@@ -330,3 +330,60 @@ class ParseBulkTest(case.TestCase):
                     },
                 ]
             )
+
+
+    def test_overlong_name_in_first_case(self):
+        """Overlong name causes error."""
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test That a super long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long name
+                When the name is overlong
+                Then causes error
+                """)
+                ),
+            [
+                {
+                    "error": (
+                        "Title should have at most 200 chracters, '"
+                        "Test That a super long long long long long long lo"
+                        "...'"
+                        ),
+                    },
+                ]
+            )
+
+
+    def test_overlong_name_in_another_case(self):
+        """Overlong name causes error."""
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test that a perfectly good name
+                when ever you are
+                Test That a super long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long name
+                When the name is overlong
+                Then causes error
+                """)
+                ),
+            [
+                {
+                    "name": "Test that a perfectly good name",
+                    "description": "",
+                    "steps": [
+                        {
+                            "instruction": (
+                                "when ever you are"
+                                ),
+                            },
+                        ]
+                    },
+                {
+                    "error": (
+                        "Title should have at most 200 chracters, '"
+                        "Test That a super long long long long long long lo"
+                        "...'"
+                        ),
+                    },
+                ]
+            )

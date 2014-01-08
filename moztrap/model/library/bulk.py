@@ -71,6 +71,7 @@ class BulkParser(object):
         """The start state."""
         if lc.startswith("test that "):
             if len(orig) > 200:
+                data.append({})
                 raise ParsingError("Title should have at most 200 chracters, '%s...'" % orig[0:50])
             data.append({"name": orig})
             return self.description
@@ -111,6 +112,7 @@ class BulkParser(object):
             return self.after_and
         if lc.startswith("test that "):
             if len(orig) > 200:
+                data.append({})
                 raise ParsingError("Title should have at most 200 chracters, '%s...'" % orig[0:50])
             data.append({"name": orig})
             return self.description
