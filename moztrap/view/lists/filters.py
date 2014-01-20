@@ -225,7 +225,7 @@ class FilterSet(object):
 
 
 
-FilterOption = namedtuple("FilterOption", ["value", "label", "selected"])
+FilterOption = namedtuple("FilterOption", ["value", "label", "selected", "negated"])
 
 
 
@@ -238,17 +238,21 @@ class BoundFilter(object):
 
         # list of valid selected option values
         self.values = self._filter.values(self.data)
+        self.not_values = self._filter.not_values(self.data)
 
         value_set = set(self.values)
+        not_value_set = set(self.not_values)
         self.options = [
             FilterOption(
-                value=val, label=label, selected=(val in value_set))
-            for val, label in self._filter.options(self.values)]
+                value=val, label=label,
+                selected=(val in (value_set|not_value_set)),
+                negated=(val in not_value_set))
+            for val, label in self._filter.options(self.values+self.not_values)]
 
 
     def filter(self, queryset):
         """Return filtered queryset."""
-        return self._filter.filter(queryset, self.values)
+        return self._filter.filter(queryset, self.values, self.not_values)
 
 
     @property
@@ -308,13 +312,17 @@ class Filter(object):
         self._coerce_func = coerce
 
 
-    def filter(self, queryset, values):
+    def filter(self, queryset, values, not_values):
         """Given queryset and selected values, return filtered queryset."""
         if values:
             filters = {"{0}__in".format(self.lookup): values}
             filters.update(self.extra_filters)
-            return queryset.filter(
-                **filters).distinct()
+            queryset =  queryset.filter(**filters).distinct()
+
+        if not_values:
+            filters = {"{0}__in".format(self.lookup): not_values}
+            queryset =  queryset.exclude(**filters).distinct()
+
         return queryset
 
 
@@ -326,6 +334,10 @@ class Filter(object):
     def values(self, data):
         """Given data dict, return list of selected values."""
         return [v for v in map(self.coerce, data.get(self.key, []))]
+
+
+    def not_values(self, data):
+        return [v for v in map(self.coerce, data.get(self.key+"__ne", []))]
 
 
     def coerce(self, value):
@@ -366,6 +378,15 @@ class BaseChoicesFilter(Filter):
         return [
             v for v in
             super(BaseChoicesFilter, self).values(data)
+            if v is not None and v in choice_values
+            ]
+
+
+    def not_values(self, data):
+        choice_values = set([k for k, v in self.get_choices()])
+        return [
+            v for v in
+            super(BaseChoicesFilter, self).not_values(data)
             if v is not None and v in choice_values
             ]
 
@@ -439,13 +460,17 @@ class KeywordFilter(KeywordExactFilter):
     """Values are ANDed in a 'contains' search of the field"""
 
 
-    def filter(self, queryset, values):
+    def filter(self, queryset, values, not_values):
         """Values are ANDed in a 'contains' search of the field text."""
         for value in values:
             queryset = queryset.filter(
                 **{"{0}__icontains".format(self.lookup): value})
 
-        if values:
+        for not_value in not_values:
+            queryset = queryset.exclude(
+                **{"{0}__icontains".format(self.lookup): not_value})
+
+        if values or not_values:
             return queryset.distinct()
 
         return queryset
