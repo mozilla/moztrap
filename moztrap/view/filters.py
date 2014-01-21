@@ -39,7 +39,8 @@ class ProductVersionFilterSet(filters.FilterSet):
             "environment element",
             lookup="environments__elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")),
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True),
         ]
 
 
@@ -61,7 +62,8 @@ class RunFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "suite",
             lookup="suites",
-            queryset=model.Suite.objects.all().order_by("name")),
+            queryset=model.Suite.objects.all().order_by("name"),
+            switchable=True),
         filters.KeywordExactFilter(
             "case id", lookup="suites__cases__id", key="case", coerce=int),
         filters.ModelFilter(
@@ -73,7 +75,8 @@ class RunFilterSet(filters.FilterSet):
             "environment element",
             lookup="environments__elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")),
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True),
         filters.ChoicesFilter(
             "is Series",
             lookup="is_series",
@@ -119,6 +122,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "tag",
             lookup="caseversion__tags",
             queryset=model.Tag.objects.all().order_by("name"),
+            switchable=True
             ),
         filters.ModelFilter(
             "product",
@@ -149,11 +153,13 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             "environment element",
             lookup="environments__elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")),
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True),
         filters.ModelFilter(
             "suite",
             lookup="caseversion__case__suites",
-            queryset=model.Suite.objects.all().order_by("name")),
+            queryset=model.Suite.objects.all().order_by("name"),
+            switchable=True),
         filters.ModelFilter(
             "tester",
             lookup="results__tester",
@@ -179,7 +185,8 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "tag",
             lookup="caseversion__tags",
-            queryset=model.Tag.objects.all().order_by("name")),
+            queryset=model.Tag.objects.all().order_by("name"),
+            switchable=True),
         filters.KeywordFilter(
             "instruction", lookup="caseversion__steps__instruction"),
         filters.KeywordFilter(
@@ -193,7 +200,8 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "suite",
             lookup="caseversion__case__suites",
-            queryset=model.Suite.objects.all().order_by("name")),
+            queryset=model.Suite.objects.all().order_by("name"),
+            switchable=True),
         ]
 
 
@@ -211,7 +219,8 @@ class ResultFilterSet(filters.FilterSet):
             "environment element",
             lookup="environment__elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")),
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True),
         ]
 
 
@@ -234,7 +243,8 @@ class SuiteFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "run",
             lookup="runs",
-            queryset=model.Run.objects.all().order_by("name")
+            queryset=model.Run.objects.all().order_by("name"),
+            switchable=True
             ),
         filters.KeywordFilter("name"),
         filters.KeywordFilter("description"),
@@ -269,6 +279,7 @@ class CaseVersionFilterSet(filters.FilterSet):
             "tag",
             lookup="tags",
             queryset=model.Tag.objects.all().order_by("name"),
+            switchable=True
             ),
         filters.ModelFilter(
             "product",
@@ -293,11 +304,13 @@ class CaseVersionFilterSet(filters.FilterSet):
             "environment element",
             lookup="environments__elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")),
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True),
         filters.ModelFilter(
             "suite",
             lookup="case__suites",
-            queryset=model.Suite.objects.all().order_by("name")),
+            queryset=model.Suite.objects.all().order_by("name"),
+            switchable=True),
         ]
 
 
@@ -352,6 +365,7 @@ class EnvironmentFilterSet(filters.FilterSet):
             "environment element",
             lookup="elements",
             key="envelement",
-            queryset=model.Element.objects.all().order_by("name")
+            queryset=model.Element.objects.all().order_by("name"),
+            switchable=True
             ),
         ]
