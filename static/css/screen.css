@@ -3157,6 +3157,10 @@ body > div {
   background: rgba(237, 237, 237, 0.5);
 }
 
+.category-title .and_or_switch {
+  float:right;
+}
+
 .toggle {
   display: inline;
   float: left;
