@@ -3156,9 +3156,50 @@ body > div {
   padding: 0 0.25em;
   background: rgba(237, 237, 237, 0.5);
 }
-
-.category-title .and_or_switch {
+.category-title .andorswitch {
   float:right;
+  position: relative; width: 42px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.category-title .andorswitch-checkbox {
+  display: none;
+}
+.category-title .andorswitch-label {
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 20px;
+}
+.category-title .andorswitch-inner {
+  width: 200%; margin-left: -100%;
+  -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+  -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.category-title .andorswitch-inner:before, .category-title .andorswitch-inner:after {
+  float: left; width: 50%; height: 12px; padding: 0; line-height: 12px;
+  font-size: 10px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.category-title .andorswitch-inner:before {
+  padding-left: 5px;
+  background-color: #2FCCFF; color: #FFFFFF;
+}
+.category-title .andorswitch-inner:after {
+  padding-right: 5px;
+  background-color: #EEEEEE; color: #999999;
+  text-align: right;
+}
+.category-title .andorswitch-switch {
+  width: 5px; margin: 3.5px;
+  background: #FFFFFF;
+  border: 2px solid #999999; border-radius: 20px;
+  position: absolute; top: 0; bottom: 0; right: 26px;
+  -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+  -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s;
+}
+.category-title .andorswitch-checkbox:checked + .andorswitch-label .andorswitch-inner {
+  margin-left: 0;
+}
+.category-title .andorswitch-checkbox:checked + .andorswitch-label .andorswitch-switch {
+  right: 0px;
 }
 
 .toggle {

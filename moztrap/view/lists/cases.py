@@ -11,6 +11,7 @@ class PrefixIDFilter(KeywordFilter):
 
     if more than one of these filters is used, they are ORed with each other.
     """
+    is_default_and = False
 
 
     def __init__(self, name, delimiter="-"):

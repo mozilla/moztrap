@@ -271,6 +271,12 @@ class BoundFilter(object):
 
 
     @property
+    def is_default_and(self):
+        """Pass-through to Filter is_default_and."""
+        return self._filter.is_default_and
+
+
+    @property
     def name(self):
         """Pass-through to Filter name."""
         return self._filter.name
@@ -296,6 +302,8 @@ class Filter(object):
     """Encapsulates the filtering possibilities for a single field."""
     # A filter-type class; for use in CSS styling of the filter input
     cls = ""
+    # Default filtering logic; True for "AND", False for "OR"
+    is_default_and = False
     # switch OR(AND) to AND(OR) filtering
     toggle = False
 
@@ -348,7 +356,8 @@ class Filter(object):
 
     def values(self, data):
         """Given data dict, return list of selected values."""
-        self.toggle = True if data.get(self.key+'-switch', None) else False
+        if self.switchable:
+            self.toggle = True if data.get(self.key+'-switch', None) else False
         return [v for v in map(self.coerce, data.get(self.key, []))]
 
 
@@ -469,6 +478,7 @@ class KeywordExactFilter(Filter):
 
 class KeywordFilter(KeywordExactFilter):
     """Values are ANDed in a 'contains' search of the field"""
+    is_default_and = True
 
 
     def filter(self, queryset, values):
