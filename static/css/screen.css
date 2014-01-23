@@ -3157,7 +3157,7 @@ body > div {
   background: rgba(237, 237, 237, 0.5);
 }
 .category-title .andorswitch {
-  float:right;
+  float: right;
   position: relative; width: 42px;
   -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
@@ -3186,6 +3186,12 @@ body > div {
   padding-right: 5px;
   background-color: #EEEEEE; color: #999999;
   text-align: right;
+}
+.category-title .andorswitch-inner.and:before, .category-title .andorswitch-inner.or:after {
+  content: "OR";
+}
+.category-title .andorswitch-inner.or:before, .category-title .andorswitch-inner.and:after {
+  content: "AND";
 }
 .category-title .andorswitch-switch {
   width: 5px; margin: 3.5px;
