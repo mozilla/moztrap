@@ -175,7 +175,7 @@ var MT = (function (MT, $) {
 
             // find the filter-item that this pinned filter applies to and
             // add the "pinned" class to the "onoff" span
-            var inputs = "input[value='" + values.join("',[value='") +  "']";
+            var inputs = "input[value='" + values.join("'],input[value='") +  "']";
             var terst = $(".filter-group[data-name='" + key + "'] " + inputs);
             terst.parent().find('.onoff').addClass('pinned');
         }
