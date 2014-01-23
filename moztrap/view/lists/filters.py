@@ -7,6 +7,7 @@ from collections import namedtuple
 from functools import wraps
 import json
 import urlparse
+import operator
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
@@ -485,12 +486,10 @@ class KeywordFilter(KeywordExactFilter):
         """Values are ANDed in a 'contains' search of the field text."""
         if values:
             filters = Q()
+            op_func = operator.__or__ if self.toggle else operator.__and__
 
             for value in values:
-                if self.toggle:
-                    filters = filters | Q(**{"{0}__icontains".format(self.lookup): value})
-                else:
-                    filters = filters & Q(**{"{0}__icontains".format(self.lookup): value})
+                filters = op_func(filters, Q(**{"{0}__icontains".format(self.lookup): value}))
 
             return queryset.filter(filters).distinct()
 
