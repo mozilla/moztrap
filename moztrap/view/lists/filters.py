@@ -7,9 +7,11 @@ from collections import namedtuple
 from functools import wraps
 import json
 import urlparse
+import operator
 
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
+from django.db.models import Q
 
 
 
@@ -258,6 +260,24 @@ class BoundFilter(object):
 
 
     @property
+    def switchable(self):
+        """Pass-through to Filter switchable."""
+        return self._filter.switchable
+
+
+    @property
+    def toggle(self):
+        """Pass-through to Filter toggle."""
+        return self._filter.toggle
+
+
+    @property
+    def is_default_and(self):
+        """Pass-through to Filter is_default_and."""
+        return self._filter.is_default_and
+
+
+    @property
     def name(self):
         """Pass-through to Filter name."""
         return self._filter.name
@@ -283,10 +303,14 @@ class Filter(object):
     """Encapsulates the filtering possibilities for a single field."""
     # A filter-type class; for use in CSS styling of the filter input
     cls = ""
+    # Default filtering logic; True for "AND", False for "OR"
+    is_default_and = False
+    # switch OR(AND) to AND(OR) filtering
+    toggle = False
 
 
     def __init__(self, name, lookup=None, key=None, coerce=None,
-        extra_filters=None):
+        extra_filters=None, switchable=False):
         """
         Instantiate the Filter.
 
@@ -306,15 +330,23 @@ class Filter(object):
         self.key = name if key is None else key
         self.extra_filters = {} if extra_filters is None else extra_filters
         self._coerce_func = coerce
+        self.switchable = switchable
 
 
     def filter(self, queryset, values):
         """Given queryset and selected values, return filtered queryset."""
         if values:
-            filters = {"{0}__in".format(self.lookup): values}
-            filters.update(self.extra_filters)
-            return queryset.filter(
-                **filters).distinct()
+            if self.toggle:
+                for value in values:
+                    queryset = queryset.filter(**{"{0}__in".format(self.lookup): [value]})
+                queryset = queryset.filter(**self.extra_filters)
+            else:
+                filters = {"{0}__in".format(self.lookup): values}
+                filters.update(self.extra_filters)
+                queryset = queryset.filter(**filters)
+
+            return queryset.distinct()
+
         return queryset
 
 
@@ -325,6 +357,8 @@ class Filter(object):
 
     def values(self, data):
         """Given data dict, return list of selected values."""
+        if self.switchable:
+            self.toggle = True if data.get(self.key+'-switch', None) else False
         return [v for v in map(self.coerce, data.get(self.key, []))]
 
 
@@ -394,6 +428,8 @@ class ModelFilter(BaseChoicesFilter):
     alternative ``coerce`` function should be provided at instantiation.
 
     """
+
+
     def __init__(self, *args, **kwargs):
         """
         Looks for ``queryset`` and ``label`` keyword arguments.
@@ -429,6 +465,12 @@ class KeywordExactFilter(Filter):
     cls = "keyword"
 
 
+    def __init__(self, *args, **kwargs):
+        if kwargs.get("switchable") is None:
+            kwargs.setdefault("switchable", True)
+        super(KeywordExactFilter, self).__init__(*args, **kwargs)
+
+
     def options(self, values):
         """Options displayed are always the current filter values."""
         return [(v, v) for v in values]
@@ -437,15 +479,18 @@ class KeywordExactFilter(Filter):
 
 class KeywordFilter(KeywordExactFilter):
     """Values are ANDed in a 'contains' search of the field"""
+    is_default_and = True
 
 
     def filter(self, queryset, values):
         """Values are ANDed in a 'contains' search of the field text."""
-        for value in values:
-            queryset = queryset.filter(
-                **{"{0}__icontains".format(self.lookup): value})
-
         if values:
-            return queryset.distinct()
+            filters = Q()
+            op_func = operator.__or__ if self.toggle else operator.__and__
+
+            for value in values:
+                filters = op_func(filters, Q(**{"{0}__icontains".format(self.lookup): value}))
+
+            return queryset.filter(filters).distinct()
 
         return queryset

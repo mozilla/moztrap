@@ -1,5 +1,16 @@
 <section class="filter-group {{ field.cls }}" data-name="{{ field.key }}">
-  <h5 class="category-title">{{ field.name|lower }}</h5>
+  <h5 class="category-title">
+    {{ field.name|lower }}
+    {% if field.switchable %}
+    <div class="andorswitch">
+      <input type="checkbox" name="{{ prefix }}-{{ field.key }}-switch" class="andorswitch-checkbox" id="id-{{ prefix }}-{{ field.key }}-switch"{% if field.toggle %} checked{% endif %}>
+      <label class="andorswitch-label" for="id-{{ prefix }}-{{ field.key }}-switch">
+        <div class="andorswitch-inner {% if field.is_default_and %}and{% else%}or{% endif %}"></div>
+        <div class="andorswitch-switch"></div>
+      </label>
+    </div>
+    {% endif %}
+  </h5>
   <ul class="filter-items {% if field|length > 6 %}long{% endif %}">
     {% if advanced and field.cls == "keyword" %}
       <li class="addterm">

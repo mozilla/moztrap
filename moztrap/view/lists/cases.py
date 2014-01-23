@@ -11,12 +11,14 @@ class PrefixIDFilter(KeywordFilter):
 
     if more than one of these filters is used, they are ORed with each other.
     """
+    is_default_and = False
 
 
     def __init__(self, name, delimiter="-"):
         self.prefixlookup = "case__idprefix"
         self.delimiter = delimiter
-        super(PrefixIDFilter, self).__init__(name, lookup="case__id")
+        super(PrefixIDFilter, self).__init__(name, lookup="case__id",
+            switchable=False)
 
 
     def filter(self, queryset, values):
