@@ -126,6 +126,11 @@ var MT = (function (MT, $) {
             pinFilterValue(filterKey, filterValue, false);
 
         });
+
+        $('.filter-group').on('click', '.andorswitch-checkbox', function (e) {
+            var cookieVal = ($(this)[0].checked) ? JSON.stringify(["on"]) : null;
+            $.cookie('moztrap-' + $(this).attr('name'), cookieVal, {path: '/'});
+        });
     };
 
     MT.getPinnedFilters = function () {
