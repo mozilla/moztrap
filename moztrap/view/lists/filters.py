@@ -339,11 +339,11 @@ class Filter(object):
             if self.toggle:
                 for value in values:
                     queryset = queryset.filter(**{"{0}__in".format(self.lookup): [value]})
-            else:
-                queryset = queryset.filter(**{"{0}__in".format(self.lookup): values})
-
-            if self.extra_filters:
                 queryset = queryset.filter(**self.extra_filters)
+            else:
+                filters = {"{0}__in".format(self.lookup): values}
+                filters.update(self.extra_filters)
+                queryset = queryset.filter(**filters)
 
             return queryset.distinct()
 

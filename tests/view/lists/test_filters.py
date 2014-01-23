@@ -482,6 +482,23 @@ class FilterTest(FiltersTestCase):
         self.assertEqual(qs2, qs.filter.return_value.distinct.return_value)
 
 
+    def test_filter_toggle(self):
+        "Switches from ORed to ANDed filtering"
+        f = self.filters.Filter("name", lookup="lookup", switchable=True)
+
+        f.values({"name-switch": ["on"]})
+        self.assertTrue(f.toggle)
+
+        qs = Mock()
+        qs2 = f.filter(qs, ["1", "2"])
+
+        qs.filter.assert_called_with(lookup__in=["1"])
+        qs.filter.return_value.filter.assert_called_with(lookup__in=["2"])
+        qs.filter.return_value.filter.return_value.filter.assert_called_with()
+        qs.filter.return_value.filter.return_value.filter.return_value.distinct.assert_called_with()
+        self.assertEqual(qs2, qs.filter.return_value.filter.return_value.filter.return_value.distinct.return_value)
+
+
     def test_options(self):
         """Base Filter has no options."""
         f = self.filters.Filter("name")
@@ -609,12 +626,9 @@ class KeywordFilterTest(FiltersTestCase):
         qs = Mock()
         qs2 = f.filter(qs, ["one", "two"])
 
-        qs.filter.assert_called_with(name__icontains="one")
-        qs.filter.return_value.filter.assert_called_with(name__icontains="two")
-        qs.filter.return_value.filter.return_value.distinct.assert_called_with()
         self.assertIs(
             qs2,
-            qs.filter.return_value.filter.return_value.distinct.return_value)
+            qs.filter.return_value.distinct.return_value)
 
 
     def test_filter_doesnt_touch_queryset_if_no_values(self):
