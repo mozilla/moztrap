@@ -1,8 +1,22 @@
 Release Notes
 =============
 
-Current - 1.4.10
+Current - 1.4.11
 ----------------
+
+Version 1.4.11
+^^^^^^^^^^^^^
+*release date - 1/29/14*
+
+* **update copyright**
+* **new and/or filtering switch** - Some fields that can have more than one
+  value (like case name, or suite) could be filtered with an **or** or an
+  **and** depending on what you want.  Now there is a switch in advanced
+  filtering to enable this.
+
+
+Previous
+--------
 
 Version 1.4.10
 ^^^^^^^^^^^^^
@@ -20,10 +34,6 @@ Version 1.4.10
 .. note::
 
    A special thanks to sh1r0 for these fixes and enhancements!
-
-
-Previous
---------
 
 Version 1.4.9.2
 ^^^^^^^^^^^^^
