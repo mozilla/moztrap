@@ -8,12 +8,14 @@ Usage: %s [install_type]
 install_type, if present should be one of "all" or "pure" (defaults to "all").
 
 """
+import os
 import os.path
 import sys
 
 import pip
 
 def main(base_dir, argv):
+    os.environ["ARCHFLAGS"] = "-Wno-error=unused-command-line-argument-hard-error-in-future"
     reqs_dir = os.path.join(base_dir, "requirements")
     dist_dir = os.path.join(reqs_dir, "dist")
 
@@ -40,3 +42,5 @@ def main(base_dir, argv):
 if __name__ == "__main__":
     script = os.path.realpath(os.path.abspath(__file__))
     sys.exit(main(os.path.dirname(os.path.dirname(script)), sys.argv))
+
+
