@@ -44,7 +44,7 @@ python-memcached==1.47
 
 # in order to be able to build the documentation
 Jinja2==2.7.2
-Pygments==1.5
+Pygments==1.6
 docutils==0.11
 Sphinx==1.2.2
 sphinxcontrib-httpdomain==1.2.1
