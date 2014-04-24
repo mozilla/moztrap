@@ -2,7 +2,11 @@
 Template tags and filters for the finder.
 
 """
+
+import json
+
 from django.template import Library
+from django import template
 
 from .. import filters
 

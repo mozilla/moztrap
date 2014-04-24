@@ -71,7 +71,6 @@ var MT = (function (MT, $) {
     // Hijack Manage/Results list sorting and pagination links to use Ajax
     MT.listActionAjax = function (container, trigger) {
         var context = $(container);
-
         context.on('click', trigger, function (e) {
             var url = $(this).attr('href'),
                 replaceList = $(this).closest('.action-ajax-replace');

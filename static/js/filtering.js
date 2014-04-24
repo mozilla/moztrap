@@ -6,6 +6,33 @@ var MT = (function (MT, $) {
 
     'use strict';
 
+    // Converts the dictionary of fields into actual DOM elements
+    MT.renderFilterFields = function (context, data) {
+        var destination = $('<div>');
+        $.each(data.fields, function(i, field) {
+            var options = [];
+            field.options.forEach(function(opt, j) {
+                options.push({
+                    _counter: j + 1,
+                    label: opt[0],
+                    selected: opt[1],
+                    value: opt[2]
+                });
+            });
+            var field_group = ich.filter_group({
+                'field': field,
+                'pinable': data.options.pinable || false,
+                'prefix': data.options.prefix || '',
+                '_field_name_lower': field.name.toLowerCase(),
+                '_field_length_long': field.options.length > 6,
+                '_field_advanced_keyword': data.options.advanced && field.cls === 'keyword',
+                '_options': options,
+            });
+            destination.append(field_group);
+        });
+        $('form', context).prepend(destination);
+    };
+
     // Shows/hides the advanced filtering
     MT.toggleAdvancedFiltering = function (context) {
         var advanced = $(context).find('.visual'),

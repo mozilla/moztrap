@@ -1,4 +1,4 @@
-{% load icanhaz pagination %}
+{% load icanhaz pagination filterset %}
 
 <nav id="{% block filterid %}filter{% endblock %}" class="magicfilter">
   <h3 class="navhead">List Filtering</h3>
@@ -28,9 +28,11 @@
         {% endif %}
 
         {% icanhaz "autocomplete_input" %}
-        {% for field in filters %}
-        {% include "lists/_filter_group.html" with advanced=1 prefix="filter" pinable=1 %}
-        {% endfor %}
+
+        <script>
+        var FILTERS = {% filterset_to_json filters with advanced=1 prefix="filter" pinable=1 %}
+        </script>
+        {% icanhaz "filter_group" %}
 
         <div class="form-actions">
           List no longer reflects filters:

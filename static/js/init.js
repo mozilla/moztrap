@@ -1,6 +1,6 @@
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery */
+/*global    ich, jQuery, FILTERS */
 
 var MT = (function (MT, $) {
 
@@ -15,6 +15,14 @@ var MT = (function (MT, $) {
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('.multiselect').multiselect();
+
+        // filtering.js
+        // this creates all the filter drop-downs before any
+        // customAutocomplete is set up.
+        if (typeof FILTERS !== 'undefined') {
+            MT.renderFilterFields('#filter', FILTERS);
+        }
+
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
