@@ -1,0 +1,16 @@
+<a id="cancel" href="#">cancel</a>
+<script src="{{ STATIC_URL }}js/jquery-1.7.2.js"></script>
+<script type="text/javascript">
+	$('a#cancel').click(function(){
+      	var from = getUrlVars()['from'];
+		window.location.href= (from) ? decodeURIComponent(from) : "{{ manage_url }}";
+		return false;
+   	});
+	function getUrlVars() {
+	  var vars = {};
+	  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	      vars[key] = value;
+	  	});
+	  return vars;
+	}
+</script>

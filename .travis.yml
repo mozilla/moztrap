@@ -1,0 +1,16 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+services: mysql
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE="tests.settings"
+before_script:
+   - mysql -e 'create database moztrap;'
+install:
+  - bin/install-reqs
+script:
+  - ./manage.py test
+notifications:
+  email: false
