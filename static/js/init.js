@@ -139,7 +139,7 @@ var MT = (function (MT, $) {
         MT.loadListItemDetails();
         MT.manageActionsAjax('.manage, .manage-form');
         MT.listActionAjax(
-            '.manage, .results, .run',
+            '.manage, .viewresults, .run',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
         MT.itemStatusDropdown('.manage');
@@ -150,7 +150,7 @@ var MT = (function (MT, $) {
         MT.toggleAdvancedFiltering('.magicfilter');
         MT.preventCaching('#filter');
         MT.directFilterLinks();
-        MT.filterFormAjax('.manage, .results, .run');
+        MT.filterFormAjax('.manage, .viewresults, .run');
         MT.clientSideFilter({container: '#envnarrowing'});
         MT.pinFilter();
         MT.updatePageForExistingPinnedFilters();
