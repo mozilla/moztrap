@@ -227,7 +227,7 @@ class FilterSet(object):
 
 
 
-FilterOption = namedtuple("FilterOption", ["value", "label", "selected"])
+FilterOption = namedtuple("FilterOption", ["value", "label", "selected", "negated"])
 
 
 
@@ -238,19 +238,26 @@ class BoundFilter(object):
         self._filter = flt
         self.data = data
 
-        # list of valid selected option values
+        # determine and-or toggle state
+        self._filter.switch_toggle(self.data)
+
+        # list of valid selected option values and not_values
         self.values = self._filter.values(self.data)
+        self.not_values = self._filter.not_values(self.data)
 
         value_set = set(self.values)
+        not_value_set = set(self.not_values)
         self.options = [
             FilterOption(
-                value=val, label=label, selected=(val in value_set))
-            for val, label in self._filter.options(self.values)]
+                value=val, label=label,
+                selected=(val in (value_set|not_value_set)),
+                negated=(val in not_value_set))
+            for val, label in self._filter.options(self.values+self.not_values)]
 
 
     def filter(self, queryset):
         """Return filtered queryset."""
-        return self._filter.filter(queryset, self.values)
+        return self._filter.filter(queryset, self.values, self.not_values)
 
 
     @property
@@ -333,19 +340,21 @@ class Filter(object):
         self.switchable = switchable
 
 
-    def filter(self, queryset, values):
+    def filter(self, queryset, values, not_values):
         """Given queryset and selected values, return filtered queryset."""
-        if values:
-            if self.toggle:
-                for value in values:
-                    queryset = queryset.filter(**{"{0}__in".format(self.lookup): [value]})
-                queryset = queryset.filter(**self.extra_filters)
-            else:
-                filters = {"{0}__in".format(self.lookup): values}
-                filters.update(self.extra_filters)
-                queryset = queryset.filter(**filters)
+        if values or not_values:
+            filters = Q()
+            op_func = operator.__and__ if self.toggle else operator.__or__
 
-            return queryset.distinct()
+            for value in values:
+                filters = op_func(filters,
+                    Q(**{"{0}__in".format(self.lookup): [value]}))
+
+            for not_value in not_values:
+                filters = op_func(filters,
+                    ~Q(**{"{0}__in".format(self.lookup): [not_value]}))
+
+            return queryset.filter(filters).filter(**self.extra_filters).distinct()
 
         return queryset
 
@@ -355,11 +364,20 @@ class Filter(object):
         return []
 
 
-    def values(self, data):
-        """Given data dict, return list of selected values."""
+    def switch_toggle(self, data):
+        """Given data dict, determine and-or toggle state"""
         if self.switchable:
             self.toggle = True if data.get(self.key+'-switch', None) else False
+
+
+    def values(self, data):
+        """Given data dict, return list of selected values."""
         return [v for v in map(self.coerce, data.get(self.key, []))]
+
+
+    def not_values(self, data):
+        """Given data dict, return list of selected not_values."""
+        return [v for v in map(self.coerce, data.get(self.key+"__ne", []))]
 
 
     def coerce(self, value):
@@ -400,6 +418,15 @@ class BaseChoicesFilter(Filter):
         return [
             v for v in
             super(BaseChoicesFilter, self).values(data)
+            if v is not None and v in choice_values
+            ]
+
+
+    def not_values(self, data):
+        choice_values = set([k for k, v in self.get_choices()])
+        return [
+            v for v in
+            super(BaseChoicesFilter, self).not_values(data)
             if v is not None and v in choice_values
             ]
 
@@ -482,14 +509,19 @@ class KeywordFilter(KeywordExactFilter):
     is_default_and = True
 
 
-    def filter(self, queryset, values):
+    def filter(self, queryset, values, not_values):
         """Values are ANDed in a 'contains' search of the field text."""
-        if values:
+        if values or not_values:
             filters = Q()
             op_func = operator.__or__ if self.toggle else operator.__and__
 
             for value in values:
-                filters = op_func(filters, Q(**{"{0}__icontains".format(self.lookup): value}))
+                filters = op_func(filters,
+                    Q(**{"{0}__icontains".format(self.lookup): value}))
+
+            for not_value in not_values:
+                filters = op_func(filters,
+                    ~Q(**{"{0}__icontains".format(self.lookup): not_value}))
 
             return queryset.filter(filters).distinct()
 

@@ -24,11 +24,12 @@ class PrefixIDFilterTest(case.DBTestCase):
         return testdata
 
 
-    def filter(self, criteria):
+    def filter(self, include, exclude=[]):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            criteria,
+            include,
+            exclude,
             )
         return res
 
@@ -105,4 +106,21 @@ class PrefixIDFilterTest(case.DBTestCase):
         self.assertEqual(
             set([x.name for x in res.all()]),
             set(["CV 3", "CV 4"]),
+            )
+
+
+    def test_exclude_certain_id(self):
+        """
+        4 cases have 2 different prefixes returns cases from both prefixes,
+        except certain id
+        """
+        td = self.create_testdata()
+        td["cv5"] = self.F.CaseVersionFactory.create(name="CV 5",
+            case=self.F.CaseFactory.create(idprefix="moz"))
+        res = self.filter([u"pre", u"moz"],
+            [unicode(td["cv3"].case.id), unicode(td["cv4"].case.id)])
+
+        self.assertEqual(
+            set([x.name for x in res.all()]),
+            set(["CV 1", "CV 5"]),
             )

@@ -1658,6 +1658,12 @@ body > div {
 .chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;
 }
+.magicfilter .compact .filter-item .check:checked + .onoff.negated {
+  text-decoration:line-through;
+}
+.magicfilter .compact .filter-item .check:checked + .onoff.negated .content {
+  color: gray;
+}
 .chickcheck .pinswitch + .content, .reversecheck .pinswitch + .content, .versioned .attachment-item .pinswitch + .content, .tag-item .pinswitch + .content, .magicfilter .compact .filter-item .pinswitch + .content, .selectsearch .compact .filter-item .pinswitch + .content, #add-environment-form .element-item .pinswitch + .content {
   border-left: 1px solid #a9b2bf;
   padding-left: 0.375em;
@@ -3434,22 +3440,48 @@ body > div {
 .magicfilter .expanded .long:hover, .selectsearch .expanded .long:hover {
   overflow-y: auto;
 }
-.magicfilter .expanded .check, .selectsearch .expanded .check, .magicfilter .expanded .content, .selectsearch .expanded .content {
+.magicfilter .expanded .check, .selectsearch .expanded .check, .selectsearch .expanded .content {
   display: none;
 }
-.magicfilter .expanded .onoffswitch, .selectsearch .expanded .onoffswitch {
+.magicfilter .expanded .onoffswitch {
+  display: inline-block;
+  background-image: url('../images/ui/checkbox.png?1331491029');
+  background-repeat: no-repeat;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 100%;
+  background-position: center;
+  width: 20px;
+  vertical-align: middle;
+}
+.magicfilter .expanded .check:checked + .onoff .onoffswitch {
+  background-image: url('../images/ui/checkbox_checked.png?1331491029');
+}
+.magicfilter .expanded .onoff {
+  display: block;
+}
+.magicfilter .expanded .onoff.negated {
+  text-decoration:line-through;
+}
+.magicfilter .expanded  .onoff.negated .content {
+  color: gray;
+}
+.magicfilter .expanded .onoff:hover, .magicfilter .expanded .check:checked + .onoff {
+  font-weight: 500;
+}
+.selectsearch .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
   padding-left: 24px;
 }
-.magicfilter .expanded .onoff, .selectsearch .expanded .onoff {
+.selectsearch .expanded .onoff {
   display: block;
   background: url('../images/ui/checkbox.png?1331491029') no-repeat scroll 9px;
 }
-.magicfilter .expanded .onoff:hover, .selectsearch .expanded .onoff:hover {
+.selectsearch .expanded .onoff:hover {
   font-weight: 500;
 }
-.magicfilter .expanded .check:checked + .onoff, .selectsearch .expanded .check:checked + .onoff {
+.selectsearch .expanded .check:checked + .onoff {
   font-weight: 500;
   background-image: url('../images/ui/checkbox_checked.png?1331491029');
 }

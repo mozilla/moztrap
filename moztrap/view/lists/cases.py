@@ -21,38 +21,46 @@ class PrefixIDFilter(KeywordFilter):
             switchable=False)
 
 
-    def filter(self, queryset, values):
+    def __parse(self, value):
+        # split the prefix from the id
+        try:
+            prefix, sep, caseid = value.rpartition(self.delimiter)
+        except AttributeError:
+            prefix = None
+            caseid = value
+
+
+        # if there is a prefix of abc-xyz, then we don't want to
+        # try searching in the int field for xyz, presume it's all
+        # the prefix, as the suffix MUST always be numeric.
+        # also, if the user put the delimiter at the end, strip it off
+        if not isinstance(caseid, int) and not caseid.isdecimal():
+            prefix = value.rstrip(self.delimiter)
+            caseid = None
+
+        kwargs = {}
+
+        if prefix:
+            kwargs["{0}__exact".format(self.prefixlookup)] = prefix
+        if caseid:
+            kwargs["{0}__exact".format(self.lookup)] = caseid
+
+        return kwargs
+
+
+    def filter(self, queryset, values, not_values):
 
         query_filters = Q()
 
         for value in values:
-
-            # split the prefix from the id
-            try:
-                prefix, sep, caseid = value.rpartition(self.delimiter)
-            except AttributeError:
-                prefix = None
-                caseid = value
-
-
-            # if there is a prefix of abc-xyz, then we don't want to
-            # try searching in the int field for xyz, presume it's all
-            # the prefix, as the suffix MUST always be numeric.
-            # also, if the user put the delimiter at the end, strip it off
-            if not isinstance(caseid, int) and not caseid.isdecimal():
-                prefix = value.rstrip(self.delimiter)
-                caseid = None
-
-            kwargs = {}
-
-            if prefix:
-                kwargs["{0}__exact".format(self.prefixlookup)] = prefix
-            if caseid:
-                kwargs["{0}__exact".format(self.lookup)] = caseid
-
+            kwargs = self.__parse(value)
             query_filters = query_filters | Q(**kwargs)
 
-        if values:
+        for not_value in not_values:
+            kwargs = self.__parse(not_value)
+            query_filters = query_filters & ~Q(**kwargs)
+
+        if values or not_values:
             return queryset.filter(query_filters).distinct()
 
         return queryset

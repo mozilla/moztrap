@@ -83,8 +83,8 @@ var MT = (function (MT, $) {
             // certain fields have the same field name, but values don't
             // cross over.
             var path = {path: '/'};
-            if (filterKey.toLowerCase() === filterPrefix + "name" ||
-                filterKey.toLowerCase() === filterPrefix + "id") {
+            if (filterKey.toLowerCase().replace(/__ne$/, "") === filterPrefix + "name" ||
+                filterKey.toLowerCase().replace(/__ne$/, "") === filterPrefix + "id") {
                 path = {};
                 if (cookieVal) {
                     $(ich.message({
@@ -105,7 +105,7 @@ var MT = (function (MT, $) {
                 onoff = filterItem.find(".onoff"),
                 fiInput = filterItem.find('input'),
                 filterValue = fiInput.val(),
-                filterKey =  filterPrefix + fiInput.data('name');
+                filterKey =  'moztrap-' + fiInput.attr('name');
 
             onoff.toggleClass("pinned");
 
@@ -119,7 +119,7 @@ var MT = (function (MT, $) {
                 onoff = filterItem.find(".onoff"),
                 fiInput = filterItem.find('input'),
                 filterValue = fiInput.val(),
-                filterKey =  filterPrefix + fiInput.data('name');
+                filterKey =  'moztrap-' + fiInput.attr('name');
 
             onoff.removeClass("pinned");
 
@@ -130,6 +130,33 @@ var MT = (function (MT, $) {
         $('.filter-group').on('click', '.andorswitch-checkbox', function (e) {
             var cookieVal = ($(this)[0].checked) ? JSON.stringify(["on"]) : null;
             $.cookie('moztrap-' + $(this).attr('name'), cookieVal, {path: '/'});
+        });
+
+        $('.filter-group').on('click', '.content', function (e) {
+            var thisPin = $(this),
+                filterItem = thisPin.closest(".filter-item"),
+                onoff = filterItem.find(".onoff"),
+                fiInput = filterItem.find('input'),
+                filterValue = fiInput.val(),
+                filterName = fiInput.data('name'),
+                filterKey =  filterPrefix + filterName;
+
+            if (onoff.hasClass('negated')) {
+                fiInput.attr('name', 'filter-' + filterName);
+                if (onoff.hasClass("pinned")) {
+                    pinFilterValue(filterKey+'__ne', filterValue, false);
+                    pinFilterValue(filterKey, filterValue, true);
+                }
+                onoff.removeClass('negated');
+            } else {
+                fiInput.prop('name', 'filter-' + filterName + '__ne');
+                if (onoff.hasClass("pinned")) {
+                    pinFilterValue(filterKey, filterValue, false);
+                    pinFilterValue(filterKey+'__ne', filterValue, true);
+                }
+                onoff.addClass('negated');
+            }
+            fiInput.change();
         });
     };
 
@@ -172,6 +199,7 @@ var MT = (function (MT, $) {
 
             // update the uri to have the pinned value
             uri.addSearch("filter-" + key, values);
+            key = key.replace(/__ne$/, "");
 
             // find the filter-item that this pinned filter applies to and
             // add the "pinned" class to the "onoff" span

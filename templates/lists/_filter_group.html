@@ -19,13 +19,13 @@
     {% endif %}
     {% for option in field %}
     <li class="filter-item">
-      <input type="checkbox" name="{{ prefix }}-{{ field.key }}" data-name="{{ field.key }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.key }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %} class="check">
-      <span class="onoff">
+      <input type="checkbox" name="{{ prefix }}-{{ field.key }}{% if option.negated %}__ne{% endif %}" data-name="{{ field.key }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.key }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %} class="check">
+      <span class="onoff{% if option.negated %} negated{% endif %}">
         <label for="id-{{ prefix }}-{{ field.key }}-{{ forloop.counter }}" class="onoffswitch">{{ option.label }}</label>
         {% if pinable %}
             <span class="pinswitch"></span>
         {% endif %}
-        <span class="content" title="{{ field.key }}: {{ option.label }}">{{ option.label }}</span>
+        <span class="content" title="{{ field.key }}: {{ option.label }}&#10;(click to toggle negation)">{{ option.label }}</span>
       </span>
     </li>
     {% endfor %}
