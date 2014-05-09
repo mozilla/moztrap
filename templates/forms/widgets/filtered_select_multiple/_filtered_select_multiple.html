@@ -1,5 +1,4 @@
-{% load icanhaz %}
-
+{% load icanhaz filterset %}
 <div class="multiselect">
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}
@@ -7,6 +6,7 @@
   {% icanhaz "case_select_item" %}
   {% icanhaz "caseversion_select_item" %}
   {% icanhaz "suite_select_item" %}
+  {% icanhaz "filter_group" %}
 
   <div class="multiselect-resizable">
   <section class="multiunselected">
@@ -19,9 +19,9 @@
         <ul class="suggest"></ul>
       </div>
       <div class="visual compact">
-        {% for field in filters %}
-        {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
-        {% endfor %}
+        <script>
+        var FILTERS = {% filterset_to_json filters with advanced=0 prefix="filter" %}
+        </script>
       </div>
     </div>
 

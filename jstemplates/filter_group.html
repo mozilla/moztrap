@@ -1,0 +1,39 @@
+<section class="filter-group {{ field.cls }}" data-name="{{ field.key }}">
+  <h5 class="category-title">
+    {{ _field_name_lower }}
+    {{# field.switchable }}
+    <div class="andorswitch">
+      <input type="checkbox" name="{{ prefix }}-{{ field.key }}-switch" class="andorswitch-checkbox"
+       id="id-{{ prefix }}-{{ field.key }}-switch"{{# field.toggle }} checked{{/ field.toggle }}>
+      <label class="andorswitch-label" for="id-{{ prefix }}-{{ field.key }}-switch">
+        <div class="andorswitch-inner {{# field.is_default_and }}and{{/ field.is_default_and }}{{^ field.is_default_and }}or{{/ field.is_default_and }}"></div>
+        <div class="andorswitch-switch"></div>
+      </label>
+    </div>
+    {{/ field.switchable }}
+  </h5>
+  <ul class="filter-items {{# _field_length_long }}long{{/ _field_length_long }}">
+    {{# _field_advanced_keyword }}
+      <li class="addterm">
+        <input type="text" value="" id="id-{{ prefix }}-{{ field.key }}" autocomplete="off" placeholder="add {{ field.name }} filter">
+      </li>
+    {{/ _field_advanced_keyword }}
+
+    {{# _options }}
+    <li class="filter-item">
+      <input type="checkbox" name="{{ prefix }}-{{ field.key }}" data-name="{{ field.key }}" value="{{ value }}"
+       id="id-{{ prefix }}-{{ field.key }}-{{ _counter }}"
+       {{# selected }} checked="checked" {{/ selected }}
+       class="check">
+      <span class="onoff">
+        <label for="id-{{ prefix }}-{{ field.key }}-{{ _counter }}" class="onoffswitch">{{ label }}</label>
+        {{# pinable }}
+            <span class="pinswitch"></span>
+        {{/ pinable }}
+        <span class="content" title="{{ field.key }}: {{ label }}">{{ label }}</span>
+      </span>
+    </li>
+    {{/ _options }}
+
+  </ul>
+</section>
