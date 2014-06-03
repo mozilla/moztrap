@@ -90,3 +90,23 @@ class FiltersetToJSONTests(case.DBTestCase):
             ["Aaa", False, product2.pk],
             ["Bee", False, product1.pk]
         ])
+
+    def test_filterset_to_json_with_xss_escape(self):
+        t = Template("{% load filterset %}{% filterset_to_json filterset %}")
+
+        model.User.objects.create(
+            username='</script><script>x()</script>'
+        )
+        class SampleFilterset(filters.FilterSet):
+            filters = [
+                filters.ModelFilter(
+                    "creator",
+                    lookup="created_by",
+                    queryset=model.User.objects.all().order_by("username")),
+            ]
+        assert model.User.objects.all().count()
+
+        f = SampleFilterset().bind({})
+        output = t.render(Context({"filterset": f}))
+        self.assertTrue('</script>' not in output)
+        self.assertTrue('<\/script>' in output)
