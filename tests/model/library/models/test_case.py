@@ -221,6 +221,35 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(set(cv.environments.all()), set(envs[1:]))
 
 
+    def test_remove_narrowing_inherits_productversion_env_addition(self):
+        """Adding env to prodversion gets inherited when env narrowing removed."""
+        envs = self.F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs[1:])
+        cv = self.F.CaseVersionFactory.create(productversion=pv, envs_narrowed=True)
+
+        pv.add_envs(envs[0])
+
+        cv.remove_env_narrowing()
+
+        self.assertEqual(set(cv.environments.all()), set(envs))
+
+
+    def test_remove_narrowing_no_op_when_not_narrowed(self):
+        """non-narrowed caseversion has same envs before and after attempt to remove narrowing."""
+        envs = self.F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs[1:])
+        cv = self.F.CaseVersionFactory.create(productversion=pv, envs_narrowed=False)
+
+        pv.add_envs(envs[0])
+
+        self.assertEqual(set(cv.environments.all()), set(envs))
+
+        cv.remove_env_narrowing()
+
+        self.assertEqual(set(cv.environments.all()), set(envs))
+
+
+
     def test_direct_env_narrowing_sets_envs_narrowed(self):
         """Removing an env from a caseversion directly sets envs_narrowed."""
         envs = self.F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})

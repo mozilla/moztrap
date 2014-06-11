@@ -41,6 +41,7 @@ class CaseStepInline(MTTabularInline):
 
 class CaseTagInline(admin.TabularInline):
     model = models.CaseVersion.tags.through
+    raw_id_fields = ["tag"]
     extra = 0
 
 
@@ -51,10 +52,9 @@ class SuiteCaseInline(MTTabularInline):
 
 
 class CaseVersionAdmin(MTModelAdmin):
-    list_display = ["__unicode__", "productversion", "deleted_on"]
+    list_display = ["__unicode__", "case", "productversion", "deleted_on"]
     list_filter = ["productversion", "envs_narrowed", "case__suites"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
-    filter_horizontal = ["environments"]
     fieldsets = [
         (
             None, {
@@ -67,6 +67,7 @@ class CaseVersionAdmin(MTModelAdmin):
                 }
             )
         ]
+    raw_id_fields = ["case", "tags"]
     actions = ["remove_env_narrowing"]
 
 

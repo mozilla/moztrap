@@ -68,7 +68,6 @@ class CaseVersionAdminTest(case.admin.AdminTestCase):
             form["case"] = str(case.id)
             form["productversion"] = str(pv.id)
             form["name"] = "Some case"
-            form["environments"] = [str(envs[0].id)]
             form["steps-0-number"] = "1"
             form["steps-0-instruction"] = "An instruction"
             form["steps-0-expected"] = "A result"
@@ -123,3 +122,20 @@ class CaseVersionAdminTest(case.admin.AdminTestCase):
         self.assertEqual(res.status_int, 302)
 
         self.assertEqual(self.refresh(s).deleted_by, self.user)
+
+
+    def test_remove_env_narrowing(self):
+        """Remove env narrowing via bulk-action."""
+        envs = self.F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs[1:])
+        cv1 = self.F.CaseVersionFactory.create(productversion=pv, envs_narrowed=True)
+
+        pv.add_envs(envs[0])
+
+        form = self.get(self.changelist_url).forms["changelist-form"]
+        form["action"] = "remove_env_narrowing"
+        form["_selected_action"] = str(cv1.id)
+        form.submit("index", 0)
+
+        self.assertEqual(set(cv1.environments.all()), set(envs))
+
