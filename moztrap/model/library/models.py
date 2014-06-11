@@ -236,13 +236,12 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
 
     def remove_env_narrowing(self):
         """Remove environment narrowing on this caseversion."""
-        if self.envs_narrowed:
-            current_env_ids = set(self.environments.values_list("id", flat=True))
-            env_ids = set(self.productversion.environments.values_list("id", flat=True))
-            add = env_ids.difference(current_env_ids)
-            self.add_envs(*add)
-            self.envs_narrowed = False
-            self.save()
+        current_env_ids = set(self.environments.values_list("id", flat=True))
+        env_ids = set(self.productversion.environments.values_list("id", flat=True))
+        add = env_ids.difference(current_env_ids)
+        self.add_envs(*add)
+        self.envs_narrowed = False
+        self.save()
 
 
     def bug_urls(self):
