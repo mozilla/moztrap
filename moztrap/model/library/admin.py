@@ -67,7 +67,7 @@ class CaseVersionAdmin(MTModelAdmin):
                 }
             )
         ]
-    raw_id_fields = ["case", "tags"]
+    raw_id_fields = ["case", "tags", "productversion"]
     actions = ["remove_env_narrowing"]
 
 
