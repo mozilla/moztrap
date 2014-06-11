@@ -52,7 +52,7 @@ class SuiteCaseInline(MTTabularInline):
 
 
 class CaseVersionAdmin(MTModelAdmin):
-    list_display = ["__unicode__", "case", "productversion", "deleted_on"]
+    list_display = ["__unicode__", "productversion", "deleted_on"]
     list_filter = ["productversion", "envs_narrowed", "case__suites"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
