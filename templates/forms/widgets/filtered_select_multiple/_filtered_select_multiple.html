@@ -19,6 +19,7 @@
         <ul class="suggest"></ul>
       </div>
       <div class="visual compact">
+        <div id="filterset"></div>
         <script>
         var FILTERS = {% filterset_to_json filters with advanced=0 prefix="filter" %}
         </script>
