@@ -235,9 +235,13 @@
 
         // Update bulk-select status when items are selected/unselected
         context.on('change', options.itemSel + ' ' + options.inputSel, function (e) {
-            var thisList = $(this).closest('.itemlist'),
-                thisSelect = thisList.find(options.bulkSel);
-            updateBulkSel(thisSelect, thisList);
+            if (!$(this).prop('checked')) {
+                // if at least one checkbox is unchecked, the bulk-select
+                // checkbox should certainly be unchecked too
+                var thisList = $(this).closest('.itemlist'),
+                    thisSelect = thisList.find(options.bulkSel);
+                thisSelect.prop('checked', false);
+            }
         });
     };
 
