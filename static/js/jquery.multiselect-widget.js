@@ -238,9 +238,8 @@
             if (!$(this).prop('checked')) {
                 // if at least one checkbox is unchecked, the bulk-select
                 // checkbox should certainly be unchecked too
-                var thisList = $(this).closest('.itemlist'),
-                    thisSelect = thisList.find(options.bulkSel);
-                thisSelect.prop('checked', false);
+                var thisList = $(this).closest('.itemlist');
+                thisList.find(options.bulkSel + ':checked').prop('checked', false);
             }
         });
     };
