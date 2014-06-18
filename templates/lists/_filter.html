@@ -29,6 +29,7 @@
 
         {% icanhaz "autocomplete_input" %}
 
+        <div id="filterset"></div>
         <script>
         var FILTERS = {% filterset_to_json filters with advanced=1 prefix="filter" pinable=1 %}
         </script>

@@ -30,7 +30,7 @@ var MT = (function (MT, $) {
             });
             destination.append(field_group);
         });
-        $('form', context).prepend(destination);
+        $(context).prepend(destination);
     };
 
     // Shows/hides the advanced filtering
