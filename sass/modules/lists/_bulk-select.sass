@@ -42,10 +42,12 @@
   background-image: image-url('ui/checkbox_pseudo.png')
 
 .bulk-value, .bybulk-value
+  overflow: hidden
   +gone
 
 .bulk-type, .bybulk-type
   @extend .bulkunchecked
+  overflow: hidden
 
 .bulk-value
   &:checked
