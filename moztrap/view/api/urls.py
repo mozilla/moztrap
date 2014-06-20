@@ -37,4 +37,7 @@ v1_api.register(tags.TagResource())
 urlpatterns = patterns(
     "moztrap.view.api",
     url(r"", include(v1_api.urls)),
+    url(r"^speedy/caseselection/",
+        "speedy.caseselection",
+        name="caseselection"),
 )

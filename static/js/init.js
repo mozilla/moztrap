@@ -192,7 +192,8 @@ var MT = (function (MT, $) {
         MT.populateMultiselectItems({
             container: '#suite-edit-form, #suite-add-form',
             trigger_field: '#id_product',
-            ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            // ajax_url_root: "/api/v1/caseselection/?format=json&limit=0",
+            ajax_url_root: "/api/speedy/caseselection/?format=json&limit=0",
             ajax_trigger_filter: "productversion__product",
             ajax_for_field: "case__suites",
             for_type: "suite",
