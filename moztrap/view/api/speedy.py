@@ -6,10 +6,11 @@ import json
 from collections import defaultdict
 
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.views.decorators.cache import never_cache
 
 from moztrap.model.library.models import CaseVersion
 
-
+@never_cache
 def caseselection(request):
     """This is a speedy version of existing Tastypie API functionality
     with the major difference in that it's much much dumber but also
