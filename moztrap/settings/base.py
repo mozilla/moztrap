@@ -199,7 +199,7 @@ INSTALLED_APPS += ["floppyforms"]
 
 INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = 8 * 60 * 60  # 8 hours
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90 days ~= 3 months
 SECURE_FRAME_DENY = True
 
 MINIMUM_PASSWORD_CHARS = 8
