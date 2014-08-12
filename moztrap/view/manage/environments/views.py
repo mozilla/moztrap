@@ -12,6 +12,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
+from django.db import transaction
 
 from moztrap import model
 
@@ -139,6 +140,7 @@ def profile_edit(request, profile_id):
 
 
 
+@transaction.commit_on_success
 @never_cache
 @permission_required("core.manage_products")
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
@@ -222,7 +224,7 @@ def element_autocomplete(request):
         )
 
 
-
+@transaction.commit_on_success
 @never_cache
 @login_required
 @ajax("manage/environment/narrow/_envs_list.html")
