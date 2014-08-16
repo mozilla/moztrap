@@ -5,7 +5,7 @@ Manage views for productversions.
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
-
+from django.db import transaction
 from django.contrib import messages
 
 from moztrap import model
@@ -61,7 +61,7 @@ def productversion_details(request, productversion_id):
         )
 
 
-
+@transaction.commit_on_success
 @never_cache
 @permission_required("core.manage_products")
 def productversion_add(request):
@@ -91,6 +91,7 @@ def productversion_add(request):
 
 
 
+@transaction.commit_on_success
 @never_cache
 @permission_required("core.manage_products")
 def productversion_edit(request, productversion_id):
