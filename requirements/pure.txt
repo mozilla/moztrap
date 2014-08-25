@@ -1,5 +1,5 @@
 # Pure python dependencies.
-Django==1.4.13
+Django==1.4.14
 
 South==0.8.2.moz1
 django_compressor==1.1.2
