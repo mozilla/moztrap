@@ -53,7 +53,7 @@ class SuiteCaseInline(MTTabularInline):
 
 class CaseVersionAdmin(MTModelAdmin):
     list_display = ["__unicode__", "productversion", "deleted_on", "deleted_by"]
-    list_filter = ["envs_narrowed", "case__suites"]
+    list_filter = ["envs_narrowed", "productversion"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
         (
@@ -68,13 +68,18 @@ class CaseVersionAdmin(MTModelAdmin):
             )
         ]
     raw_id_fields = ["case", "tags", "productversion"]
-    actions = ["remove_env_narrowing"]
+    actions = ["remove_env_narrowing", "fix_environments"]
 
 
     def remove_env_narrowing(self, request, queryset):
         for row in queryset:
             row.remove_env_narrowing()
     remove_env_narrowing.short_description = "Remove environment narrowing"
+
+    def fix_environments(self, request, queryset):
+        for row in queryset:
+            row.fix_environments()
+    fix_environments.short_description = "Fix envs on un-narrowed"
 
 
 class CaseAdmin(MTModelAdmin):

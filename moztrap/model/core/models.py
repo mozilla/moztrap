@@ -141,6 +141,31 @@ class ProductVersion(MTModel, TeamModel, HasEnvironmentsModel):
         return self.product
 
 
+    def fix_environments(self):
+        """Fix environments on un-narrowed caseversions"""
+
+        cvs = self.caseversions.filter(envs_narrowed=False)
+        try:
+            Cv_Env = cvs[0].environments.related.model
+
+            env_ids = set(self.environments.values_list(
+                "id", flat=True))
+            to_create = []
+            for cv in cvs:
+                current_env_ids = set(cv.environments.values_list(
+                    "id", flat=True))
+                envs_needed = env_ids.difference(current_env_ids)
+                for env_id in envs_needed:
+                    to_create.append(
+                        Cv_Env(caseversion_id=cv.id, environment_id=env_id)
+                        )
+
+            Cv_Env.objects.bulk_create(to_create)
+        except:
+            # we had no caseversions, so no action needed anyway
+            pass
+
+
     @classmethod
     def cascade_envs_to(cls, objs, adding):
         Run = cls.runs.related.model
