@@ -146,7 +146,7 @@ class ProductVersion(MTModel, TeamModel, HasEnvironmentsModel):
 
         cvs = self.caseversions.filter(envs_narrowed=False)
         try:
-            Cv_Env = cvs[0].environments.related.model
+            Cv_Env = cvs.model.environments.through
 
             env_ids = set(self.environments.values_list(
                 "id", flat=True))
@@ -161,9 +161,9 @@ class ProductVersion(MTModel, TeamModel, HasEnvironmentsModel):
                         )
 
             Cv_Env.objects.bulk_create(to_create)
-        except:
+        except Exception as ex:
             # we had no caseversions, so no action needed anyway
-            pass
+            raise ex
 
 
     @classmethod

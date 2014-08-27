@@ -14,7 +14,8 @@ class ProductVersionInline(MTTabularInline):
 
 class ProductVersionAdmin(TeamModelAdmin):
     list_filter = ["product"]
-
+    actions = ["fix_environments"]
+    
     def fix_environments(self, request, queryset):
         for row in queryset:
             row.fix_environments()
