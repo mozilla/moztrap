@@ -8,6 +8,7 @@ Version 1.5.4
 ~~~~~~~~~~~~~
 *release date - 8/27/14
 
+* Upgrade django to latest security patch
 * Better transaction handling for creating new Product Versions
 * Some admin improvements
 
