@@ -57,7 +57,7 @@ site = MTAdminSite()
 
 
 class MTModelAdmin(admin.ModelAdmin):
-    list_display = ["__unicode__", "deleted_on"]
+    list_display = ["__unicode__", "deleted_on", "deleted_by"]
     readonly_fields = [
         "created_on",
         "created_by",
