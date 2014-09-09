@@ -131,6 +131,7 @@ INSTALLED_APPS = [
     "django_browserid",
     "south",
     "preferences",
+    "raven.contrib.django.raven_compat",
     "moztrap.model.core",
     "moztrap.model.library",
     "moztrap.model.environments",

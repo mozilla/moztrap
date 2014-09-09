@@ -27,6 +27,7 @@ django-preferences==0.0.5.moz1
 django-tastypie==0.9.11
 mimeparse==0.1.3
 pytz==2012f
+raven==3.4.1
 
 # only needed for running the tests
 mock==0.7.2
