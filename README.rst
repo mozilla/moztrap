@@ -42,6 +42,6 @@ Live Site
 you can see moztrap in action at
 
 
-[https://moztrap.mozilla.org](https://moztrap.mozilla.org) Live site
+https://moztrap.mozilla.org - Live site
 
-[https://moztrap.allizom.org](https://moztrap.allizom.org) Stage site
+https://moztrap.allizom.org - Stage site
