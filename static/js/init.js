@@ -263,6 +263,9 @@ var MT = (function (MT, $) {
         // owa.js
         MT.owa();
 
+        // general.js
+        MT.readOnlyMode();
+
     });
 
     $(window).load(function () {

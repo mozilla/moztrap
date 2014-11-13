@@ -7,6 +7,17 @@
 
 {% include "_messages.html" %}
 
+{% if DB_READ_ONLY %}
+  <div id="read-only-banner">
+    <div class="close-button"
+         title="Close this message for the duration of your browser session.">
+      <a href="">X</a>
+    </div>
+    <p>There is a temporary problem and Moztrap has been placed into a <b>read-only state</b>.<br>
+    You may browse information on the site but changes will not be saved.<br>
+    Please contact us in #moztrap for more information.</p>
+  </div>
+{% endif %}
 
 <header role="banner">
   <h1 id="brand">
