@@ -14,7 +14,7 @@ documentation in the `docs/` directory (or `read it online`_).
 To build and view an HTML version of the documentation::
 
     $ cd docs
-    $ pip install sphinx
+    $ pip install sphinx sphinxcontrib-httpdomain
     $ make html
     $ firefox _build/html/index.html
 
