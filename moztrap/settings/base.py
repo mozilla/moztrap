@@ -92,6 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.messages.context_processors.messages",
     "session_csrf.context_processor",
     "moztrap.view.users.context_processors.browserid",
+    "moztrap.view.utils.context_processors.db_status",
 ]
 
 MIDDLEWARE_CLASSES = [
