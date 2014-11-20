@@ -48,4 +48,8 @@ urlpatterns = patterns(
     # open web apps-----------------------------------------------------------
     url("^owa/", include("moztrap.view.owa.urls")),
 
+    # special /contribute.json endpoint --------------------------------------
+    url(r"^(?P<path>contribute\.json)$", "django.views.static.serve",
+        {'document_root': settings.BASE_PATH})
+
     ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
