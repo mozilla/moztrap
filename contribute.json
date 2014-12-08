@@ -1,0 +1,31 @@
+{
+    "name": "MozTrap",
+    "description": "MozTrap test case management system",
+    "repository": {
+        "url": "https://github.com/mozilla/moztrap",
+        "license": "BSD",
+        "tests": "https://travis-ci.org/mozilla/moztrap"
+    },
+    "participate": {
+        "home": "https://wiki.mozilla.org/QA/MozTrap",
+        "docs": "http://moztrap.readthedocs.org/",
+        "irc": "irc://irc.mozilla.org/#moztrap",
+        "irc-contacts": ["camd", "peterbe", "mbrandt", "bsilverberg"]
+    },
+    "bugs": {
+        "list": "https://bugzilla.mozilla.org/buglist.cgi?product=Mozilla%20QA&component=MozTrap&resolution=---",
+        "report": "https://bugzilla.mozilla.org/enter_bug.cgi?product=Mozilla%20QA&component=MozTrap"
+    },
+    "urls": {
+        "prod": "https://moztrap.mozilla.org/",
+        "stage": "https://moztrap.allizom.org/",
+        "dev": "https://moztrap-dev.allizom.org/"
+    },
+    "keywords": [
+        "django",
+        "jquery",
+        "mysql",
+        "python",
+        "qa"
+    ]
+}
