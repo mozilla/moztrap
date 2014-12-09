@@ -123,3 +123,9 @@ Copy local.sample.py to local.py and modify as needed.
     #     }
 
     # LOGGING["root"] = {"handlers": ["console"]}
+
+# If this isn't explicitly set, we enable Google Analytics if DEBUG=False
+#USE_GOOGLE_ANALYTICS = True
+
+# If you want to override which Google Analytics ID to use, change this:
+#GOOGLE_ANALYTICS_ID = 'UA-XXXXXXXXX-YY'

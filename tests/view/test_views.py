@@ -4,6 +4,7 @@ Tests for home view.
 """
 import json
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from tests import case
@@ -36,8 +37,22 @@ class ContributeJSONViewTest(case.view.ViewTestCase):
     def url(self):
         return "/contribute.json"
 
-
     def test_view_contribute_json(self):
         res = self.get(status=200)
         self.assertEqual(res.headers["Content-Type"], "application/json")
         self.assertTrue(json.loads(res.content))
+
+
+class GoogleAnalyticsViewTest(case.view.AuthenticatedViewTestCase):
+    """Test specifically that Google Analytics is included"""
+    def setUp(self):
+        super(GoogleAnalyticsViewTest, self).setUp()
+        self.add_perm("execute")
+
+    @property
+    def url(self):
+        return reverse("runtests")
+
+    def test_google_analytics_present(self):
+        res = self.get(status=200)
+        self.assertTrue(settings.GOOGLE_ANALYTICS_ID in res.content)
