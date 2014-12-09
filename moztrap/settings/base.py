@@ -93,6 +93,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "session_csrf.context_processor",
     "moztrap.view.users.context_processors.browserid",
     "moztrap.view.utils.context_processors.db_status",
+    "moztrap.view.utils.context_processors.google_analytics",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -244,3 +245,5 @@ SITE_URL = "http://localhost:8000"
 BROWSERID_CREATE_USER = "moztrap.model.core.auth.browserid_create_user"
 
 USE_BROWSERID = True
+
+GOOGLE_ANALYTICS_ID = 'UA-49796218-15'
