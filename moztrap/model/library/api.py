@@ -202,7 +202,7 @@ class CaseVersionResource(MTResource):
     environments = fields.ToManyField(
         EnvironmentResource, "environments", full=True, readonly=True)
     productversion = fields.ForeignKey(
-        ProductVersionResource, "productversion", full=True)
+        ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True, readonly=True)
     #@@@ attachments
 
