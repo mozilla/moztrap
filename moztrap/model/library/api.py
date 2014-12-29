@@ -209,14 +209,19 @@ class CaseVersionResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        fields = ["id", "name", "description", "case", "status"]
+        fields = ["id", "name", "description", "case", "status", "modified_on"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "latest": ALL,
+            "name": ALL,
             }
+        ordering = [
+            "name",
+            "modified_on",
+            ]
         authorization = CaseVersionAuthorization()
 
     @property
