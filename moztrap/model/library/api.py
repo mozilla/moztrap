@@ -219,9 +219,9 @@ class CaseVersionResource(MTResource):
             "name": ALL,
             }
         ordering = [
-            "modified_on",
             "name",
-        ]
+            "modified_on",
+            ]
         authorization = CaseVersionAuthorization()
 
     @property
