@@ -263,6 +263,9 @@ var MT = (function (MT, $) {
         // owa.js
         MT.owa();
 
+        // googleanalytics.js
+        MT.googleAnalyticsAjax();
+
         // general.js
         MT.readOnlyMode();
 
