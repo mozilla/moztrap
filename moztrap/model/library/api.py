@@ -43,15 +43,30 @@ class SuiteResource(MTResource):
     """
 
     product = fields.ToOneField(ProductResource, "product")
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
+    modified_by= fields.ForeignKey(
+        UserResource,
+        "modified_by",
+        full=True,
+        null=True,
+        )
 
     class Meta(MTResource.Meta):
         queryset = Suite.objects.all()
-        fields = ["name", "product", "description", "status", "id"]
+        fields = ["name", "product", "description", "status", "id", "modified_on"]
         filtering = {
             "name": ALL,
             "product": ALL_WITH_RELATIONS,
+            "status": ALL,
+            "created_by": ALL_WITH_RELATIONS,
+            "modified_by": ALL_WITH_RELATIONS,
             }
-        ordering = ['name', 'product__id', 'id']
+        ordering = ['name', 'product__id', 'id', 'modified_on']
 
 
     @property
@@ -87,6 +102,7 @@ class CaseResource(MTResource):
         filtering = {
             "suites": ALL_WITH_RELATIONS,
             "product": ALL_WITH_RELATIONS,
+            # "priority": ALL,
             }
 
     @property
@@ -117,6 +133,8 @@ class CaseStepResource(MTResource):
         fields = ["id", "caseversion", "instruction", "expected", "number"]
         filtering = {
             "caseversion": ALL_WITH_RELATIONS,
+            "instruction": ALL,
+            "expected": ALL,
         }
         ordering = ["number", "id"]
         authorization = CaseVersionAuthorization()
@@ -204,19 +222,38 @@ class CaseVersionResource(MTResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True, readonly=True)
+    created_by= fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
+    modified_by= fields.ForeignKey(
+        UserResource,
+        "modified_by",
+        full=True,
+        null=True,
+        )
     #@@@ attachments
 
 
     class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        fields = ["id", "name", "description", "case", "status"]
+        fields = ["id", "name", "description", "case", "status", "modified_on"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "latest": ALL,
+            "name": ALL,
+            "status": ALL,
+            "created_by": ALL_WITH_RELATIONS,
+            "modified_by": ALL_WITH_RELATIONS,
+            "description": ALL,
+            "steps": ALL_WITH_RELATIONS,
             }
+        ordering = ["id", "name", "modified_on", "case", "productversion"]
         authorization = CaseVersionAuthorization()
 
     @property
@@ -224,6 +261,14 @@ class CaseVersionResource(MTResource):
         """Model class related to this resource."""
         return CaseVersion
 
+    def dehydrate(self, bundle):
+        """Add some convenience fields to the return JSON."""
+
+        case = bundle.obj.case
+        bundle.data["priority"] = unicode(case.priority)
+        bundle.data["productversion_name"] = bundle.obj.productversion.name
+
+        return bundle
 
     @property
     def read_create_fields(self):
@@ -332,6 +377,12 @@ class CaseSelectionResource(BaseSelectionResource):
         full=True,
         null=True,
         )
+    modified_by= fields.ForeignKey(
+        UserResource,
+        "modified_by",
+        full=True,
+        null=True,
+        )
 
     class Meta:
         queryset = CaseVersion.objects.filter(latest=True).select_related(
@@ -343,14 +394,16 @@ class CaseSelectionResource(BaseSelectionResource):
                 "tags__product",
                 )
         list_allowed_methods = ['get']
-        fields = ["id", "name", "created_by"]
+        fields = ["id", "name", "created_by", "modified_on"]
         filtering = {
             "productversion": ALL_WITH_RELATIONS,
             "tags": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
-            "created_by": ALL_WITH_RELATIONS
+            "created_by": ALL_WITH_RELATIONS,
+            "modified_by": ALL_WITH_RELATIONS,
+            "name": ALL
             }
-        ordering = ["case"]
+        ordering = ["id", "case", "modified_on", "name"]
 
 
     def dehydrate(self, bundle):
@@ -426,12 +479,24 @@ class CaseVersionSearchResource(BaseSelectionResource):
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion", full=True)
     tags = fields.ToManyField(TagResource, "tags", full=True)
+    created_by = fields.ForeignKey(
+        UserResource,
+        "created_by",
+        full=True,
+        null=True,
+        )
+    modified_by= fields.ForeignKey(
+        UserResource,
+        "modified_by",
+        full=True,
+        null=True,
+        )
 
     class Meta:
         queryset = CaseVersion.objects.all()
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
-        fields = ["id", "name", "status"]
+        fields = ["id", "name", "status", "modified_on"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
@@ -450,8 +515,5 @@ class CaseVersionSearchResource(BaseSelectionResource):
         bundle.data["case_id"] = unicode(case.id)
         bundle.data["productversion_name"] = bundle.obj.productversion.name
         bundle.data["priority"] = unicode(case.priority)
-        bundle.data["created_by"] = unicode(case.created_by)
-        bundle.data["modified_by"] = unicode(case.modified_by)
-        bundle.data["modified_on"] = unicode(case.modified_on)
 
         return bundle

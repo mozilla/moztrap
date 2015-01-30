@@ -4,6 +4,7 @@ from tastypie.authorization import  Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource
 
+from django.http import HttpResponse
 from .core.models import ApiKey
 
 import logging
@@ -195,8 +196,16 @@ class MTResource(ModelResource):
         return content.
         """
         res = super(MTResource, self).delete_detail(request, **kwargs)
-        del(res._headers["content-type"])
-        return res
+        # FIXME: By TastyPie default, DELETE returns 204 No Content
+        # But message_ui middleware has problem with response with no
+        # content-type.
+        # Replace the rest of the method with these after message_ui updated:
+        #    del(res._headers["content-type"])
+        #    return res
+        if (res.status_code == 204):
+            return HttpResponse()
+        else:
+            return res
 
 
     def save_related(self, bundle):

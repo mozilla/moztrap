@@ -9,7 +9,6 @@ from tests.case.api.crud import ApiCrudCases
 import logging
 mozlogger = logging.getLogger('moztrap.test')
 
-from datetime import datetime
 
 class CaseVersionResourceTest(ApiCrudCases):
 
@@ -49,10 +48,15 @@ class CaseVersionResourceTest(ApiCrudCases):
         fields = {
             u"case": unicode(self.get_detail_url(
                 "case", self.case_fixture.id)),
+            u"created_by": None,
+            u"modified_by": None,
+            u"modified_on": unicode(self.utcnow.strftime("%Y-%m-%dT%H:%M:%S")),
             u"name": unicode("test_%s_%s" % modifiers),
             u"description": unicode("test %s %s" % modifiers),
             u"productversion": unicode(self.get_detail_url(
                 "productversion", self.productversion_fixture.id)),
+            u"productversion_name": unicode(self.productversion_fixture.name),
+            u"priority": unicode("None"),
             u"status": unicode("draft"),
             u"environments": [],
             u"tags": [],
@@ -82,10 +86,15 @@ class CaseVersionResourceTest(ApiCrudCases):
         actual[u"case"] = unicode(
             self.get_detail_url("case", str(backend_obj.case.id)))
         actual[u"name"] = unicode(backend_obj.name)
+        actual[u"created_by"] = None
+        actual[u"modified_by"] = None
+        actual[u"modified_on"] = unicode(backend_obj.modified_on.strftime("%Y-%m-%dT%H:%M:%S"))
+        actual[u"priority"] = unicode(None)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"productversion"] = unicode(
             self.get_detail_url("productversion",
                 backend_obj.productversion.id))
+        actual[u"productversion_name"] = unicode(backend_obj.productversion.name)
         actual[u"status"] = unicode(backend_obj.status)
         actual[u"resource_uri"] = unicode(
             self.get_detail_url(self.resource_name, str(backend_obj.id)))
@@ -370,10 +379,10 @@ class CaseVersionSearchResourceTest(case.api.ApiTestCase):
             u"case": unicode(
                 self.get_detail_url("case", cv.case.id)),
             u"case_id": unicode(cv.case.id),
-            u"created_by": unicode(None),
+            u"created_by": None,
             u"id": unicode(cv.id),
-            u"modified_by": unicode(None),
-            u"modified_on": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            u"modified_by": None,
+            u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
             u"name": unicode(cv.name),
             u"priority": unicode(None),
             u"productversion": {

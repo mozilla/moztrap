@@ -196,3 +196,4 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "username"]
+        filtering = {"username": ALL}

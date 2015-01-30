@@ -8,7 +8,6 @@ from tests import case
 from tests.case.api.crud import ApiCrudCases
 
 
-
 class SuiteResourceTest(ApiCrudCases):
     """Please see the test cases implemented in tests.case.api.ApiCrudCases.
 
@@ -63,6 +62,9 @@ class SuiteResourceTest(ApiCrudCases):
             u"product": unicode(self.get_detail_url(
                 "product", self.product_fixture.id)),
             u"status": unicode("draft"),
+            u"created_by": None,
+            u"modified_by": None,
+            u"modified_on": self.utcnow.strftime("%Y-%m-%d %H:%M:%S"),
         }
         return fields
 
@@ -82,6 +84,9 @@ class SuiteResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         actual = {}
+        actual[u"created_by"] = None
+        actual[u"modified_by"] = None
+        actual[u"modified_on"] = backend_obj.modified_on.strftime("%Y-%m-%d %H:%M:%S")
         actual[u"id"] = unicode(str(backend_obj.id))
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
