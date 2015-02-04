@@ -413,3 +413,45 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         bundle.data["priority"] = unicode(case.priority)
 
         return bundle
+
+
+
+class CaseVersionSearchResource(BaseSelectionResource):
+    """
+    Specialty end-point for an AJAX call to search and present a list of
+    caseversions in a human-friendly format.
+    """
+
+    case = fields.ForeignKey(CaseResource, "case")
+    productversion = fields.ForeignKey(
+        ProductVersionResource, "productversion", full=True)
+    tags = fields.ToManyField(TagResource, "tags", full=True)
+
+    class Meta:
+        queryset = CaseVersion.objects.all()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        fields = ["id", "name", "status"]
+        filtering = {
+            "environments": ALL,
+            "productversion": ALL_WITH_RELATIONS,
+            "case": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
+            "latest": ALL,
+            "name": ALL,
+            }
+        ordering = ["name", "modified_on"]
+
+
+    def dehydrate(self, bundle):
+        """Add some convenience fields to the return JSON."""
+
+        case = bundle.obj.case
+        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["productversion_name"] = bundle.obj.productversion.name
+        bundle.data["priority"] = unicode(case.priority)
+        bundle.data["created_by"] = unicode(case.created_by)
+        bundle.data["modified_by"] = unicode(case.modified_by)
+        bundle.data["modified_on"] = unicode(case.modified_on)
+
+        return bundle
