@@ -247,3 +247,11 @@ BROWSERID_CREATE_USER = "moztrap.model.core.auth.browserid_create_user"
 USE_BROWSERID = True
 
 GOOGLE_ANALYTICS_ID = 'UA-49796218-15'
+
+# Enable CORS
+INSTALLED_APPS += ["corsheaders"]
+MIDDLEWARE_CLASSES += [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
+]
+CORS_ORIGIN_ALLOW_ALL = True
