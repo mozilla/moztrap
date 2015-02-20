@@ -103,7 +103,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         # super's save expects self.users_cache to be set.
         self.users_cache = model.User.objects.filter(
             email__iexact=email, is_active=True)
-
+        assert self.users_cache, "No user to password reset to"
         return super(PasswordResetForm, self).save(*args, **kwargs)
 
 
