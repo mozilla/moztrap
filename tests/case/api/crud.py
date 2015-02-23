@@ -256,7 +256,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
         # make sure response included detail uri
-        object_id = self._id_from_uri(res.headers["location"])
+        object_id = self._id_from_uri(res.headers["Location"])
         self.assertIsNotNone(object_id)
 
         # get data from backend

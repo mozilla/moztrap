@@ -57,7 +57,12 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
             logger.debug("user retrieval error")
             return self._unauthorized()
 
+        # print "SETTING request.user"
+        # from django.conf import settings
+        # user.backend = settings.AUTHENTICATION_BACKENDS[0]
         request.user = user
+        # from django.contrib import auth
+        # auth.login(request, user)
         return self.get_key(user, api_key)
 
 
@@ -144,6 +149,7 @@ class MTResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
+        request = request or bundle.request
         # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
         try:
@@ -162,6 +168,7 @@ class MTResource(ModelResource):
         # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
         bundle = self.check_read_create(bundle)
+        request = request or bundle.request
         try:
             bundle = super(MTResource, self).obj_update(
                 bundle=bundle, request=request, **kwargs)
@@ -172,22 +179,26 @@ class MTResource(ModelResource):
             raise  # pragma: no cover
 
 
-    def obj_delete(self, request=None, **kwargs):
+    def obj_delete(self, bundle, request=None, **kwargs):
         """Delete the object.
         The DELETE request may include permanent=True/False in its params
         parameter (ie, along with the user's credentials). Default is False.
         """
         # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
+        request = request or bundle.request
         try:
-            permanent = request._request.dicts[1].get("permanent", False)
+            permanent = request.REQUEST.get('permanent', False)
+            # permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
+            print "request.path", request.path
             obj_id = self._id_from_uri(request.path)
+            print "obj_id", obj_id
             obj = self.model.objects.get(id=obj_id)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
             logger.exception("error deleting %s", request.path)  # pragma: no cover
-            raise  # pragma: no cover
+            raise
 
 
     def delete_detail(self, request, **kwargs):

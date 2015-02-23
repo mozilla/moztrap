@@ -56,11 +56,16 @@ class ApiTestCase(WebTest):
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
         json_data = json.dumps(payload)
+        # print  """self.app.post(%r,
+        # %r,
+        # {"content-type": "application/json"},
+        # %r)""" %(url, json_data, status)
         return self.app.post(
             url,
             json_data,
             headers={"content-type": "application/json"},
             status=status,
+            expect_errors=False
             )
 
     def put(self, url, data={}, params={}, status=202):
@@ -84,6 +89,7 @@ class ApiTestCase(WebTest):
     def delete(self, resource_name, id, params={}, status=200):
         url = self.get_detail_url(resource_name, id)
         url = "{0}?{1}".format(url, urllib.urlencode(params))
+        print "URL", url
         return self.app.delete(url, status=status)
 
 

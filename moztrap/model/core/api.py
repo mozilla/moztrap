@@ -119,6 +119,7 @@ class ProductResource(MTResource):
         """Oversee the creation of product and its required productversion.
         Probably not strictly RESTful.
         """
+        request = request or bundle.request
 
         pv_required_msg = str("The 'productversions' key must exist, " +
                           "must be a list, and the list must contain " +
