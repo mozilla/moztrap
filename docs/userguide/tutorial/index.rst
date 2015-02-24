@@ -24,6 +24,26 @@ Contents
     view_results
     new_version
 
+Concepts overview
+-----------------
+
+This is a rough sketch of the concepts in MozTrap to provide an overview of how
+the elements described in the tutorial are related to each other.
+
+.. image:: img/concepts_diagram.png
+    :height: 600px
+
+Everything revolves around the *product* under test in a specific *version*.
+
+*Test runs* on the product version are executed by assigned testers. The test
+instructions are contained in *test cases* which are grouped in *test suites*
+for assignment to the runs.
+
+The tests are run in defined *environments* whereupon the *environment profile*
+specifies the environments supported by the product version.
+
+The environments themselves are composed of *environment elements* chosen from
+*categories*, one element per category.
 
 Indices and tables
 ==================
