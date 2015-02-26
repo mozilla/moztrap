@@ -5,6 +5,7 @@ Tests for RunCaseVersionResource api.
 
 from tests import case
 
+from datetime import datetime
 
 
 class RunCaseVersionResourceTest(case.api.ApiTestCase):
@@ -54,13 +55,18 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
             exp_objects.append({
                 u"caseversion": {
                     u"case": unicode(self.get_detail_url("case", cv.case.id)),
+                    u"created_by": None,
                     u"description": unicode(cv.description),
-                    u'environments': [],
+                    u"environments": [],
                     u"id": unicode(cv.id),
+                    u"modified_by": None,
+                    u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
                     u"name": unicode(cv.name),
+                    u"priority": unicode(None),
                     u"productversion": unicode(self.get_detail_url(
                         "productversion",
                         cv.productversion.id)),
+                    u"productversion_name": unicode(cv.productversion.name),
                     u"resource_uri": unicode(self.get_detail_url(
                         "caseversion",
                         cv.id,

@@ -10,7 +10,6 @@ import logging
 mozlogger = logging.getLogger('moztrap.test')
 
 
-
 class CaseResourceTest(ApiCrudCases):
 
     @property
@@ -127,6 +126,8 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
                 self.get_detail_url("case", cv.case.id)),
             u"case_id": unicode(cv.case.id),
             u"created_by": None,
+            u"modified_by": None,
+            u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
             u"id": unicode(cv.id),
             u"name": unicode(cv.name),
             u'priority': unicode(None),
