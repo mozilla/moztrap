@@ -9,6 +9,7 @@ import os
 from tempfile import mkstemp, mkdtemp
 
 from django.core.management import call_command
+from django.core.management.base import CommandError
 
 from mock import patch
 
@@ -59,61 +60,38 @@ class ImportCasesTest(case.DBTestCase):
 
     def test_no_args(self):
         """Command shows usage."""
-        output = self.call_command()
-
-        self.assertEqual(
-            output,
-            (
-                "",
-                "Error: Usage: <product_name> <product_version> <filename>\n",
-                )
-            )
+        self.assertRaises(CommandError, self.call_command)
 
 
     def test_bad_product(self):
         """Error if given non-existent product name."""
-        output = self.call_command("Foo", "1.0", "file.json")
-
-        self.assertEqual(
-            output,
-            (
-                "",
-                'Error: Product "Foo" does not exist\n',
-                )
-            )
+        self.assertRaises(
+            CommandError,
+            self.call_command,
+            "Foo", "1.0", "file.json"
+        )
 
 
     def test_bad_productversion(self):
         """Error if given non-existent product version."""
         self.F.ProductFactory.create(name="Foo")
 
-        output = self.call_command("Foo", "1.0", "file.json")
-
-        self.assertEqual(
-            output,
-            (
-                "",
-                'Error: Version "1.0" of product "Foo" does not exist\n',
-                )
-            )
+        self.assertRaises(
+            CommandError,
+            self.call_command,
+            "Foo", "1.0", "file.json"
+        )
 
 
     def test_bad_file(self):
         """Error if given nonexistent file."""
         self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
 
-        output = self.call_command("Foo", "1.0", "does/not/exist.json")
-
-        self.assertEqual(
-            output,
-            (
-                "",
-                (
-                    'Error: Could not open "does/not/exist.json", '
-                    "I/O error 2: No such file or directory\n"
-                    ),
-                )
-            )
+        self.assertRaises(
+            CommandError,
+            self.call_command,
+            "Foo", "1.0", "does/not/exist.json"
+        )
 
 
     def test_bad_json(self):
@@ -121,9 +99,11 @@ class ImportCasesTest(case.DBTestCase):
         self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
 
         with self.tempfile("{") as path:
-            output = self.call_command("Foo", "1.0", path)
-
-        self.assertIn("Error: Could not parse JSON: Expecting", output[1])
+            self.assertRaises(
+                CommandError,
+                self.call_command,
+                "Foo", "1.0", path
+            )
 
 
     def test_success_single_file(self):

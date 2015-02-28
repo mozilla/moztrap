@@ -1,10 +1,12 @@
 from tastypie import http
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import  Authorization
+from tastypie.authorization import DjangoAuthorization
+# from tastypie.authorization import  Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource
 
 from django.http import HttpResponse
+
 from .core.models import ApiKey
 
 import logging
@@ -57,19 +59,53 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
             logger.debug("user retrieval error")
             return self._unauthorized()
 
-        # print "SETTING request.user"
-        # from django.conf import settings
-        # user.backend = settings.AUTHENTICATION_BACKENDS[0]
         request.user = user
-        # from django.contrib import auth
-        # auth.login(request, user)
         return self.get_key(user, api_key)
 
 
+# # # Debuggin'
+def for_all_methods(decorator):
+    def decorate(cls):
+        for attr in cls.__dict__: # there's propably a better way to do this
+            if callable(getattr(cls, attr)):
+                setattr(cls, attr, decorator(getattr(cls, attr)))
+        return cls
+    return decorate
 
-class MTAuthorization(Authorization):
+from tastypie.exceptions import TastypieError, Unauthorized
+
+def noticecalls(method):
+    def inner(*a, **k):
+        print "EXECUTING (MTAuthorization)", repr(method)
+        try:
+            r= method(*a, **k)
+            print "\tresult was:", r
+            return r
+        except Unauthorized:
+            print "\traised an Unauthorized()"
+            raise
+    return inner
+
+# @for_all_methods(noticecalls)
+class MTAuthorization(DjangoAuthorization):
     """Authorization that allows any user to GET but only users with permissions
-    to modify."""
+    to modify.
+
+    For the methods in here, the parent super().some_method will
+    check the permission:
+
+      APP.add_THING
+
+    (for example).
+
+    But we also want to say it's ok if you have the permission:
+
+      APP.manage_THINGs
+
+    Basically, the purpose of this class is to go beyond that you have
+    to have the "add_THING" or "change_THING" or "delete_THING" and also
+    that it's ok that have the "manage_THINGs" permission.
+    """
 
     @property
     def permission(self):
@@ -80,17 +116,44 @@ class MTAuthorization(Authorization):
         logger.debug("desired permission %s" % permission)
         return permission
 
-    def is_authorized(self, request, object=None):
+    def create_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
 
-        if request.method == "GET":
-            logger.debug("GET always allowed")
             return True
-        elif request.user.has_perm(self.permission):
-            logger.debug("user has permissions")
+        return super(MTAuthorization, self).create_detail(object_list, bundle)
+
+    def update_detail(self, object_list, bundle):
+        """See the doc-string for create_detail()"""
+        # print "IN update_detail"
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
             return True
-        else:
-            logger.debug("user does not have permissions")
-            return False
+        return super(MTAuthorization, self).update_detail(object_list, bundle)
+
+
+
+    # def is_authorized(self, request, object=None):
+    #     r = self._is_authorized(request, object=object)
+    #     print "user", repr(request.user)
+    #     print "permission", repr(self.permission)
+    #     print "method", request.method
+    #     print "RESULT:", r
+    #     print "\n"
+    #     return r
+    #
+    # def _is_authorized(self, request, object=None):
+    #
+    #     if request.method == "GET":
+    #         logger.debug("GET always allowed")
+    #         return True
+    #     elif request.user.has_perm(self.permission):
+    #         logger.debug("user has permissions")
+    #         return True
+    #     else:
+    #         logger.debug("user does not have permissions")
+    #         return False
+
 
 
 
@@ -108,6 +171,7 @@ class MTResource(ModelResource):
         detail_allowed_methods = ["get", "put", "delete"]
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
+        # authorization = DjangoAuthorization()
         always_return_data = True
         ordering = ['id']
 
@@ -187,14 +251,14 @@ class MTResource(ModelResource):
         # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
         request = request or bundle.request
+
         try:
             permanent = request.REQUEST.get('permanent', False)
             # permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
-            print "request.path", request.path
             obj_id = self._id_from_uri(request.path)
-            print "obj_id", obj_id
             obj = self.model.objects.get(id=obj_id)
+            self.authorized_delete_detail([obj], bundle)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
             logger.exception("error deleting %s", request.path)  # pragma: no cover

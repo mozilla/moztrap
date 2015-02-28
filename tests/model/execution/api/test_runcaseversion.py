@@ -58,7 +58,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                     u"created_by": None,
                     u"description": unicode(cv.description),
                     u"environments": [],
-                    u"id": unicode(cv.id),
+                    u"id": cv.id,
                     u"modified_by": None,
                     u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
                     u"name": unicode(cv.name),
@@ -75,7 +75,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                     u'tags': [],
                     u'status': unicode(cv.status),
                     },
-                u"id": unicode(rcv.id),
+                u"id": rcv.id,
                 u"run": unicode(self.get_detail_url("run", rcv.run.id)),
                 u"resource_uri": unicode(self.get_detail_url(
                     "runcaseversion",

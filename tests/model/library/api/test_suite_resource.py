@@ -87,7 +87,7 @@ class SuiteResourceTest(ApiCrudCases):
         actual[u"created_by"] = None
         actual[u"modified_by"] = None
         actual[u"modified_on"] = backend_obj.modified_on.strftime("%Y-%m-%d %H:%M:%S")
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"product"] = unicode(

@@ -69,7 +69,7 @@ class CaseResourceTest(ApiCrudCases):
         actual = {}
         actual[u"resource_uri"] = unicode(
             self.get_detail_url(self.resource_name, str(backend_obj.id)))
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"product"] = unicode(
             self.get_detail_url("product", str(backend_obj.product.id)))
         actual[u"idprefix"] = unicode(backend_obj.idprefix)

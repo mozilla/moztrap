@@ -58,7 +58,7 @@ class ProductVersionEnvironmentsResourceTest(case.api.ApiTestCase):
                         element.id,
                         )),
                     ],
-                u'id': unicode(envs[0].id),
+                u'id': envs[0].id,
                 u'profile': unicode(self.get_detail_url(
                     "profile",
                     envs[0].profile.id
@@ -68,7 +68,7 @@ class ProductVersionEnvironmentsResourceTest(case.api.ApiTestCase):
                     envs[0].id,
                     )),
                 }],
-            u"id": unicode(pv.id),
+            u"id": pv.id,
             u"resource_uri": unicode(self.get_detail_url(
                 "productversionenvironments",
                 pv.id,

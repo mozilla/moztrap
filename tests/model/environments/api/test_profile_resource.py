@@ -59,7 +59,7 @@ class ProfileResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         return {
-            u"id": unicode(str(backend_obj.id)),
+            u"id": backend_obj.id,
             u"name": unicode(backend_obj.name),
             u"resource_uri": unicode(
                 self.get_detail_url(self.resource_name, str(backend_obj.id))),

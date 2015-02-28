@@ -38,7 +38,7 @@ class ApiTestCase(WebTest):
             )
 
 
-    def patch(self, url, payload="", params={}, status=202):
+    def patch(self, url, payload="", params={}, status=202, **kwargs):
         """Submit a PATCH request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
@@ -48,27 +48,24 @@ class ApiTestCase(WebTest):
             json_data,
             headers={"content-type": "application/json"},
             status=status,
+            **kwargs
             )
 
 
-    def post(self, url, payload="", params={}, status=201):
+    def post(self, url, payload="", params={}, status=201, **kwargs):
         """Submit a POST request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
         json_data = json.dumps(payload)
-        # print  """self.app.post(%r,
-        # %r,
-        # {"content-type": "application/json"},
-        # %r)""" %(url, json_data, status)
         return self.app.post(
             url,
             json_data,
             headers={"content-type": "application/json"},
             status=status,
-            expect_errors=False
+            **kwargs
             )
 
-    def put(self, url, data={}, params={}, status=202):
+    def put(self, url, data={}, params={}, status=202, **kwargs):
         """Submit a PUT request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
@@ -78,36 +75,38 @@ class ApiTestCase(WebTest):
             json_data,
             headers={"content-type": "application/json"},
             status=status,
+            **kwargs
             )
 
-    def get(self, url, params={}, status=200):
+    def get(self, url, params={}, status=200, **kwargs):
         """Submit a GET request and return the response."""
         params.setdefault("format", "json")
-        return self.app.get(url, params=params, status=status)
+        return self.app.get(url, params=params, status=status, **kwargs)
 
 
-    def delete(self, resource_name, id, params={}, status=200):
+    def delete(self, resource_name, id, params={}, status=200, **kwargs):
         url = self.get_detail_url(resource_name, id)
         url = "{0}?{1}".format(url, urllib.urlencode(params))
-        print "URL", url
-        return self.app.delete(url, status=status)
+        return self.app.delete(url, status=status, **kwargs)
 
 
-    def get_list(self, params={}, status=200):
+    def get_list(self, params={}, status=200, **kwargs):
         """GET the list URL for this testcase's resource, return response."""
         return self.get(
             self.get_list_url(self.resource_name),
             params=params,
             status=status,
+            **kwargs
             )
 
 
-    def get_detail(self, id, params={}, status=200):
+    def get_detail(self, id, params={}, status=200, **kwargs):
         """GET the detail URL for this testcase's resource, return response."""
         return self.get(
             self.get_detail_url(self.resource_name, id),
             params=params,
             status=status,
+            **kwargs
             )
 
 

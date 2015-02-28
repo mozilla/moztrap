@@ -67,7 +67,7 @@ class CaseStepResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         actual = {
-            u"id": unicode(str(backend_obj.id)),
+            u"id": backend_obj.id,
             u"caseversion": unicode(
                 self.get_detail_url("caseversion",
                     str(backend_obj.caseversion.id))),

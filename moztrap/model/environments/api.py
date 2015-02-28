@@ -149,7 +149,7 @@ class EnvironmentResource(MTResource):
 
         deserialized = self.deserialize(
             request,
-            request.raw_post_data,
+            request.body,
             format=request.META.get('CONTENT_TYPE', 'application/json'))
 
         # verify input
@@ -211,7 +211,9 @@ class EnvironmentResource(MTResource):
                 bundle = self.build_bundle(
                     data=dict_strip_unicode_keys(deserialized))
                 bundle.request.META['REQUEST_METHOD'] = 'PATCH'
-                self.is_valid(bundle, request)
+                if getattr(request, 'user', None):
+                    bundle.request.user = request.user
+                self.is_valid(bundle)
                 self.obj_create(bundle, request=request)
 
         # don't try to reply with data, the request doesn't

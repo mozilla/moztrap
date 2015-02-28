@@ -82,7 +82,7 @@ class CaseVersionResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         actual = {}
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"case"] = unicode(
             self.get_detail_url("case", str(backend_obj.case.id)))
         actual[u"name"] = unicode(backend_obj.name)
