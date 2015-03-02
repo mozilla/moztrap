@@ -943,7 +943,7 @@ class RunActivationTest(case.DBTestCase):
         connection.queries = []
 
         try:
-            with self.assertNumQueries(18):
+            with self.assertNumQueries(17):
                 r.activate()
 
             # to debug, uncomment these lines:
@@ -957,7 +957,7 @@ class RunActivationTest(case.DBTestCase):
             updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
             deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
 
-            self.assertEqual(len(selects), 11)
+            self.assertEqual(len(selects), 10)
             self.assertEqual(len(inserts), 2)
             self.assertEqual(len(updates), 2)
             self.assertEqual(len(deletes), 3)
