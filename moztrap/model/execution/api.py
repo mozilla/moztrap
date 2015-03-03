@@ -397,7 +397,7 @@ class SuiteSelectionResource(BaseSelectionResource):
         """Add some convenience fields to the return JSON."""
 
         suite = bundle.obj
-        bundle.data["suite_id"] = unicode(suite.id)
+        bundle.data["suite_id"] = suite.id
         bundle.data["case_count"] = suite.case_count
         bundle.data["filter_cases"] = filter_url("manage_cases", suite)
 
