@@ -180,7 +180,7 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
         exp_tags = []
         for t in tags:
             exp_tag = {
-                u"id": unicode(t.id),
+                u"id": t.id,
                 u"name": unicode(t.name),
                 u"description": unicode(t.description),
                 u"resource_uri": unicode(self.get_detail_url("tag", t.id)),
@@ -194,19 +194,19 @@ class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
         return {
             u"case": unicode(
                 self.get_detail_url("case", cv.case.id)),
-            u"case_id": unicode(cv.case.id),
+            u"case_id": cv.case.id,
             u"created_by": None,
-            u"id": unicode(cv.id),
+            u"id": cv.id,
             u"latest": True,
             u"name": unicode(cv.name),
             u"priority": unicode(None),
             u"product": {
-                u"id": unicode(cv.productversion.product_id)
+                u"id": cv.productversion.product_id,
             },
-            u"product_id": unicode(cv.productversion.product_id),
+            u"product_id": cv.productversion.product_id,
             u"productversion": {
                 u"codename": u"",
-                u"id": unicode(cv.productversion.id),
+                u"id": cv.productversion.id,
                 u"product": unicode(self.get_detail_url(
                     "product",
                     cv.productversion.product_id)),
@@ -364,7 +364,7 @@ class CaseVersionSearchResourceTest(case.api.ApiTestCase):
         exp_tags = []
         for t in tags:
             exp_tag = {
-                u"id": unicode(t.id),
+                u"id": t.id,
                 u"name": unicode(t.name),
                 u"description": unicode(t.description),
                 u"resource_uri": unicode(self.get_detail_url("tag", t.id)),
@@ -378,16 +378,16 @@ class CaseVersionSearchResourceTest(case.api.ApiTestCase):
         return {
             u"case": unicode(
                 self.get_detail_url("case", cv.case.id)),
-            u"case_id": unicode(cv.case.id),
+            u"case_id": cv.case.id,
             u"created_by": None,
-            u"id": unicode(cv.id),
+            u"id": cv.id,
             u"modified_by": None,
             u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
             u"name": unicode(cv.name),
             u"priority": unicode(None),
             u"productversion": {
                 u"codename": u"",
-                u"id": unicode(cv.productversion.id),
+                u"id": cv.productversion.id,
                 u"product": unicode(self.get_detail_url(
                     "product",
                     cv.productversion.product_id)),

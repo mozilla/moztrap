@@ -74,8 +74,8 @@ def caseselection(request):
     objects = []
     for each in caseversions:
         item = {
-            "id": unicode(each.id),
-            "case_id": unicode(each.case_id),
+            "id": each.id,
+            "case_id": each.case_id,
             "name": each.name,
             "priority": unicode(each.case.priority),
             "created_by": {},
@@ -83,7 +83,7 @@ def caseselection(request):
         }
         if each.created_by:
             item["created_by"] = {
-                "id": unicode(each.created_by.id),
+                "id": each.created_by.id,
                 "username": unicode(each.created_by.username)
             }
         item["tags"] = tags_map[each.id]

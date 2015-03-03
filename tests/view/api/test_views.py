@@ -50,8 +50,8 @@ class SpeedyCaseVersionsViewTest(case.view.ViewTestCase):
         )
         expect = {
             "objects": [{
-                "id": unicode(cv.id),
-                "case_id": unicode(tc.id),
+                "id": cv.id,
+                "case_id": tc.id,
                 "created_by": {},
                 "name": cv.name,
                 "priority": unicode(None),
@@ -89,10 +89,10 @@ class SpeedyCaseVersionsViewTest(case.view.ViewTestCase):
         )
         expect = {
             "objects": [{
-                "id": unicode(cv.id),
-                "case_id": unicode(tc.id),
+                "id": cv.id,
+                "case_id": tc.id,
                 "created_by": {
-                    "id": unicode(u.id),
+                    "id": u.id,
                     "username": u.username
                 },
                 "name": cv.name,
