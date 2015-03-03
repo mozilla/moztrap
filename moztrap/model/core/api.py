@@ -67,12 +67,13 @@ class ProductVersionResource(MTResource):
 
     def obj_update(self, bundle, request=None, **kwargs):
         """Avoid concurrency error caused by the setting of latest_version"""
+        request = request or bundle.request
         bundle = self.check_read_create(bundle)
 
         try:
             # use grandparent rather than parent
             bundle = super(MTResource, self).obj_update(
-                bundle=bundle, request=request, **kwargs)
+                bundle, **kwargs)
 
             # update the cc_version
             bundle.obj.cc_version = self.model.objects.get(

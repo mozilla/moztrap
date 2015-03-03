@@ -65,7 +65,7 @@ class ApiTestCase(WebTest):
             **kwargs
             )
 
-    def put(self, url, data={}, params={}, status=202, **kwargs):
+    def put(self, url, data={}, params={}, status=200, **kwargs):
         """Submit a PUT request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))

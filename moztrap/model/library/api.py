@@ -281,10 +281,11 @@ class CaseVersionResource(MTResource):
         avoid ConcurrencyError by updating cc_version."""
         # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
+        request = request or bundle.request
         bundle = self.check_read_create(bundle)
         try:
             bundle = super(MTResource, self).obj_update(
-                bundle=bundle, request=request, **kwargs)
+                bundle, **kwargs)
             # avoid ConcurrencyError
             bundle.obj.cc_version = self.model.objects.get(
                 id=bundle.obj.id).cc_version

@@ -373,7 +373,7 @@ class ApiCrudCases(ApiTestCase):
                 self.assertEqual(value, obj[key])
 
 
-    def ttest_read_detail(self):
+    def test_read_detail(self):
         """Performs a GET on the object detail without credentials.
         Verifies that the object returned by the API has the correct data.
         """
@@ -398,7 +398,7 @@ class ApiCrudCases(ApiTestCase):
         self.assertEqual(expected, actual)
 
 
-    def xtest_update_detail(self):
+    def test_update_detail(self):
         """Performs a PUT on the object detail.
         Verifies that the values in the database entry for the object has
         been updated.
@@ -424,7 +424,7 @@ class ApiCrudCases(ApiTestCase):
         res = self.put(
             self.get_detail_url(self.resource_name, obj_id),
             params=self.credentials,
-            data=fields
+            data=fields,
             )
 
         # make sure object has been updated in the database
@@ -442,7 +442,7 @@ class ApiCrudCases(ApiTestCase):
             meta_before['modified_on'], meta_after['modified_on'])
 
 
-    def xtest_change_fk_should_error(self):
+    def test_change_fk_should_error(self):
         """Trying to change a read-only foreign key should result in a 400 error."""
 
         if self.is_abstract_class:
@@ -476,7 +476,7 @@ class ApiCrudCases(ApiTestCase):
 
 
 
-    def xtest_update_without_fk(self):
+    def test_update_without_fk(self):
         """fk's cannot be changed, so they are not required on edit."""
 
         if self.is_abstract_class:
@@ -500,7 +500,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
 
-    def xtest_update_list_forbidden(self):
+    def test_update_list_forbidden(self):
         """Attempts to PUT to the list uri.
         Verifies that the request is rejected with a 405 error.
         """
@@ -529,7 +529,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
 
-    def xtest_update_fails_without_creds(self):
+    def test_update_fails_without_creds(self):
         """Attempts to PUT to the object detail uri without credentials.
         Verifies that the request is denied with a 401 error.
         """
@@ -552,7 +552,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
 
-    def xtest_delete_detail_permanent(self):
+    def test_delete_detail_permanent(self):
         """Tests that an object can be deleted permanently.
         Verifies that the object no longer appears in the database after
         the delete.
@@ -584,7 +584,7 @@ class ApiCrudCases(ApiTestCase):
                 self.backend_object(obj_id))
 
 
-    def xtest_delete_detail_soft(self):
+    def test_delete_detail_soft(self):
         """Tests that an object can be 'soft' deleted.
         Verifies that the object still exists in the database.
         Verifies that the object's deleted_by and deleted_on properties have
@@ -623,7 +623,7 @@ class ApiCrudCases(ApiTestCase):
             meta_before_delete["deleted_on"], meta_after_delete["deleted_on"])
 
 
-    def xtest_delete_list_forbidden(self):
+    def test_delete_list_forbidden(self):
         """Attempts to send a DELETE message to the list uri.
         Verifies that the message recieves a 405 error.
         """

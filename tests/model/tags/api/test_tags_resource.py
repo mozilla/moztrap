@@ -63,7 +63,7 @@ class TagResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         actual = {}
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"resource_uri"] = unicode(

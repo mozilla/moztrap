@@ -87,6 +87,7 @@ def noticecalls(method):
     return inner
 
 # @for_all_methods(noticecalls)
+
 class MTAuthorization(DjangoAuthorization):
     """Authorization that allows any user to GET but only users with permissions
     to modify.
@@ -116,21 +117,29 @@ class MTAuthorization(DjangoAuthorization):
         logger.debug("desired permission %s" % permission)
         return permission
 
+    def read_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
+            return True
+        return super(MTAuthorization, self).read_detail(object_list, bundle)
+
     def create_detail(self, object_list, bundle):
         klass = self.base_checks(bundle.request, bundle.obj.__class__)
         if klass and bundle.request.user.has_perm(self.permission):
-
             return True
         return super(MTAuthorization, self).create_detail(object_list, bundle)
 
     def update_detail(self, object_list, bundle):
-        """See the doc-string for create_detail()"""
-        # print "IN update_detail"
         klass = self.base_checks(bundle.request, bundle.obj.__class__)
         if klass and bundle.request.user.has_perm(self.permission):
             return True
         return super(MTAuthorization, self).update_detail(object_list, bundle)
 
+    def delete_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
+            return True
+        return super(MTAuthorization, self).delete_detail(object_list, bundle)
 
 
     # def is_authorized(self, request, object=None):
@@ -189,8 +198,9 @@ class MTResource(ModelResource):
 
     def check_read_create(self, bundle):
         """Verify that request isn't trying to change a read-create field."""
-
-        obj = self.get_via_uri(bundle.request.path)
+        print "IN check_read_create", bundle.request.user
+        obj = self.get_via_uri(bundle.request.path, request=bundle.request)
+        print "IN check_read_create, obj=", repr(obj)
         for fk in self.read_create_fields:
 
             if fk not in bundle.data:
@@ -235,7 +245,7 @@ class MTResource(ModelResource):
         request = request or bundle.request
         try:
             bundle = super(MTResource, self).obj_update(
-                bundle=bundle, request=request, **kwargs)
+                bundle, **kwargs)
             bundle.obj.save(user=request.user)
             return bundle
         except Exception:  # pragma: no cover
@@ -258,6 +268,7 @@ class MTResource(ModelResource):
             # pull the id out of the request's path
             obj_id = self._id_from_uri(request.path)
             obj = self.model.objects.get(id=obj_id)
+            bundle.obj = obj
             self.authorized_delete_detail([obj], bundle)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
