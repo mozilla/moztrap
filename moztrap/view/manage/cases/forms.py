@@ -109,7 +109,8 @@ class BaseCaseVersionForm(forms.Form):
     def save_attachments(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
         delete_ids = set(self.data.getlist("remove-attachment"))
-        caseversion.attachments.filter(id__in=delete_ids).delete()
+
+        [x.delete() for x in caseversion.attachments.filter(id__in=delete_ids)]
 
         if self.files:  # if no files, it's a plain dict, has no getlist
             for uf in self.files.getlist("add_attachment"):
