@@ -45,7 +45,6 @@ class TagResource(MTResource):
     def obj_update(self, bundle, request=None, **kwargs):
         """Lots of rules for modifying product for tags."""
         request = request or bundle.request
-        print "User?", bundle.request.user
         tag = self.get_via_uri(bundle.request.path, request)
         caseversions = tag.caseversions.all()
         err_msg = str("Tag's Product may not be changed unless " +
