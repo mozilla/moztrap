@@ -198,9 +198,7 @@ class MTResource(ModelResource):
 
     def check_read_create(self, bundle):
         """Verify that request isn't trying to change a read-create field."""
-        print "IN check_read_create", bundle.request.user
         obj = self.get_via_uri(bundle.request.path, request=bundle.request)
-        print "IN check_read_create, obj=", repr(obj)
         for fk in self.read_create_fields:
 
             if fk not in bundle.data:
