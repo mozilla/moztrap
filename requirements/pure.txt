@@ -1,5 +1,5 @@
 # Pure python dependencies.
-Django==1.5.12
+Django==1.6.10
 South==0.8.2.moz1
 django_compressor==1.1.2
 django-appconf==0.4.1
@@ -52,4 +52,3 @@ MarkupSafe==0.19
 
 # For CORS
 django-cors-headers==1.0.0
-
