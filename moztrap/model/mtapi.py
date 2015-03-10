@@ -63,31 +63,6 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         return self.get_key(user, api_key)
 
 
-# # # Debuggin'
-def for_all_methods(decorator):
-    def decorate(cls):
-        for attr in cls.__dict__: # there's propably a better way to do this
-            if callable(getattr(cls, attr)):
-                setattr(cls, attr, decorator(getattr(cls, attr)))
-        return cls
-    return decorate
-
-from tastypie.exceptions import TastypieError, Unauthorized
-
-def noticecalls(method):
-    def inner(*a, **k):
-        print "EXECUTING (MTAuthorization)", repr(method)
-        try:
-            r= method(*a, **k)
-            print "\tresult was:", r
-            return r
-        except Unauthorized:
-            print "\traised an Unauthorized()"
-            raise
-    return inner
-
-# @for_all_methods(noticecalls)
-
 class MTAuthorization(DjangoAuthorization):
     """Authorization that allows any user to GET but only users with permissions
     to modify.
@@ -140,29 +115,6 @@ class MTAuthorization(DjangoAuthorization):
         if klass and bundle.request.user.has_perm(self.permission):
             return True
         return super(MTAuthorization, self).delete_detail(object_list, bundle)
-
-
-    # def is_authorized(self, request, object=None):
-    #     r = self._is_authorized(request, object=object)
-    #     print "user", repr(request.user)
-    #     print "permission", repr(self.permission)
-    #     print "method", request.method
-    #     print "RESULT:", r
-    #     print "\n"
-    #     return r
-    #
-    # def _is_authorized(self, request, object=None):
-    #
-    #     if request.method == "GET":
-    #         logger.debug("GET always allowed")
-    #         return True
-    #     elif request.user.has_perm(self.permission):
-    #         logger.debug("user has permissions")
-    #         return True
-    #     else:
-    #         logger.debug("user does not have permissions")
-    #         return False
-
 
 
 
