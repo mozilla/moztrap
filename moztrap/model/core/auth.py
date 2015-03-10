@@ -9,7 +9,9 @@ from django.db.models import Q
 
 from django.contrib.auth.backends import ModelBackend as DjangoModelBackend
 # Permission is imported solely so other places can import it from here
-from django.contrib.auth.models import User as BaseUser, Group, Permission
+from django.contrib.auth.models import (
+    User as BaseUser, Group, Permission
+)
 
 from django_browserid.auth import BrowserIDBackend as BaseBrowserIDBackend
 from preferences import preferences
@@ -59,7 +61,8 @@ class User(BaseUser):
         self.save(force_update=True)
 
 
-    def save(self, force_insert=False, force_update=False, using=None):
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
         if (not force_insert and self.is_superuser and not self.is_active and
             User.objects.filter(is_superuser=True).filter(is_active=True).count() == 1):
             from django.shortcuts import get_object_or_404
@@ -67,9 +70,9 @@ class User(BaseUser):
             # check whether the user is exactly the last `active` superuser or not
             if user.is_active:
                 self.is_active = True
-
         super(User, self).save(force_insert=force_insert,
-            force_update=force_update, using=using)
+            force_update=force_update, using=using,
+            update_fields=update_fields)
 
 
     @property

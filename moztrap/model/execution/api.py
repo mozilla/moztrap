@@ -155,7 +155,7 @@ class RunResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the run to the request's user"""
-
+        request = request or bundle.request
         bundle = super(RunResource, self).obj_create(bundle=bundle, request=request, **kwargs)
         bundle.obj.created_by = request.user
         bundle.obj.save()
@@ -271,7 +271,7 @@ class ResultResource(ModelResource):
         RunCaseVersion for setting the statuses which we want to keep DRY.
 
         """
-
+        request = request or bundle.request
         data = bundle.data.copy()
 
         try:
@@ -303,9 +303,11 @@ class ResultResource(ModelResource):
                 "RunCaseVersion not found for run: {0}, case: {1}, environment: {2}:\nError {3}".format(
                         str(run), str(case), str(env), e))
 
+        self.authorized_create_detail([rcv], bundle)
         data["user"] = request.user
 
-        bundle.obj = rcv.get_result_method(status)(**data)
+        method = rcv.get_result_method(status)
+        bundle.obj = method(**data)
         return bundle
 
 
@@ -395,7 +397,7 @@ class SuiteSelectionResource(BaseSelectionResource):
         """Add some convenience fields to the return JSON."""
 
         suite = bundle.obj
-        bundle.data["suite_id"] = unicode(suite.id)
+        bundle.data["suite_id"] = suite.id
         bundle.data["case_count"] = suite.case_count
         bundle.data["filter_cases"] = filter_url("manage_cases", suite)
 

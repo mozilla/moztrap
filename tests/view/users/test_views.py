@@ -388,7 +388,8 @@ class PasswordResetTest(case.view.ViewTestCase):
         """Get a confirmation message and reset email."""
         self.F.UserFactory.create(email="user@example.com")
 
-        form = self.get().forms["resetpasswordform"]
+        r = self.get()
+        form = r.forms["resetpasswordform"]
         form["email"] = "user@example.com"
 
         res = form.submit(status=302).follow().follow()

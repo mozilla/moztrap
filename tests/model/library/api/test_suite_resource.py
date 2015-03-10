@@ -87,7 +87,7 @@ class SuiteResourceTest(ApiCrudCases):
         actual[u"created_by"] = None
         actual[u"modified_by"] = None
         actual[u"modified_on"] = backend_obj.modified_on.strftime("%Y-%m-%d %H:%M:%S")
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"product"] = unicode(
@@ -139,14 +139,14 @@ class SuiteSelectionResourceTest(case.api.ApiTestCase):
             u"created_by": None,
             u"filter_cases":
                 u"/manage/cases/?filter-suite={0}".format(s.id),
-            u"id": unicode(s.id),
+            u"id": s.id,
             u"name": unicode(s.name),
             u"runs": runs,
             u"product": unicode(
                 self.get_detail_url("product", s.product.id)),
             u"resource_uri": unicode(
                 self.get_detail_url("suiteselection", s.id)),
-            u"suite_id": unicode(s.id)
+            u"suite_id": s.id
         }
 
 

@@ -109,7 +109,14 @@ class BaseCaseVersionForm(forms.Form):
     def save_attachments(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
         delete_ids = set(self.data.getlist("remove-attachment"))
-        caseversion.attachments.filter(id__in=delete_ids).delete()
+
+        # TODO!
+        # With upgrading to Django 1.5, we lost the ability to do a
+        # queryset delete on the m2m field. E.g.
+        # Doing caseversion.attachments.filter(id__in=delete_ids).delete()
+        # entirely stopped working.
+        # This long-form does though. 
+        [x.delete() for x in caseversion.attachments.filter(id__in=delete_ids)]
 
         if self.files:  # if no files, it's a plain dict, has no getlist
             for uf in self.files.getlist("add_attachment"):

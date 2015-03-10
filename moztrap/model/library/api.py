@@ -281,10 +281,11 @@ class CaseVersionResource(MTResource):
         avoid ConcurrencyError by updating cc_version."""
         # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
+        request = request or bundle.request
         bundle = self.check_read_create(bundle)
         try:
             bundle = super(MTResource, self).obj_update(
-                bundle=bundle, request=request, **kwargs)
+                bundle, **kwargs)
             # avoid ConcurrencyError
             bundle.obj.cc_version = self.model.objects.get(
                 id=bundle.obj.id).cc_version
@@ -327,9 +328,11 @@ class BaseSelectionResource(ModelResource):
             **applicable_filters).exclude(**applicable_excludes)
 
 
-    def obj_get_list(self, request=None, **kwargs):
+    def obj_get_list(self, bundle, request=None, **kwargs):
         """Return the list with included and excluded filters, if they exist."""
         filters = {}
+
+        request = request or bundle.request
 
         if hasattr(request, 'GET'):  # pragma: no cover
             # Grab a mutable copy.
@@ -354,10 +357,9 @@ class BaseSelectionResource(ModelResource):
         # Building filters
         applicable_filters = self.build_filters(filters=filters)
         applicable_excludes = self.build_filters(filters=excludes)
-
         base_object_list = self.apply_filters(
             request, applicable_filters, applicable_excludes)
-        return self.apply_authorization_limits(request, base_object_list)
+        return self.authorized_read_list(base_object_list, bundle)
 
 
 
@@ -410,9 +412,9 @@ class CaseSelectionResource(BaseSelectionResource):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
-        bundle.data["case_id"] = unicode(case.id)
-        bundle.data["product_id"] = unicode(case.product_id)
-        bundle.data["product"] = {"id": unicode(case.product_id)}
+        bundle.data["case_id"] = case.id
+        bundle.data["product_id"] = case.product_id
+        bundle.data["product"] = {"id": case.product_id}
         bundle.data["priority"] = unicode(case.priority)
 
         return bundle
@@ -459,9 +461,9 @@ class CaseVersionSelectionResource(BaseSelectionResource):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
-        bundle.data["case_id"] = unicode(case.id)
-        bundle.data["product_id"] = unicode(case.product_id)
-        bundle.data["product"] = {"id": unicode(case.product_id)}
+        bundle.data["case_id"] = case.id
+        bundle.data["product_id"] = case.product_id
+        bundle.data["product"] = {"id": case.product_id}
         bundle.data["productversion_name"] = bundle.obj.productversion.name
         bundle.data["priority"] = unicode(case.priority)
 
@@ -512,7 +514,7 @@ class CaseVersionSearchResource(BaseSelectionResource):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
-        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["case_id"] = case.id
         bundle.data["productversion_name"] = bundle.obj.productversion.name
         bundle.data["priority"] = unicode(case.priority)
 

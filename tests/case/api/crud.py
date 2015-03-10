@@ -256,7 +256,7 @@ class ApiCrudCases(ApiTestCase):
             )
 
         # make sure response included detail uri
-        object_id = self._id_from_uri(res.headers["location"])
+        object_id = self._id_from_uri(res.headers["Location"])
         self.assertIsNotNone(object_id)
 
         # get data from backend
@@ -424,7 +424,7 @@ class ApiCrudCases(ApiTestCase):
         res = self.put(
             self.get_detail_url(self.resource_name, obj_id),
             params=self.credentials,
-            data=fields
+            data=fields,
             )
 
         # make sure object has been updated in the database
@@ -651,6 +651,7 @@ class ApiCrudCases(ApiTestCase):
         obj_id = str(fixture1.id)
 
         # get user with wrong permissions
+        # from django.contrib.auth.models import User
         user = self.F.UserFactory.create(permissions=[self.wrong_permissions])
         apikey = self.F.ApiKeyFactory.create(owner=user)
         credentials = {"username": user.username, "api_key": apikey.key}

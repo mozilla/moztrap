@@ -59,7 +59,7 @@ class AddUserFormTest(case.DBTestCase):
             {
                 "username": "Two",
                 "email": "two@example.com",
-                "is_active": "0",
+                "is_active": "",
                 "groups": [str(g1.id), str(g2.id)]
                 }
             )

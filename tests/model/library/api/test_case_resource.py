@@ -69,7 +69,7 @@ class CaseResourceTest(ApiCrudCases):
         actual = {}
         actual[u"resource_uri"] = unicode(
             self.get_detail_url(self.resource_name, str(backend_obj.id)))
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"product"] = unicode(
             self.get_detail_url("product", str(backend_obj.product.id)))
         actual[u"idprefix"] = unicode(backend_obj.idprefix)
@@ -124,17 +124,17 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
         return {
             u"case": unicode(
                 self.get_detail_url("case", cv.case.id)),
-            u"case_id": unicode(cv.case.id),
+            u"case_id": cv.case.id,
             u"created_by": None,
             u"modified_by": None,
             u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
-            u"id": unicode(cv.id),
+            u"id": cv.id,
             u"name": unicode(cv.name),
             u'priority': unicode(None),
             u"product": {
-                u"id": unicode(cv.productversion.product_id)
+                u"id": cv.productversion.product_id
             },
-            u"product_id": unicode(cv.productversion.product_id),
+            u"product_id": cv.productversion.product_id,
             u"productversion": unicode(
                 self.get_detail_url("productversion", cv.productversion.id)),
             u"resource_uri": unicode(
@@ -251,7 +251,6 @@ class CaseSelectionResourceTest(case.api.ApiTestCase):
 
         data = self._setup_for_one_included_one_not()
         exp_objects = [self.get_exp_obj(data["cv2"])]
-
         self._do_test(
             data["s"].id,
             self.available_param,

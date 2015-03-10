@@ -2,7 +2,7 @@
 URLconf for open web apps
 
 """
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 
 
 

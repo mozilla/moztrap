@@ -67,7 +67,7 @@ class ProductVersionResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         return {
-            u"id": unicode(backend_obj.id),
+            u"id": backend_obj.id,
             u"product": unicode(
                 self.get_detail_url('product', str(backend_obj.product.id))),
             u"version": unicode(backend_obj.version),

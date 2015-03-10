@@ -187,7 +187,7 @@ class AddUserTest(case.view.FormViewTestCase,
         """Can add a user with basic data, including a version."""
         g = self.F.RoleFactory.create()
         form = self.get_form()
-        form["username"] = "someone ùê"
+        form["username"] = u"someone"
         form["email"] = "someone@example.com"
         form["is_active"] = "1"
         form["groups"] = [str(g.id)]
@@ -196,9 +196,9 @@ class AddUserTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_users"))
 
-        res.follow().mustcontain("User 'someone ùê' added.")
+        res.follow().mustcontain("User 'someone' added.")
 
-        u = self.model.User.objects.get(username="someone ùê")
+        u = self.model.User.objects.get(username="someone")
         self.assertEqual(u.email, "someone@example.com")
         self.assertTrue(u.is_active)
         self.assertEqual(u.groups.get(), g)
@@ -252,15 +252,15 @@ class EditUserTest(case.view.FormViewTestCase,
     def test_save_basic(self):
         """Can save updates; redirects to manage users list."""
         form = self.get_form()
-        form["username"] = "new name ùê"
+        form["username"] = "newname"
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_users"))
 
-        res.follow().mustcontain("Saved 'new name ùê'.")
+        res.follow().mustcontain("Saved 'newname'.")
 
         p = self.refresh(self.user)
-        self.assertEqual(unicode(p.username), u"new name ùê")
+        self.assertEqual(unicode(p.username), u"newname")
 
 
     def test_errors(self):

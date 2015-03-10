@@ -65,7 +65,7 @@ class ElementResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         return {
-            u"id": unicode(str(backend_obj.id)),
+            u"id": backend_obj.id,
             u"name": unicode(backend_obj.name),
             u"category": unicode(
                 self.get_detail_url("category", str(backend_obj.category.id))

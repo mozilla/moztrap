@@ -92,18 +92,18 @@ class ProductResourceTest(ApiCrudCases):
         product_uri = self.get_detail_url(
             self.resource_name, str(backend_obj.id))
         actual = {}
-        actual[u"id"] = unicode(str(backend_obj.id))
+        actual[u"id"] = backend_obj.id
         actual[u"name"] = unicode(backend_obj.name)
         actual[u"description"] = unicode(backend_obj.description)
         actual[u"resource_uri"] = unicode(product_uri)
         actual[u"productversions"] = []
         actual[u"productversions"] = [{
-                u"id": unicode(pv.id),
+                u"id": pv.id,
                 u"product": unicode(product_uri),
                 u"version": unicode(pv.version),
                 u"codename": unicode(pv.codename),
                 u"resource_uri": unicode(self.get_detail_url(
-                    'productversion', str(pv.id))),
+                    'productversion', pv.id)),
             } for pv in backend_obj.versions.all()]
 
         return actual

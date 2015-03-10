@@ -496,7 +496,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     def result_pass(self, environment=None, user=None):
         """Create a passed result for this case."""
-        Result.objects.create(
+        return Result.objects.create(
             runcaseversion=self,
             tester=user,
             environment=environment,
@@ -513,19 +513,21 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
         """
         envs = self.environments.all()
 
+        created = []
         for env in envs:
-            Result.objects.create(
+            created.append(Result.objects.create(
                 runcaseversion=self,
                 tester=user,
                 environment=env,
                 status=Result.STATUS.skipped,
                 user=user
-            )
+            ))
+        return created
 
 
     def result_invalid(self, environment=None, comment="", user=None):
         """Create an invalidated result for this case."""
-        Result.objects.create(
+        return Result.objects.create(
             runcaseversion=self,
             tester=user,
             environment=environment,
@@ -537,7 +539,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     def result_block(self, environment=None, comment="", user=None):
         """Create an invalidated result for this case."""
-        Result.objects.create(
+        return Result.objects.create(
             runcaseversion=self,
             tester=user,
             environment=environment,

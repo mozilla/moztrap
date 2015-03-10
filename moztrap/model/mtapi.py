@@ -1,10 +1,12 @@
 from tastypie import http
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import  Authorization
+from tastypie.authorization import DjangoAuthorization
+# from tastypie.authorization import  Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource
 
 from django.http import HttpResponse
+
 from .core.models import ApiKey
 
 import logging
@@ -61,10 +63,50 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         return self.get_key(user, api_key)
 
 
+# # # Debuggin'
+def for_all_methods(decorator):
+    def decorate(cls):
+        for attr in cls.__dict__: # there's propably a better way to do this
+            if callable(getattr(cls, attr)):
+                setattr(cls, attr, decorator(getattr(cls, attr)))
+        return cls
+    return decorate
 
-class MTAuthorization(Authorization):
+from tastypie.exceptions import TastypieError, Unauthorized
+
+def noticecalls(method):
+    def inner(*a, **k):
+        print "EXECUTING (MTAuthorization)", repr(method)
+        try:
+            r= method(*a, **k)
+            print "\tresult was:", r
+            return r
+        except Unauthorized:
+            print "\traised an Unauthorized()"
+            raise
+    return inner
+
+# @for_all_methods(noticecalls)
+
+class MTAuthorization(DjangoAuthorization):
     """Authorization that allows any user to GET but only users with permissions
-    to modify."""
+    to modify.
+
+    For the methods in here, the parent super().some_method will
+    check the permission:
+
+      APP.add_THING
+
+    (for example).
+
+    But we also want to say it's ok if you have the permission:
+
+      APP.manage_THINGs
+
+    Basically, the purpose of this class is to go beyond that you have
+    to have the "add_THING" or "change_THING" or "delete_THING" and also
+    that it's ok that have the "manage_THINGs" permission.
+    """
 
     @property
     def permission(self):
@@ -75,17 +117,52 @@ class MTAuthorization(Authorization):
         logger.debug("desired permission %s" % permission)
         return permission
 
-    def is_authorized(self, request, object=None):
+    def read_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
+            return True
+        return super(MTAuthorization, self).read_detail(object_list, bundle)
 
-        if request.method == "GET":
-            logger.debug("GET always allowed")
+    def create_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
             return True
-        elif request.user.has_perm(self.permission):
-            logger.debug("user has permissions")
+        return super(MTAuthorization, self).create_detail(object_list, bundle)
+
+    def update_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
             return True
-        else:
-            logger.debug("user does not have permissions")
-            return False
+        return super(MTAuthorization, self).update_detail(object_list, bundle)
+
+    def delete_detail(self, object_list, bundle):
+        klass = self.base_checks(bundle.request, bundle.obj.__class__)
+        if klass and bundle.request.user.has_perm(self.permission):
+            return True
+        return super(MTAuthorization, self).delete_detail(object_list, bundle)
+
+
+    # def is_authorized(self, request, object=None):
+    #     r = self._is_authorized(request, object=object)
+    #     print "user", repr(request.user)
+    #     print "permission", repr(self.permission)
+    #     print "method", request.method
+    #     print "RESULT:", r
+    #     print "\n"
+    #     return r
+    #
+    # def _is_authorized(self, request, object=None):
+    #
+    #     if request.method == "GET":
+    #         logger.debug("GET always allowed")
+    #         return True
+    #     elif request.user.has_perm(self.permission):
+    #         logger.debug("user has permissions")
+    #         return True
+    #     else:
+    #         logger.debug("user does not have permissions")
+    #         return False
+
 
 
 
@@ -103,6 +180,7 @@ class MTResource(ModelResource):
         detail_allowed_methods = ["get", "put", "delete"]
         authentication = MTApiKeyAuthentication()
         authorization = MTAuthorization()
+        # authorization = DjangoAuthorization()
         always_return_data = True
         ordering = ['id']
 
@@ -120,8 +198,7 @@ class MTResource(ModelResource):
 
     def check_read_create(self, bundle):
         """Verify that request isn't trying to change a read-create field."""
-
-        obj = self.get_via_uri(bundle.request.path)
+        obj = self.get_via_uri(bundle.request.path, request=bundle.request)
         for fk in self.read_create_fields:
 
             if fk not in bundle.data:
@@ -144,6 +221,7 @@ class MTResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """Set the created_by field for the object to the request's user"""
+        request = request or bundle.request
         # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
         try:
@@ -162,9 +240,10 @@ class MTResource(ModelResource):
         # this try/except logging is more helpful than 500 / 404 errors on the
         # client side
         bundle = self.check_read_create(bundle)
+        request = request or bundle.request
         try:
             bundle = super(MTResource, self).obj_update(
-                bundle=bundle, request=request, **kwargs)
+                bundle, **kwargs)
             bundle.obj.save(user=request.user)
             return bundle
         except Exception:  # pragma: no cover
@@ -172,22 +251,27 @@ class MTResource(ModelResource):
             raise  # pragma: no cover
 
 
-    def obj_delete(self, request=None, **kwargs):
+    def obj_delete(self, bundle, request=None, **kwargs):
         """Delete the object.
         The DELETE request may include permanent=True/False in its params
         parameter (ie, along with the user's credentials). Default is False.
         """
         # this try/except logging is more helpful than 500 / 404 errors on
         # the client side
+        request = request or bundle.request
+
         try:
-            permanent = request._request.dicts[1].get("permanent", False)
+            permanent = request.REQUEST.get('permanent', False)
+            # permanent = request._request.dicts[1].get("permanent", False)
             # pull the id out of the request's path
             obj_id = self._id_from_uri(request.path)
             obj = self.model.objects.get(id=obj_id)
+            bundle.obj = obj
+            self.authorized_delete_detail([obj], bundle)
             obj.delete(user=request.user, permanent=permanent)
         except Exception:  # pragma: no cover
             logger.exception("error deleting %s", request.path)  # pragma: no cover
-            raise  # pragma: no cover
+            raise
 
 
     def delete_detail(self, request, **kwargs):

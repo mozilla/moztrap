@@ -72,7 +72,7 @@ class EnvironmentResourceTest(ApiCrudCases):
         Note: both keys and data should be in unicode
         """
         return {
-            u"id": unicode(str(backend_obj.id)),
+            u"id": backend_obj.id,
             u"profile": unicode(self.get_detail_url("profile", str(backend_obj.profile.id))),
             u"elements": [unicode(
                 self.get_detail_url("element", str(elem.id))
