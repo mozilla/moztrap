@@ -266,9 +266,6 @@ var MT = (function (MT, $) {
         // googleanalytics.js
         MT.googleAnalyticsAjax();
 
-        // general.js
-        MT.readOnlyMode();
-
     });
 
     $(window).load(function () {

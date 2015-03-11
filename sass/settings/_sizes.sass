@@ -4,40 +4,40 @@ $ratio: 1.5
 // Variants ------------------------------------------------------------------
 
 $norm         : 1
-$xxxsmall     : ms(-4,$norm)
-$xxsmall      : ms(-3,$norm)
-$xsmall       : ms(-2,$norm)
-$small        : ms(-1,$norm)
-$small-norm   : (ms(-1,$norm) + $norm)/2
-$large-norm   : (ms(1,$norm) + $norm)/2
-$med          : ms(1,$norm)
-$large        : ms(2,$norm)
-$xlarge       : ms(3,$norm)
-$xxlarge      : ms(5,$norm)
-$xxxlarge     : ms(8,$norm)
+$xxxsmall     : ms(-4,$norm,$ratio)
+$xxsmall      : ms(-3,$norm,$ratio)
+$xsmall       : ms(-2,$norm,$ratio)
+$small        : ms(-1,$norm,$ratio)
+$small-norm   : (ms(-1,$norm,$ratio) + $norm)/2
+$large-norm   : (ms(1,$norm,$ratio) + $norm)/2
+$med          : ms(1,$norm,$ratio)
+$large        : ms(2,$norm,$ratio)
+$xlarge       : ms(3,$norm,$ratio)
+$xxlarge      : ms(5,$norm,$ratio)
+$xxxlarge     : ms(8,$norm,$ratio)
 
 $normem       : 1em
-$medem        : ms(1,$normem)
-$smallem      : ms(-1,$normem)
-$xsmallem     : ms(-2,$normem)
-$xxsmallem    : ms(-3,$normem)
-$xxxsmallem   : ms(-4,$normem)
-$small-normem : (ms(-1,$normem) + $normem)/2
-$large-normem : (ms(1,$normem) + $normem)/2
-$largeem      : ms(2,$normem)
-$xlargeem     : ms(3,$normem)
-$xxlargeem    : ms(5,$normem)
-$xxxlargeem   : ms(8,$normem)
+$medem        : ms(1,$normem,$ratio)
+$smallem      : ms(-1,$normem,$ratio)
+$xsmallem     : ms(-2,$normem,$ratio)
+$xxsmallem    : ms(-3,$normem,$ratio)
+$xxxsmallem   : ms(-4,$normem,$ratio)
+$small-normem : (ms(-1,$normem,$ratio) + $normem)/2
+$large-normem : (ms(1,$normem,$ratio) + $normem)/2
+$largeem      : ms(2,$normem,$ratio)
+$xlargeem     : ms(3,$normem,$ratio)
+$xxlargeem    : ms(5,$normem,$ratio)
+$xxxlargeem   : ms(8,$normem,$ratio)
 
 $normpx       : $base-size
-$medpx        : ms(1)
-$smallpx      : ms(-1)
-$xsmallpx     : ms(-2)
-$xxsmallpx    : ms(-3)
-$xxxsmallpx   : ms(-4)
-$small-normpx : (ms(-1,$normpx) + $normpx)/2
-$large-normpx : (ms(1,$normpx) + $normpx)/2
-$largepx      : ms(2)
-$xlargepx     : ms(3)
-$xxlargepx    : ms(5)
-$xxxlargepx   : ms(8)
+$medpx        : ms(1,$base-size,$ratio)
+$smallpx      : ms(-1,$base-size,$ratio)
+$xsmallpx     : ms(-2,$base-size,$ratio)
+$xxsmallpx    : ms(-3,$base-size,$ratio)
+$xxxsmallpx   : ms(-4,$base-size,$ratio)
+$small-normpx : (ms(-1,$normpx,$ratio) + $normpx)/2
+$large-normpx : (ms(1,$normpx,$ratio) + $normpx)/2
+$largepx      : ms(2,$base-size,$ratio)
+$xlargepx     : ms(3,$base-size,$ratio)
+$xxlargepx    : ms(5,$base-size,$ratio)
+$xxxlargepx   : ms(8,$base-size,$ratio)

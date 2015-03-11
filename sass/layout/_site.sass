@@ -36,47 +36,11 @@ body > div
     +pre($logo-width,$brand-width)
     text-transform: none
 
-#read-only-banner
-  background: rgba(0, 0, 0, 0.7)
-  border: 1px solid #000
-  +border-radius(6px, 6px)
-  +box-shadow(rgba(0, 0, 0, 0.2), 0 0 8px)
-  color: #fff
-  left: 32px
-  padding: 12px 20px 12px 30px
-  position: fixed
-  text-shadow: 1px 1px 1px #000
-  top: 32px
-  z-index: 9999
+#read-only-message
+  border: 2px solid red
+  color: darkred
+  padding: 12px 20px 12px 20px
 
-  a,
-  a:visited
-    color: #ffcc00
-
-  .close-button
-    background: #000
-    border: 2px solid #fff
-    +border-radius(15px, 15px)
-    +box-shadow(rgba(0, 0, 0, 0.2), 0 0 8px)
-    cursor: pointer
-    height: 24px
-    left: -8px
-    position: absolute
-    text-indent: -9999px
-    top: -8px
-    width: 24px
-
-    &:before
-      content: '\2715'
-      font-size: 22px
-      height: 24px
-      left: 0
-      line-height: 22px
-      position: absolute
-      text-align: center
-      text-indent: 0
-      top: 0
-      width: 24px
 
 [role="main"]
   +box-shadow($blue-light 0 0 rhythm(.25))
