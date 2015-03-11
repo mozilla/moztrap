@@ -16,7 +16,7 @@ django-messages-ui==0.1.4
 django-ajax-loading-overlay==0.1.1
 django-sha2==0.4.1
 django-session-csrf==0.5
-django-registration==0.8-alpha-1
+django-registration==1.0
 django-ratelimit==0.1.post1
 markdown2==1.1.1
 certifi==0.0.4

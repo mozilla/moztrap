@@ -134,9 +134,11 @@ INSTALLED_APPS = [
     "south",
     "preferences",
     "raven.contrib.django.raven_compat",
+    "moztrap.model.auth",
+    "moztrap.model.environments",
     "moztrap.model.core",
     "moztrap.model.library",
-    "moztrap.model.environments",
+
     "moztrap.model.execution",
     "moztrap.model.attachments",
     "moztrap.model.tags",

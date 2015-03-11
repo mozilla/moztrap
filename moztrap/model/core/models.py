@@ -12,7 +12,7 @@ from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
 from ..mtmodel import MTModel, MTManager, TeamModel
-from .auth import Role, User
+from ..auth.models import Role, User
 
 
 
