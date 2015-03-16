@@ -103,7 +103,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         # super's save expects self.users_cache to be set.
         self.users_cache = model.User.objects.filter(
             email__iexact=email, is_active=True)
-            
+
         return super(PasswordResetForm, self).save(*args, **kwargs)
 
 
@@ -161,15 +161,15 @@ class CaptchaAuthenticationForm(auth_forms.AuthenticationForm):
     forms in two tabs and then tries to use the first one.
 
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request=None, *args, **kwargs):
         """Initialize form, including captcha question and expected answer."""
         super(CaptchaAuthenticationForm, self).__init__(*args, **kwargs)
 
         # get previous expected answer before generating new one
-        self.captcha_answer = self.request.session.get(CAPTCHA_SESSION_KEY)
+        self.captcha_answer = request.session.get(CAPTCHA_SESSION_KEY)
 
         # only add the captcha field if this request hit the rate limit
-        if getattr(self.request, "limited", False):
+        if getattr(request, "limited", False):
             a, b = random.randint(1, 9), random.randint(1, 9)
             # avoid negative answers
             if b > a:
@@ -177,7 +177,7 @@ class CaptchaAuthenticationForm(auth_forms.AuthenticationForm):
             opname, op = random.choice(OPERATORS.items())
 
             # store the expected answer in the session
-            self.request.session[CAPTCHA_SESSION_KEY] = op(a, b)
+            request.session[CAPTCHA_SESSION_KEY] = op(a, b)
 
             self.fields["captcha"] = forms.IntegerField(
                 widget=forms.TextInput,
