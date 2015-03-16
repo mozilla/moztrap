@@ -227,7 +227,7 @@ class HasEnvironmentsModel(models.Model):
 
     """
     environments = models.ManyToManyField(
-        'moztrap.model.environments.Environment', related_name="%(class)s")
+        'environments.Environment', related_name="%(class)s")
 
 
     class Meta:
