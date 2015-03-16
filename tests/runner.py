@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.test import TestCase, TransactionTestCase
-from django.test.simple import DjangoTestSuiteRunner, reorder_suite
+from django.test.simple import DjangoTestSuiteRunner
+from django.test.runner import  reorder_suite
 from django.utils.importlib import import_module
 from django.utils.unittest.loader import defaultTestLoader
 
