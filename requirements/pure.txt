@@ -31,7 +31,7 @@ raven==3.4.1
 # only needed for running the tests
 mock==0.7.2
 WebTest==1.4.0
-django-webtest==1.6.1
+django-webtest==1.7.7
 WebOb==1.2.2
 factory_boy==1.0.4.moz2
 django-inmemorystorage==0.1.1
