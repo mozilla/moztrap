@@ -3,7 +3,7 @@ Management forms for tags.
 
 """
 from django.core.exceptions import ValidationError
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from .... import model
 from model_utils import Choices

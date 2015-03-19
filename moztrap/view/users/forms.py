@@ -9,7 +9,7 @@ from django.conf import settings
 
 from django.contrib.auth import forms as auth_forms
 
-import floppyforms as forms
+import floppyforms.__future__ as forms
 from registration import forms as registration_forms
 
 from moztrap import model
