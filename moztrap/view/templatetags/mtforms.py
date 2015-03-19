@@ -2,10 +2,10 @@
 Form-rendering tags and filters.
 
 """
-from django import forms
 from django import template
 from django.template.loader import render_to_string
 
+import floppyforms.__future__ as forms
 
 
 register = template.Library()
@@ -93,7 +93,7 @@ def attr(boundfield, attrval):
     try:
         attr, val = attrval.split(":", 1)
     except ValueError:
-        attr, val = attrval, False
+        attr, val = attrval, True
 
     boundfield.field.widget.attrs[attr] = val
     return boundfield
