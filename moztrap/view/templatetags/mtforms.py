@@ -47,7 +47,11 @@ def value_text(boundfield):
     """Return the value for given boundfield as human-readable text."""
     val = boundfield.value()
     # If choices is set, use the display label
-    return unicode(dict(getattr(boundfield.field, "choices", [])).get(val, val))
+    if isinstance(val, list):
+        # can't possibly be a thing
+        return ''
+    choices = getattr(boundfield.field, "choices", [])
+    return unicode(dict(choices).get(val, val))
 
 
 @register.filter
