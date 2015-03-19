@@ -5,7 +5,7 @@ Management forms for cases.
 from django.core.urlresolvers import reverse
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.db.models import Max
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from .... import model
 from model_utils import Choices
@@ -115,7 +115,7 @@ class BaseCaseVersionForm(forms.Form):
         # queryset delete on the m2m field. E.g.
         # Doing caseversion.attachments.filter(id__in=delete_ids).delete()
         # entirely stopped working.
-        # This long-form does though. 
+        # This long-form does though.
         [x.delete() for x in caseversion.attachments.filter(id__in=delete_ids)]
 
         if self.files:  # if no files, it's a plain dict, has no getlist

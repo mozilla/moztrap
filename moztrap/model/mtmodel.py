@@ -348,7 +348,7 @@ class NotDeletedCountColumn(object):
             field = "{0}.{1}".format(table, field)
             deleted_on = "{0}.{1}".format(table, deleted_on)
         return "CASE WHEN {0} IS NULL THEN {1} ELSE NULL END".format(
-            deleted_on, field)
+           deleted_on, field), []
 
 
 
