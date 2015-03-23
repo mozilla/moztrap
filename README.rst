@@ -46,5 +46,8 @@ you can see moztrap in action at
 
 `https://moztrap.allizom.org`_ Stage site
 
+`https://moztrap-dev.allizom.org`_ Dev site
+
 .. _https://moztrap.mozilla.org: :https://moztrap.mozilla.org
 .. _https://moztrap.allizom.org: :https://moztrap.allizom.org
+.. _https://moztrap-dev.allizom.org: :https://moztrap-dev.allizom.org
