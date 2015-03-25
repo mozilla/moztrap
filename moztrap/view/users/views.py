@@ -16,7 +16,7 @@ from django.contrib import messages
 
 from django_browserid.views import Verify as BaseVerify
 from ratelimit.decorators import ratelimit
-from registration import views as registration_views
+from registration.backends.default import views as registration_views
 from session_csrf import anonymous_csrf
 
 from moztrap import model
@@ -113,10 +113,10 @@ def password_reset(request):
 
 
 @anonymous_csrf
-def password_reset_confirm(request, uidb36, token):
+def password_reset_confirm(request, uidb64, token):
     response = auth_views.password_reset_confirm(
         request,
-        uidb36=uidb36,
+        uidb64=uidb64,
         token=token,
         template_name="users/password_reset_confirm.html",
         set_password_form=forms.SetPasswordForm,
@@ -129,39 +129,36 @@ def password_reset_confirm(request, uidb36, token):
     return response
 
 
+class ActivationView(registration_views.ActivationView):
 
-def activate(request, activation_key):
-    response = registration_views.activate(
-        request,
-        activation_key=activation_key,
-        backend="registration.backends.default.DefaultBackend",
-        template_name="users/activate.html",
-        success_url=reverse("home"),
+    template_name = "users/activate.html"
+
+    def activate(self, request, activation_key):
+        activated_user = super(ActivationView, self).activate(
+            request, activation_key
         )
-
-    if response.status_code == 302:
         messages.success(request, "Account activated; now you can login.")
+        return activated_user
 
-    return response
+    def get_success_url(self, request, user):
+        return reverse("home")
 
 
+class RegistrationView(registration_views.RegistrationView):
 
-@anonymous_csrf
-def register(request):
-    response = registration_views.register(
-        request,
-        backend="registration.backends.default.DefaultBackend",
-        form_class=forms.RegistrationForm,
-        template_name="users/registration_form.html",
-        success_url=reverse("home"),
+    form_class = forms.RegistrationForm
+    template_name = "users/registration_form.html"
+
+    def register(self, request, **cleaned_data):
+        new_user = super(RegistrationView, self).register(
+            request, **cleaned_data
         )
-
-    if response.status_code == 302:
         messages.success(
             request, "Check your email for an account activation link.")
+        return new_user
 
-    return response
-
+    def get_success_url(self, request, user):
+        return reverse("home")
 
 
 @login_required

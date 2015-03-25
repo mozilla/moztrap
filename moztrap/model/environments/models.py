@@ -226,7 +226,8 @@ class HasEnvironmentsModel(models.Model):
     classmethod.
 
     """
-    environments = models.ManyToManyField(Environment, related_name="%(class)s")
+    environments = models.ManyToManyField(
+        'environments.Environment', related_name="%(class)s")
 
 
     class Meta:

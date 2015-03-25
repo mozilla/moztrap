@@ -5,6 +5,9 @@ Account-related URLs.
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
+from session_csrf import anonymous_csrf
+
+from . import views
 
 
 urlpatterns = patterns(
@@ -16,7 +19,7 @@ urlpatterns = patterns(
     url(r"^logout/", "logout", name="auth_logout"),
     url(r"^password/change/$", "password_change", name="auth_password_change"),
     url(r"^password/reset/$", "password_reset", name="auth_password_reset"),
-    url(r"^reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+    url(r"^reset/(?P<uidb64>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
         "password_reset_confirm",
         name="auth_password_reset_confirm"),
     url(r"^set_name/$", "set_username", name="auth_set_username"),
@@ -29,10 +32,10 @@ urlpatterns = patterns(
     # that way it can return a sensible "invalid key" message instead of a
     # confusing 404.
     url(r"^activate/(?P<activation_key>\w+)/$",
-        "activate",
+        anonymous_csrf(views.ActivationView.as_view()),
         name="registration_activate"),
     url(r"^register/$",
-        "register",
+        anonymous_csrf(views.RegistrationView.as_view()),
         name="registration_register"),
     url(r"^register/closed/$",
         TemplateView.as_view(template_name="users/registration_closed.html"),

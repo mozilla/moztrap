@@ -5,7 +5,7 @@ Forms for test execution.
 import json
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from ... import model
 

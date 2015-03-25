@@ -3,7 +3,7 @@ Management forms for suites.
 
 """
 from django.core.exceptions import ValidationError
-import floppyforms as forms
+import floppyforms.__future__ as forms
 from model_utils import Choices
 
 from moztrap import model

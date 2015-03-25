@@ -386,7 +386,10 @@ class PasswordResetTest(case.view.ViewTestCase):
 
     def test_reset_password(self):
         """Get a confirmation message and reset email."""
-        self.F.UserFactory.create(email="user@example.com")
+        self.F.UserFactory.create(
+            email="user@example.com",
+            password="somethingusable"
+        )
 
         r = self.get()
         form = r.forms["resetpasswordform"]
@@ -419,8 +422,10 @@ class PasswordResetConfirmTest(PasswordStrengthTests, case.view.ViewTestCase):
     def setUp(self):
         """Create a user."""
         super(PasswordResetConfirmTest, self).setUp()
-        self.user = self.F.UserFactory.create(email="user@example.com")
-
+        self.user = self.F.UserFactory.create(
+            email="user@example.com",
+            password="somethingusable")
+        assert self.user.has_usable_password()
 
     @property
     def url(self):

@@ -14,9 +14,6 @@ from django.db.models.signals import class_prepared
 
 from model_utils import Choices
 
-from .core.auth import User
-
-
 
 class ConcurrencyError(Exception):
     pass
@@ -162,14 +159,14 @@ class MTModel(models.Model):
     """
     created_on = models.DateTimeField(db_index=True, default=utcnow)
     created_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
+        'auth.User', blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
     modified_on = models.DateTimeField(db_index=True, default=utcnow)
     modified_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
+        'auth.User', blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
     deleted_on = models.DateTimeField(db_index=True, blank=True, null=True)
     deleted_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
+        'auth.User', blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
     # for optimistic concurrency control
     cc_version = models.IntegerField(default=0)
@@ -351,7 +348,7 @@ class NotDeletedCountColumn(object):
             field = "{0}.{1}".format(table, field)
             deleted_on = "{0}.{1}".format(table, deleted_on)
         return "CASE WHEN {0} IS NULL THEN {1} ELSE NULL END".format(
-            deleted_on, field)
+           deleted_on, field), []
 
 
 
@@ -368,7 +365,7 @@ class TeamModel(models.Model):
 
     """
     has_team = models.BooleanField(default=False)
-    own_team = models.ManyToManyField(User, blank=True)
+    own_team = models.ManyToManyField('auth.User', blank=True)
 
 
     @property

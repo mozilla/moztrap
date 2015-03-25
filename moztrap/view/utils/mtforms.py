@@ -103,7 +103,8 @@ class MTModelFormMetaclass(forms.models.ModelFormMetaclass):
         if meta:
             fields = getattr(meta, "fields", None)
             if fields is not None and "cc_version" not in fields:
-                fields.append("cc_version")
+                if fields != "__all__":
+                    fields.append("cc_version")
         return super(MTModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
 
 
@@ -357,10 +358,10 @@ class AutocompleteInput(floppyforms.TextInput):
         super(AutocompleteInput, self).__init__(*args, **kwargs)
 
 
-    def render(self, name, value, attrs=None, extra_context={}):
+    def render(self, name, value, attrs=None, **kwargs):
         attrs = attrs or {}
         attrs["data-autocomplete-url"] = (
             self.url() if callable(self.url) else self.url)
         attrs["autocomplete"] = "off"
         return super(AutocompleteInput, self).render(
-            name, value, attrs, extra_context)
+            name, value, attrs, **kwargs)

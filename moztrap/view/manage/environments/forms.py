@@ -2,7 +2,7 @@
 Manage forms for environments.
 
 """
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from .... import model
 
@@ -40,9 +40,10 @@ class EnvironmentElementSelectMultiple(mtforms.MTSelectMultiple):
             *args, **kwargs)
         # maps category to list of available elements
         available = {}
-        for c in ctx["choices"]:
-            element = c[1].obj
-            available.setdefault(element.category, []).append(element)
+        for _, choices in ctx["optgroups"]:
+            for c in choices:
+                element = c[1].obj
+                available.setdefault(element.category, []).append(element)
         # ensure we also include empty categories
         categories = list(model.Category.objects.order_by("name"))
         for category in categories:

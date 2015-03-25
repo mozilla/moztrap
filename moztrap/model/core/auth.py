@@ -28,6 +28,8 @@ class User(BaseUser):
     class Meta:
         proxy = True
 
+    def __eq__(self, other_user):
+        return self.id == other_user.id
 
     def delete(self, user=None):
         """

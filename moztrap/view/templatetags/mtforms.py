@@ -2,10 +2,10 @@
 Form-rendering tags and filters.
 
 """
-from django import forms
 from django import template
 from django.template.loader import render_to_string
 
+import floppyforms.__future__ as forms
 
 
 register = template.Library()
@@ -47,7 +47,11 @@ def value_text(boundfield):
     """Return the value for given boundfield as human-readable text."""
     val = boundfield.value()
     # If choices is set, use the display label
-    return unicode(dict(getattr(boundfield.field, "choices", [])).get(val, val))
+    if isinstance(val, list):
+        # can't possibly be a thing
+        return ''
+    choices = getattr(boundfield.field, "choices", [])
+    return unicode(dict(choices).get(val, val))
 
 
 @register.filter
@@ -89,7 +93,7 @@ def attr(boundfield, attrval):
     try:
         attr, val = attrval.split(":", 1)
     except ValueError:
-        attr, val = attrval, False
+        attr, val = attrval, True
 
     boundfield.field.widget.attrs[attr] = val
     return boundfield

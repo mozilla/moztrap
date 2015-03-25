@@ -2,7 +2,7 @@
 Management forms for products.
 
 """
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from .... import model
 
