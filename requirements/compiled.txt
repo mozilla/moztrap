@@ -9,4 +9,3 @@ coverage==3.5.1
 
 # needed for Tastypie to be able to talk XML
 lxml==3.4.2
-defusedxml==0.4.1

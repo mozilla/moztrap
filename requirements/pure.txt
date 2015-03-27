@@ -52,3 +52,6 @@ MarkupSafe==0.19
 
 # For CORS
 django-cors-headers==1.0.0
+
+# needed for Tastypie to be able to talk XML
+defusedxml==0.4.1
