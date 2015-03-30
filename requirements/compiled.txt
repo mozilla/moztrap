@@ -6,3 +6,6 @@ MySQL-python==1.2.5
 
 # only needed for getting test code coverage
 coverage==3.5.1
+
+# needed for Tastypie to be able to talk XML
+lxml==3.4.2
