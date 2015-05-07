@@ -1,16 +1,14 @@
 Release Notes
 =============
 
-Current - 1.5.4
-----------------
+Current
+-------
 
-Version 1.5.4
-~~~~~~~~~~~~~
-*release date - 8/27/14
+master
+~~~~~~
+*release date - 5/7/15
 
-* Upgrade django to latest security patch
-* Better transaction handling for creating new Product Versions
-* Some admin improvements
+* Upgrade django to 1.6
 
 
 Previous
