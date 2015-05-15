@@ -12,6 +12,7 @@ import operator
 from django.core.urlresolvers import reverse, resolve
 from django.utils.datastructures import MultiValueDict
 from django.db.models import Q
+from django.core.cache import cache
 
 
 
@@ -455,7 +456,19 @@ class ModelFilter(BaseChoicesFilter):
     def get_choices(self):
         """Get the options for this filter."""
         # always clone to get new data; filter instances are persistent
-        self._opts = [(obj.pk, self.label_func(obj)) for obj in self.queryset.all()]
+
+        # Because these options rarely change we can confidently cache
+        # them as lists of tuples.
+        # This cache key gets invalidated on the various signals set
+        # up in moztrap.model.__init__.
+        cache_key = 'modelfilter-choices-%s' % (self.queryset.model._meta,)
+        opts = cache.get(cache_key)
+        if opts is None:
+            opts = [
+                (obj.pk, self.label_func(obj)) for obj in self.queryset.all()
+            ]
+            cache.set(cache_key, opts, 60 * 60)
+        self._opts = opts
         return self._opts
 
 

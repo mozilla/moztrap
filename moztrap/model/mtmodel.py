@@ -11,6 +11,7 @@ from django.db import models, router
 from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 from django.db.models.signals import class_prepared
+from django.core.cache import cache
 
 from model_utils import Choices
 
@@ -178,6 +179,10 @@ class MTModel(models.Model):
     # ...but "objects", for use in most code, returns only not-deleted
     objects = MTManager(show_deleted=False)
 
+    @classmethod
+    def delete_modelfilter_choices_cache(cls, model):
+        cache_key = 'modelfilter-choices-%s' % (model._meta,)
+        cache.delete(cache_key)
 
     def save(self, *args, **kwargs):
         """
@@ -187,6 +192,8 @@ class MTModel(models.Model):
         out-of-date version is being saved.
 
         """
+        self.delete_modelfilter_choices_cache(self)
+
         if not kwargs.pop("notrack", False):
             user = kwargs.pop("user", None)
             now = utcnow()
