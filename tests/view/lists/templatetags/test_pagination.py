@@ -5,6 +5,7 @@ Tests for pagination template tags and filters.
 from mock import Mock
 
 from django import template
+from django.core.exceptions import SuspiciousOperation
 
 from tests import case
 
@@ -21,16 +22,33 @@ class PaginateTest(case.DBTestCase):
             "{% for obj in pager.objects %}{{ obj }} {% endfor %}")
 
         request = Mock()
-        request.GET = {"pagesize": 3, "pagenumber": 2}
+        request.GET = {"pagesize": 20, "pagenumber": 2}
 
-        for i in range(1, 7):
+        for i in range(1, 25):
             self.F.TagFactory.create(name=str(i))
         qs = Tag.objects.all()
 
         output = tpl.render(
             template.Context({"request": request, "queryset": qs}))
 
-        self.assertEqual(output, "4 5 6 ")
+        self.assertEqual(output, "21 22 23 24 ")
+
+    def test_paginate_outsize_known_size(self):
+        from moztrap.model.tags.models import Tag
+
+        tpl = template.Template(
+            "{% load pagination %}{% paginate queryset as pager %}"
+            "{% for obj in pager.objects %}{{ obj }} {% endfor %}")
+
+        request = Mock()
+        request.GET = {"pagesize": 99, "pagenumber": 1}
+
+        qs = Tag.objects.all()
+        self.assertRaises(
+            SuspiciousOperation,
+            tpl.render,
+            template.Context({"request": request, "queryset": qs})
+        )
 
 
 class FilterTest(case.TestCase):

@@ -4,6 +4,7 @@ List pagination utilities.
 """
 import math
 from django.db.utils import DatabaseError
+from django.core.exceptions import SuspiciousOperation
 from ..utils.querystring import update_querystring
 
 
@@ -25,6 +26,16 @@ def from_request(request):
         request.GET.get("pagesize", default_pagesize), default_pagesize)
     pagenumber = positive_integer(
         request.GET.get("pagenumber", 1), 1)
+
+    # To avoid causing page rendering with massive querysets,
+    # as soon as possible we disallow setting a pagesize that is too
+    # big as it would cause too expensive rendering.
+    if pagesize not in PAGESIZES:
+        # If you raise a SuspiciousOperation in runtime, Django
+        # will automatically respond with a 400 Bad Request to the
+        # whole request.
+        raise SuspiciousOperation("Unrecognized pagination size")
+
     return pagesize, pagenumber
 
 

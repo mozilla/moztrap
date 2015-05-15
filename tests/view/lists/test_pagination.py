@@ -4,6 +4,8 @@ Tests for pagination utilities.
 """
 from mock import Mock
 
+from django.core.exceptions import SuspiciousOperation
+
 from tests import case
 
 from tests.utils import Url
@@ -43,8 +45,19 @@ class TestFromRequest(case.DBTestCase):
 
     def test_negative(self):
         """Out-of-bounds numbers are constrained to bounds."""
-        self._check({"pagesize": 15, "pagenumber": -2}, (15, 1))
+        self._check({"pagesize": 20, "pagenumber": -2}, (20, 1))
 
+
+    def test_valid_number_but_not_allowed(self):
+        """Value that is a sane number but not in the
+        PAGESIZES list"""
+        request = Mock()
+        request.GET = {"pagesize": 99, "pagenumber": 1}
+        self.assertRaises(
+            SuspiciousOperation,
+            self.func,
+            request
+        )
 
 
 class TestPagesizeUrl(case.TestCase):
