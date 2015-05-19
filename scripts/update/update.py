@@ -59,7 +59,5 @@ def update(ctx):
 
 @task
 def deploy(ctx):
-    pre_update()
-    update()
     checkin_changes()
     deploy_app()
