@@ -20,7 +20,6 @@ class CasesTest(case.view.manage.ListViewTestCase,
     form_id = "manage-cases-form"
     perm = "manage_cases"
 
-
     @property
     def factory(self):
         """The model factory for this manage list."""

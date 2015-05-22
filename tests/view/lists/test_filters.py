@@ -2,9 +2,11 @@
 Tests for queryset-filtering.
 
 """
-from django.http import QueryDict
+
 from mock import Mock
 
+from django.http import QueryDict
+from django.core.cache import cache
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
 from django.utils.datastructures import MultiValueDict
@@ -559,6 +561,11 @@ class ChoicesFilterTest(FiltersTestCase):
 
 class ModelFilterTest(FiltersTestCase):
     """Tests for ModelFilter."""
+
+    def setUp(self):
+        super(ModelFilterTest, self)
+        cache.clear()
+
     @property
     def queryset(self):
         """Mock "queryset" of instances with numeric id and unicode repr."""
@@ -569,6 +576,7 @@ class ModelFilterTest(FiltersTestCase):
         o2.pk = 2
         o2.__unicode__ = lambda self: "two"
         qs = Mock()
+        qs.model._meta = 'some.Model'
         qs.__iter__ = lambda self: iter([o1, o2])
         qs.all.return_value = qs
         return qs
