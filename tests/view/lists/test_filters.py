@@ -563,7 +563,7 @@ class ModelFilterTest(FiltersTestCase):
     """Tests for ModelFilter."""
 
     def setUp(self):
-        super(ModelFilterTest, self)
+        super(ModelFilterTest, self).setUp()
         cache.clear()
 
     @property
