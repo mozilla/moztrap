@@ -181,8 +181,10 @@ class MTModel(models.Model):
 
     @classmethod
     def delete_modelfilter_choices_cache(cls, model):
-        cache_key = 'modelfilter-choices-%s' % (model._meta,)
-        cache.delete(cache_key)
+        cache_keys = 'modelfilter-choices-%s' % (model._meta,)
+        for cache_key in cache.get(cache_keys, []):
+            cache.delete(cache_key)
+        cache.delete(cache_keys)
 
     def save(self, *args, **kwargs):
         """
