@@ -9,7 +9,7 @@ from ..utils.querystring import update_querystring
 
 
 
-PAGESIZES = [10, 20, 50, 100]
+PAGESIZES = [10, 20, 50, 100, 1000]
 DEFAULT_PAGESIZE = 20
 
 
