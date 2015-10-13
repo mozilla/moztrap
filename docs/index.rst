@@ -3,7 +3,7 @@
 Welcome to MozTrap
 ==================
 
-MozTrap is a test case manager by Mozilla.  We hope you like it.
+MozTrap is a test case manager by Mozilla.  We hope you like it...
 
 Useful links
 ------------
