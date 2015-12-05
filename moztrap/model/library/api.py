@@ -315,6 +315,50 @@ class CaseVersionResource(MTResource):
 
         return bundle
 
+    def apply_filters(self,
+        request, applicable_filters, ands=[]):
+        """Apply included and excluded filters to query."""
+        base_list = self.get_object_list(request).filter(**applicable_filters)
+        for and_filter in ands:
+            applicable_filter = self.build_filters(filters=and_filter)
+            base_list = base_list.filter(**applicable_filter)
+
+        return base_list
+
+    def obj_get_list(self, bundle, request=None, **kwargs):
+        """Return the list with included and excluded filters, if they exist."""
+        filters = {}
+
+        request = request or bundle.request
+
+        if hasattr(request, 'GET'):  # pragma: no cover
+            # Grab a mutable copy.
+            filters = request.GET.copy()
+
+        # Update with the provided kwargs.
+        filters.update(kwargs)
+
+        # Splitting out filtering and excluding items
+        new_filters = {}
+        ands = []
+        for key, values in filters.iterlists():
+            # If the given key is filtered by ``not equal`` token, exclude it
+            if key.endswith('__and'):
+                key = key[:-5]  # Stripping out trailing ``__ne``
+                for value in values:
+                    ands.append({key: value})
+            else:
+                new_filters[key] = values[-1]
+
+        filters = new_filters
+
+        # Building filters
+        applicable_filters = self.build_filters(filters=filters)
+        #ands = map(self.build_filter(filters=x), ands)
+        base_object_list = self.apply_filters(
+            request, applicable_filters, ands)
+        return self.authorized_read_list(base_object_list, bundle)
+
 
 
 class BaseSelectionResource(ModelResource):

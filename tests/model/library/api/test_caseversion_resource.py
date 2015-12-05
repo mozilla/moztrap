@@ -60,7 +60,6 @@ class CaseVersionResourceTest(ApiCrudCases):
             u"status": unicode("draft"),
             u"environments": [],
             u"tags": [],
-#            u"attachments": [],
             u"steps": [],
         }
 
@@ -103,8 +102,6 @@ class CaseVersionResourceTest(ApiCrudCases):
                 ) for env in backend_obj.environments.all()]
         actual[u"tags"] = [unicode(self.get_detail_url("tag", str(tag.id))
                                   ) for tag in backend_obj.tags.all()]
-#        actual[u"attachments"] = [unicode(self.get_detail_url("attachment",
-#             str(attch.id))) for attch in backend_obj.attachments.all()]
         actual[u"steps"] = [unicode(
                     self.get_detail_url("casestep", str(step.id)))
              for step in backend_obj.steps.all()]
@@ -150,6 +147,97 @@ class CaseVersionResourceTest(ApiCrudCases):
 
         self.assertEqual(res.text, self._product_mismatch_message)
 
+
+    def get_exp_obj(self, cv, tags=[]):
+        """Return an expected caseversion object with fields filled."""
+
+        exp_tags = []
+        for t in tags:
+            exp_tag = {
+                u"id": int(t.id),
+                u"name": unicode(t.name),
+                u"description": unicode(t.description),
+                u"resource_uri": unicode(self.get_detail_url("tag", t.id)),
+                u"product": None,
+                }
+            if t.product:
+                exp_tag[u"product"] = unicode(
+                    self.get_detail_url("product", str(t.product.id)))
+            exp_tags.append(exp_tag)
+
+        return {
+            u"case": unicode(
+                self.get_detail_url("case", cv.case.id)),
+            u"created_by": None,
+            u"description": u'',
+            u"environments": [],
+            u"id": int(cv.id),
+            u'modified_by': None,
+            u"modified_on": unicode(cv.modified_on.strftime("%Y-%m-%dT%H:%M:%S")),
+            u"name": unicode(cv.name),
+            u"priority": unicode(None),
+            u"productversion": unicode(self.get_detail_url( "productversion",
+                                       cv.productversion.id)),
+            u"productversion_name": unicode(cv.productversion.name),
+            u"resource_uri": unicode(
+                self.get_detail_url("caseversion", cv.id)),
+            u'status': u'active',
+            u'steps': [],
+            u"tags": exp_tags,
+            }
+
+
+    def get_exp_meta(self, count=0):
+        """Return an expected meta object with count field filled"""
+        return {
+            "limit": 20,
+            "next": None,
+            "offset": 0,
+            "previous": None,
+            "total_count": count,
+            }
+
+
+    def _do_and_test(self, and_tags, exp_objects):
+        params = {}
+        for tag in and_tags:
+            params['tags__name__and'] = tag.name
+
+        res = self.get_list(params=params)
+        self.assertEqual(res.status_int, 200)
+
+        act = res.json
+
+        self.maxDiff = None
+        self.assertEquals(act["meta"], self.get_exp_meta(len(exp_objects)))
+        self.assertEqual(exp_objects, act["objects"])
+
+    def _setup_one_with_both_tag_one_with_one_tag(self):
+        cv1 = self.F.CaseVersionFactory.create()
+        cv2 = self.F.CaseVersionFactory.create()
+        tag1 = self.F.TagFactory.create(name="foo")
+        tag2 = self.F.TagFactory.create(name="bar")
+        cv1.tags.add(tag1)
+        cv1.tags.add(tag2)
+        cv2.tags.add(tag1)
+
+        return {
+            "cv1": cv1,
+            "cv2": cv2,
+            "t1": tag1,
+            "t2": tag2,
+            }
+
+
+    def test_filter_by_tags_and(self):
+        """Get a list of available cases, both included"""
+
+        data = self._setup_one_with_both_tag_one_with_one_tag()
+        exp_objects = [self.get_exp_obj(data["cv1"], tags=[data["t1"], data["t2"]])]
+        self._do_and_test(
+            [data["t1"], data["t2"]],
+            exp_objects=exp_objects
+            )
 
 
 class CaseVersionSelectionResourceTest(case.api.ApiTestCase):
