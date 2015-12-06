@@ -967,7 +967,6 @@ form > .errorlist {
 }
 
 body > div {
-  overflow: hidden;
   *zoom: 1;
   -webkit-box-shadow: #454545 0 -1.5em 1.5em;
   -moz-box-shadow: #454545 0 -1.5em 1.5em;
