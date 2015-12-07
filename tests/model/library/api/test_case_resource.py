@@ -46,6 +46,7 @@ class CaseResourceTest(ApiCrudCases):
             u'product': unicode(
                 self.get_detail_url("product", str(self.product_fixture.id))),
             u'idprefix': unicode("%s" % shortdatetime),
+            u"priority": None,
             u'suites': [],
         }
 
@@ -72,6 +73,7 @@ class CaseResourceTest(ApiCrudCases):
         actual[u"id"] = backend_obj.id
         actual[u"product"] = unicode(
             self.get_detail_url("product", str(backend_obj.product.id)))
+        actual[u"priority"] = None
         actual[u"idprefix"] = unicode(backend_obj.idprefix)
         actual[u"suites"] = [unicode(
             self.get_detail_url("suite", str(suite.id))

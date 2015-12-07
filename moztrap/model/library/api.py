@@ -98,7 +98,7 @@ class CaseResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = Case.objects.all()
-        fields = ["id", "suites", "product", "idprefix"]
+        fields = ["id", "suites", "product", "idprefix", "priority"]
         filtering = {
             "suites": ALL_WITH_RELATIONS,
             "product": ALL_WITH_RELATIONS,
@@ -221,7 +221,7 @@ class CaseVersionResource(MTResource):
         EnvironmentResource, "environments", full=True, readonly=True)
     productversion = fields.ForeignKey(
         ProductVersionResource, "productversion")
-    tags = fields.ToManyField(TagResource, "tags", full=True, readonly=True)
+    tags = fields.ToManyField(TagResource, "tags", full=True)
     created_by= fields.ForeignKey(
         UserResource,
         "created_by",
@@ -239,7 +239,7 @@ class CaseVersionResource(MTResource):
 
     class Meta(MTResource.Meta):
         queryset = CaseVersion.objects.all()
-        fields = ["id", "name", "description", "case", "status", "modified_on"]
+        fields = ["id", "name", "description", "case", "status", "modified_on", "tags"]
         filtering = {
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
