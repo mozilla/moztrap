@@ -5,6 +5,7 @@ Utilities for filtering querysets in a view.
 
 from collections import namedtuple
 from functools import wraps
+from hashlib import md5
 import json
 import urlparse
 import operator
@@ -457,17 +458,32 @@ class ModelFilter(BaseChoicesFilter):
         """Get the options for this filter."""
         # always clone to get new data; filter instances are persistent
 
-        # Because these options rarely change we can confidently cache
-        # them as lists of tuples.
-        # This cache key gets invalidated on the various signals set
-        # up in moztrap.model.__init__.
-        cache_key = 'modelfilter-choices-%s' % (self.queryset.model._meta,)
+        # The self.queryset.all() query sets actually DO change even though
+        # the model._meta doesn't. E.g. you can have two different query
+        # sets both belonging to `modelfilter-choices-execution.run`.
+        # By making the cache key just depend on the model._meta we can
+        # reach it from the invalidation code. But for the actual result
+        # extraction we need to use the full query.
+        cache_key_container = 'modelfilter-choices-%s' % (
+            self.queryset.model._meta,
+        )
+        cache_key = 'modelfilter-choices-%s' % (
+            md5(str(self.queryset.all().query)).hexdigest()
+        )
         opts = cache.get(cache_key)
         if opts is None:
             opts = [
                 (obj.pk, self.label_func(obj)) for obj in self.queryset.all()
             ]
             cache.set(cache_key, opts, 60 * 60)
+            # Whenver we have to remember a cache_key, we need to remember
+            # that we remember it :)
+            # This makes it possible to invalidate the cache
+            # keys that depend on a complicated thing like a query.
+            cache_keys = cache.get(cache_key_container, [])
+            if cache_key not in cache_keys:
+                cache_keys.append(cache_key)
+                cache.set(cache_key_container, cache_keys, 60 * 60)
         self._opts = opts
         return self._opts
 
