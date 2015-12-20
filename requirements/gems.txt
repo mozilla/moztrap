@@ -1,5 +1,5 @@
-sass==3.2.0.alpha.95
-compass==0.12.0
+sass==3.3.7
+compass==0.12.6
 compass-susy-plugin==0.9
 chunky_png==1.2.1
 modular-scale==0.0.4
