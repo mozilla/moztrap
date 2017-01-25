@@ -8,6 +8,11 @@
 
 {% block formtop %}
   {% if run.status == run.STATUS.draft %}
-  <a href="{% url 'manage_narrow_environments' object_type='run' object_id=run.id %}" class="select-env-link">select environments</a>
+  {% url 'manage_narrow_environments' object_type='run' object_id=run.id as manage_env %}
+  {% with from=request.get_full_path|urlencode %}
+  {% with env_url=manage_env|add:"?from="|add:from %}
+  {% include "manage/_select_env_link.html" with env_url=env_url %}
+  {% endwith %}
+  {% endwith %}
   {% endif %}
 {% endblock %}

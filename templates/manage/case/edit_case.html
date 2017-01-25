@@ -8,7 +8,12 @@
 {% block form-id %}single-case-edit{% endblock form-id %}
 
 {% block caseversions %}
-  <a href="{% url 'manage_narrow_environments' object_type='caseversion' object_id=caseversion.id %}" class="select-env-link">select environments</a>
+  {% url 'manage_narrow_environments' object_type='caseversion' object_id=caseversion.id as manage_env %}
+  {% with from=request.get_full_path|urlencode %}
+  {% with env_url=manage_env|add:"?from="|add:from %}
+  {% include "manage/_select_env_link.html" with env_url=env_url %}
+  {% endwith %}
+  {% endwith %}
 
   <nav class="case-version-nav">
     <h3 class="case-version-head">{{ caseversion.productversion.product }}</h3>

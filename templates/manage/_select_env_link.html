@@ -1,0 +1,29 @@
+<a href="#" class="select-env-link">select environments</a>
+<script src="{{ STATIC_URL }}js/jquery-1.7.2.js"></script>
+<script src="{{ STATIC_URL }}js/alertify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/alertify.core.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/alertify.default.css"/>
+<script>
+  $(".select-env-link").on('click', function() {
+    var link = "{{ env_url }}";
+    alertify.set({
+      labels : {
+        ok : "Save",
+        cancel : "Cancel"
+      },
+      delay : 5000,
+      buttonReverse : false,
+      buttonFocus : "none"
+    });
+    alertify.confirm("Save changes before leaving?", function(e) {
+      if (e) {
+        history.replaceState(null, "untitled", window.location.pathname+'?from='+
+          encodeURIComponent(link));
+        $("form").submit();
+      } else {
+        window.location.href = link;
+      }
+    });
+    return false;
+  });
+</script>

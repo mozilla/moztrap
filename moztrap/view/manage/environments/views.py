@@ -231,11 +231,11 @@ def element_autocomplete(request):
 def narrow_environments(request, object_type, object_id):
     if object_type == "run":
         model_class = model.Run
-        redirect_to = "manage_runs"
+        redirect_to = request.GET.get('from', "manage_runs")
         perm = "execution.manage_runs"
     elif object_type == "caseversion":
         model_class = model.CaseVersion
-        redirect_to = "manage_cases"
+        redirect_to = request.GET.get('from', "manage_cases")
         perm = "library.manage_cases"
     else:
         raise Http404
